@@ -29,6 +29,9 @@ Homestead.json
 # User-specific stuff:
 /.idea
 
+# npm
+package-lock.json
+public/mix-manifest.json
 
 ## File-based project format:
 *.iws
