@@ -16,3 +16,5 @@ Route::get('/', 'TopController@index')->name('index');
 Auth::routes();
 
 Route::get('/top', 'TopController@index')->name('top');
+
+Route::resource('shipper', 'ShipperController');
