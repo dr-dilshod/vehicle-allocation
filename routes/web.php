@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'TopController@index')->name('top');
+
+Auth::routes();
+
+Route::get('/top', 'TopController@index')->name('top');
