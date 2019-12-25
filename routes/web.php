@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'TopController@index')->name('top');
+Route::get('/', 'TopController@index')->name('index');
 
 Auth::routes();
 
