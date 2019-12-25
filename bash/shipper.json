@@ -1,0 +1,139 @@
+{
+  "fields": [
+    {
+      "name": "shipper_no",
+      "type": "string"
+    },
+    {
+      "name": "shipper_name1",
+      "type": "string"
+    },
+    {
+      "name": "shipper_name2",
+      "type": "string"
+    },
+    {
+      "name": "shipper_kana_name1",
+      "type": "string"
+    },
+    {
+      "name": "shipper_kana_name2",
+      "type": "string"
+    },
+    {
+      "name": "shipper_company_abbreviation",
+      "type": "string"
+    },
+    {
+      "name": "postal_code",
+      "type": "string"
+    },
+    {
+      "name": "address1",
+      "type": "string"
+    },
+    {
+      "name": "address2",
+      "type": "string"
+    },
+    {
+      "name": "phone_number",
+      "type": "string"
+    },
+    {
+      "name": "fax_number",
+      "type": "string"
+    },
+    {
+      "name": "closing_date",
+      "type": "tinyint"
+    },
+    {
+      "name": "delete_flg",
+      "type": "tinyint"
+    },
+    {
+      "name": "create_id",
+      "type": "bigint"
+    },
+    {
+      "name": "created_at",
+      "type": "datetime"
+    },
+    {
+      "name": "update_id",
+      "type": "bigint"
+    },
+    {
+      "name": "updated_at",
+      "type": "datetime"
+    }
+  ],
+  "foreign_keys": [
+    {
+      "column": "create_id",
+      "references": "id",
+      "on": "user",
+      "onDelete": "cascade"
+    },
+    {
+      "column": "update_id",
+      "references": "id",
+      "on": "user",
+      "onDelete": "cascade"
+    }
+  ],
+  "relationships": [
+    {
+      "name": "user",
+      "type": "belongsTo",
+      "class": "App\\User"
+    }
+  ],
+  "validations": [
+    {
+      "field": "shipper_no",
+      "rules": "required|max:4"
+    },
+    {
+      "field": "shipper_name1",
+      "rules": "max:60"
+    },
+    {
+      "field": "shipper_name2",
+      "rules": "max:60"
+    },
+    {
+      "field": "shipper_kana_name1",
+      "rules": "max:60"
+    },
+    {
+      "field": "shipper_kana_name2",
+      "rules": "max:60"
+    },
+    {
+      "field": "shipper_company_abbreviation",
+      "rules": "max:60"
+    },
+    {
+      "field": "postal_code",
+      "rules": "max:8"
+    },
+    {
+      "field": "address1",
+      "rules": "max:120"
+    },
+    {
+      "field": "address2",
+      "rules": "max:120"
+    },
+    {
+      "field": "phone_number",
+      "rules": "max:12"
+    },
+    {
+      "field": "fax_number",
+      "rules": "max:12"
+    }
+  ]
+}
