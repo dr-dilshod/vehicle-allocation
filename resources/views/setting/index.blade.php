@@ -21,7 +21,7 @@
         </div>
         <div class="row mb-4">
             <div class="col-4 offset-4">
-                <a href="{{route('top')}}"
+                <a href="{{route('shipper.index')}}"
                    class="btn btn-lg btn-warning btn-block p-4">{{('Shipper list')}}</a>
             </div>
         </div>
