@@ -178,6 +178,7 @@ return [
          * Datatables
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
+        RichanFongdasen\EloquentBlameable\ServiceProvider::class,
 
     ],
 

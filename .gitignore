@@ -28,7 +28,7 @@ Homestead.json
 
 # User-specific stuff:
 /.idea/*
-composer.lock
+*.lock
 
 # npm
 package-lock.json
