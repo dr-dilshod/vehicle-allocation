@@ -29,6 +29,8 @@ Homestead.json
 # User-specific stuff:
 /.idea/*
 *.lock
+/public/js/app.js
+/public/css/app.css
 
 # npm
 package-lock.json
