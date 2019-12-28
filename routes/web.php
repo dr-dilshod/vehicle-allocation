@@ -16,6 +16,7 @@ Route::get('/', 'TopController@index')->name('index');
 Auth::routes();
 
 Route::get('/top', 'TopController@index')->name('top');
+Route::get('/setting', 'SettingController@index')->name('setting');
 
 Route::resource('shipper', 'ShipperController');
 Route::resource('driver', 'DriverController');
