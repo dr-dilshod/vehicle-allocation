@@ -11,14 +11,16 @@
 |
 */
 
-Route::get('/', 'TopController@index')->name('home');
+Route::get('/', 'TopController@index')->name('index');
 
 Auth::routes();
 
 Route::get('/top', 'TopController@index')->name('top');
+Route::get('/setting', 'SettingController@index')->name('setting');
 
 Route::resource('shipper', 'ShipperController');
 
 Route::resource('vehicle','VehicleController');
 
-Route::get('/vehicle-fetch','VehicleController@fetch')->name('vehicle-fetch');
+
+Route::resource('driver', 'DriverController');
