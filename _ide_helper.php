@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.36 on 2019-12-26 13:50:39.
+ * Generated for Laravel 5.8.36 on 2019-12-29 12:57:57.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -18800,6 +18800,13 @@ namespace Illuminate\Support {
     class Fluent {}
 }
 
+namespace App {
+    /**
+    * @method \Illuminate\Database\Eloquent\Collection|Vehicle[]|Vehicle create($attributes = [])
+    * @method \Illuminate\Database\Eloquent\Collection|Vehicle[]|Vehicle make($attributes = [])
+    */
+    class VehicleFactoryBuilder extends \Illuminate\Database\Eloquent\FactoryBuilder {}
+}
 namespace App {
     /**
     * @method \Illuminate\Database\Eloquent\Collection|User[]|User create($attributes = [])
