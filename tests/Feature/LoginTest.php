@@ -9,6 +9,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+ * Class LoginTest
+ * @package Tests\Feature
+ * @author Dilshod K
+ */
 class LoginTest extends TestCase
 {
     use DatabaseTransactions;
