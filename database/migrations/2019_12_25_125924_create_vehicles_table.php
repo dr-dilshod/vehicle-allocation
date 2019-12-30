@@ -27,16 +27,15 @@ class CreateVehiclesTable extends Migration
             $table->tinyInteger('offset')->default(0);
             $table->string('subcontract_remark')->nullable();
             $table->tinyInteger('delete_flg')->default(0);
-            $table->bigInteger('create_id')->nullable();
-            $table->bigInteger('update_id')->nullable();
+            $table->bigInteger('create_id')->unsigned()->nullable();
+            $table->bigInteger('update_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->index('create_id');
             $table->index('update_id');
-            $table->foreign('create_id')->references('id')->on('users')->onDelete('no action')->onUpdate('no action');
-            $table->foreign('update_id')->references('id')->on('users')->onDelete('no action')->onUpdate('no action');
+            $table->foreign('create_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('update_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
 
-            factory(\App\Vehicle::class,100)->create();
         });
     }
 

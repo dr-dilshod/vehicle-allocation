@@ -28,7 +28,6 @@ Homestead.json
 
 # User-specific stuff:
 /.idea/*
-composer.lock
 /public/js/app.js
 /public/css/app.css
 

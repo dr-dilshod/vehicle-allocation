@@ -34,8 +34,9 @@
             </form>
         </div>
         <div class="row">
-            <table class="table table-striped data-table">
-                <thead>
+            <div class="col-12">
+                <table class="table table-striped data-table">
+                    <thead>
                     <tr>
                         <th>Vehicle No</th>
                         <th>Company name</th>
@@ -49,41 +50,42 @@
                         <th>Remarks</th>
                         <th>Editing</th>
                     </tr>
-                </thead>
-                <tbody>
-                @forelse($vehicles as $vehicle)
-                    <tr>
-                        <th>{{$vehicle["subcontract_no"]}}</th>
-                        <td>{{$vehicle["company_name"]}}</td>
-                        <td>{{$vehicle["company_kana_name"]}}</td>
-                        <td>{{$vehicle["subcontract_company_abbreviation"]}}</td>
-                        <td>{{$vehicle["subcontract_postal_code"]}}</td>
-                        <td>{{$vehicle["subcontract_address1"]}} {{$vehicle["subcontract_address2"]}}</td>
-                        <td>{{$vehicle["subcontract_phone_number"]}}</td>
-                        <td>{{$vehicle["subcontract_fax_number"]}}</td>
-                        <td>{{$vehicle["offset"]}}</td>
-                        <td>{{$vehicle["subcontract_remark"]}}</td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-info">Edit</a>
-                            <a href="#" class="btn btn-sm btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="11">
-                            <p class="text-center">No data to show</p>
-                        </td>
-                    </tr>
-                @endforelse
-                </tbody>
-                <tfoot>
+                    </thead>
+                    <tbody>
+                    @forelse($vehicles as $vehicle)
+                        <tr>
+                            <th>{{$vehicle["subcontract_no"]}}</th>
+                            <td>{{$vehicle["company_name"]}}</td>
+                            <td>{{$vehicle["company_kana_name"]}}</td>
+                            <td>{{$vehicle["subcontract_company_abbreviation"]}}</td>
+                            <td>{{$vehicle["subcontract_postal_code"]}}</td>
+                            <td>{{$vehicle["subcontract_address1"]}} {{$vehicle["subcontract_address2"]}}</td>
+                            <td>{{$vehicle["subcontract_phone_number"]}}</td>
+                            <td>{{$vehicle["subcontract_fax_number"]}}</td>
+                            <td>{{$vehicle["offset"]}}</td>
+                            <td>{{$vehicle["subcontract_remark"]}}</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-info">Edit</a>
+                                <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="11">
+                                <p class="text-center">No data to show</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                    <tfoot>
                     <tr>
                         <td colspan="11">
                             {{$vehicles->links()}}
                         </td>
                     </tr>
-                </tfoot>
-            </table>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
