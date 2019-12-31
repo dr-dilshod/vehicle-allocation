@@ -11,10 +11,16 @@
 |
 */
 
-Route::get('/', 'TopController@index')->name('index');
+Route::get('/', 'TopController@index')->name('home');
 
 Auth::routes();
 
 Route::get('/top', 'TopController@index')->name('top');
+Route::get('/setting', 'SettingController@index')->name('setting');
 
 Route::resource('shipper', 'ShipperController');
+
+Route::resource('vehicle','VehicleController');
+
+
+Route::resource('driver', 'DriverController');
