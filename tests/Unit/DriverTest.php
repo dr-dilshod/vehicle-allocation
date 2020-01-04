@@ -2,16 +2,25 @@
 
 namespace Tests\Unit;
 
+use App\Http\Controllers\DriverController;
+use Doctrine\DBAL\Schema\Table;
 use Tests\TestCase;
-use App\User;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Driver;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class DriverTest
+ * @package Tests\Unit
+ * @author Dilshod K
+ */
 class DriverTest extends TestCase
 {
+
     /**
      * A basic unit test example.
-     *
      * @return void
      */
     public function testExample()
@@ -51,25 +60,64 @@ class DriverTest extends TestCase
      */
     public function testCreateDriver()
     {
-        $data = [
-            'driver_name' => "Somebody",
-            'driver_pass' => "test pass"
-//            'driver_mobile_number' => "+6456312321654",
-//            'maximum_Loading' => 10,
-//            'search_flg' =>
+        $test_data = [
+            'driver_pass' => 'testInsertion',
+            'driver_name' => 'testInsertion',
         ];
-        $user = factory(\App\User::class)->create();
-        $response = $this->actingAs($user, 'api')->json('POST', '/api/products',$data);
-        $response->assertStatus(200);
+        $request = new Request();
+        $request->headers->set('content-type', 'application/json');
+        $request->setJson(new ParameterBag($test_data));
+        $driverController = new DriverController();
+        $update = $driverController->store($request);
+        $count = \DB::table('drivers')
+            ->where("driver_pass", "=", "testInsertion")
+            ->where("driver_name", "=", "testInsertion")
+            ->count();
+        DB::table('drivers')->where('driver_pass', '=', "testInsertion")->delete();
+        $this ->assertEquals(1,$count);
     }
 
-    public function testGettingAllDrivers()
-    {
-
-    }
-
+    /**
+     * Test if a driver can be updated
+     */
     public function testUpdateDriver()
     {
-
+            $test_data = [
+            'driver_pass' => 'test',
+                'driver_name' => 'Test',
+        ];
+        $request = new Request();
+        $request->headers->set('content-type', 'application/json');
+        $request->setJson(new ParameterBag($test_data));
+        $driverController = new DriverController();
+        $update = $driverController->update($request, 1);
+        $count = \DB::table('drivers')
+            ->where("driver_pass", "=", "test")
+            ->where("driver_name", "=", "test")
+            ->count();
+        $this ->assertEquals(1,$count);
     }
+
+    /**
+     * Test if a driver can be deleted
+     */
+    public function testDeleteDriver()
+    {
+        // first, insert a record into the database
+        DB::table('drivers')->insert(
+            ['id' => 100,
+                'driver_name' => 'testDeletion', 'driver_pass' => 'testDeletion']
+        );
+        $test_data = [
+            'driver_name' => 'testDeletion',
+        ];
+
+        $driverController = new DriverController();
+        $update = $driverController->destroy('100');
+        $count = \DB::table('drivers')
+            ->where("driver_pass", "=", "testDeletion")
+            ->count();
+        $this ->assertEquals(0,$count);
+    }
+
 }

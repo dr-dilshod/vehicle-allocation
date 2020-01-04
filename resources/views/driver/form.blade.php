@@ -53,31 +53,6 @@
     <input class="form-control" name="driver_remark" type="text" id="driver_remark" value="{{ isset($driver->driver_remark) ? $driver->driver_remark : ''}}" required>
     {!! $errors->first('driver_remark', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group {{ $errors->has('delete_flg') ? 'has-error' : ''}}">
-    <label for="delete_flg" class="control-label">{{ 'Delete Flg' }}</label>
-    <input class="form-control" name="delete_flg" type="number" id="delete_flg" value="{{ isset($driver->delete_flg) ? $driver->delete_flg : ''}}" >
-    {!! $errors->first('delete_flg', '<p class="help-block">:message</p>') !!}
-</div>
-<div class="form-group {{ $errors->has('create_id') ? 'has-error' : ''}}">
-    <label for="create_id" class="control-label">{{ 'Create Id' }}</label>
-    <input class="form-control" name="create_id" type="number" id="create_id" value="{{ isset($driver->create_id) ? $driver->create_id : ''}}" >
-    {!! $errors->first('create_id', '<p class="help-block">:message</p>') !!}
-</div>
-<div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">
-    <label for="created_at" class="control-label">{{ 'Created At' }}</label>
-    <input class="form-control" name="created_at" type="datetime-local" id="created_at" value="{{ isset($driver->created_at) ? $driver->created_at : ''}}" >
-    {!! $errors->first('created_at', '<p class="help-block">:message</p>') !!}
-</div>
-<div class="form-group {{ $errors->has('update_id') ? 'has-error' : ''}}">
-    <label for="update_id" class="control-label">{{ 'Update Id' }}</label>
-    <input class="form-control" name="update_id" type="number" id="update_id" value="{{ isset($driver->update_id) ? $driver->update_id : ''}}" >
-    {!! $errors->first('update_id', '<p class="help-block">:message</p>') !!}
-</div>
-<div class="form-group {{ $errors->has('updated_at') ? 'has-error' : ''}}">
-    <label for="updated_at" class="control-label">{{ 'Updated At' }}</label>
-    <input class="form-control" name="updated_at" type="datetime-local" id="updated_at" value="{{ isset($driver->updated_at) ? $driver->updated_at : ''}}" >
-    {!! $errors->first('updated_at', '<p class="help-block">:message</p>') !!}
-</div>
 
 
 <div class="form-group">
