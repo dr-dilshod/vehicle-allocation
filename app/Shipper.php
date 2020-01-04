@@ -39,13 +39,16 @@ class Shipper extends Model
         static::creating(function($model)
         {
             $user = Auth::user();
-            $model->create_id = $user->id;
-            $model->update_id = $user->id;
+            if(!empty($user)){
+                $model->create_id = $user->id;
+                $model->update_id = $user->id;
+            }
         });
         static::updating(function($model)
         {
             $user = Auth::user();
-            $model->update_id = $user->id;
+            if (!empty($user))
+                $model->update_id = $user->id;
         });
     }
 }

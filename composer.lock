@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9901eb6b5f3cfbb735e91a94e1c91a82",
+    "content-hash": "1520d3304053ff5c86b245c69a0bb3db",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -4112,6 +4112,47 @@
             "time": "2016-01-20T08:20:44+00:00"
         },
         {
+            "name": "jrmadsen67/laravel-feature-test-generator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jrmadsen67/laravel-feature-test-generator.git",
+                "reference": "f1d6eb5c50d03ae52ea81635cc20491753f2ba28"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jrmadsen67/laravel-feature-test-generator/zipball/f1d6eb5c50d03ae52ea81635cc20491753f2ba28",
+                "reference": "f1d6eb5c50d03ae52ea81635cc20491753f2ba28",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "jrmadsen67\\FeatureTestGenerator\\TestGeneratorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "jrmadsen67\\FeatureTestGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeff Madsen",
+                    "email": "jrmadsen67@gmail.com",
+                    "homepage": "http://codebyjeff.com"
+                }
+            ],
+            "description": "Cascading model updates for Laravel.",
+            "time": "2019-01-20T23:17:11+00:00"
+        },
+        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.9",
             "source": {
@@ -5979,7 +6020,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "jrmadsen67/laravel-feature-test-generator": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
