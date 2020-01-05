@@ -17,27 +17,23 @@ class ShipperController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
+        $billingAddress = $request->get('billingAddress');
+        $shipperKey = $request->get('shipper');
         $perPage = 25;
 
-        if (!empty($keyword)) {
-            $shipper = Shipper::where('shipper_no', 'LIKE', "%$keyword%")
-                ->orWhere('shipper_name1', 'LIKE', "%$keyword%")
-                ->orWhere('shipper_name2', 'LIKE', "%$keyword%")
-                ->orWhere('shipper_kana_name1', 'LIKE', "%$keyword%")
-                ->orWhere('shipper_kana_name2', 'LIKE', "%$keyword%")
-                ->orWhere('shipper_company_abbreviation', 'LIKE', "%$keyword%")
-                ->orWhere('postal_code', 'LIKE', "%$keyword%")
-                ->orWhere('address1', 'LIKE', "%$keyword%")
-                ->orWhere('address2', 'LIKE', "%$keyword%")
-                ->orWhere('phone_number', 'LIKE', "%$keyword%")
-                ->orWhere('fax_number', 'LIKE', "%$keyword%")
-                ->orWhere('closing_date', 'LIKE', "%$keyword%")
-                ->orWhere('delete_flg', 'LIKE', "%$keyword%")
-                ->orWhere('create_id', 'LIKE', "%$keyword%")
-                ->orWhere('created_at', 'LIKE', "%$keyword%")
-                ->orWhere('update_id', 'LIKE', "%$keyword%")
-                ->orWhere('updated_at', 'LIKE', "%$keyword%")
+        if (!empty($billingAddress) && !empty($shipperKey)) {
+            $shipper = Shipper::where(function ($query) use ($shipperKey) {
+                return $query->where('shipper_name1', 'LIKE', "%$shipperKey%");
+            })->where(function ($query) use ($billingAddress) {
+                return $query->where('address1', 'LIKE', "%$billingAddress%")
+                    ->orWhere('address2', 'LIKE', "%$billingAddress%");
+            })->latest()->paginate($perPage);
+        } else if (empty($billingAddress) && !empty($shipperKey)){
+            $shipper = Shipper::where('shipper_name1', 'LIKE', "%$shipperKey%")
+                ->latest()->paginate($perPage);
+        } else if (!empty($billingAddress) && empty($shipperKey)){
+            $shipper = Shipper::where('address1', 'LIKE', "%$billingAddress%")
+                ->orWhere('address2', 'LIKE', "%$billingAddress%")
                 ->latest()->paginate($perPage);
         } else {
             $shipper = Shipper::latest()->paginate($perPage);

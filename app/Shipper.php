@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Shipper extends Model
@@ -31,5 +32,23 @@ class Shipper extends Model
     {
         return $this->belongsTo('App\User');
     }
-    
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            $user = Auth::user();
+            if(!empty($user)){
+                $model->create_id = $user->id;
+                $model->update_id = $user->id;
+            }
+        });
+        static::updating(function($model)
+        {
+            $user = Auth::user();
+            if (!empty($user))
+                $model->update_id = $user->id;
+        });
+    }
 }

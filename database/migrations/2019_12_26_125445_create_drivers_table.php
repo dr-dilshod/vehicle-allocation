@@ -13,7 +13,7 @@ class CreateDriversTable extends Migration
     public function up()
     {
         Schema::create('drivers', function (Blueprint $table) {
-            $table->increments('driver_id');
+            $table->increments('id');
             $table->string('driver_pass')->nullable();
             $table->string('driver_name')->nullable();
             $table->string('driver_mobile_number')->nullable();
@@ -32,7 +32,46 @@ class CreateDriversTable extends Migration
             $table->dateTime('updated_at')->nullable();
             $table->foreign('create_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('update_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            });
+        });
+        DB::table('drivers')->insert([
+            'driver_pass' => "12345",
+            'driver_name' => 'Raximov Rashid',
+            'driver_mobile_number' => '(97)360-1234',
+            'maximum_Loading' => '50 Tn',
+            'search_flg' => 1,
+            'admin_flg' => 2,
+            'car_no1' => '90',
+            'car_no2' => '033',
+            'car_no3' => 'RAA',
+            'car_type' => 'Cobalt',
+            'driver_remark' => 1
+        ]);
+        DB::table('drivers')->insert([
+            'driver_pass' => "12345",
+            'driver_name' => 'Axmedov Sardor',
+            'driver_mobile_number' => '(97)360-1234',
+            'maximum_Loading' => '50 Tn',
+            'search_flg' => 1,
+            'admin_flg' => 2,
+            'car_no1' => '90',
+            'car_no2' => '033',
+            'car_no3' => 'RAA',
+            'car_type' => 'Cobalt',
+            'driver_remark' => 1
+        ]);
+        DB::table('drivers')->insert([
+            'driver_pass' => "12345",
+            'driver_name' => 'Sapayev Shodlik',
+            'driver_mobile_number' => '(97)360-1234',
+            'maximum_Loading' => '50 Tn',
+            'search_flg' => 1,
+            'admin_flg' => 2,
+            'car_no1' => '90',
+            'car_no2' => '033',
+            'car_no3' => 'RAA',
+            'car_type' => 'Cobalt',
+            'driver_remark' => 1
+        ]);
     }
 
     /**
