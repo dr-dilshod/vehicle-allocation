@@ -30,25 +30,25 @@
                 </div>
             </form>
         </div>
-        <ejs-grid :dataSource="data" :allowSorting="true">
+        <ejs-grid :dataSource="data" :allowSorting="true" :frozenColumns="3">
             <e-columns>
-                <e-column field='vehicle_no' headerText='Vehicle No'></e-column>
-                <e-column field='company_name' headerText='Company Name'></e-column>
-                <e-column field='company_kana_name' headerText='Kana Name'></e-column>
-                <e-column field='vehicle_company_abbreviation' headerText='Company Abbr'></e-column>
-                <e-column field='vehicle_postal_code' headerText='Postal Code'></e-column>
-                <e-column field='vehicle_address1' headerText='Address'></e-column>
-                <e-column field='vehicle_address2' headerText='Address 2'></e-column>
-                <e-column field='vehicle_phone_number' headerText='Phone'></e-column>
-                <e-column field='vehicle_fax_number' headerText='Fax'></e-column>
-                <e-column field='offset' headerText='Offset'></e-column>
-                <e-column field='vehicle_remark' headerText='Remark'></e-column>
+                <e-column field='vehicle_no' headerText='Vehicle No' width="100"></e-column>
+                <e-column field='company_name' headerText='Company Name' width="150"></e-column>
+                <e-column field='company_kana_name' headerText='Kana Name' width="150"></e-column>
+                <e-column field='vehicle_company_abbreviation' headerText='Company Abbr' width="150"></e-column>
+                <e-column field='vehicle_postal_code' textAlign="Center" headerText='Postal Code' width="150"></e-column>
+                <e-column field='vehicle_address1' headerText='Address' width="200"></e-column>
+                <e-column field='vehicle_address2' headerText='Address 2' width="200"></e-column>
+                <e-column field='vehicle_phone_number' headerText='Phone' width="200"></e-column>
+                <e-column field='vehicle_fax_number' headerText='Fax' width="200"></e-column>
+                <e-column field='offset' headerText='Offset' textAlign="Center" width="100"></e-column>
+                <e-column field='vehicle_remark' headerText='Remark' width="250"></e-column>
             </e-columns>
         </ejs-grid>
     </div>
 </template>
 <script type="text/ecmascript-6">
-    import { GridPlugin, Sort } from '@syncfusion/ej2-vue-grids';
+    import { GridPlugin, Sort, Freeze } from '@syncfusion/ej2-vue-grids';
     Vue.use(GridPlugin);
 
     export default {
@@ -95,7 +95,7 @@
             },
         },
         provide: {
-            grid: [Sort]
+            grid: [Sort,Freeze]
         },
         filters: {
             columnHead(value) {
