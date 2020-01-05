@@ -2,12 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\VehicleResource;
 use App\Vehicle;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 
 class VehicleController extends Controller
 {
+    /**
+     * @var Vehicle
+     */
+    protected $vehicle;
+
+    /**
+     * VehicleController constructor.
+     * @param Vehicle $vehicle
+     */
+    public function __construct(Vehicle $vehicle)
+    {
+        $this->vehicle = $vehicle;
+        parent::__construct();
+    }
+
+    public function getVehicleTableData(Request $request)
+    {
+        $company_name = $request->query('company_name');
+        $vehicles = $this->vehicle->where('company_name',$company_name)->get();
+        return VehicleResource::collection($vehicles);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,14 +37,9 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        return view('vehicle.index',[
-            'vehicles' => Vehicle::paginate(5)
-        ]);
+        return view('vehicle.index');
     }
 
-    public function fetch(){
-        return DataTables::of(Vehicle::query())->make(true);
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -31,7 +48,7 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        //
+        return view('vehicle.create');
     }
 
     /**

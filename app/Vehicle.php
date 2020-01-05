@@ -10,12 +10,12 @@ class Vehicle extends Model
     use BlameableTrait;
     //
     protected $fillable = [
-        'subcontract_no','company_name','company_kana_name','subcontract_company_abbreviation',
-        'subcontract_postal_code','subcontract_address1','subcontract_address2','subcontract_phone_number',
-        'subcontract_fax_number','offset','subcontract_remark','delete_flg'
+        'vehicle_no','company_name','company_kana_name','vehicle_company_abbreviation',
+        'vehicle_postal_code','vehicle_address1','vehicle_address2','vehicle_phone_number',
+        'vehicle_fax_number','offset','vehicle_remark','delete_flg'
     ];
 
-    protected $primaryKey = 'subcontract_id';
+    protected $primaryKey = 'vehicle_id';
 
 
 }
