@@ -21,27 +21,13 @@
                 <div class="row">
                     <div class="col-4 mt-4">
                         <div class="form-group row">
-                            <label for="projectno"
-                                   class="col-6 col-form-label ">{{ __('Project No') }}</label>
+                            <label for="weekdate"
+                                   class="col-6 col-form-label ">{{ __('Weekday') }}</label>
 
                             <div class="col-6">
-                                <input id="projectno" type="text"
+                                <input id="weekdate" type="date"
                                        class="form-control"
-                                       name="projectno"
-                                       autofocus>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-4 mt-4">
-                        <div class="form-group row">
-                            <label for="shipperdate"
-                                   class="col-6 col-form-label ">{{ __('Shipping date') }}</label>
-
-                            <div class="col-6">
-                                <input id="shipperdate" type="date"
-                                       class="form-control"
-                                       name="shipperdate"
+                                       name="weekday"
                                        autofocus>
                             </div>
                         </div>
@@ -55,6 +41,20 @@
                                 <select class="form-control" name="shipper" id="shipper">
                                     <option value="00"></option>
                                     <option value="01">shipper1</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mt-4">
+                        <div class="form-group row">
+                            <label for="status"
+                                   class="col-6 col-form-label ">{{ __('status') }}</label>
+
+                            <div class="col-6">
+                                <select class="form-control" name="status" id="status">
+                                    <option value="00"></option>
+                                    <option value="01">complete</option>
+                                    <option value="02">incomplete</option>
                                 </select>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                     <div class="col-4 mt-4">
                         <div class="form-group row">
                             <label for="uloadingplace"
-                                   class="col-6 col-form-label">{{ __('Unloading place') }}</label>
+                                   class="col-6 col-form-label">{{ __('item.unloading_place') }}</label>
 
                             <div class="col-6">
                                 <input id="unloadingplace" type="text"
@@ -105,11 +105,10 @@
                 </div>
             </div>
             <div class="col-3">
-
-                <div class="row">
+                <div class="row mt-5 mb-0">
                     <div class="col-6">
                         <a href="{{route('top')}}"
-                           class="btn btn-lg btn-primary btn-block p-1">{{('Search')}}</a>
+                           class="btn btn-lg btn-primary btn-block p-1 ">{{('Search')}}</a>
                     </div>
                     <div class="col-6">
                         <a href="{{route('top')}}"
@@ -139,7 +138,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <th scope="row" class="btn-primary">incomplete</th>
+                    <th scope="row" class="btn btn-danger btn-block">incomplete</th>
                     <td>1</td>
                     <td>2019/12/29</td>
                     <td>19:32</td>
@@ -154,7 +153,7 @@
                     <td>free</td>
                 </tr>
                 <tr>
-                    <th scope="row" class="btn-primary">incomplete</th>
+                    <th scope="row" class="btn btn-danger btn-block">incomplete</th>
                     <td>2</td>
                     <td>2019/12/29</td>
                     <td>19:34</td>
@@ -169,7 +168,7 @@
                     <td>free</td>
                 </tr>
                 <tr>
-                    <th scope="row" class="btn-danger">complete</th>
+                    <th scope="row" class="btn btn-primary btn-block">complete</th>
                     <td>3</td>
                     <td>2019/12/29</td>
                     <td>19:34</td>
