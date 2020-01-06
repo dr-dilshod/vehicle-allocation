@@ -89,11 +89,11 @@ class ShipperTest extends TestCase
 
         $item = factory(Shipper::class)->create();
 
-        $this->assertDatabaseHas('shipper', $item->toArray());
+        $this->assertDatabaseHas('shippers', $item->toArray());
 
         $response = $this->delete(route('shipper.destroy', $item));
 
-        $this->assertDatabaseMissing('shipper', $item->toArray());
+        $this->assertDatabaseMissing('shippers', $item->toArray());
 
         $response->assertRedirect(route('shipper.index'));
     }
