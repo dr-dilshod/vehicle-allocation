@@ -17,10 +17,14 @@ Auth::routes();
 
 Route::get('/top', 'TopController@index')->name('top');
 Route::get('/setting', 'SettingController@index')->name('setting');
+Route::get('/vehicles/data-table', 'VehicleController@getVehicleTableData')->name('vehicle.table');
 
 Route::resource('shipper', 'ShipperController');
 
-Route::resource('vehicle','VehicleController');
+Route::resource('vehicle','VehicleController')->names([
+    'create' => 'vehicle.create',
+    'store' => 'vehicle.store'
+]);;
 
 
 Route::resource('driver', 'DriverController');

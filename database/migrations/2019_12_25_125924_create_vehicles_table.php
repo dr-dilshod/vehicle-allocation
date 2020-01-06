@@ -14,18 +14,18 @@ class CreateVehiclesTable extends Migration
     public function up()
     {
         Schema::create('vehicles', function (Blueprint $table) {
-            $table->bigIncrements('subcontract_id');
-            $table->string('subcontract_no',4);
+            $table->bigIncrements('vehicle_id');
+            $table->string('vehicle_no',4);
             $table->string('company_name',60);
             $table->string('company_kana_name',60)->nullable();
-            $table->string('subcontract_company_abbreviation',60)->nullable();
-            $table->string('subcontract_postal_code',60)->nullable();
-            $table->string('subcontract_address1',120)->nullable();
-            $table->string('subcontract_address2',120)->nullable();
-            $table->string('subcontract_phone_number',64)->nullable();
-            $table->string('subcontract_fax_number',64)->nullable();
+            $table->string('vehicle_company_abbreviation',60)->nullable();
+            $table->string('vehicle_postal_code',60)->nullable();
+            $table->string('vehicle_address1',120)->nullable();
+            $table->string('vehicle_address2',120)->nullable();
+            $table->string('vehicle_phone_number',64)->nullable();
+            $table->string('vehicle_fax_number',64)->nullable();
             $table->tinyInteger('offset')->default(0);
-            $table->string('subcontract_remark')->nullable();
+            $table->string('vehicle_remark')->nullable();
             $table->tinyInteger('delete_flg')->default(0);
             $table->bigInteger('create_id')->unsigned()->nullable();
             $table->bigInteger('update_id')->unsigned()->nullable();
