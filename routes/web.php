@@ -20,6 +20,7 @@ Route::get('/setting', 'SettingController@index')->name('setting');
 Route::get('/vehicles/data-table', 'VehicleController@getVehicleTableData')->name('vehicle.table');
 
 Route::resource('shipper', 'ShipperController');
+Route::resource('api/shipper', 'Api\ShipperController');
 
 Route::resource('vehicle','VehicleController')->names([
     'create' => 'vehicle.create',
