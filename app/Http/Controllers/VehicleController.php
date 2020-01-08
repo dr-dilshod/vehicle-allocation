@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\VehicleResource;
 use App\Vehicle;
 use Illuminate\Http\Request;
+use Psy\Util\Json;
 
 class VehicleController extends Controller
 {
@@ -26,8 +27,20 @@ class VehicleController extends Controller
     public function getVehicleTableData(Request $request)
     {
         $company_name = $request->query('company_name');
-        $vehicles = $this->vehicle->where('company_name',$company_name)->get();
+        $vehicles = $this->vehicle->where([
+            'company_name'=>$company_name,
+            'delete_flg'=>0
+        ])->orderBy('vehicle_no')->get();
         return VehicleResource::collection($vehicles);
+    }
+
+    public function getCompanies(Request $request)
+    {
+        $companies = Vehicle::select('company_name')
+            ->where('delete_flg',0)
+            ->distinct()
+            ->get();
+        return Json::encode($companies);
     }
 
     /**
