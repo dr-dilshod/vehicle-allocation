@@ -75,7 +75,7 @@ class ShipperController extends Controller
 			'fax_number' => 'max:12'
 		]);
         $requestData = $request->all();
-        
+
         Shipper::create($requestData);
 
         return redirect('shipper')->with('flash_message', 'Shipper added!');
@@ -133,7 +133,7 @@ class ShipperController extends Controller
 			'fax_number' => 'max:12'
 		]);
         $requestData = $request->all();
-        
+
         $shipper = Shipper::findOrFail($id);
         $shipper->update($requestData);
 
