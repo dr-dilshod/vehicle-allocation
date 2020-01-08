@@ -2,83 +2,63 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Shipper;
-use Illuminate\Http\Request;
-
-class ShipperController extends Controller
+class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $shipper = Shipper::latest()->paginate(25);
-
-        return $shipper;
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-
-        $shipper = Shipper::create($request->all());
-
-        return response()->json($shipper, 201);
+        //
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $shipper = Shipper::findOrFail($id);
-
-        return $shipper;
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-
-        $shipper = Shipper::findOrFail($id);
-        $shipper->update($request->all());
-
-        return response()->json($shipper, 200);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Shipper::destroy($id);
-
-        return response()->json(null, 204);
+        //
     }
 }
