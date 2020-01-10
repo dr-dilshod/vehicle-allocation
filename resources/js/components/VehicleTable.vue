@@ -38,9 +38,12 @@
                 </div>
             </form>
         </div>
-        <ejs-grid :dataSource="data" :allowSorting="true" :editSettings="editSettings" height='300' :frozenColumns="3" :toolbar="toolbarBtns">
+        <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
+                  :allowSorting="true" :editSettings="editSettings" :height="270"
+                  :frozenColumns="4" :toolbar="toolbarBtns">
             <e-columns>
-                <e-column field='vehicle_no' headerText='Vehicle No' width="100" :isPrimaryKey="true"></e-column>
+                <e-column field='vehicle_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
+                <e-column field='vehicle_no' headerText='Vehicle No' width="100"></e-column>
                 <e-column field='company_name' headerText='Company Name' width="150"></e-column>
                 <e-column field='company_kana_name' headerText='Kana Name' width="150"></e-column>
                 <e-column field='vehicle_company_abbreviation' headerText='Company Abbr' width="150"></e-column>
@@ -55,35 +58,89 @@
         </ejs-grid>
     </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
+    import Vue from "vue";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
-    import { DataManager, ODataAdaptor } from "@syncfusion/ej2-data";
+
     Vue.use( GridPlugin );
 
-    export default {
+    export default{
         props: {
             backUrl: {type: String, required: true},
             title: {type: String, required: true},
             fetchUrl: {type: String, required: true},
             companyUrl: {type: String, required: true},
+            resourceUrl: {type: String, required: true},
         },
         data() {
             return {
-                data: new DataManager({
-                    url: this.fetchUrl,
-                    adaptor: new ODataAdaptor()
-                }),
-                editSettings: {allowEditing: true, allowDeleting: true},
+                data: [],
+                editSettings: {allowEditing: true, allowAdding: true, allowDeleting: true, showDeleteConfirmDialog: true, },
                 toolbarBtns: [],
                 company_name: '',
                 companies: [],
-                mode: 'normal'
+                mode: 'normal',
             }
         },
-        created() {
-            return this.fetchCompanies(this.companyUrl);
+        mounted() {
+            this.fetchCompanies(this.companyUrl);
         },
         methods: {
+            actionBegin(args){
+//                alert(args.requestType);
+                if(args.requestType == 'save'){
+                    if(args.data.vehicle_id === undefined){
+                        this.insertData(args.data);
+                    }else{
+                        this.editData(args.data);
+                    }
+                }
+                if(args.requestType == 'delete'){
+                    if(args.data[0].vehicle_id !== undefined){
+                        this.deleteData(args.data[0].vehicle_id);
+                    }
+                }
+//                alert(args.rowData);
+                console.log(args);
+            },
+            insertData(vehicle){
+                let vehicleTable = this;
+                axios.post(this.resourceUrl,vehicle)
+                    .then(function(response){
+                        console.log(response);
+                        vehicleTable.mode = 'normal';
+                        vehicleTable.refresh();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
+            deleteData(id){
+                let vehicleTable = this;
+                axios.delete(this.resourceUrl+'/'+id)
+                    .then(function(response){
+                        console.log(response);
+                        vehicleTable.mode = 'normal';
+                        vehicleTable.refresh();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
+            editData(vehicle){
+                let vehicleTable = this;
+                let id = vehicle.vehicle_id;
+                delete vehicle.vehicle_id;
+                axios.put(this.resourceUrl+'/'+id, vehicle)
+                    .then(function(response){
+                        console.log(response);
+                        vehicleTable.mode = 'normal';
+                        vehicleTable.refresh();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
             fetchData(url) {
                 axios.get(url)
                     .then(data => {
@@ -94,25 +151,28 @@
                 axios.get(url)
                     .then(companies => {
                         this.companies = companies.data
-                    })
+                    });
             },
             register(){
-                alert('register action');
-                console.log(this.companies);
+                this.$refs.grid.addRecord();
             },
             edit(){
                 this.toolbarBtns = ['Edit','Delete','Update','Cancel'];
                 this.mode = 'editing';
                 this.editSettings.allowEditing = true;
                 this.editSettings.allowDeleting = true;
+                this.$refs.grid.refresh();
             },
             search(){
                 return this.fetchData(this.fetchUrl+'?company_name='+this.company_name)
             },
             clear(){
-                this.$refs.grid.ej2Instances.clear();
                 this.company_name = '';
             },
+            refresh(){
+                this.fetchCompanies(this.companyUrl);
+                this.search();
+            }
         },
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar]
