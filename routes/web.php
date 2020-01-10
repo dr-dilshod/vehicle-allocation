@@ -31,4 +31,6 @@ Route::resource('vehicle','VehicleController')->names([
 
 Route::resource('driver', 'DriverController');
 Route::get('/item', 'ItemController@index')->name('item');
-Route::get('/item/create', 'ItemController@itemcreate')->name('itemcreate');
+Route::get('/item/create', 'ItemController@create')->name('item.create');
+Route::resource('api/item', 'Api\ItemController');
+

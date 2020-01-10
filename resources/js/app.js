@@ -26,6 +26,8 @@ Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('item-registration',require('./components/ItemRegistration.vue').default);
+
 const app = new Vue({
     el: '#app',
 });
