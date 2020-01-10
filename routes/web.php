@@ -21,7 +21,7 @@ Route::get('/vehicle/data-table', 'VehicleController@getVehicleTableData')->name
 Route::get('/vehicle/companies', 'VehicleController@getCompanies')->name('vehicle.companies');
 
 Route::resource('shipper', 'ShipperController');
-Route::resource('api/shipper', 'Api\ShipperController');
+Route::resource('shipper-api', 'Api\ShipperController');
 
 Route::resource('vehicle','VehicleController')->names([
     'create' => 'vehicle.create',
