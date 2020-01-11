@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <item-registration back-url="{{route('setting')}}"
+        <item-registration back-url="{{route('top')}}"
                        title="Item Registration"
         ></item-registration>
     </div>
