@@ -44,7 +44,7 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate(Vehicle::$validationRules);
+        $data = $request->validate(Vehicle::$createValidationRules);
         $vehicle = Vehicle::create($data);
 
         return response()->json($vehicle, 201);
@@ -72,6 +72,7 @@ class VehicleController extends Controller
     public function update(Request $request, $id)
     {
         $vehicle = Vehicle::findOrFail($id);
+        $data = $request->validate(Vehicle::$editValidationRules);
         $vehicle->update($request->all());
 
         return response()->json($vehicle, 200);
@@ -85,8 +86,9 @@ class VehicleController extends Controller
      */
     public function destroy($id)
     {
-        Vehicle::destroy($id);
-
+        $vehicle = Vehicle::findOrFail($id);
+        $vehicle->delete_flg=1;
+        $vehicle->save();
         return response()->json(null, 204);
     }
 }

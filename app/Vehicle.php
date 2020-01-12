@@ -17,8 +17,22 @@ class Vehicle extends Model
 
     protected $primaryKey = 'vehicle_id';
 
-    public static $validationRules = [
+    public static $createValidationRules = [
         'vehicle_no' => 'required|unique:vehicles|max:4',
+        'company_name' => 'required|max:191',
+        'company_kana_name' => 'max:191',
+        'vehicle_company_abbreviation' => 'max:191',
+        'vehicle_postal_code' => 'max:191',
+        'vehicle_address1' => 'max:191',
+        'vehicle_address2' => 'max:191',
+        'vehicle_phone_number' => 'max:15',
+        'vehicle_fax_number' => 'max:15',
+        'vehicle_offset' => 'min:0|max:1',
+        'delete_flg' => 'min:0|max:1',
+    ];
+
+    public static $editValidationRules = [
+        'vehicle_no' => 'required|max:4',
         'company_name' => 'required|max:191',
         'company_kana_name' => 'required|max:191',
         'vehicle_company_abbreviation' => 'max:191',
@@ -30,4 +44,6 @@ class Vehicle extends Model
         'vehicle_offset' => 'min:0|max:1',
         'delete_flg' => 'min:0|max:1',
     ];
+
+
 }

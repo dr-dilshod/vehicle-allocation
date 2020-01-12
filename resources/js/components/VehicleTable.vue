@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
@@ -34,35 +34,40 @@
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
                 <div class="form-group ml-3">
-                    <button type="reset" class="btn btn-primary">Clear</button>
+                    <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
                 </div>
             </form>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :editSettings="editSettings" :height="270"
-                  :frozenColumns="4" :toolbar="toolbarBtns">
+                  :allowSorting="true" :height="270">
             <e-columns>
                 <e-column field='vehicle_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='vehicle_no' headerText='Vehicle No' width="100"></e-column>
                 <e-column field='company_name' headerText='Company Name' width="150"></e-column>
                 <e-column field='company_kana_name' headerText='Kana Name' width="150"></e-column>
-                <e-column field='vehicle_company_abbreviation' headerText='Company Abbr' width="150"></e-column>
-                <e-column field='vehicle_postal_code' textAlign="Center" headerText='Postal Code' width="150"></e-column>
+                <e-column field='vehicle_company_abbreviation' headerText='Company Abbr'  width="150"></e-column>
+                <e-column field='vehicle_postal_code' textAlign="Center" headerText='Postal Code'  editType= 'numericedit' width="150"></e-column>
                 <e-column field='vehicle_address1' headerText='Address' width="200"></e-column>
                 <e-column field='vehicle_address2' headerText='Address 2' width="200"></e-column>
                 <e-column field='vehicle_phone_number' headerText='Phone' width="200"></e-column>
                 <e-column field='vehicle_fax_number' headerText='Fax' width="200"></e-column>
-                <e-column field='offset' headerText='Offset' textAlign="Center" width="100"></e-column>
+                <e-column field='offset' headerText='Offset' textAlign="Center"  editType= 'numericedit' width="100"></e-column>
                 <e-column field='vehicle_remark' headerText='Remark' width="250"></e-column>
             </e-columns>
         </ejs-grid>
+        <ejs-dialog ref="infoDialog" id="infoDialog" :header='dialog.header' :target='dialog.target' :width='dialog.width'
+                    :buttons='dialog.buttons' :isModal="true" :visible="false">
+        </ejs-dialog>
     </div>
 </template>
 <script>
     import Vue from "vue";
+    import { DialogPlugin } from '@syncfusion/ej2-vue-popups';
+    import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
-
     Vue.use( GridPlugin );
+    Vue.use( DialogPlugin );
+    Vue.use( ButtonPlugin );
 
     export default{
         props: {
@@ -75,76 +80,134 @@
         data() {
             return {
                 data: [],
-                editSettings: {allowEditing: true, allowAdding: true, allowDeleting: true, showDeleteConfirmDialog: true, },
-                toolbarBtns: [],
                 company_name: '',
                 companies: [],
                 mode: 'normal',
+                dialog:{
+                    target: '#grid',
+                    width: '300px',
+                    header: 'Information',
+                    buttons: [
+                        { click: this.dlgButtonClick, buttonModel: { content: 'OK', isPrimary: true } },
+                        { click: this.dlgButtonClick, buttonModel: { content: 'Cancel' }}
+                    ]
+                },
+                validation: {
+                    vehicle_no: {required:true,'maxLength':4},
+                    company_name: {required:true,'maxLength':60},
+                    company_kana_name: {required:true,'maxLength':60},
+                    vehicle_company_abbreviation: {'maxLength':60},
+                    vehicle_postal_code: {'maxLength':60},
+                    vehicle_address1: {'maxLength':60},
+                    vehicle_address2: {'maxLength':60},
+                    vehicle_phone_number: {'maxLength':15},
+                    vehicle_fax_number: {'maxLength':15},
+                    offset: {'max':1,'min':0},
+                    vehicle_remark: {'maxLength':120},
+                }
             }
         },
         mounted() {
             this.fetchCompanies(this.companyUrl);
         },
         methods: {
+            showInfoDialog(response) {
+                let message = response.message + "<ul>";
+                for(let error in response.errors) {
+                    message += "<li>" + error + "</li>";
+                }
+                message += "</ul>";
+                $("#infoDialog .e-dlg-content").html(message);
+                this.$refs.infoDialog.show();
+            },
+            dlgButtonClick: function() {
+                this.$refs.infoDialog.hide();
+            },
             actionBegin(args){
 //                alert(args.requestType);
                 if(args.requestType == 'save'){
                     if(args.data.vehicle_id === undefined){
-                        this.insertData(args.data);
+                        if(!this.insertData(args)) args.cancel = true;
                     }else{
-                        this.editData(args.data);
+                        if(!this.editData(args)) args.cancel = true;
                     }
                 }
                 if(args.requestType == 'delete'){
                     if(args.data[0].vehicle_id !== undefined){
-                        this.deleteData(args.data[0].vehicle_id);
+                        if(!this.deleteData(args)) args.cancel = true;
                     }
                 }
-//                alert(args.rowData);
                 console.log(args);
             },
-            insertData(vehicle){
+            insertData(args){
                 let vehicleTable = this;
-                axios.post(this.resourceUrl,vehicle)
+                axios.post(this.resourceUrl,args.data)
                     .then(function(response){
+                        console.log("Insert data success");
                         console.log(response);
-                        vehicleTable.mode = 'normal';
+                        vehicleTable.setEditMode('normal');
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        alert(error)
+                        console.log("Insert data error");
+                        console.log(error.response);
+                        vehicleTable.showInfoDialog(error.response.data);
+                        return false;
                     });
+                return true;
             },
-            deleteData(id){
+            deleteData(args){
                 let vehicleTable = this;
+                let id = args.data[0].vehicle_id;
                 axios.delete(this.resourceUrl+'/'+id)
                     .then(function(response){
+                        console.log("Delete data success");
                         console.log(response);
-                        vehicleTable.mode = 'normal';
+                        vehicleTable.showInfoDialog();
+                        vehicleTable.setEditMode('normal');
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        alert(error)
+                        console.log("Delete data error");
+                        alert(error);
+                        vehicleTable.showInfoDialog(error.response.data);
+                        return false;
                     });
+                return true;
             },
-            editData(vehicle){
+            editData(args){
                 let vehicleTable = this;
-                let id = vehicle.vehicle_id;
-                delete vehicle.vehicle_id;
-                axios.put(this.resourceUrl+'/'+id, vehicle)
+                let id = args.data.vehicle_id;
+//                delete args.data.vehicle_id;
+                axios.put(this.resourceUrl+'/'+id, args.data)
                     .then(function(response){
+                        console.log('Edit Data success');
                         console.log(response);
-                        vehicleTable.mode = 'normal';
+                        vehicleTable.showInfoDialog('Success');
+                        vehicleTable.setEditMode('normal');
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        alert(error)
+                        console.log('Edit Data error');
+                        alert(error);
+                        vehicleTable.showInfoDialog(error.response.data);
+                        return false;
                     });
+                return true;
             },
             fetchData(url) {
+                var grid = this.$refs.grid.ej2Instances;
                 axios.get(url)
                     .then(data => {
-                        this.data = data.data.data
+                        this.data = data.data.data;
+                        if(this.data.length > 0)
+                            grid.setProperties({
+                                frozenColumns: 4
+                            });
+                        else
+                            grid.setProperties({
+                                frozenColumns: 0
+                            });
                     })
             },
             fetchCompanies(url) {
@@ -157,10 +220,7 @@
                 this.$refs.grid.addRecord();
             },
             edit(){
-                this.toolbarBtns = ['Edit','Delete','Update','Cancel'];
-                this.mode = 'editing';
-                this.editSettings.allowEditing = true;
-                this.editSettings.allowDeleting = true;
+                this.setEditMode('editing');
                 this.$refs.grid.refresh();
             },
             search(){
@@ -168,11 +228,40 @@
             },
             clear(){
                 this.company_name = '';
+                this.search();
             },
             refresh(){
                 this.fetchCompanies(this.companyUrl);
                 this.search();
-            }
+            },
+            setEditMode(editMode){
+                if(editMode === 'normal'){
+                    this.$refs.grid.ej2Instances.setProperties({
+                        toolbar: null,
+                        editSettings: {
+                            allowDeleting: false,
+                            allowEditing: false,
+                            allowAdding: false,
+                        },
+                    });
+                    this.$refs.grid.refresh();
+                    this.mode = editMode;
+                }
+                if(editMode === 'editing'){
+                    let toolbarBtns = ['Edit','Delete','Update','Cancel'];
+                    this.$refs.grid.ej2Instances.setProperties({
+                        toolbar: toolbarBtns,
+                        editSettings: {
+                            allowDeleting: true,
+                            allowEditing: true,
+                            allowAdding: true,
+                            showDeleteConfirmDialog: true,
+                        },
+                    });
+                    this.$refs.grid.refresh();
+                    this.mode = editMode;
+                }
+            },
         },
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar]
@@ -182,11 +271,11 @@
 </script>
 
 <style scoped>
-    @import "../../../node_modules/@syncfusion/ej2-base/styles/bootstrap.css";
+    /*@import "../../../node_modules/@syncfusion/ej2-base/styles/bootstrap.css";*/
     @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
+    @import "../../../node_modules/@syncfusion/ej2-vue-popups/styles/bootstrap.css";
 
 </style>
