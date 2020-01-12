@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <item-registration back-url="{{route('top')}}",
-                           shipper-url="{{route('shipper.shippers')}}}"
+        <item-registration back-url="{{route('top')}}"
+                           shipper-url="{{route('shipper.shippers')}}"
                            title="Item Registration"
         ></item-registration>
     </div>

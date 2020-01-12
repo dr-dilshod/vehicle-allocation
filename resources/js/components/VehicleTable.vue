@@ -111,10 +111,11 @@
             this.fetchCompanies(this.companyUrl);
         },
         methods: {
-            showInfoDialog(response) {
-                let message = response.message + "<ul>";
-                for(let error in response.errors) {
-                    message += "<li>" + error + "</li>";
+            showDialog(response) {
+                let message = "<span class='e-danger'>"+response.message+"</span>" + "<ul>";
+                let errors = response.errors;
+                for(let error in errors) {
+                    message += "<li class='e-danger'>" + error + "</li>";
                 }
                 message += "</ul>";
                 $("#infoDialog .e-dlg-content").html(message);
@@ -151,7 +152,7 @@
                     .catch(function(error){
                         console.log("Insert data error");
                         console.log(error.response);
-                        vehicleTable.showInfoDialog(error.response.data);
+                        vehicleTable.showDialog(error.response.data);
                         return false;
                     });
                 return true;
@@ -163,14 +164,15 @@
                     .then(function(response){
                         console.log("Delete data success");
                         console.log(response);
-                        vehicleTable.showInfoDialog();
+                        vehicleTable.showDialog();
                         vehicleTable.setEditMode('normal');
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
                         console.log("Delete data error");
+                        console.log(error.response);
                         alert(error);
-                        vehicleTable.showInfoDialog(error.response.data);
+                        vehicleTable.showDialog(error.response.data);
                         return false;
                     });
                 return true;
@@ -183,20 +185,20 @@
                     .then(function(response){
                         console.log('Edit Data success');
                         console.log(response);
-                        vehicleTable.showInfoDialog('Success');
+                        vehicleTable.showDialog('Success');
                         vehicleTable.setEditMode('normal');
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
                         console.log('Edit Data error');
-                        alert(error);
-                        vehicleTable.showInfoDialog(error.response.data);
+                        console.log(error.response);
+                        vehicleTable.showDialog(error.response.data);
                         return false;
                     });
                 return true;
             },
             fetchData(url) {
-                var grid = this.$refs.grid.ej2Instances;
+                let grid = this.$refs.grid.ej2Instances;
                 axios.get(url)
                     .then(data => {
                         this.data = data.data.data;
