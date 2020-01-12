@@ -30,10 +30,13 @@ Route::get('/vehicle/companies', 'VehicleController@companies')->name('vehicle.c
 // Shipper
 Route::resource('shipper', 'ShipperController');
 Route::resource('api/shipper', 'Api\ShipperController');
+Route::get('/shipper/getShippers', 'Api\ShipperController@getShippers')->name('shipper.shippers');
 
 // Driver
 Route::resource('driver', 'DriverController');
 
 // Item
 Route::get('/item', 'ItemController@index')->name('item');
-Route::get('/item/create', 'ItemController@itemcreate')->name('itemcreate');
+Route::get('/item/create', 'ItemController@create')->name('item.create');
+Route::resource('api/item', 'Api\ItemController');
+

@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Item;
 use Illuminate\Http\Request;
 
+/**
+ * Class ItemController
+ * @package App\Http\Controllers\Api
+ * @author Dilshod K
+ */
 class ItemController extends Controller
 {
     /**
@@ -31,7 +36,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $item = Item::create($request->all());
 
         return response()->json($item, 201);
@@ -61,7 +66,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         $item = Item::findOrFail($id);
         $item->update($request->all());
 

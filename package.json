@@ -27,6 +27,7 @@
         "@syncfusion/ej2-vue-buttons": "^17.4.41",
         "@syncfusion/ej2-vue-dropdowns": "^17.4.40",
         "@syncfusion/ej2-vue-grids": "^17.4.40",
-        "@syncfusion/ej2-vue-popups": "^17.4.39"
+        "@syncfusion/ej2-vue-popups": "^17.4.39",
+        "vue-router": "^3.1.3"
     }
 }
