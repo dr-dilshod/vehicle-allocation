@@ -43,9 +43,8 @@ class ShipperController extends Controller
      */
     public function getShippers(Request $request)
     {
-        $shippers = Shippers::select('id, shipper_name1')
+        $shippers = Shipper::select(['id', 'shipper_name1'])
             ->where('delete_flg',0)
-            ->distinct()
             ->get();
         return response()->json($shippers, 200);
     }

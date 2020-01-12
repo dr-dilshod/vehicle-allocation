@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <form action="#" class="form-inline" @submit.prevent="register">
+        <!--form action="#" class="form-inline" @submit.prevent="register"-->
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
@@ -28,28 +28,21 @@
                                 <tbody class="list">
                                 <tr>
                                     <td class="orders-order text-right"> <span class="c24966">Stack Date</span></td>
-                                    <td><select name="stack_date" id="stack_date" v-model="itemData.stack_date" class="form-control" required>
-                                        <option value=""></option>
-                                        <option v-for="stack_date in itemData" :value="itemData.stack_date">
-                                            {{ itemData.stack_date }}
-                                        </option>
-                                    </select></td>
+                                    <td>
+                                        <select name="stack_date" id="stack_date" v-model="itemData.stack_date" class="form-control" required>
+                                            <option value=""></option>
+                                        </select>
+                                    </td>
                                     <td class="text-right"><span class="c25479">Stack Time</span></td>
                                     <td class="stack_time_hour">
                                         <select name="stack_time_hour" id="stack_time_hour" v-model="itemData.stack_time_hour" class="form-control" required>
                                             <option value=""></option>
-                                            <option v-for="stack_time_hour in itemData" :value="itemData.stack_time_hour">
-                                                {{ itemData.stack_time_hour }}
-                                            </option>
                                         </select>
                                     </td>
                                     <th><span class="c25479">:</span></th>
                                     <td class="orders-date">
                                         <select name="stack_time_min" id="stack_time_min" v-model="itemData.stack_time_min" class="form-control" required>
                                             <option value=""></option>
-                                            <option v-for="stack_time_min in itemData" :value="itemData.stack_time_min">
-                                                {{ itemData.stack_time_min }}
-                                            </option>
                                         </select>
                                     </td>
                                     <td class="orders-total"> <span class="c25479">Billing</span></td>
@@ -68,27 +61,18 @@
                                     <td class="orders-order">
                                         <select name="down_date" id="down_date" v-model="itemData.down_date" class="form-control" required>
                                             <option value=""></option>
-                                            <option v-for="down_date in itemData" :value="itemData.down_date">
-                                                {{ itemData.down_date }}
-                                            </option>
                                         </select>
                                     </td>
                                     <td class="orders-product text-right"> <span class="c25479 text-right">Down Time</span></td>
                                     <td class="orders-date">
                                         <select name="down_time_hour" id="down_time_hour" v-model="itemData.down_time_hour" class="form-control" required>
                                             <option value=""></option>
-                                            <option v-for="down_time_hour in itemData" :value="itemData.down_time_hour">
-                                                {{ itemData.down_time_hour }}
-                                            </option>
                                         </select>
                                     </td>
                                     <th><span class="c25479">:</span></th>
                                     <td class="orders-total">
-                                        <select name="down_time_min" id="down_time_min" v-model="itemData.own_time_min" class="form-control" required>
+                                        <select name="down_time_min" id="down_time_min" v-model="itemData.down_time_min" class="form-control" required>
                                             <option value=""></option>
-                                            <option v-for="down_time_min in itemData" :value="itemData.down_time_min">
-                                                {{ itemData.down_time_min }}
-                                            </option>
                                         </select>
                                     </td>
                                     <td class="item-status">
@@ -100,8 +84,8 @@
                                     <td class="orders-order">
                                         <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle" class="form-control" required>
                                             <option value=""></option>
-                                            <option v-for="item_vehicle in itemData" :value="itemData.item_vehicle">
-                                                {{ itemData.item_vehicle }}
+                                            <option v-for="vehicle in vehicles" :value="vehicle.id">
+                                                {{ vehicle.company_name }}
                                             </option>
                                         </select>
                                     </td>
@@ -116,8 +100,8 @@
                                     <td class="orders-order">
                                         <select name="shipper" id="shipper_id" v-model="itemData.shipper_id" class="form-control" required>
                                             <option value=""></option>
-                                            <option v-for="shipper_id in itemData" :value="shippers.id">
-                                                {{ shippers.shipper_name }}
+                                            <option v-for="shipper in shippers" :value="shipper.id">
+                                                {{ shipper.shipper_name1 }}
                                             </option>
                                         </select>
                                     </td>
@@ -143,15 +127,12 @@
                                 <tr>
                                     <td class="text-right"><span class="c24966">T numer</span></td>
                                     <td class="orders-order">
-                                        <input id="t_numer" type="text" placeholder="" class="form-control" />
+                                        <input id="tnumer" type="text" placeholder="" class="form-control" />
                                     </td>
                                     <td class="orders-product text-right"><span class="c25479 text-right">t     Empty PL</span></td>
                                     <td class="orders-date">
-                                        <select name="empty_pl" id="empty_pl" v-model="itemData.empty_pl" class="form-control">
+                                        <select name="emptypl" id="emptypl" v-model="itemData.emptypl" class="form-control">
                                             <option value=""></option>
-                                            <option v-for="empty_pl in itemData" :value="itemData.empty_pl">
-                                                {{ itemData.empty_pl }}
-                                            </option>
                                         </select>
                                     </td>
                                     <td class="orders-total"></td>
@@ -161,7 +142,7 @@
                                 <tr>
                                     <td class="text-right"><span class="c24966">Per ton</span></td>
                                     <td class="orders-order">
-                                        <input id="per_ton" type="text" placeholder="" class="form-control" />
+                                        <input id="perton" type="text" placeholder="" class="form-control" />
                                     </td>
                                     <td class="orders-product"> <span class="c25479 text-right">yen     x</span></td>
                                     <td class="orders-date">
@@ -172,7 +153,7 @@
                                 <tr>
                                     <td class="text-right"><span class="c24966">Per vehicle</span></td>
                                     <td class="orders-order">
-                                        <input type="text" placeholder="" class="form-control" id="per_vehicle" />
+                                        <input type="text" placeholder="" class="form-control" id="pervehicle" />
                                     </td>
                                     <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
                                     <td class="orders-date">
@@ -185,7 +166,7 @@
                                 <tr>
                                     <td class="text-right"><span class="c24966">Amount of Money</span></td>
                                     <td class="orders-order">
-                                        <input type="text" placeholder="Default input" class="form-control" id="amount_of_money" readonly/>
+                                        <input type="text" placeholder="" class="form-control" id="amountofmoney" readonly/>
                                     </td>
                                     <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                                     <td class="orders-date"></td>
@@ -200,10 +181,10 @@
                                     </td>
                                     <td class="orders-product text-right"><span class="c24966">Driver Name</span></td>
                                     <td class="orders-date">
-                                        <select name="driver_name" id="driver_name" v-model="itemData.driver_name" class="form-control">
+                                        <select name="driver_id" id="driverid" v-model="itemData.driverid" class="form-control">
                                             <option value=""></option>
-                                            <option v-for="driver_name in itemData" :value="itemData.driver_name">
-                                                {{ itemData.driver_name }}
+                                            <option v-for="driver in drivers" :value="driver.id">
+                                                {{ driver.driver_name }}
                                             </option>
                                         </select>
                                     </td>
@@ -214,10 +195,10 @@
                                 <tr>
                                     <td class="text-right"><span class="c24966">Chartered Vehicle</span></td>
                                     <td class="orders-order">
-                                        <select name="chartered_vehicle" id="chartered_vehicle" v-model="itemData.chartered_vehicle" class="form-control">
+                                        <select name="chartered_vehicle" id="chartered_vehicle" v-model="itemData.charteredvehicle" class="form-control">
                                             <option value=""></option>
-                                            <option v-for="chartered_vehicle in itemData" :value="itemData.chartered_vehicle">
-                                                {{ itemData.chartered_vehicle }}
+                                            <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
+                                                {{ vehicle.company_name }}
                                             </option>
                                         </select>
                                     </td>
@@ -248,7 +229,7 @@
                 </div>
 
         </div>
-        </form>
+        <!--/form-->
     </div>
 
 </template>
@@ -264,26 +245,28 @@
             return {
                 itemData: {},
 //                mode: 'normal',
-                shippers: {},
+                shippers: [],
 //                errors: {},
+                drivers: [],
+                vehicles: []
             }
         },
         mounted() {
             this.fetchShippers(this.shipperUrl);
         },
         methods: {
-            /**register(vehicle){
-                let vehicleTable = this;
-                axios.post(this.resourceUrl,vehicle)
-                    .then(function(response){
-                        console.log(response);
-                        vehicleTable.mode = 'normal';
-                        vehicleTable.refresh();
-                    })
-                    .catch(function(error){
-                        alert(error)
-                    });
-            },*/
+            register(vehicle){
+//                let vehicleTable = this;
+//                axios.post(this.resourceUrl,vehicle)
+//                    .then(function(response){
+//                        console.log(response);
+//                        vehicleTable.mode = 'normal';
+//                        vehicleTable.refresh();
+//                    })
+//                    .catch(function(error){
+//                        alert(error)
+//                    });
+            },
             clear(){
                 alert('clear action');
             },

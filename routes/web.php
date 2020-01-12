@@ -28,7 +28,7 @@ Route::get('/vehicle/companies', 'VehicleController@companies')->name('vehicle.c
 //Route::delete('/vehicle/delete', 'VehicleController@destroy')->name('vehicle.destroy');
 
 // Shipper
-Route::resource('shipper', 'ShipperController');
+//Route::resource('shipper', 'ShipperController@index');
 Route::resource('api/shipper', 'Api\ShipperController');
 Route::get('/shipper/getShippers', 'Api\ShipperController@getShippers')->name('shipper.shippers');
 
