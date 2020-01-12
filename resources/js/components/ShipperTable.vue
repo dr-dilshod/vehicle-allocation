@@ -18,33 +18,53 @@
             </div>
         </div>
         <div class="row mt-4 mb-4">
-            <form action="#" class="form-inline" @submit.prevent="search">
-                <div class="form-group ml-3">
-                    <label for="company_name">Company name</label>
-                </div>
-                <div class="form-group ml-3">
-                    <select name="company_name" id="company_name" v-model="company_name" class="form-control">
-                        <option value=""></option>
-                        <option v-for="company in companies" :value="company.company_name">
-                            {{ company.company_name }}
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group ml-3">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-                <div class="form-group ml-3">
-                    <button type="reset" class="btn btn-primary">Clear</button>
-                </div>
-            </form>
+            <div class="mx-auto">
+
+                <form action="#" class="form-inline" @submit.prevent="search">
+                    <div class="form-group ml-3">
+                        <label for="selectedShipper">Shipper</label>
+                    </div>
+                    <div class="form-group ml-3">
+                        <select name="selectedShipper" id="selectedShipper" v-model="selectedShipper" class="form-control">
+                            <option value=""></option>
+                            <option v-for="name in shipperNames" :value="name">
+                                {{ name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group ml-3">
+                        <label for="selectedCompany">Bill-to</label>
+                    </div>
+                    <div class="form-group ml-3">
+                        <select name="selectedCompany" id="selectedCompany" v-model="selectedCompany" class="form-control">
+                            <option value=""></option>
+                            <option v-for="company in companies" :value="company">
+                                {{ company }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group ml-3">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                    <div class="form-group ml-3">
+                        <button type="reset" class="btn btn-primary">Clear</button>
+                    </div>
+                </form>
+
+            </div>
+
         </div>
-        <ejs-grid :dataSource="data" :allowSorting="true" :editSettings="editSettings" height='300' :frozenColumns="3" :toolbar="toolbarBtns">
+
+        <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
+                  :allowSorting="true" :editSettings="editSettings" :height="270"
+                  :frozenColumns="6" :toolbar="toolbarBtns" >
             <e-columns>
-                <e-column field='shipper_no' headerText='Shipper No' width="100" :isPrimaryKey="true"></e-column>
-                <e-column field='shipper_name' headerText='Shipper' width="150"></e-column>
-                <e-column field='furigana' headerText='Furigana' width="150"></e-column>
-                <e-column field='abbreviation' headerText='Abbreviation' width="150"></e-column>
-                <e-column field='postal_code' textAlign="Postal code" headerText='Postal Code' width="150"></e-column>
+                <e-column field='shipper_id' headerText='Shipper id' width="50" :isPrimaryKey="true" :visible=false></e-column>
+                <e-column field='shipper_no' headerText='Shipper No' width="100"></e-column>
+                <e-column headerText='Shipper' width="200" :columns="shipperNameCols"></e-column>
+                <e-column headerText='Furigana' width="200" :columns="furiganaCols"></e-column>
+                <e-column field='shipper_company_abbreviation' headerText='Abbreviation' width="150"></e-column>
+                <e-column field='postal_code' headerText='Postal Code' width="150"></e-column>
                 <e-column field='address1' headerText='Address 1' width="200"></e-column>
                 <e-column field='address2' headerText='Address 2' width="200"></e-column>
                 <e-column field='phone_number' headerText='Phone number' width="200"></e-column>
@@ -55,80 +75,133 @@
         </ejs-grid>
     </div>
 </template>
-<script type="text/ecmascript-6">
-
+<script>
     import Vue from "vue";
-    import { GridPlugin, Freeze, Toolbar, Edit, DataStateChangeEventArgs, Sorts, Sort, Page, DataResult} from '@syncfusion/ej2-vue-grids';
-    import { DataManager, RemoteSaveAdaptor } from "@syncfusion/ej2-data";
-//    import { ShipperService } from "./order-service";
+    import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
 
     Vue.use( GridPlugin );
 
-    export default Vue.extend({
+    export default{
         props: {
             backUrl: {type: String, required: true},
             title: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
+            shipperNameUrl: {type: String, required: true},
             companyUrl: {type: String, required: true},
+            resourceUrl: {type: String, required: true},
         },
         data() {
             return {
-                dataSource: new DataManager({
-                    json: this.fetchShippers(this.fetchUrl),
-//                    url: this.fetchUrl,
-                    adaptor: new RemoteSaveAdaptor(),
-                    insertUrl: this.fetchUrl+'/Insert',
-                    updateUrl: this.fetchUrl+'/Update',
-                    removeUrl: this.fetchUrl+'/Delete'
-                }),
-                pageOptions: { pageSize: 10, pageCount: 4 },
-                editSettings: {allowEditing: true, allowAdding: true, allowDeleting: true},
+                data: [],
+                editSettings: {allowEditing: true, allowAdding: true, allowDeleting: true, showDeleteConfirmDialog: true, },
                 toolbarBtns: [],
-                company_name: '',
+                selectedCompany: '',
+                selectedShipper: '',
                 companies: [],
+                shipperNames: [],
                 mode: 'normal',
+                shipperNameCols : [
+                    {
+                        field : 'shipper_name1',
+                        headerText : 'Name1',
+                        width : 100,
+                    },
+                    {
+                        field : 'shipper_name2',
+                        headerText : 'Name2',
+                        width : 100,
+                    }
+                ],
+                furiganaCols : [
+                    {
+                        field : 'shipper_kana_name1',
+                        headerText : 'Name1',
+                        width : 100,
+                    },
+                    {
+                        field : 'shipper_kana_name2',
+                        headerText : 'Name2',
+                        width : 100,
+                    }
+                ]
             }
         },
         mounted() {
-            let state = { skip: 0, take: 10 };
-            this.dataStateChange(state);
-        },
-        created() {
-            return this.fetchCompanies(this.companyUrl);
+            this.fetchData(this.resourceUrl);
+            this.fetchShipperNames(this.shipperNameUrl);
+            this.fetchCompanies(this.companyUrl);
         },
         methods: {
-            dataStateChange(state) {
-                this.fetchShippers(this.fetchUrl);
-                alert("DataStateChange");
-                console.log(state);
-            },
-            dataSourceChanged(state) {
-                alert("Data Source change");
-                console.log(state);
-                if (state.action === 'add') {
-//                    this.orderService.addRecord(state).subscribe(() => state.endEdit());
-                } else if (state.action === 'edit') {
-//                    this.orderService.updateRecord(state).subscribe(() => state.endEdit());
-                } else if (state.requestType === 'delete') {
-//                    this.orderService.deleteRecord(state).subscribe(() => state.endEdit());
+            actionBegin(args){
+                if(args.requestType == 'save'){
+                    if(args.data.shipper_id === undefined){
+                        this.insertData(args.data);
+                    }else{
+                        this.editData(args.data);
+                    }
+                }
+                if(args.requestType == 'delete'){
+                    if(args.data[0].shipper_id !== undefined){
+                        this.deleteData(args.data[0].shipper_id);
+                    }
                 }
             },
-            fetchShippers(url) {
+
+            insertData(shipper){
+                let shipperTable = this;
+                axios.post(this.resourceUrl, shipper)
+                    .then(function(response){
+                        shipperTable.mode = 'normal';
+                        shipperTable.refresh();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
+            deleteData(id){
+                let shipperTable = this;
+                axios.delete(this.resourceUrl+'/'+id)
+                    .then(function(response){
+                        shipperTable.mode = 'normal';
+                        shipperTable.refresh();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
+            editData(shipper){
+                let shipperTable = this;
+                let id = shipper.shipper_id;
+                delete shipper.shipper_id;
+                axios.put(this.resourceUrl+'/'+id, shipper)
+                    .then(function(response){
+                        console.log(response);
+                        shipperTable.mode = 'normal';
+                        shipperTable.refresh();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
+            fetchData(url) {
                 axios.get(url)
                     .then(response => {
-                        this.data = response.data.data;
-                        console.log(this.data);
+                        this.data = response.data.data
+                    })
+            },
+            fetchShipperNames(url) {
+                axios.get(url)
+                    .then(response => {
+                        this.shipperNames = response.data;
                     });
             },
             fetchCompanies(url) {
                 axios.get(url)
-                    .then(companies => {
-                        this.companies = companies.data
-                    })
+                    .then(response => {
+                        this.companies = response.data
+                    });
             },
             register(){
-                alert('register action');
-                console.log(this.companies);
+                this.$refs.grid.addRecord();
             },
             edit(){
                 this.toolbarBtns = ['Edit','Delete','Update','Cancel'];
@@ -137,20 +210,24 @@
                 this.editSettings.allowDeleting = true;
             },
             search(){
-                return this.fetchData(this.fetchUrl+'?company_name='+this.company_name)
+                return this.fetchData(this.resourceUrl+'?name='+this.selectedShipper
+                    +'&bill-to='+this.selectedCompany);
             },
             clear(){
-                this.$refs.grid.ej2Instances.clear();
-                this.company_name = '';
+                this.selectedShipper = '';
+                this.selectedCompany = '';
             },
+            refresh(){
+                this.fetchShipperNames(this.shipperNameUrl);
+                this.fetchCompanies(this.companyUrl);
+                this.search();
+            }
         },
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar]
         },
         name: 'ShipperTable'
-    });
-
-
+    }
 </script>
 
 <style scoped>

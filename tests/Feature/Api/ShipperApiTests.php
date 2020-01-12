@@ -23,7 +23,7 @@ class ShipperApiTests extends TestCase
             ->assertJson([])
             ->assertJsonStructure([
                 'data' => [
-                    ['id', 'shipper_no', 'shipper_name1', 'shipper_name2', 'shipper_kana_name1', 'shipper_kana_name2', 'shipper_company_abbreviation', 'postal_code', 'address1', 'address2', 'phone_number', 'fax_number', 'closing_date', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at']
+                    ['ishipper_id', 'shipper_no', 'shipper_name1', 'shipper_name2', 'shipper_kana_name1', 'shipper_kana_name2', 'shipper_company_abbreviation', 'postal_code', 'address1', 'address2', 'phone_number', 'fax_number', 'closing_date', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at']
                 ]
             ]);
     }
@@ -41,19 +41,18 @@ class ShipperApiTests extends TestCase
 
         $shipper = factory(Shipper::class)->create();
 
-        $response = $this->json('GET', 'api/shipper/'.$shipper->id);
+        $response = $this->json('GET', 'api/shipper/'.$shipper->shipper_id);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'id', 'shipper_no', 'shipper_name1', 'shipper_name2', 'shipper_kana_name1', 'shipper_kana_name2', 'shipper_company_abbreviation', 'postal_code', 'address1', 'address2', 'phone_number', 'fax_number', 'closing_date', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at'
+                'shipper_id', 'shipper_no', 'shipper_name1', 'shipper_name2', 'shipper_kana_name1', 'shipper_kana_name2', 'shipper_company_abbreviation', 'postal_code', 'address1', 'address2', 'phone_number', 'fax_number', 'closing_date', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at'
             ]);
     }
 
     public function testUpdateShipper(){
 
-        $id = factory(Shipper::class)->create()->id;
+        $id = factory(Shipper::class)->create()->shipper_id;
         $shipper = factory(Shipper::class)->make();
-        $shipper->id = $id;
 
         $response = $this->json('PUT', 'api/shipper/'.$id, $shipper->toArray());
 
@@ -64,7 +63,7 @@ class ShipperApiTests extends TestCase
 
         $shipper = factory(Shipper::class)->create();
 
-        $response = $this->json('DELETE','api/shipper/'.$shipper->id);
+        $response = $this->json('DELETE','api/shipper/'.$shipper->shipper_id);
 
         $response->assertStatus(204);
     }
