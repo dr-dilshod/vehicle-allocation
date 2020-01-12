@@ -35,7 +35,7 @@ class CreateItemsTable extends Migration
             $table->tinyInteger('empty_pl')->default(0)->nullable();
             $table->integer('item_price')->nullable();
             $table->string('item_driver_name', 60)->nullable();
-            $table->string('car_no3', 4)->nullable();
+            $table->string('vehicle_no3', 4)->nullable();
             $table->string('shipper_name', 60)->nullable();
             $table->string('item_vehicle', 60)->nullable();
             $table->integer('vehicle_payment')->nullable();

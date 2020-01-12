@@ -67,6 +67,17 @@ class ShipperController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getShippers(Request $request)
+    {
+        $shippers = Shipper::select(['id', 'shipper_name1'])
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($shippers, 200);
+    }
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

@@ -138,7 +138,9 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <th scope="row" class="btn btn-danger btn-block">incomplete</th>
+                    <td class="orders-status">
+                        <div class="badge badge-success"> Shipped </div>
+                    </td>
                     <td>1</td>
                     <td>2019/12/29</td>
                     <td>19:32</td>
@@ -153,7 +155,9 @@
                     <td>free</td>
                 </tr>
                 <tr>
-                    <th scope="row" class="btn btn-danger btn-block">incomplete</th>
+                    <td class="orders-status">
+                        <div class="badge badge-warning"> Processing </div>
+                    </td>
                     <td>2</td>
                     <td>2019/12/29</td>
                     <td>19:34</td>
@@ -168,7 +172,9 @@
                     <td>free</td>
                 </tr>
                 <tr>
-                    <th scope="row" class="btn btn-primary btn-block">complete</th>
+                    <td class="orders-status">
+                        <div class="badge badge-warning"> Processing </div>
+                    </td>
                     <td>3</td>
                     <td>2019/12/29</td>
                     <td>19:34</td>
