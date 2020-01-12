@@ -28,24 +28,18 @@
                         <tr>
                             <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
                             <td>
-                                <select name="stack_date" id="stack_date" v-model="itemData.stack_date"
-                                        class="form-control" required>
-                                    <option value=""></option>
-                                </select>
+                                <input type="date" placeholder="" class="form-control" for="stack_date"
+                                       id="stack_date" v-model="itemData.stack_date" required/>
                             </td>
                             <td class="text-right"><span class="c25479">Stack Time</span></td>
                             <td class="stack_time_hour">
-                                <select name="stack_time_hour" id="stack_time_hour" v-model="itemData.stack_time_hour"
-                                        class="form-control" required>
-                                    <option value=""></option>
-                                </select>
+                                <input type="time" placeholder="" class="form-control" for="stack_time_hour"
+                                       id="stack_time_hour" v-model="itemData.stack_time_hour" required/>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-date">
-                                <select name="stack_time_min" id="stack_time_min" v-model="itemData.stack_time_min"
-                                        class="form-control" required>
-                                    <option value=""></option>
-                                </select>
+                                <input type="time" placeholder="" class="form-control" for="stack_time_min"
+                                       id="stack_time_min" v-model="itemData.stack_time_min" required/>
                             </td>
                             <td class="orders-total"><span class="c25479">Billing</span></td>
                             <td class="orders-status"></td>
@@ -62,24 +56,18 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Down Date</span></td>
                             <td class="orders-order">
-                                <select name="down_date" id="down_date" v-model="itemData.down_date"
-                                        class="form-control" required>
-                                    <option value=""></option>
-                                </select>
+                                <input type="date" placeholder="" class="form-control" for="down_date"
+                                       id="down_date" v-model="itemData.down_date" required/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span></td>
                             <td class="orders-date">
-                                <select name="down_time_hour" id="down_time_hour" v-model="itemData.down_time_hour"
-                                        class="form-control" required>
-                                    <option value=""></option>
-                                </select>
+                                <input type="time" placeholder="" class="form-control" for="down_time_hour"
+                                       id="down_time_hour" v-model="itemData.down_time_hour" required/>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-total">
-                                <select name="down_time_min" id="down_time_min" v-model="itemData.down_time_min"
-                                        class="form-control" required>
-                                    <option value=""></option>
-                                </select>
+                                <input type="time" placeholder="" class="form-control" for="down_time_min"
+                                       id="stack_time_min" v-model="itemData.stack_time_min" required/>
                             </td>
                             <td class="item-status">
                                 <div class="badge badge-success"></div>
@@ -251,6 +239,7 @@
         props: {
             backUrl: {type: String, required: true},
             shipperUrl: {type: String, required: true},
+            driverUrl: {type: String, required: true},
             title: {type: String, required: true},
         },
         data() {
@@ -278,6 +267,7 @@
         mounted() {
 //            alert('Mounted');
             this.fetchShippers(this.shipperUrl);
+            this.fetchDrivers(this.driverUrl);
         },
         methods: {
             register(){
@@ -291,7 +281,14 @@
                     .then(shippers => {
                         this.shippers = shippers.data
                     });
+            },
+            fetchDrivers(url) {
+                axios.get(url)
+                    .then(response => {
+                        this.drivers = response.data
+                    });
             }
+
         }
     }
 </script>

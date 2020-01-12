@@ -78,7 +78,7 @@ class DriverController extends Controller
 			'driver_remark' => 'max:255'
 		]);
         $requestData = $request->all();
-        
+
         Driver::create($requestData);
 
         return redirect('driver')->with('flash_message', 'Driver added!');
@@ -136,7 +136,7 @@ class DriverController extends Controller
 			'driver_remark' => 'max:255'
 		]);
         $requestData = $request->all();
-        
+
         $driver = Driver::findOrFail($id);
         $driver->update($requestData);
 
@@ -155,5 +155,17 @@ class DriverController extends Controller
         Driver::destroy($id);
 
         return redirect('driver')->with('flash_message', 'Driver deleted!');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getDrivers(Request $request)
+    {
+        $drivers = Driver::select(['driver_id', 'driver_name'])
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($drivers);
     }
 }
