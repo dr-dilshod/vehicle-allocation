@@ -34,6 +34,7 @@ Route::get('/shipper/getShippers', 'Api\ShipperController@getShippers')->name('s
 
 // Driver
 Route::resource('driver', 'DriverController');
+Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver.table');
 
 // Item
 Route::get('/item', 'ItemController@index')->name('item');
