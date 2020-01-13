@@ -14,10 +14,10 @@ class Driver extends Model
     protected $table = 'drivers';
 
     /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'driver_id';
 
     /**

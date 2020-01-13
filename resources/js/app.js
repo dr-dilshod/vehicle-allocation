@@ -21,6 +21,8 @@ window.Vue = require('vue');
 
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
+Vue.component('driver-table',require('./components/DriverTable.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
