@@ -13,7 +13,7 @@ class CreateShippersTable extends Migration
     public function up()
     {
         Schema::create('shippers', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('shipper_id');
             $table->string('shipper_no');
             $table->string('shipper_name1');
             $table->string('shipper_name2')->nullable();
@@ -26,6 +26,7 @@ class CreateShippersTable extends Migration
             $table->string('phone_number')->nullable();
             $table->string('fax_number')->nullable();
             $table->tinyInteger('closing_date')->nullable();
+            $table->dateTime('payment_date')->nullable();
             $table->tinyInteger('delete_flg')->nullable();
             $table->unsignedBigInteger('create_id')->nullable();
             $table->dateTime('created_at')->nullable();

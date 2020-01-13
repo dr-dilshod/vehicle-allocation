@@ -20,6 +20,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
+Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
 Vue.component('driver-table',require('./components/DriverTable.vue').default);
 
 /**

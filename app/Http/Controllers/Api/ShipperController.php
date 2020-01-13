@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Shipper;
+use DB;
 use Illuminate\Http\Request;
+use function MongoDB\BSON\toJSON;
 
 class ShipperController extends Controller
 {
@@ -17,7 +18,34 @@ class ShipperController extends Controller
      */
     public function index(Request $request)
     {
-        $shipper = Shipper::latest()->paginate(25);
+        $bill_to = $request->get('bill-to');
+        $name = $request->get('name');
+        $perPage = 25;
+
+        if (!empty($bill_to) && !empty($name)) {
+
+            $shipper = Shipper::where(function ($query) use ($name) {
+                    return $query->where('shipper_name1', $name)->orWhere('shipper_name2', $name);})
+                ->where([['shipper_company_abbreviation', $bill_to],['delete_flg', 0]])
+                ->orderBy('shipper_no','asc')
+                ->latest()->paginate($perPage);
+
+        } else if (empty($bill_to) && !empty($name)){
+
+            $shipper = Shipper::where(function ($query) use ($name) {
+                return $query->where('shipper_name1', $name)->orWhere('shipper_name2', $name);})
+                ->where('delete_flg', 0)
+                ->orderBy('shipper_no','asc')
+                ->latest()->paginate($perPage);
+
+        } else if (!empty($bill_to) && empty($name)){
+            $shipper = Shipper::where([['shipper_company_abbreviation', $bill_to],['delete_flg',0]])
+                ->orderBy('shipper_no','asc')
+                ->latest()->paginate($perPage);
+        } else {
+            $shipper = Shipper::where('delete_flg',0)->orderBy('shipper_no','asc')
+                ->latest()->paginate($perPage);
+        }
 
         return $shipper;
     }
@@ -92,4 +120,47 @@ class ShipperController extends Controller
 
         return response()->json(null, 204);
     }
+
+    /**
+     * Listing of the distinct shipper names.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function distinctNames(Request $request)
+    {
+        $name1_query = Shipper::select('shipper_name1')
+            ->where('delete_flg',0);
+        $distinctNames = Shipper::select('shipper_name2')
+            ->where('delete_flg',0)
+            ->union($name1_query)
+            ->orderBy('shipper_name2', 'asc')
+            ->get();
+
+        $result = array_map(function ($el){
+            return $el['shipper_name2'];
+        }, $distinctNames->toArray());
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * Listing of the distinct shipper names.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function distinctCompanies(Request $request)
+    {
+        $distinctCompanies = Shipper::select('shipper_company_abbreviation')
+            ->where('delete_flg',0)
+            ->distinct()
+            ->orderBy('shipper_company_abbreviation', 'asc')
+            ->get();
+
+        $result = array_map(function ($el){
+            return $el['shipper_company_abbreviation'];
+        }, $distinctCompanies->toArray());
+
+        return response()->json($result, 200);
+    }
+
 }
