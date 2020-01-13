@@ -55,19 +55,16 @@
                 <e-column field='vehicle_remark' headerText='Remark' width="250"></e-column>
             </e-columns>
         </ejs-grid>
-        <ejs-dialog ref="infoDialog" id="infoDialog" :header='dialog.header' :target='dialog.target' :width='dialog.width'
-                    :buttons='dialog.buttons' :isModal="true" :visible="false">
-        </ejs-dialog>
+
     </div>
 </template>
 <script>
     import Vue from "vue";
-    import { DialogPlugin } from '@syncfusion/ej2-vue-popups';
-    import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
+    import { VueSimpleAlert } from "vue-simple-alert";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
     Vue.use( GridPlugin );
-    Vue.use( DialogPlugin );
-    Vue.use( ButtonPlugin );
+    Vue.use(VueSimpleAlert);
+
 
     export default{
         props: {
@@ -83,15 +80,6 @@
                 company_name: '',
                 companies: [],
                 mode: 'normal',
-                dialog:{
-                    target: '#grid',
-                    width: '300px',
-                    header: 'Information',
-                    buttons: [
-                        { click: this.dlgButtonClick, buttonModel: { content: 'OK', isPrimary: true } },
-                        { click: this.dlgButtonClick, buttonModel: { content: 'Cancel' }}
-                    ]
-                },
                 validation: {
                     vehicle_no: {required:true,'maxLength':4},
                     company_name: {required:true,'maxLength':60},
@@ -112,90 +100,74 @@
         },
         methods: {
             showDialog(response) {
-                let message = "<span class='e-danger'>"+response.message+"</span>" + "<ul>";
+                let message = response.message + ': ';
                 let errors = response.errors;
-                for(let error in errors) {
-                    message += "<li class='e-danger'>" + error + "</li>";
-                }
-                message += "</ul>";
-                $("#infoDialog .e-dlg-content").html(message);
-                this.$refs.infoDialog.show();
+                $.each( errors, function( key, value ) {
+                    message += value[0]; //showing only the first error.
+                });
+                this.$alert(message);
             },
-            dlgButtonClick: function() {
-                this.$refs.infoDialog.hide();
+            showSuccessDialog() {
+                this.$alert('Operation successfully done!');
             },
             actionBegin(args){
-//                alert(args.requestType);
                 if(args.requestType == 'save'){
+                    args.cancel = true;
                     if(args.data.vehicle_id === undefined){
-                        if(!this.insertData(args)) args.cancel = true;
+                        this.insertVehicle(args.data);
                     }else{
-                        if(!this.editData(args)) args.cancel = true;
+                        this.editVehicle(args.data);
                     }
                 }
                 if(args.requestType == 'delete'){
+                    args.cancel = true;
                     if(args.data[0].vehicle_id !== undefined){
-                        if(!this.deleteData(args)) args.cancel = true;
+                        this.deleteVehicle(args.data[0].vehicle_id);
+
                     }
                 }
-                console.log(args);
             },
-            insertData(args){
-                let vehicleTable = this;
-                axios.post(this.resourceUrl,args.data)
+            insertVehicle(vehicle){
+                const vehicleTable = this;
+                axios.post(this.resourceUrl,vehicle)
                     .then(function(response){
-                        console.log("Insert data success");
-                        console.log(response);
+                        vehicleTable.$refs.grid.closeEdit();
                         vehicleTable.setEditMode('normal');
-                        vehicleTable.refresh();
+                        vehicleTable.showSuccessDialog();
+                        vehicleTable.fetchCompanies();
                     })
                     .catch(function(error){
-                        console.log("Insert data error");
-                        console.log(error.response);
                         vehicleTable.showDialog(error.response.data);
-                        return false;
                     });
-                return true;
             },
-            deleteData(args){
-                let vehicleTable = this;
-                let id = args.data[0].vehicle_id;
-                axios.delete(this.resourceUrl+'/'+id)
+            deleteVehicle(vehicle_id){
+                const vehicleTable = this;
+                axios.delete(this.resourceUrl+'/'+vehicle_id)
                     .then(function(response){
-                        console.log("Delete data success");
-                        console.log(response);
-                        vehicleTable.showDialog();
+                        vehicleTable.showSuccessDialog();
                         vehicleTable.setEditMode('normal');
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        console.log("Delete data error");
-                        console.log(error.response);
                         alert(error);
                         vehicleTable.showDialog(error.response.data);
                         return false;
                     });
                 return true;
             },
-            editData(args){
-                let vehicleTable = this;
-                let id = args.data.vehicle_id;
-//                delete args.data.vehicle_id;
-                axios.put(this.resourceUrl+'/'+id, args.data)
+            editVehicle(vehicle){
+                const vehicleTable = this;
+                let id = vehicle.vehicle_id;
+                axios.put(this.resourceUrl+'/'+id, vehicle)
                     .then(function(response){
-                        console.log('Edit Data success');
-                        console.log(response);
-                        vehicleTable.showDialog('Success');
+                        vehicleTable.$refs.grid.closeEdit();
                         vehicleTable.setEditMode('normal');
-                        vehicleTable.refresh();
+                        vehicleTable.showSuccessDialog();
+                        vehicleTable.fetchCompanies();
                     })
                     .catch(function(error){
-                        console.log('Edit Data error');
-                        console.log(error.response);
                         vehicleTable.showDialog(error.response.data);
-                        return false;
                     });
-                return true;
             },
             fetchData(url) {
                 let grid = this.$refs.grid.ej2Instances;
@@ -212,8 +184,8 @@
                             });
                     })
             },
-            fetchCompanies(url) {
-                axios.get(url)
+            fetchCompanies() {
+                axios.get(this.companyUrl)
                     .then(companies => {
                         this.companies = companies.data
                     });
@@ -246,8 +218,6 @@
                             allowAdding: false,
                         },
                     });
-                    this.$refs.grid.refresh();
-                    this.mode = editMode;
                 }
                 if(editMode === 'editing'){
                     let toolbarBtns = ['Edit','Delete','Update','Cancel'];
@@ -260,9 +230,9 @@
                             showDeleteConfirmDialog: true,
                         },
                     });
-                    this.$refs.grid.refresh();
-                    this.mode = editMode;
                 }
+                this.$refs.grid.refresh();
+                this.mode = editMode;
             },
         },
         provide: {
@@ -273,11 +243,8 @@
 </script>
 
 <style scoped>
-    /*@import "../../../node_modules/@syncfusion/ej2-base/styles/bootstrap.css";*/
     @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-vue-popups/styles/bootstrap.css";
 
 </style>

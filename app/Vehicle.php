@@ -34,7 +34,7 @@ class Vehicle extends Model
     public static $editValidationRules = [
         'vehicle_no' => 'required|max:4',
         'company_name' => 'required|max:191',
-        'company_kana_name' => 'required|max:191',
+        'company_kana_name' => 'max:191',
         'vehicle_company_abbreviation' => 'max:191',
         'vehicle_postal_code' => 'max:191',
         'vehicle_address1' => 'max:191',
