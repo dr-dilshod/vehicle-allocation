@@ -28,13 +28,13 @@ Route::get('/vehicle/companies', 'VehicleController@companies')->name('vehicle.c
 //Route::delete('/vehicle/delete', 'VehicleController@destroy')->name('vehicle.destroy');
 
 // Shipper
-//Route::resource('shipper', 'ShipperController');
-Route::resource('api/shipper', 'Api\ShipperController');
+Route::resource('shipper', 'ShipperController');
 Route::get('/shipper/getShippers', 'Api\ShipperController@getShippers')->name('shipper.shippers');
-Route::get('/driver/getDrivers', 'DriverController@getDrivers')->name('driver.drivers');
 
 // Driver
 Route::resource('driver', 'DriverController');
+Route::get('/driver/getDrivers', 'DriverController@getDrivers')->name('driver.drivers');
+Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver.table');
 
 // Item
 Route::get('/item', 'ItemController@index')->name('item');
