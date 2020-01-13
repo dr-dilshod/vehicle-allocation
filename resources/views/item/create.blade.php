@@ -6,6 +6,7 @@
                            shipper-url="{{route('shipper.shippers')}}"
                            driver-url="{{route('driver.drivers')}}"
                            vehicle-url="{{route('vehicle.companies')}}"
+                           resource-url="/api/item"
                            title="Item Registration"
         ></item-registration>
     </div>

@@ -37,7 +37,6 @@ Route::get('/driver/getDrivers', 'DriverController@getDrivers')->name('driver.dr
 Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver.table');
 
 // Item
-Route::get('/item', 'ItemController@index')->name('item');
+Route::get('/item/index', 'ItemController@index')->name('item.index');
 Route::get('/item/create', 'ItemController@create')->name('item.create');
-Route::resource('api/item', 'Api\ItemController');
 

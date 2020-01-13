@@ -28,7 +28,10 @@
                         <tr>
                             <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
                             <td>
-                                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+                                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+                                      rel="stylesheet"
+                                      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+                                      crossorigin="anonymous">
                                     <div class="input-group">
                                         <input  type="date" placeholder="" class="form-control" for="stack_date"
                                                 id="stack_date" v-model="itemData.stack_date" required/>
@@ -48,7 +51,7 @@
                             <td class="orders-method">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="billing"
-                                           v-model="itemData.billing">
+                                           v-model="itemData.down_invoice">
                                     <label class="custom-control-label" for="billing"></label>
                                 </div>
                             </td>
@@ -114,23 +117,23 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Stack Point</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" for="stack_point"
+                                <input type="text" placeholder="" class="form-control" for="stack_point" v-model="itemData.stack_point"
                                        id="stack_point"/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">~  Down Point</span>
                             </td>
                             <td class="orders-date">
-                                <input id="down_point" for="stack_point" type="text" placeholder="" class="form-control"
-                                       required/>
+                                <input id="down_point" for="down_point" type="text" placeholder="" class="form-control"
+                                      v-model="itemData.down_point" required/>
                             </td>
                             <td class="orders-total"></td>
                             <td class="orders-status">
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">T numer</span></td>
+                            <td class="text-right"><span class="c24966">Number (t)</span></td>
                             <td class="orders-order">
-                                <input id="t_numer" type="text" placeholder="" class="form-control" v-model="itemData.t_number"/>
+                                <input id="weight" type="text" placeholder="" class="form-control" v-model="itemData.weight"/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">t     Empty PL</span>
                             </td>
@@ -148,7 +151,7 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Per ton</span></td>
                             <td class="orders-order">
-                                <input id="per_ton" type="text" placeholder="" class="form-control" v-model="itemData.per_ton"/>
+                                <input id="per_ton" type="text" placeholder="" class="form-control" v-model="itemData.item_price"/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
                             <td class="orders-date">
@@ -159,11 +162,11 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Per vehicle</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="per_vehicle" v-model="itemData.per_vehicle"/>
+                                <input type="text" placeholder="" class="form-control" id="per_vehicle" v-model="itemData.vehicle_payment"/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="x2"/>
+                                <input type="text" placeholder="" class="form-control" id="x2" />
                             </td>
                             <td class="orders-total"></td>
                             <td class="orders-status">
@@ -172,7 +175,7 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Amount of Money</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="amount" v-model="itemData.amount" readonly/>
+                                <input type="text" placeholder="" class="form-control" id="amount" v-model="itemData.down_invoice" readonly/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-date"></td>
@@ -183,7 +186,7 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Vehicle No.</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="vehicle_no"/>
+                                <input type="text" placeholder="" class="form-control" id="vehicle_no" v-model="itemData.vehicle_no"/>
                             </td>
                             <td class="orders-product text-right"><span class="c24966">Driver Name</span></td>
                             <td class="orders-date">
@@ -202,7 +205,7 @@
                             <td class="text-right"><span class="c24966">Chartered Vehicle</span></td>
                             <td class="orders-order">
                                 <select name="chartered_vehicle" id="chartered_vehicle"
-                                        v-model="itemData.chartered_vehicle" class="form-control">
+                                        v-model="itemData.item_vehicle" class="form-control">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                         {{ vehicle.company_name  }}
@@ -221,8 +224,8 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Remarks</span></td>
                             <td colspan="6" class="orders-order">
-                                <textarea rows="3" class="form-control" id="remarks"
-                                          v-model="itemData.remarks"></textarea>
+                                <textarea rows="3" class="form-control" id="item_remark"
+                                          v-model="itemData.item_remark"></textarea>
                             </td>
                             <td class="orders-product"></td>
                             <td class="orders-date"></td>
@@ -246,26 +249,37 @@
             shipperUrl: {type: String, required: true},
             driverUrl: {type: String, required: true},
             vehicleUrl: {type: String, required: true},
+            resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
         },
         data() {
             return {
                 itemData: {
+                    shipper_id: '',
+                    driver_id: '',
+                    vehicle_no: '',
+                    status:'',
                     stack_date: '',
                     stack_time: '',
-                    billing: '',
                     down_date: '',
                     down_time: '',
-                    vehicle_model: '',
-                    shipper_id: '',
-                    amount: '',
-                    t_number: '',
-                    per_ton: '',
+                    down_invoice: '',
+                    stack_point: '',
+                    down_point: '',
+                    weight: '',
                     empty_pl: '',
-                    driver_id: '',
-                    chartered_vehicle: '',
+                    item_price: '',
+                    item_driver_name: '',
+                    vehicle_no3: '',
+                    shipper_name: '',
+                    item_vehicle: '',
                     vehicle_payment: '',
-                    remarks: '',
+                    item_completion_date: '',
+                    item_remark: '',
+                    delete_flg: '',
+                    create_id: '',
+                    update_id: '',
+                    remember_token:''
                 },
                 shippers: [],
                 drivers: [],
@@ -279,9 +293,6 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-            register(){
-                alert('register');
-            },
             clear(){
                 alert('clear action');
             },
@@ -302,7 +313,22 @@
                     .then(response => {
                         this.vehicles = response.data
                     });
-            }
+            },
+            register(){
+                console.log("this is data sent ==== " + this.itemData + " == " + this.itemData.item_vehicle);
+                console.log("this is url ====" + this.resourceUrl);
+                axios.post(this.resourceUrl,this.itemData)
+                    .then(function(response){
+                        console.log("Insert data success");
+                        console.log(response);
+                    })
+                    .catch(function(error){
+                        console.log("Insert data error");
+                        console.log(error.response);
+                        return false;
+                    });
+                return true;
+            },
         }
     }
 </script>
