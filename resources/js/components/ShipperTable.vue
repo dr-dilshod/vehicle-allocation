@@ -60,15 +60,15 @@
                   :frozenColumns="6" :toolbar="toolbarBtns" >
             <e-columns>
                 <e-column field='shipper_id' headerText='Shipper id' width="50" :isPrimaryKey="true" :visible=false></e-column>
-                <e-column field='shipper_no' headerText='Shipper No' width="100"></e-column>
+                <e-column field='shipper_no' headerText='Shipper No' :validationRules='shipperNoRules' width="100"></e-column>
                 <e-column headerText='Shipper' width="200" :columns="shipperNameCols"></e-column>
                 <e-column headerText='Furigana' width="200" :columns="furiganaCols"></e-column>
-                <e-column field='shipper_company_abbreviation' headerText='Abbreviation' width="150"></e-column>
-                <e-column field='postal_code' headerText='Postal Code' width="150"></e-column>
-                <e-column field='address1' headerText='Address 1' width="200"></e-column>
-                <e-column field='address2' headerText='Address 2' width="200"></e-column>
-                <e-column field='phone_number' headerText='Phone number' width="200"></e-column>
-                <e-column field='fax_number' headerText='Fax number' width="200"></e-column>
+                <e-column field='shipper_company_abbreviation' headerText='Abbreviation' width="150" :validationRules='max60'></e-column>
+                <e-column field='postal_code' headerText='Postal Code' width="150" :validationRules='max8'></e-column>
+                <e-column field='address1' headerText='Address 1' width="200" :validationRules='max120'></e-column>
+                <e-column field='address2' headerText='Address 2' width="200" :validationRules='max120'></e-column>
+                <e-column field='phone_number' headerText='Phone number' width="200" :validationRules='max12'></e-column>
+                <e-column field='fax_number' headerText='Fax number' width="200" :validationRules='max12'></e-column>
                 <e-column field='closing_date' headerText='Closing date' width="200"></e-column>
                 <e-column field='payment_date' headerText='Payment date' width="200"></e-column>
             </e-columns>
@@ -99,16 +99,23 @@
                 companies: [],
                 shipperNames: [],
                 mode: 'normal',
+                shipperNoRules : {required : true, maxLength:[(args) => {return args['value'].length <= 4;}, 'At most 4 letters']},
+                max8 : {maxLength:[(args) => {return args['value'].length <= 8;}, 'At most 8 letters']},
+                max12 : {maxLength:[(args) => {return args['value'].length <= 12;}, 'At most 12 letters']},
+                max60 : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
+                max120 : {maxLength:[(args) => {return args['value'].length <= 120;}, 'At most 120 letters']},
                 shipperNameCols : [
                     {
                         field : 'shipper_name1',
                         headerText : 'Name1',
                         width : 100,
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     },
                     {
                         field : 'shipper_name2',
                         headerText : 'Name2',
                         width : 100,
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     }
                 ],
                 furiganaCols : [
@@ -116,11 +123,13 @@
                         field : 'shipper_kana_name1',
                         headerText : 'Name1',
                         width : 100,
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     },
                     {
                         field : 'shipper_kana_name2',
                         headerText : 'Name2',
                         width : 100,
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     }
                 ]
             }
@@ -143,6 +152,13 @@
                     if(args.data[0].shipper_id !== undefined){
                         this.deleteData(args.data[0].shipper_id);
                     }
+                }
+            },
+
+            actionComplete(args) {
+                if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+                    alert("Action completed");
+//                    args.form.ej2_instances[0].addRules('Freight', {max: 500});
                 }
             },
 
