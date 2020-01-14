@@ -9,10 +9,10 @@
         @endif
         <div class="row p-2">
             <div class="col-4">
-                <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.item_reg')}}</a>
+                <a href="{{route('item.create')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.item_reg')}}</a>
             </div>
             <div class="col-4">
-                <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.item_list')}}</a>
+                <a href="{{route('item.index')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.item_list')}}</a>
             </div>
             <div class="col-4">
                 <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.dispatch_board')}}</a>

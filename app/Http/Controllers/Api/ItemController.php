@@ -39,12 +39,11 @@ class ItemController extends Controller
 
         $item = Item::create($request->all());
 
-        return response()->json($item, 201);
+        return response()->json($item);
     }
 
     /**
      * Display the specified resource.
-     *
      * @param  int  $id
      *
      * @return \Illuminate\Http\Response

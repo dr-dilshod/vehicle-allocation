@@ -73,7 +73,7 @@ class VehicleController extends Controller
     {
         $vehicle = Vehicle::findOrFail($id);
         $data = $request->validate(Vehicle::$editValidationRules);
-        $vehicle->update($request->all());
+        $vehicle->update($data);
 
         return response()->json($vehicle, 200);
     }

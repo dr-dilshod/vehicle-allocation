@@ -33,8 +33,8 @@ class Item extends Model
     protected $fillable = ['shipper_id', 'driver_id', 'vehicle_no', 'status',
         'stack_date', 'stack_time', 'down_date', 'down_time', 'down_invoice',
         'stack_point', 'down_point', 'weight', 'empty_pl', 'item_price',
-        'item_driver_name', 'car_no3', 'shipper_name', 'item_vehicle', 'vehicle_payment',
-        'case_completion_date', 'item_remark', 'delete_flg', 'create_id',
+        'item_driver_name', 'vehicle_no3', 'shipper_name', 'item_vehicle', 'vehicle_payment',
+        'item_completion_date', 'item_remark', 'delete_flg', 'create_id',
         'created_at', 'update_id', 'updated_at', 'remember_token'];
 
 

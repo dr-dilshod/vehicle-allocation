@@ -22,31 +22,36 @@
                 <div class="table-responsive">
                     <table class="table table-sm table-nowrap card-table">
                         <thead>
-                        <tr></tr>
+                         <tr></tr>
                         </thead>
                         <tbody class="list">
                         <tr>
                             <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
                             <td>
-                                <input type="date" placeholder="" class="form-control" for="stack_date"
-                                       id="stack_date" v-model="itemData.stack_date" required/>
+                                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+                                      rel="stylesheet"
+                                      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+                                      crossorigin="anonymous">
+                                    <div class="input-group">
+                                        <input  type="date" placeholder="" class="form-control" for="stack_date"
+                                                id="stack_date" v-model="itemData.stack_date" required/>
+                                        <a href="#" class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></a>
+                                    </div>
                             </td>
                             <td class="text-right"><span class="c25479">Stack Time</span></td>
                             <td class="stack_time_hour">
-                                <input type="time" placeholder="" class="form-control" for="stack_time_hour"
-                                       id="stack_time_hour" v-model="itemData.stack_time_hour" required/>
+                                <input type="time" placeholder="" class="form-control" for="stack_time"
+                                       id="stack_time" v-model="itemData.stack_time" required/>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-date">
-                                <input type="time" placeholder="" class="form-control" for="stack_time_min"
-                                       id="stack_time_min" v-model="itemData.stack_time_min" required/>
                             </td>
                             <td class="orders-total"><span class="c25479">Billing</span></td>
                             <td class="orders-status"></td>
                             <td class="orders-method">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="billing"
-                                           v-model="itemData.billing">
+                                           v-model="itemData.down_invoice">
                                     <label class="custom-control-label" for="billing"></label>
                                 </div>
                             </td>
@@ -56,18 +61,19 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Down Date</span></td>
                             <td class="orders-order">
-                                <input type="date" placeholder="" class="form-control" for="down_date"
+                                <div class="input-group">
+                                    <input type="date" placeholder="" class="form-control" for="down_date"
                                        id="down_date" v-model="itemData.down_date" required/>
+                                    <a href="#" class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></a>
+                                </div>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span></td>
                             <td class="orders-date">
-                                <input type="time" placeholder="" class="form-control" for="down_time_hour"
-                                       id="down_time_hour" v-model="itemData.down_time_hour" required/>
+                                <input type="time" placeholder="" class="form-control" for="down_time"
+                                       id="down_time" v-model="itemData.down_time" required/>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-total">
-                                <input type="time" placeholder="" class="form-control" for="down_time_min"
-                                       id="stack_time_min" v-model="itemData.stack_time_min" required/>
                             </td>
                             <td class="item-status">
                                 <div class="badge badge-success"></div>
@@ -76,12 +82,13 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Vehicle Model</span></td>
                             <td class="orders-order">
-                                <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
+                                <select name="vehicle_model" id="vehicle_model" v-model="itemData.vehicle_model"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option v-for="vehicle in vehicles" :value="vehicle.id">
-                                        {{ vehicle.company_name }}
-                                    </option>
+                                    <option value="Wing">Wing</option>
+                                    <option value="Flat">Flat</option>
+                                    <option value="Trailer">Trailer</option>
+                                    <option value="Bulk">Bulk</option>
                                 </select>
                             </td>
                             <td class="orders-product"></td>
@@ -110,29 +117,31 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Stack Point</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" for="stack_point"
+                                <input type="text" placeholder="" class="form-control" for="stack_point" v-model="itemData.stack_point"
                                        id="stack_point"/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">~  Down Point</span>
                             </td>
                             <td class="orders-date">
-                                <input id="down_point" for="stack_point" type="text" placeholder="" class="form-control"
-                                       required/>
+                                <input id="down_point" for="down_point" type="text" placeholder="" class="form-control"
+                                      v-model="itemData.down_point" required/>
                             </td>
                             <td class="orders-total"></td>
                             <td class="orders-status">
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">T numer</span></td>
+                            <td class="text-right"><span class="c24966">Number (t)</span></td>
                             <td class="orders-order">
-                                <input id="tnumer" type="text" placeholder="" class="form-control"/>
+                                <input id="weight" type="text" placeholder="" class="form-control" v-model="itemData.weight"/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">t     Empty PL</span>
                             </td>
                             <td class="orders-date">
-                                <select name="emptypl" id="emptypl" v-model="itemData.emptypl" class="form-control">
+                                <select name="empty_pl" id="empty_pl" v-model="itemData.empty_pl" class="form-control">
                                     <option value=""></option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">None</option>
                                 </select>
                             </td>
                             <td class="orders-total"></td>
@@ -142,7 +151,7 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Per ton</span></td>
                             <td class="orders-order">
-                                <input id="perton" type="text" placeholder="" class="form-control"/>
+                                <input id="per_ton" type="text" placeholder="" class="form-control" v-model="itemData.item_price"/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
                             <td class="orders-date">
@@ -153,11 +162,11 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Per vehicle</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="pervehicle"/>
+                                <input type="text" placeholder="" class="form-control" id="per_vehicle" v-model="itemData.vehicle_payment"/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="x2"/>
+                                <input type="text" placeholder="" class="form-control" id="x2" />
                             </td>
                             <td class="orders-total"></td>
                             <td class="orders-status">
@@ -166,7 +175,7 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Amount of Money</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="amountofmoney" readonly/>
+                                <input type="text" placeholder="" class="form-control" id="amount" v-model="itemData.down_invoice" readonly/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-date"></td>
@@ -177,11 +186,11 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Vehicle No.</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="Default input" class="form-control" id="vehicle_no"/>
+                                <input type="text" placeholder="" class="form-control" id="vehicle_no" v-model="itemData.vehicle_no"/>
                             </td>
                             <td class="orders-product text-right"><span class="c24966">Driver Name</span></td>
                             <td class="orders-date">
-                                <select name="driver_id" id="driverid" v-model="itemData.driverid" class="form-control">
+                                <select name="driver_id" id="driver_id" v-model="itemData.driver_id" class="form-control">
                                     <option value=""></option>
                                     <option v-for="driver in drivers" :value="driver.id">
                                         {{ driver.driver_name }}
@@ -196,27 +205,27 @@
                             <td class="text-right"><span class="c24966">Chartered Vehicle</span></td>
                             <td class="orders-order">
                                 <select name="chartered_vehicle" id="chartered_vehicle"
-                                        v-model="itemData.charteredvehicle" class="form-control">
+                                        v-model="itemData.item_vehicle" class="form-control">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
-                                        {{ vehicle.vehicle_no }}
+                                        {{ vehicle.company_name  }}
                                     </option>
                                 </select>
                             </td>
                             <td class="orders-product text-right"><span class="c24966">Rental Vehicle <br/>Payment<br/></span>
                             </td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="vehicle_payment"/>
+                                <input type="text" placeholder="" class="form-control" id="vehicle_payment" v-model="itemData.vehicle_payment"/>
                             </td>
                             <td class="orders-total"><span class="c25479 text-right">yen</span></td>
-                            <td class="orders-sratus">
+                            <td class="orders-status">
                             </td>
                         </tr>
                         <tr>
                             <td class="text-right"><span class="c24966">Remarks</span></td>
                             <td colspan="6" class="orders-order">
-                                <textarea rows="3" class="form-control" id="remarks"
-                                          v-model="itemData.remarks"></textarea>
+                                <textarea rows="3" class="form-control" id="item_remark"
+                                          v-model="itemData.item_remark"></textarea>
                             </td>
                             <td class="orders-product"></td>
                             <td class="orders-date"></td>
@@ -231,7 +240,6 @@
         </div>
         <!--/form-->
     </div>
-
 </template>
 
 <script>
@@ -240,24 +248,38 @@
             backUrl: {type: String, required: true},
             shipperUrl: {type: String, required: true},
             driverUrl: {type: String, required: true},
+            vehicleUrl: {type: String, required: true},
+            resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
         },
         data() {
             return {
                 itemData: {
-                    stack_date: '',
-                    stack_time_hour: '',
-                    stack_time_min: '',
-                    billing: '',
-                    down_date: '',
-                    down_time_hour: '',
-                    down_time_min: '',
-                    item_vehicle: '',
                     shipper_id: '',
-                    emptypl: '',
-                    driverid: '',
-                    charteredvehicle: '',
-                    remarks: '',
+                    driver_id: '',
+                    vehicle_no: '',
+                    status:'',
+                    stack_date: '',
+                    stack_time: '',
+                    down_date: '',
+                    down_time: '',
+                    down_invoice: '',
+                    stack_point: '',
+                    down_point: '',
+                    weight: '',
+                    empty_pl: '',
+                    item_price: '',
+                    item_driver_name: '',
+                    vehicle_no3: '',
+                    shipper_name: '',
+                    item_vehicle: '',
+                    vehicle_payment: '',
+                    item_completion_date: '',
+                    item_remark: '',
+                    delete_flg: '',
+                    create_id: '',
+                    update_id: '',
+                    remember_token:''
                 },
                 shippers: [],
                 drivers: [],
@@ -268,11 +290,9 @@
 //            alert('Mounted');
             this.fetchShippers(this.shipperUrl);
             this.fetchDrivers(this.driverUrl);
+            this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-            register(){
-                alert('register');
-            },
             clear(){
                 alert('clear action');
             },
@@ -287,8 +307,28 @@
                     .then(response => {
                         this.drivers = response.data
                     });
-            }
-
+            },
+            fetchVehicles(url) {
+                axios.get(url)
+                    .then(response => {
+                        this.vehicles = response.data
+                    });
+            },
+            register(){
+                console.log("this is data sent ==== " + this.itemData + " == " + this.itemData.item_vehicle);
+                console.log("this is url ====" + this.resourceUrl);
+                axios.post(this.resourceUrl,this.itemData)
+                    .then(function(response){
+                        console.log("Insert data success");
+                        console.log(response);
+                    })
+                    .catch(function(error){
+                        console.log("Insert data error");
+                        console.log(error.response);
+                        return false;
+                    });
+                return true;
+            },
         }
     }
 </script>

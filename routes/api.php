@@ -44,3 +44,12 @@ Route::put('/shipper/{id}', 'Api\ShipperController@update')->name('api.shipper.u
 Route::delete('/shipper/{id}', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
 Route::get("/shippers/distinct-name", 'Api\ShipperController@distinctNames')->name('api.shipper.distinct-name');
 Route::get("/shippers/distinct-company", 'Api\ShipperController@distinctCompanies')->name('api.shipper.distinct-company');
+
+/*
+ * Item CRUD
+ */
+Route::get('/item', 'Api\ItemController@index')->name('api.item.index');
+Route::get('/item/{id}', 'Api\ItemController@show')->name('api.item.show');
+Route::post('/item', 'Api\ItemController@store')->name('api.item.store');
+Route::put('/item/{id}', 'Api\ItemController@update')->name('api.item.update');
+Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destroy');
