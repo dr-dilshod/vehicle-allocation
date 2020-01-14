@@ -53,3 +53,12 @@ Route::get('/item/{id}', 'Api\ItemController@show')->name('api.item.show');
 Route::post('/item', 'Api\ItemController@store')->name('api.item.store');
 Route::put('/item/{id}', 'Api\ItemController@update')->name('api.item.update');
 Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destroy');
+
+/**
+ * Unit prices CrUD
+ */
+Route::get('/unit-price', 'Api\UnitPriceController@index')->name('api.unit-price.index');
+Route::get('/unit-price/{id}', 'Api\UnitPriceController@show')->name('api.unit-price.show');
+Route::post('/unit-price/{id}', 'Api\UnitPriceController@store')->name('api.unit-price.store');
+Route::post('/unit-price/{id}', 'Api\UnitPriceController@update')->name('api.unit-price.update');
+Route::delete('/unit-price/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-price.destroy');
