@@ -3,6 +3,6 @@
 @section('content')
     <div class="container">
         <h4>{!! __('errors.service_unavailable') !!}</h4>
-        <a href="/">&laquo; {{__('driver.back')}}</a>
+        <a href="/" class="btn btn-danger">&laquo; {{__('driver.back')}}</a>
     </div>
 @endsection
