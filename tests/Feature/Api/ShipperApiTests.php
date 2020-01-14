@@ -17,7 +17,7 @@ class ShipperApiTests extends TestCase
 
     public function testPageShippers()
     {
-        $response = $this->json('GET', 'api/shipper');
+        $response = $this->json('GET', route('api.shipper.index'));
         $response
             ->assertStatus(200)
             ->assertJson([])
@@ -32,7 +32,7 @@ class ShipperApiTests extends TestCase
 
         $shipper = factory(Shipper::class)->make();
 
-        $response = $this->json('POST', 'api/shipper', $shipper->toArray());
+        $response = $this->json('POST', route('api.shipper.store'), $shipper->toArray());
 
         $response->assertStatus(201);
     }

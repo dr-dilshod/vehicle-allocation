@@ -19,7 +19,7 @@ $factory->define(Shipper::class, function (Faker $faker) {
         'phone_number'=> $faker->phoneNumber,
         'fax_number'=> $faker->phoneNumber,
         'closing_date'=> $faker->numberBetween(0,10),
-        'payment_date'=> $faker->dateTimeAD,
+//        'payment_date'=> $faker->dateTime,
         'delete_flg'=>$faker->numberBetween(0,1),
         'create_id' =>1,
         'created_at' =>$faker->dateTime,
