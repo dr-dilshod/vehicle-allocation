@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="container">
-        <h4>{!! __('errors.not_found') !!}</h4>
-        <a href="/">&laquo; {{__('driver.back')}}</a>
+        <div class="very-center">
+            <h4>{!! __('errors.not_found') !!}</h4>
+            <a href="/" class="btn btn-danger">&laquo; {{__('driver.back')}}</a>
+        </div>
     </div>
     @endsection
