@@ -30,6 +30,6 @@ $factory->define(Vehicle::class, function (Faker $faker) {
         'vehicle_remark' => $faker->sentence(10),
         'delete_flg' => $faker->numberBetween(0,1),
         'create_id' => 1,
-        'update_id' => $faker->numberBetween(0,1),
+        'update_id' => 1,
     ];
 });

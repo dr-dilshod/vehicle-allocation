@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Driver extends Model
 {
+    use BlameableTrait;
     /**
      * The database table used by the model.
      *

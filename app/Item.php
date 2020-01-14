@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * Class Item
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Item extends Model
 {
+    use BlameableTrait;
     /**
      * The database table used by the model.
      *
@@ -43,20 +45,5 @@ class Item extends Model
         return $this->belongsTo('App\User');
     }
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            $user = Auth::user();
-            if (!empty($user)) {
-                $model->create_id = $user->id;
-                $model->update_id = $user->id;
-            }
-        });
-        static::updating(function ($model) {
-            $user = Auth::user();
-            if (!empty($user))
-                $model->update_id = $user->id;
-        });
-    }
+
 }

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
              VehicleTableSeeder::class,
              ShipperTableSeeder::class,
              DriverTableSeeder::class,
+             ItemTableSeeder::class,
          ]);
     }
 }

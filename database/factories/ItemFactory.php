@@ -9,7 +9,7 @@ $factory->define(Item::class, function (Faker $faker) {
     return [
         'shipper_id' => $faker->numberBetween(1,10),
         'driver_id' => $faker->numberBetween(1,10),
-        'vehicle_no' => $faker->randomNumber(),
+        'vehicle_no' => $faker->numberBetween(1,9999),
         'status' => $faker->numberBetween(0,1),
         'stack_date' => $faker->date(),
         'stack_time'=> $faker->time(),
@@ -29,8 +29,8 @@ $factory->define(Item::class, function (Faker $faker) {
         'item_completion_date'=>$faker->date(),
         'item_remark' => $faker->sentence(10),
         'delete_flg' => $faker->numberBetween(0,1),
-        'create_id' => $faker->numberBetween(1,10),
-        'update_id' => $faker->numberBetween(1,10),
+        'create_id' => 1,
+        'update_id' => 1,
         'remember_token' => $faker->address,
     ];
 });
