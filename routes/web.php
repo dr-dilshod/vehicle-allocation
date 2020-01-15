@@ -40,3 +40,5 @@ Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver
 Route::get('/item/index', 'ItemController@index')->name('item.index');
 Route::get('/item/create', 'ItemController@create')->name('item.create');
 
+
+Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');

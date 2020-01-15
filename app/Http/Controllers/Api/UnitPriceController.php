@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
+use App\Shipper;
 use App\UnitPrice;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UnitPriceController extends Controller
 {
@@ -80,6 +82,14 @@ class UnitPriceController extends Controller
         return response()->json(null);
     }
 
+    public function getDistrictShipperNames() {
+        DB::enableQueryLog();
+        $shippers = Shipper::select(['id', 'shipper_name1', 'shipper_name2'])
+            ->where('delete_flg', 0)
+            ->orderBy('shipper_name1', 'ASC')
+            ->get();
 
+        return response()->json($shippers);
+    }
 
 }
