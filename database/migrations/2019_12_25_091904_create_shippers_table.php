@@ -29,9 +29,8 @@ class CreateShippersTable extends Migration
             $table->dateTime('payment_date')->nullable();
             $table->tinyInteger('delete_flg')->nullable();
             $table->unsignedBigInteger('create_id')->nullable();
-            $table->dateTime('created_at')->nullable();
             $table->unsignedBigInteger('update_id')->nullable();
-            $table->dateTime('updated_at')->nullable();
+            $table->timestamps();
             $table->foreign('create_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('update_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             });

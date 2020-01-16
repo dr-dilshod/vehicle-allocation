@@ -38,3 +38,6 @@ Route::get('/item/create', 'ItemController@create')->name('item.create');
 
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
+
+// Unit price
+Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
