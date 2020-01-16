@@ -5,36 +5,33 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property integer $payment_id
  * @property integer $invoice_id
- * @property integer $item_id
- * @property integer $shipper_id
  * @property integer $vehicle_id
+ * @property integer $shipper_id
  * @property integer $create_id
  * @property integer $update_id
- * @property string $Billing_recording_date
- * @property string $Billing_deadline_date
- * @property string $payment_record_date
- * @property string $invoice_remark
+ * @property int $shipper_deposit
+ * @property int $shipper_highway
+ * @property int $vehicle_deposit
+ * @property int $vehicle_highway
  * @property boolean $delete_flg
- * @property string $remember_token
  * @property string $created_at
  * @property string $updated_at
- * @property Item $item
+ * @property Billing $billing
  * @property Shipper $shipper
  * @property User $user
  * @property User $updateUser
  * @property Vehicle $vehicle
- * @property Deposit[] $deposits
- * @property Payment[] $payments
  */
-class Billing extends Model
+class Payment extends Model
 {
     /**
      * The primary key for the model.
      *
      * @var string
      */
-    protected $primaryKey = 'invoice_id';
+    protected $primaryKey = 'payment_id';
 
     /**
      * The "type" of the auto-incrementing ID.
@@ -46,7 +43,7 @@ class Billing extends Model
     /**
      * @var array
      */
-    protected $fillable = ['item_id', 'shipper_id', 'vehicle_id', 'create_id', 'update_id', 'Billing_recording_date', 'Billing_deadline_date', 'payment_record_date', 'invoice_remark', 'delete_flg', 'remember_token', 'created_at', 'updated_at'];
+    protected $fillable = ['invoice_id', 'vehicle_id', 'shipper_id', 'create_id', 'update_id', 'shipper_deposit', 'shipper_highway', 'vehicle_deposit', 'vehicle_highway', 'delete_flg', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -59,9 +56,9 @@ class Billing extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function item()
+    public function billing()
     {
-        return $this->belongsTo('App\Item', null, 'item_id');
+        return $this->belongsTo('App\Billing', 'invoice_id', 'invoice_id');
     }
 
     /**
@@ -86,21 +83,5 @@ class Billing extends Model
     public function vehicle()
     {
         return $this->belongsTo('App\Vehicle', null, 'vehicle_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function deposits()
-    {
-        return $this->hasMany('App\Deposit', 'invoice_id', 'invoice_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function payments()
-    {
-        return $this->hasMany('App\Payment', 'invoice_id', 'invoice_id');
     }
 }

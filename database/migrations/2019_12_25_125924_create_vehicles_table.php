@@ -27,12 +27,11 @@ class CreateVehiclesTable extends Migration
             $table->tinyInteger('offset')->default(0);
             $table->string('vehicle_remark')->nullable();
             $table->tinyInteger('delete_flg')->default(0);
-            $table->bigInteger('create_id')->unsigned()->nullable();
-            $table->bigInteger('update_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('create_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('update_id')->unsigned()->nullable();
             $table->timestamps();
 
-            $table->index('create_id');
-            $table->index('update_id');
+            $table->index(['create_id','update_id']);
             $table->foreign('create_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('update_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
 

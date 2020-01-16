@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class BillingRelations extends Migration
+class DepositsRelations extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,11 @@ class BillingRelations extends Migration
      */
     public function up()
     {
-        Schema::table('billings', function (Blueprint $table) {
-            $table->index(['item_id', 'shipper_id', 'vehicle_id', 'create_id', 'update_id']);
-            $table->foreign('item_id')
-                ->references('item_id')
-                ->on('items')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
-            $table->foreign('shipper_id')
-                ->references('shipper_id')
-                ->on('shippers')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
-            $table->foreign('vehicle_id')
-                ->references('vehicle_id')
-                ->on('vehicles')
+        Schema::table('deposits', function (Blueprint $table) {
+            $table->index(['invoice_id', 'create_id', 'update_id']);
+            $table->foreign('invoice_id')
+                ->references('invoice_id')
+                ->on('billings')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
             $table->foreign('create_id')
