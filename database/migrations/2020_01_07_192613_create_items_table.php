@@ -29,8 +29,8 @@ class CreateItemsTable extends Migration
             $table->date('down_date');
             $table->time('down_time');
             $table->tinyInteger('down_invoice')->default(0)->nullable();
-            $table->string('stack_point', 60)->default(null);
-            $table->string('down_point', 60)->default(null);
+            $table->string('stack_point', 120)->default(null);
+            $table->string('down_point', 120)->default(null);
             $table->integer('weight')->nullable();
             $table->tinyInteger('empty_pl')->default(0)->nullable();
             $table->integer('item_price')->nullable();
