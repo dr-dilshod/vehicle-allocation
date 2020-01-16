@@ -62,9 +62,9 @@
     import Vue from "vue";
     import { VueSimpleAlert } from "vue-simple-alert";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
-    Vue.use( GridPlugin );
-    Vue.use(VueSimpleAlert);
 
+    Vue.use( GridPlugin );
+    Vue.use( VueSimpleAlert );
 
     export default{
         props: {
@@ -80,19 +80,6 @@
                 company_name: '',
                 companies: [],
                 mode: 'normal',
-                validation: {
-                    vehicle_no: {required:true,'maxLength':4},
-                    company_name: {required:true,'maxLength':60},
-                    company_kana_name: {required:true,'maxLength':60},
-                    vehicle_company_abbreviation: {'maxLength':60},
-                    vehicle_postal_code: {'maxLength':60},
-                    vehicle_address1: {'maxLength':60},
-                    vehicle_address2: {'maxLength':60},
-                    vehicle_phone_number: {'maxLength':15},
-                    vehicle_fax_number: {'maxLength':15},
-                    offset: {'max':1,'min':0},
-                    vehicle_remark: {'maxLength':120},
-                }
             }
         },
         mounted() {
@@ -149,7 +136,6 @@
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        alert(error);
                         vehicleTable.showDialog(error.response.data);
                         return false;
                     });

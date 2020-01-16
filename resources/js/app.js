@@ -30,6 +30,7 @@ Vue.component('driver-table',require('./components/DriverTable.vue').default);
  */
 
 Vue.component('item-registration',require('./components/ItemRegistration.vue').default);
+Vue.component('invoice',require('./components/Invoice.vue').default);
 
 const app = new Vue({
     el: '#app',

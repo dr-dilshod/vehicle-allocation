@@ -22,10 +22,6 @@ Route::get('/setting', 'SettingController@index')->name('setting');
 Route::get('/vehicle', 'VehicleController@index')->name('vehicle');
 Route::get('/vehicle/vehicle-table', 'VehicleController@vehicleTable')->name('vehicle.table');
 Route::get('/vehicle/companies', 'VehicleController@companies')->name('vehicle.companies');
-//Route::post('/vehicle/store', 'VehicleController@store')->name('vehicle.store');
-//Route::get('/vehicle/show', 'VehicleController@show')->name('vehicle.show');
-//Route::put('/vehicle/update', 'VehicleController@update')->name('vehicle.update');
-//Route::delete('/vehicle/delete', 'VehicleController@destroy')->name('vehicle.destroy');
 
 // Shipper
 Route::resource('shipper', 'ShipperController');
@@ -40,3 +36,5 @@ Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver
 Route::get('/item/index', 'ItemController@index')->name('item.index');
 Route::get('/item/create', 'ItemController@create')->name('item.create');
 
+// Invoice
+Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
