@@ -28,14 +28,9 @@
                         <tr>
                             <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
                             <td>
-                                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-                                      rel="stylesheet"
-                                      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-                                      crossorigin="anonymous">
-                                    <div class="input-group">
+                                <div class="input-group">
                                         <input  type="date" placeholder="" class="form-control" for="stack_date"
                                                 id="stack_date" v-model="itemData.stack_date" required/>
-                                        <a href="#" class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></a>
                                     </div>
                             </td>
                             <td class="text-right"><span class="c25479">Stack Time</span></td>
@@ -64,7 +59,6 @@
                                 <div class="input-group">
                                     <input type="date" placeholder="" class="form-control" for="down_date"
                                        id="down_date" v-model="itemData.down_date" required/>
-                                    <a href="#" class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></a>
                                 </div>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span></td>
