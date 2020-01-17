@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Feature\Api;
 
+use App\Vehicle;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,25 +14,104 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class VehicleApiTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->get('/');
 
+    //use WithoutMiddleware;
+
+    public function testVehiclesPage()
+    {
+        $response = $this->json('GET', route('api.vehicle.index'));
+        $response
+            ->assertStatus(200)
+            ->assertJson([])
+            ->assertJsonStructure([
+                'data' => [
+                    'vehicle_id', 'vehicle_no', 'company_name', 'company_kana_name', 'vehicle_company_abbreviation',
+                    'vehicle_postal_code', 'vehicle_address1', 'vehicle_address2', 'vehicle_phone_number',
+                    'vehicle_fax_number', 'offset', 'vehicle_remark', 'delete_flg', 'create_id',
+                    'update_id', 'created_at', 'updated_at']
+            ]);
+    }
+
+    public function testCreateVehicle(){
+        $vehicle = factory(Vehicle::class)->make();
+        $response = $this->json('POST', route('api.vehicle.store'), $vehicle->toArray());
+        $response->assertStatus(201);
+    }
+
+    public function testGetVehicle(){
+        $vehicle = factory(Vehicle::class)->create();
+        $response = $this->json('GET', route('api.vehicle.show', [$vehicle->vehicle_id]));
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'vehicle_id', 'vehicle_no', 'company_name', 'company_kana_name', 'vehicle_company_abbreviation',
+                'vehicle_postal_code', 'vehicle_address1', 'vehicle_address2', 'vehicle_phone_number',
+                'vehicle_fax_number', 'offset', 'vehicle_remark', 'delete_flg', 'create_id',
+                'update_id', 'created_at', 'updated_at']);
+    }
+
+    public function testUpdateVehicle(){
+        $id = factory(Vehicle::class)->create()->vehicle_id;
+        $vehicle = factory(Vehicle::class)->make();
+        $response = $this->json('PUT', route('api.vehicle.update',[$id]), $vehicle->toArray());
         $response->assertStatus(200);
     }
 
-    /**
-     * Acquisition data: Car rental master.Car rental company (DISTINCT)
-     */
-    public function testDataAcquisition()
-    {
-
+    public function testDeleteVehicle(){
+        $vehicle = factory(Vehicle::class)->create();
+        $response = $this->json('DELETE',route('api.vehicle.destroy',[$vehicle->vehicle_id]));
+        $response->assertStatus(204);
     }
+
+     /**
+     * Data Structure: Car rental master.Car rental company (DISTINCT)
+     */
+    public function testCarCompanyStructure()
+    {
+        $response = $this->json('GET', route('vehicle.companies'));
+        $response->assertStatus(200)
+            ->assertJsonStructure(
+                ['vehicle_id', 'company_name']
+            );
+    }
+
+    /**
+     * Data Acquisition: Car rental master.Car rental company (DISTINCT)
+     */
+    public function testCarCompanyDataAcqusition()
+    {
+        $test_data = [
+            'vehicle_no' => '1234',
+            'company_name' => 'CompanyName',
+            'driver_name' => 'DriverName',
+            'offset' => 0,
+            'delete_flg'=> 0
+        ];
+        $request = new Request();
+        $request->headers->set('content-type', 'application/json');
+        $request->setJson(new ParameterBag($test_data));
+        $vehicleController = new VehicleController();
+        $fetch = $vehicleController->store($request);
+        $response = $this->json('GET', route('vehicle.companies'));
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'company_name' => 'CompanyName',
+            ]);
+        DB::table('vehicles')->where('CompanyName', '=', "CompanyName")->delete();
+    }
+
+    public function testBasicExample()
+    {
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->json('POST', '/user', ['name' => 'Sally']);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'created' => true,
+            ]);
+    }
+
     /**
      * Search condition: Rental vehicle master. Delete flag	= 0
      */
