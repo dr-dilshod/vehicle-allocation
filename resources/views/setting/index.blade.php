@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-2">
                 <a href="{{route('top')}}"
-                   class="btn btn-lg btn-warning btn-block p-1">{{('Back')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('setting.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">Setting</h2>
@@ -16,19 +16,25 @@
         <div class="row mb-4 mt-4">
             <div class="col-4 offset-4">
                 <a href="{{route('driver.index')}}"
-                   class="btn btn-lg btn-warning btn-block p-4">{{('Driver list')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-4">{{__('setting.driver_list')}}</a>
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-4 offset-4">
                 <a href="{{route('shipper.index')}}"
-                   class="btn btn-lg btn-warning btn-block p-4">{{('Shipper list')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-4">{{__('setting.shipper_list')}}</a>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-4 offset-4">
+                <a href="{{route('vehicle')}}"
+                   class="btn btn-lg btn-warning btn-block p-4">{{__('setting.car_list')}}</a>
             </div>
         </div>
         <div class="row">
             <div class="col-4 offset-4">
                 <a href="{{route('vehicle')}}"
-                   class="btn btn-lg btn-warning btn-block p-4">{{__('Car list')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-4">{{__('setting.list_of_unit_prices')}}</a>
             </div>
         </div>
     </div>

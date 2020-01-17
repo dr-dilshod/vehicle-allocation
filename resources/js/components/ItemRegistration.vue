@@ -243,6 +243,9 @@
 </template>
 
 <script>
+
+
+
     export default {
         props: {
             backUrl: {type: String, required: true},

@@ -23,6 +23,7 @@ Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
 Vue.component('driver-table',require('./components/DriverTable.vue').default);
 Vue.component('unit-price-table',require('./components/UnitPriceTable').default);
+Vue.component('item-list',require('./components/ItemList.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
