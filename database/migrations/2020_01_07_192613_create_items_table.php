@@ -20,8 +20,8 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('item_id');
 
-            $table->bigInteger('shipper_id')->default(0);
-            $table->bigInteger('driver_id')->default(0);
+            $table->unsignedBigInteger('shipper_id')->default(0);
+            $table->unsignedBigInteger('driver_id')->default(0);
             $table->string('vehicle_no',4)->default(null);
             $table->tinyInteger('status')->default(0);
             $table->date('stack_date');
@@ -29,8 +29,8 @@ class CreateItemsTable extends Migration
             $table->date('down_date');
             $table->time('down_time');
             $table->tinyInteger('down_invoice')->default(0)->nullable();
-            $table->string('stack_point', 60)->default(null);
-            $table->string('down_point', 60)->default(null);
+            $table->string('stack_point', 120)->default(null);
+            $table->string('down_point', 120)->default(null);
             $table->integer('weight')->nullable();
             $table->tinyInteger('empty_pl')->default(0)->nullable();
             $table->integer('item_price')->nullable();
@@ -39,16 +39,17 @@ class CreateItemsTable extends Migration
             $table->string('shipper_name', 60)->nullable();
             $table->string('item_vehicle', 60)->nullable();
             $table->integer('vehicle_payment')->nullable();
-            $table->date('item_completion_date', 10)->nullable();
+            $table->date('item_completion_date')->nullable();
             $table->string('item_remark', 255)->nullable();
             $table->tinyInteger('delete_flg')->default(0)->nullable();
-            $table->bigInteger('create_id')->unsigned()->nullable();
-            $table->bigInteger('update_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('create_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('update_id')->unsigned()->nullable();
             $table->timestamps();
-            $table->index('create_id');
-            $table->index('update_id');
+            $table->index(['create_id', 'update_id', 'driver_id', 'shipper_id'], 'items-driver-shipper-default-indexes');
             $table->foreign('create_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('update_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('driver_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('shipper_id')->references('shipper_id')->on('shippers')->onDelete('restrict')->onUpdate('restrict');
 
             $table->rememberToken();
         });

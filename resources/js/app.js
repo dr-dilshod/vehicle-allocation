@@ -22,6 +22,7 @@ window.Vue = require('vue');
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
 Vue.component('driver-table',require('./components/DriverTable.vue').default);
+Vue.component('unit-price-table',require('./components/UnitPriceTable').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,6 +31,7 @@ Vue.component('driver-table',require('./components/DriverTable.vue').default);
  */
 
 Vue.component('item-registration',require('./components/ItemRegistration.vue').default);
+Vue.component('invoice',require('./components/Invoice.vue').default);
 
 const app = new Vue({
     el: '#app',
