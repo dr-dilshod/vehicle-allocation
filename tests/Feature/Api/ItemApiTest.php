@@ -8,31 +8,6 @@ use App\Item;
 class ItemApiTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testShow()
-    {
-
-    }
-
-    public function testStore()
-    {
-
-    }
-
-    public function testDestroy()
-    {
-
-    }
-
-    public function testIndex()
-    {
-
-    }
-
-    public function testUpdate()
-    {
-
-    }
-
     use WithoutMiddleware;
 
     public function testItemRegistrationPage()

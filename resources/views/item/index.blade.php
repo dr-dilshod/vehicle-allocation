@@ -2,16 +2,12 @@
 
 @section('content')
     <div class="container">
-
-
-        <item-list fetch-url="{{ route('item.index') }}"
-                   back-url="{{route('top')}}"
-                   shipper-name-url="{{route('api.shipper.distinct-name')}}"
-                   vehicle-no-url="/api/item"
-                   resource-url="/api/item"
-                   title="Item list"
+        <item-list item-url="{{route('item.list')}}"
+               back-url="{{route('top')}}"
+               shipper-url="{{route('shipper.shippers')}}"
+               vehicle-url="{{route('vehicle.vehicleNumbers')}}"
+               registration-url="{{route('item.create')}}"
+               title="Item list"
         ></item-list>
     </div>
-
-
 @endsection

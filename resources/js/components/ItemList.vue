@@ -10,7 +10,8 @@
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2">
-                <button class="btn btn-lg btn-warning btn-block">Sign up</button>
+                <a :href="registrationUrl"
+                   class="btn btn-lg btn-warning btn-block">Register</a>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -24,33 +25,31 @@
                             </thead>
                             <tbody class="list">
                             <tr>
-                                <td class="orders-order text-right"><span class="c24966">Weekday</span></td>
+                                <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
                                 <td>
 
                                     <div class="input-group">
-                                        <input type="date" placeholder="" class="form-control" for="week_day"
-                                               id="week_day" v-model="data.week_day" required/>
-                                        <a href="#" class="input-group-addon"><span
-                                                class="glyphicon glyphicon-calendar"></span></a>
+                                        <input type="date" placeholder="" class="form-control" for="stack_date"
+                                               id="week_day" v-model="stack_date" required/>
                                     </div>
                                 </td>
                                 <td class="text-right"><span class="c24966">Shipper</span></td>
                                 <td class="orders-order">
-                                    <select name="selectedShipper" id="selectedShipper" v-model="data.selectedShipper"
+                                    <select name="selectedShipper" id="selectedShipper" v-model="shipper_id"
                                             class="form-control">
                                         <option value=""></option>
-                                        <option v-for="name in shipperNames" :value="name">
-                                            {{ name }}
+                                        <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                            {{ shipper.shipper_name1 }}
                                         </option>
                                     </select>
                                 </td>
                                 <td class="text-right"><span class="c24966">Status</span></td>
                                 <td class="orders-order">
-                                    <select name="status" id="status" v-model="data.status"
+                                    <select name="status" id="status" v-model="status"
                                             class="form-control" required>
                                         <option value=""></option>
-                                        <option value="complete"></option>
-                                        <option value="incomplete"></option>
+                                        <option value="complete">Completed</option>
+                                        <option value="incomplete">Incomplete</option>
                                     </select>
                                 </td>
 
@@ -59,7 +58,7 @@
                                 <td class="text-right"><span class="c24966">Stack Point</span></td>
                                 <td class="orders-order">
                                     <input type="text" placeholder="" class="form-control" for="stack_point"
-                                           v-model="data.stack_point"
+                                           v-model="stack_point"
                                            id="stack_point"/>
                                 </td>
                                 <td class="orders-product text-right"><span
@@ -68,12 +67,18 @@
                                 <td class="orders-date">
                                     <input id="down_point" for="down_point" type="text" placeholder=""
                                            class="form-control"
-                                           v-model="data.down_point" required/>
+                                           v-model="down_point" required/>
                                 </td>
                                 <td class="text-right"><span class="c24966">Vehicle No.</span></td>
                                 <td class="orders-order">
-                                    <select type="text" placeholder="" class="form-control" id="vehicle_no"
-                                           v-model="data.vehicle_no"/>
+                                    <select name="vehicleNo" id="vehicle_no" v-model="vehicle_no"
+                                            class="form-control">
+                                        <option value=""></option>
+                                        <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no">
+                                            {{ vehicle.vehicle_no }}
+                                        </option>
+                                    </select>
+
                                 </td>
                                 <td>
 
@@ -100,14 +105,12 @@
                 <e-column field='stack_date' headerText='Stack date' width="150"></e-column>
                 <e-column field='stack_time' headerText='Stack Time' width="150"></e-column>
                 <e-column field='shipper_name' headerText='Shipper name'  width="150"></e-column>
-                <e-column field='stack_point' textAlign="Stack point" headerText='Stack point'  editType= 'numericedit' width="150"></e-column>
+                <e-column field='stack_point' textAlign="Stack point" headerText='Stack point' width="150"></e-column>
                 <e-column field='down_point' headerText='Down point' width="200"></e-column>
                 <e-column field='item_price' headerText='Item price' width="200"></e-column>
-                <e-column field='item_remarks' headerText='Remarks' width="200"></e-column>
-
+                <e-column field='item_remark' headerText='Remarks' width="200"></e-column>
             </e-columns>
         </ejs-grid>
-
     </div>
 </template>
 <script>
@@ -121,62 +124,112 @@
     export default{
         name: 'ItemList',
         props: {
+            itemUrl: {type: String, required: true},
             backUrl: {type: String, required: true},
-            title: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
-            shipperNameUrl: {type: String, required: true},
+            shipperUrl: {type: String, required: true},
             vehicleUrl: {type: String, required: true},
-            resourceUrl: {type: String, required: true},
+            registrationUrl: {type: String, required: true},
+            title: {type: String, required: true},
         },
         data() {
             return {
-                data: {
-                    vehicle_no: '',
-                    status: '',
-                    week_day: '',
-                    stack_point: '',
-                    down_point: '',
-                    selectedShipper: '',
-                    shipperNames: [],
-                    item_remark: '',
-                    remember_token: '',
-                    mode: 'normal',
-                },
+                data: [],
+                vehicle_no: '',
+                status: '',
+                stack_date: '',
+                stack_point: '',
+                down_point: '',
+                shipper_id: '',
+                mode: 'normal',
                 shippers: [],
                 vehicles: [],
             }
 
         },
         mounted() {
-            alert("ishladi");
-            this.fetchData(this.resourceUrl);
-            this.fetchShippers(this.shipperNameUrl);
+            this.fetchShippers(this.shipperUrl);
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-
-            fetchShippers(url) {
+            actionBegin(args){
+                if(args.requestType == 'edit'){
+                    this.editVehicle(args.data);
+                }
+            },
+             editVehicle(vehicle){
+                // redirect to edit.blade.php
+            },
+            fetchItem(url) {
+                let grid = this.$refs.grid.ej2Instances;
                 axios.get(url)
                     .then(response => {
-                        this.shippers = response.data;
+                        this.data = response.data;
+                        if(this.data.length > 0)
+                            grid.setProperties({
+                                frozenColumns: 4
+                            });
+                        else
+                            grid.setProperties({
+                                frozenColumns: 0
+                            });
+                    })
+            },
+            fetchShippers() {
+                axios.get(this.shipperUrl)
+                    .then(response => {
+                        this.shippers = response.data
                     });
             },
-            fetchVehicles(url) {
-                axios.get(url)
+            fetchVehicles() {
+                axios.get(this.vehicleUrl)
                     .then(response => {
                         this.vehicles = response.data
                     });
             },
-             search(){
-             return this.fetchData(this.resourceUrl+'?name='+this.selectedShipper
-             );
-             },
-             clear(){
-             this.selectedShipper = '';
-
-             },
-
-        }
+            edit(){
+                this.setEditMode('editing');
+                this.$refs.grid.refresh();
+            },
+            search(){
+                return this.fetchItem(this.itemUrl+'?shipper_id='+this.shipper_id)
+            },
+            clear(){
+                this.stack_date = '';
+                this.search();
+            },
+            refresh(){
+                this.fetchShippers(this.shipperUrl);
+                this.search();
+            },
+            setEditMode(editMode){
+                if(editMode === 'normal'){
+                    this.$refs.grid.ej2Instances.setProperties({
+                        toolbar: null,
+                        editSettings: {
+                            allowDeleting: false,
+                            allowEditing: false,
+                            allowAdding: false,
+                        },
+                    });
+                }
+                let toolbarBtns = ['Edit','Delete','Update','Cancel'];
+                this.$refs.grid.ej2Instances.setProperties({
+                    toolbar: toolbarBtns,
+                    editSettings: {
+                        allowDeleting: true,
+                        allowEditing: true,
+                        allowAdding: true,
+                        showDeleteConfirmDialog: true,
+                    },
+                });
+                this.$refs.grid.refresh();
+                this.mode = editMode;
+            },
+        },
+        provide: {
+            grid: [Sort,Freeze,Edit,Toolbar]
+        },
+        name: 'ItemTable'
     }
 </script>
 <style scoped>

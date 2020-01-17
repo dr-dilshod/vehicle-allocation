@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Item;
+use App\Vehicle;
 use Illuminate\Http\Request;
 
 /**
@@ -15,6 +16,20 @@ use Illuminate\Http\Request;
  */
 class ItemController extends Controller
 {
+    /**
+     * @var Item
+     */
+    protected $item;
+
+    /**
+     * VehicleController constructor.
+     * @param Item $item
+     */
+    public function __construct(Item $item)
+    {
+        $this->item = $item;
+        parent::__construct();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -84,5 +99,34 @@ class ItemController extends Controller
         Item::destroy($id);
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * returns the list of item based on the query on the item list view
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getItemList(Request $request)
+    {
+        $shipper_id = $request->query('shipper_id') ?: '';
+        $items = $this->item->where([
+            'shipper_id'=>$shipper_id,
+            'delete_flg'=>0
+        ])->get();
+        return response()->json($items);
+    }
+
+    /**
+     * Get vehicle number list for dropdown select
+     * @param Request $request
+     * @return string
+     */
+    public function getVehicleNumbers(Request $request)
+    {
+        $vehicle = Vehicle::select(['vehicle_id', 'vehicle_no'])
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($vehicle);
     }
 }
