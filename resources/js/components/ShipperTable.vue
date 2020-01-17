@@ -6,15 +6,17 @@
                    class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">Editing</h2>
+                <h2 ref="editTitle" class="text-center text-danger">Editing</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="register" :disabled="this.mode != 'editing'">Register</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click="edit">Edit</button>
+                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2"
+                        @click="register">Register</button>
+                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3"
+                @click="edit">Edit</button>
             </div>
         </div>
         <div class="row mt-4 mb-4">
@@ -55,9 +57,9 @@
 
         </div>
 
-        <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :editSettings="editSettings" :height="270"
-                  :frozenColumns="6" :toolbar="toolbarBtns" >
+        <ejs-grid ref="grid" :dataSource="data" :actionBegin="actionBegin"
+                  :allowSorting="true" :height="270"
+                  :frozenColumns="6"  >
             <e-columns>
                 <e-column field='shipper_id' headerText='Shipper id' width="50" :isPrimaryKey="true" :visible=false></e-column>
                 <e-column field='shipper_no' headerText='Shipper No' :validationRules='shipperNoRules' width="100"></e-column>
@@ -78,6 +80,7 @@
 <script>
     import Vue from "vue";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
+    import { TableUtil } from '../utils/TableUtil.js';
 
     Vue.use( GridPlugin );
 
@@ -92,13 +95,11 @@
         data() {
             return {
                 data: [],
-                editSettings: {allowEditing: true, allowAdding: true, allowDeleting: true, showDeleteConfirmDialog: true, },
-                toolbarBtns: [],
+                tableUtil : undefined,
                 selectedCompany: '',
                 selectedShipper: '',
                 companies: [],
                 shipperNames: [],
-                mode: 'normal',
                 shipperNoRules : {required : true, maxLength:[(args) => {return args['value'].length <= 4;}, 'At most 4 letters']},
                 max8 : {maxLength:[(args) => {return args['value'].length <= 8;}, 'At most 8 letters']},
                 max12 : {maxLength:[(args) => {return args['value'].length <= 12;}, 'At most 12 letters']},
@@ -135,9 +136,13 @@
             }
         },
         mounted() {
+            this.tableUtil = new TableUtil(this);
             this.fetchData(this.resourceUrl);
             this.fetchShipperNames(this.shipperNameUrl);
             this.fetchCompanies(this.companyUrl);
+//            this.$nextTick(
+//                this.tableUtil.addListeners()
+//            )
         },
         methods: {
             actionBegin(args){
@@ -155,44 +160,33 @@
                 }
             },
 
-            actionComplete(args) {
-                if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
-                    alert("Action completed");
-//                    args.form.ej2_instances[0].addRules('Freight', {max: 500});
-                }
-            },
-
             insertData(shipper){
-                let shipperTable = this;
+                let tableUtil = this.tableUtil;
                 axios.post(this.resourceUrl, shipper)
                     .then(function(response){
-                        shipperTable.mode = 'normal';
-                        shipperTable.refresh();
+                        tableUtil.endEditing();
                     })
                     .catch(function(error){
                         alert(error)
                     });
             },
             deleteData(id){
-                let shipperTable = this;
+                let tableUtil = this.tableUtil;
                 axios.delete(this.resourceUrl+'/'+id)
                     .then(function(response){
-                        shipperTable.mode = 'normal';
-                        shipperTable.refresh();
+                        tableUtil.endEditing();
                     })
                     .catch(function(error){
                         alert(error)
                     });
             },
             editData(shipper){
-                let shipperTable = this;
+                let tableUtil = this.tableUtil;
                 let id = shipper.shipper_id;
                 delete shipper.shipper_id;
                 axios.put(this.resourceUrl+'/'+id, shipper)
                     .then(function(response){
-                        console.log(response);
-                        shipperTable.mode = 'normal';
-                        shipperTable.refresh();
+                        tableUtil.endEditing();
                     })
                     .catch(function(error){
                         alert(error)
@@ -217,13 +211,10 @@
                     });
             },
             register(){
-                this.$refs.grid.addRecord();
+                this.tableUtil.register();
             },
             edit(){
-                this.toolbarBtns = ['Edit','Delete','Update','Cancel'];
-                this.mode = 'editing';
-                this.editSettings.allowEditing = true;
-                this.editSettings.allowDeleting = true;
+                this.tableUtil.beginEditing();
             },
             search(){
                 return this.fetchData(this.resourceUrl+'?name='+this.selectedShipper
@@ -237,7 +228,33 @@
                 this.fetchShipperNames(this.shipperNameUrl);
                 this.fetchCompanies(this.companyUrl);
                 this.search();
-            }
+            },
+            setEditMode(editMode){
+                if(editMode === 'normal'){
+                    this.$refs.grid.ej2Instances.setProperties({
+                        toolbar: null,
+                        editSettings: {
+                            allowDeleting: false,
+                            allowEditing: false,
+                            allowAdding: false,
+                        },
+                    });
+                }
+                if(editMode === 'editing'){
+                    let toolbarBtns = ['Edit','Delete','Update','Cancel'];
+                    this.$refs.grid.ej2Instances.setProperties({
+                        toolbar: toolbarBtns,
+                        editSettings: {
+                            allowDeleting: true,
+                            allowEditing: true,
+                            allowAdding: true,
+                            showDeleteConfirmDialog: true,
+                        },
+                    });
+                }
+                this.$refs.grid.refresh();
+                this.mode = editMode;
+            },
         },
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar]
