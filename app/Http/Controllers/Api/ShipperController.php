@@ -59,8 +59,8 @@ class ShipperController extends Controller
      */
     public function store(Request $request)
     {
-
-        $shipper = Shipper::create($request->all());
+        $data = $request->validate(Shipper::validationRules);
+        $shipper = Shipper::create($data);
 
         return response()->json($shipper, 201);
     }
@@ -100,9 +100,9 @@ class ShipperController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        $data = $request->validate(Shipper::validationRules);
         $shipper = Shipper::findOrFail($id);
-        $shipper->update($request->all());
+        $shipper->update($data);
 
         return response()->json($shipper, 200);
     }

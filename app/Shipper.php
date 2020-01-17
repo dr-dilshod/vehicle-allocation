@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $shipper_id
@@ -33,15 +35,37 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Shipper extends Model
 {
+    use BlameableTrait;
+    const validationRules = [
+    'shipper_no' => 'required|max:4',
+    'shipper_name1' => 'max:60',
+    'shipper_name2' => 'max:60',
+    'shipper_kana_name1' => 'max:60',
+    'shipper_kana_name2' => 'max:60',
+    'shipper_company_abbreviation' => 'max:60',
+    'postal_code' => 'max:8',
+    'address1' => 'max:120',
+    'address2' => 'max:120',
+    'phone_number' => 'max:12',
+    'fax_number' => 'max:12'
+];
+
     /**
-     * The primary key for the model.
+     * The database table used by the model.
      *
      * @var string
      */
+    protected $table = 'shippers';
+
+    /**
+    * The database primary key value.
+    *
+    * @var string
+    */
     protected $primaryKey = 'shipper_id';
 
     /**
-     * The "type" of the auto-incrementing ID.
+     * Attributes that should be mass-assignable.
      *
      * @var string
      */
@@ -50,7 +74,8 @@ class Shipper extends Model
     /**
      * @var array
      */
-    protected $fillable = ['create_id', 'update_id', 'shipper_no', 'shipper_name1', 'shipper_name2', 'shipper_kana_name1', 'shipper_kana_name2', 'shipper_company_abbreviation', 'postal_code', 'address1', 'address2', 'phone_number', 'fax_number', 'closing_date', 'payment_date', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = ['shipper_no', 'shipper_name1', 'shipper_name2', 'shipper_kana_name1', 'shipper_kana_name2', 'shipper_company_abbreviation', 'postal_code',
+        'address1', 'address2', 'phone_number', 'fax_number', 'closing_date', 'payment_date', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
