@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
- * @property Billing $billing
+ * @property Invoice $billing
  * @property Shipper $shipper
  * @property User $user
  * @property User $updateUser
@@ -58,7 +58,7 @@ class Payment extends Model
      */
     public function billing()
     {
-        return $this->belongsTo('App\Billing', 'invoice_id', 'invoice_id');
+        return $this->belongsTo('App\Invoice', 'invoice_id', 'invoice_id');
     }
 
     /**

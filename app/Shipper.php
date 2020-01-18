@@ -28,7 +28,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  * @property string $updated_at
  * @property User $user
  * @property User $updateUser
- * @property Billing[] $billings
+ * @property Invoice[] $billings
  * @property Item[] $items
  * @property Payment[] $payments
  * @property UnitPrice[] $unitPrices
@@ -98,7 +98,7 @@ class Shipper extends Model
      */
     public function billings()
     {
-        return $this->hasMany('App\Billing', null, 'shipper_id');
+        return $this->hasMany('App\Invoice', null, 'shipper_id');
     }
 
     /**
