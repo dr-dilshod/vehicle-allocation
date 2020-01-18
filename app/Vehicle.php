@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $updated_at
  * @property User $user
  * @property User $updateUser
- * @property Billing[] $billings
+ * @property Invoice[] $billings
  * @property Payment[] $payments
  */
 class Vehicle extends Model
@@ -103,7 +103,7 @@ class Vehicle extends Model
      */
     public function billings()
     {
-        return $this->hasMany('App\Billing', null, 'vehicle_id');
+        return $this->hasMany('App\Invoice', null, 'vehicle_id');
     }
 
     /**

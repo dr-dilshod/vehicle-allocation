@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Deposit[] $deposits
  * @property Payment[] $payments
  */
-class Billing extends Model
+class Invoice extends Model
 {
     /**
      * The primary key for the model.
