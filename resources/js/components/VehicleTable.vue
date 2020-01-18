@@ -119,7 +119,7 @@
                 const vehicleTable = this;
                 axios.post(this.resourceUrl,vehicle)
                     .then(function(response){
-                        vehicleTable.endEditing();
+                        vehicleTable.tableUtil.endEditing();
                         vehicleTable.showSuccessDialog();
                         vehicleTable.fetchCompanies();
                     })
@@ -131,7 +131,7 @@
                 const vehicleTable = this;
                 axios.delete(this.resourceUrl+'/'+vehicle_id)
                     .then(function(response){
-                        vehicleTable.endEditing();
+                        vehicleTable.tableUtil.endEditing();
                         vehicleTable.showSuccessDialog();
                         vehicleTable.refresh();
                     })
@@ -146,7 +146,7 @@
                 let id = vehicle.vehicle_id;
                 axios.put(this.resourceUrl+'/'+id, vehicle)
                     .then(function(response){
-                        vehicleTable.endEditing();
+                        vehicleTable.tableUtil.endEditing();
                         vehicleTable.showSuccessDialog();
                         vehicleTable.fetchCompanies();
                     })
