@@ -213,6 +213,7 @@
             clear(){
                 this.selectedShipper = '';
                 this.selectedCompany = '';
+                this.search();
             },
             refresh(){
                 this.fetchShipperNames(this.shipperNameUrl);
