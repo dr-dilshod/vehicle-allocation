@@ -12,19 +12,15 @@ export class TableUtil{
         this.editTitle = component.$refs.editTitle;
         this.editBtn = component.$refs.editBtn;
 
-        console.log(this.grid);
-        console.log(this.registerBtn);
-        console.log(this.editBtn);
-        console.log(this.editTitle);
-
         this.hideTitle();
         this.disableRegistration();
+        this.addListeners();
 
     }
 
     addListeners(){
-        this.editBtn.addEventListener("click", this.beginEditing, true);
-        this.registerBtn.addEventListener("click", this.register, true);
+        this.editBtn.addEventListener("click", () => this.beginEditing(), false);
+        this.registerBtn.addEventListener("click", ()=> this.register(), false);
     }
 
     beginEditing(){

@@ -14,9 +14,9 @@
             <div class="col-2"></div>
             <div class="col-2">
                 <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2"
-                        @click="register">Register</button>
+                        >Register</button>
                 <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3"
-                @click="edit">Edit</button>
+                >Edit</button>
             </div>
         </div>
         <div class="row mt-4 mb-4">
@@ -140,9 +140,6 @@
             this.fetchData(this.resourceUrl);
             this.fetchShipperNames(this.shipperNameUrl);
             this.fetchCompanies(this.companyUrl);
-//            this.$nextTick(
-//                this.tableUtil.addListeners()
-//            )
         },
         methods: {
             actionBegin(args){
@@ -159,7 +156,6 @@
                     }
                 }
             },
-
             insertData(shipper){
                 let tableUtil = this.tableUtil;
                 axios.post(this.resourceUrl, shipper)
@@ -210,12 +206,6 @@
                         this.companies = response.data
                     });
             },
-            register(){
-                this.tableUtil.register();
-            },
-            edit(){
-                this.tableUtil.beginEditing();
-            },
             search(){
                 return this.fetchData(this.resourceUrl+'?name='+this.selectedShipper
                     +'&bill-to='+this.selectedCompany);
@@ -228,32 +218,6 @@
                 this.fetchShipperNames(this.shipperNameUrl);
                 this.fetchCompanies(this.companyUrl);
                 this.search();
-            },
-            setEditMode(editMode){
-                if(editMode === 'normal'){
-                    this.$refs.grid.ej2Instances.setProperties({
-                        toolbar: null,
-                        editSettings: {
-                            allowDeleting: false,
-                            allowEditing: false,
-                            allowAdding: false,
-                        },
-                    });
-                }
-                if(editMode === 'editing'){
-                    let toolbarBtns = ['Edit','Delete','Update','Cancel'];
-                    this.$refs.grid.ej2Instances.setProperties({
-                        toolbar: toolbarBtns,
-                        editSettings: {
-                            allowDeleting: true,
-                            allowEditing: true,
-                            allowAdding: true,
-                            showDeleteConfirmDialog: true,
-                        },
-                    });
-                }
-                this.$refs.grid.refresh();
-                this.mode = editMode;
             },
         },
         provide: {
