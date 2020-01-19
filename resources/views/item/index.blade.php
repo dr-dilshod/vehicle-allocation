@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="container">
-        <item-list item-url="{{route('api.item.list')}}"
+        <item-list item-url="{{route('item.list')}}"
                back-url="{{route('top')}}"
-               shipper-url="{{route('api.shipper.shippers')}}"
-               vehicle-url="{{route('api.vehicle.vehicleNumbers')}}"
+               shipper-url="{{route('item.shippers')}}"
+               vehicle-url="{{route('item.vehicleNumbers')}}"
                registration-url="{{route('item.create')}}"
                title="Item list"
         ></item-list>

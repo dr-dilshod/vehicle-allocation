@@ -30,7 +30,7 @@
 
                                     <div class="input-group">
                                         <input type="date" placeholder="" class="form-control" for="stack_date"
-                                               id="week_day" v-model="stack_date" required/>
+                                               id="week_day" v-model="stack_date"/>
                                     </div>
                                 </td>
                                 <td class="text-right"><span class="c24966">Shipper</span></td>
@@ -46,7 +46,7 @@
                                 <td class="text-right"><span class="c24966">Status</span></td>
                                 <td class="orders-order">
                                     <select name="status" id="status" v-model="status"
-                                            class="form-control" required>
+                                            class="form-control">
                                         <option value=""></option>
                                         <option value="complete">Completed</option>
                                         <option value="incomplete">Incomplete</option>
@@ -67,7 +67,7 @@
                                 <td class="orders-date">
                                     <input id="down_point" for="down_point" type="text" placeholder=""
                                            class="form-control"
-                                           v-model="down_point" required/>
+                                           v-model="down_point"/>
                                 </td>
                                 <td class="text-right"><span class="c24966">Vehicle No.</span></td>
                                 <td class="orders-order">
@@ -97,8 +97,8 @@
                 </div>
             </div>
         </div>
-        <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="270">
+        <ejs-grid :dataSource="data" :enableHover='false' :allowSelection='false'
+                  :queryCellInfo='customiseCell' ref="grid" id="grid">
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' headerText='Status' width="100"></e-column>
@@ -144,7 +144,6 @@
                 shippers: [],
                 vehicles: [],
             }
-
         },
         mounted() {
             this.fetchShippers(this.shipperUrl);
@@ -156,7 +155,18 @@
                     this.editVehicle(args.data);
                 }
             },
-             editVehicle(vehicle){
+            customiseCell: function(args) {
+                if (args.column.field == 'status') {
+                    if (args.data['status'] === 1) {
+                        args.cell.classList.add('complete');
+                        args.data['status'] = 'Complete';
+                    } else if (args.data['status'] === 0) {
+                        args.cell.classList.add('incomplete');
+                        args.data['status'] = 'Incomplete';
+                    }
+                }
+            },
+            editVehicle(vehicle){
                 // redirect to edit.blade.php
             },
             fetchItem(url) {
@@ -191,14 +201,15 @@
                 this.$refs.grid.refresh();
             },
             search(){
-                return this.fetchItem(this.itemUrl+'?shipper_id='+this.shipper_id)
+                return this.fetchItem(this.itemUrl
+                    +'?shipper_id=' + this.shipper_id
+                    + '&vehicle_no=' + this.vehicle_no
+                    + '&status=' + this.status
+                    + '&stack_date=' + this.stack_date
+                    + '&stack_point=' + this.stack_point)
             },
             clear(){
                 this.stack_date = '';
-                this.search();
-            },
-            refresh(){
-                this.fetchShippers(this.shipperUrl);
                 this.search();
             },
             setEditMode(editMode){
@@ -232,11 +243,17 @@
         name: 'ItemTable'
     }
 </script>
-<style scoped>
+<style>
     @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
-
+    @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/material.css";
+    .complete {
+        background-color: CornflowerBlue;
+    }
+    .incomplete {
+        background-color: firebrick;
+    }
 </style>

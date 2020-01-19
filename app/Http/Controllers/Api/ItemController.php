@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Item;
+use App\Shipper;
 use App\Vehicle;
 use Illuminate\Http\Request;
 
@@ -109,12 +110,31 @@ class ItemController extends Controller
      */
     public function getItemList(Request $request)
     {
+        //$shipper_id = $request->query('shipper_id') ?: '';
+        //$items = $this->item->where([
+        //    'shipper_id'=>$shipper_id,
+        //    'delete_flg'=>0
+        //])->get();
+
         $shipper_id = $request->query('shipper_id') ?: '';
-        $items = $this->item->where([
-            'shipper_id'=>$shipper_id,
-            'delete_flg'=>0
-        ])->get();
-        return response()->json($items);
+        $vehicle_no = $request->query('vehicle_no') ?: '';
+        $status = $request->query('status') ?: '';
+        $stack_date = $request->query('stack_date') ?: '';
+        $stack_point = $request->query('stack_point') ?: '';
+        $matchThese = ['delete_flg' => 0];
+        if (!empty($shipper_id)) {
+            $matchThese = array_add($matchThese, 'shipper_id', $shipper_id);
+        } else if (!empty($vehicle_no)) {
+            $matchThese = array_add($matchThese, 'vehicle_no', $vehicle_no);
+        } else if (!empty($status)) {
+            $matchThese = array_add($matchThese, 'status', $status);
+        } else if (!empty($stack_date)) {
+            $matchThese = array_add($matchThese, 'stack_date', $stack_date);
+        } else if (!empty($stack_point)) {
+            $matchThese = array_add($matchThese, 'stack_point', $stack_point);
+        }
+        $itemTable = Item::where($matchThese)->get();
+        return response()->json($itemTable);
     }
 
     /**
@@ -124,9 +144,25 @@ class ItemController extends Controller
      */
     public function getVehicleNumbers(Request $request)
     {
-        $vehicle = Vehicle::select(['vehicle_id', 'vehicle_no'])
+        $vehicleNumbers = Item::select(['vehicle_no'])
             ->where('delete_flg',0)
+            ->orderBy('vehicle_no','asc')
+            ->distinct()
             ->get();
-        return response()->json($vehicle);
+        return response()->json($vehicleNumbers);
+    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getItemShippers(Request $request)
+    {
+        $itemsShipper = Item::leftJoin('shippers', 'items.shipper_id', '=', 'shippers.shipper_id')
+            ->where('items.delete_flg',"=", 0)
+            ->orderBy('shippers.shipper_name1','asc')
+            ->distinct()
+            ->select(['items.shipper_id','shippers.shipper_name1','shippers.shipper_name2'])
+            ->get();
+        return response()->json($itemsShipper);
     }
 }

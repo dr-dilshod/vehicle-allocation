@@ -3,8 +3,8 @@
 @section('content')
     <div class="container">
         <item-registration back-url="{{route('top')}}"
-                           shipper-url="{{route('api.shipper.shippers')}}"
-                           driver-url="{{route('api.driver.drivers')}}"
+                           shipper-url="{{route('shipper.shippers')}}"
+                           driver-url="{{route('driver.drivers')}}"
                            vehicle-url="{{route('vehicle.companies')}}"
                            resource-url="/api/item"
                            title="Item Registration"

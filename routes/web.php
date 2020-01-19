@@ -34,10 +34,12 @@ Route::get('/driver/getDrivers', 'DriverController@getDrivers')->name('driver.dr
 Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver.table');
 
 // Item
-Route::get('/item', 'ItemController@index')->name('item');
+Route::get('/item', 'ItemController@index')->name('item.index');
 Route::get('/item/getItemList', 'Api\ItemController@getItemList')->name('item.list');
 Route::get('/item/create', 'ItemController@create')->name('item.create');
-Route::get('/item/getVehicleNumbers', 'Api\ItemController@getVehicleNumbers')->name('vehicle.vehicleNumbers');
+Route::get('/item/getItemList', 'Api\ItemController@getItemList')->name('item.list');
+Route::get('/item/getVehicleNumbers', 'Api\ItemController@getVehicleNumbers')->name('item.vehicleNumbers');
+Route::get('/item/getItemShippers', 'Api\ItemController@getItemShippers')->name('item.shippers');
 
 
 // Invoice

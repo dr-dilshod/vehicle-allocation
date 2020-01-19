@@ -98,7 +98,7 @@ class VehicleApiTest extends TestCase
             ]);
         DB::table('vehicles')->where('CompanyName', '=', "CompanyName")->delete();
     }
-
+    //return DB::table('orders')->where('finalized', 1)->exists();
     public function testBasicExample()
     {
         $response = $this->withHeaders([
