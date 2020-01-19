@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Driver;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -164,5 +165,28 @@ class ItemController extends Controller
             ->select(['items.shipper_id','shippers.shipper_name1','shippers.shipper_name2'])
             ->get();
         return response()->json($itemsShipper);
+    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getShippers(Request $request)
+    {
+        $shippers = Shipper::select(['shipper_id', 'shipper_name1'])
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($shippers);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getDrivers(Request $request)
+    {
+        $drivers = Driver::select(['driver_id', 'driver_name'])
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($drivers);
     }
 }
