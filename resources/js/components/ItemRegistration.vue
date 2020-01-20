@@ -35,11 +35,21 @@
                             </td>
                             <td class="text-right"><span class="c25479">Stack Time</span></td>
                             <td class="stack_time_hour">
-                                <input type="time" placeholder="" class="form-control" for="stack_time"
-                                       id="stack_time" v-model="itemData.stack_time" required/>
+                                <select name="stack_time_hour" id="stack_time_hour" v-model="stack_time_hour"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="hour in 23" :value="hour">
+                                        {{ hour }}
+                                    </option>
+                                </select>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-date">
+                                <select name="stack_time_min" id="stack_time_min" v-model="stack_time_min"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="min in 59" :value="min">
+                                        {{ min }}
+                                    </option>
+                                </select>
                             </td>
                             <td class="orders-total"><span class="c25479">Billing</span></td>
                             <td class="orders-status"></td>
@@ -63,11 +73,21 @@
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span></td>
                             <td class="orders-date">
-                                <input type="time" placeholder="" class="form-control" for="down_time"
-                                       id="down_time" v-model="itemData.down_time" required/>
+                                <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="hour in 23" :value="hour">
+                                        {{ hour }}
+                                    </option>
+                                </select>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-total">
+                                <select name="down_time_min" id="down_time_min" v-model="down_time_min"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="min in 59" :value="min">
+                                        {{ min }}
+                                    </option>
+                                </select>
                             </td>
                             <td class="item-status">
                                 <div class="badge badge-success"></div>
@@ -76,7 +96,7 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Vehicle Model</span></td>
                             <td class="orders-order">
-                                <select name="vehicle_model" id="vehicle_model" v-model="itemData.vehicle_model"
+                                <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
                                         class="form-control" required>
                                     <option value=""></option>
                                     <option value="Wing">Wing</option>
@@ -97,8 +117,8 @@
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option v-for="shipper in shippers" :value="shipper.id">
-                                        {{ shipper.shipper_name1 }}
+                                    <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                        {{ shipper.shipper_name1 + " " + shipper.shipper_name2}}
                                     </option>
                                 </select>
                             </td>
@@ -145,11 +165,13 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Per ton</span></td>
                             <td class="orders-order">
-                                <input id="per_ton" type="text" placeholder="" class="form-control" v-model="itemData.item_price"/>
+                                <input id="per_ton" type="text" placeholder="" class="form-control"
+                                       v-on:input="perTonChange" v-model="per_ton"/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="x"/>
+                                <input type="text" placeholder="" class="form-control" id="ton"
+                                       v-on:input="perTonChange" v-model="ton" value=""/>
                             </td>
                             <td class="orders-total"><span class="c25479 text-right">t</span></td>
                         </tr>
@@ -157,11 +179,11 @@
                             <td class="text-right"><span class="c24966">Per vehicle</span></td>
                             <td class="orders-order">
                                 <input type="text" placeholder="" class="form-control" id="per_vehicle"
-                                       v-model="itemData.vehicle_payment"/>
+                                       v-on:input="perVehicleChange" :disabled="isDisabled" v-model="per_vehicle"/>
                             </td>
-                            <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
+                            <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="x2" />
+
                             </td>
                             <td class="orders-total"></td>
                             <td class="orders-status">
@@ -170,8 +192,8 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Amount of Money</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="amount"
-                                       v-model="itemData.down_invoice" readonly/>
+                                <input type="text" placeholder="" class="form-control" id="item_price"
+                                       v-model="itemData.item_price" readonly/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-date"></td>
@@ -189,7 +211,7 @@
                             <td class="orders-date">
                                 <select name="driver_id" id="driver_id" v-model="itemData.driver_id" class="form-control">
                                     <option value=""></option>
-                                    <option v-for="driver in drivers" :value="driver.id">
+                                    <option v-for="driver in drivers" :value="driver.driver_id">
                                         {{ driver.driver_name }}
                                     </option>
                                 </select>
@@ -277,14 +299,22 @@
                     vehicle_payment: '',
                     item_completion_date: '',
                     item_remark: '',
-                    delete_flg: '',
+                    delete_flg: 0,
                     create_id: '',
                     update_id: '',
-                    remember_token:''
+                    remember_token:'',
                 },
+                isDisabled: false,
                 shippers: [],
                 drivers: [],
-                vehicles: []
+                vehicles: [],
+                per_ton: '',
+                per_vehicle: '',
+                ton: '',
+                stack_time_hour: '',
+                stack_time_min: '',
+                down_time_hour: '',
+                down_time_min: ''
             }
         },
         mounted() {
@@ -294,6 +324,31 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
+            perTonChange() {
+                if ((document.getElementById('per_ton').value == '')
+                    && (document.getElementById('ton').value == '')) {
+                    document.getElementById('per_vehicle').disabled = false;
+                } else {
+                    document.getElementById('per_vehicle').disabled = true;
+                }
+            },
+            perVehicleChange() {
+                if (document.getElementById('per_vehicle').value == '') {
+                    document.getElementById('per_ton').disabled = false;
+                    document.getElementById('ton').disabled = false;
+                } else {
+                    document.getElementById('per_ton').disabled = true;
+                    document.getElementById('ton').disabled = true;
+                }
+            },
+            timeFormatter() {
+                this.itemData.stack_time = document.getElementById('stack_time_hour').value
+                    + ':' + document.getElementById('stack_time_min').value
+                    + ':00';
+                this.itemData.down_time = document.getElementById('down_time_hour').value
+                    + ':' + document.getElementById('down_time_min').value
+                    + ':00';
+            },
             clear(){
                 alert('clear action');
             },
@@ -316,8 +371,6 @@
                     });
             },
             register(){
-                console.log("this is data sent ==== " + this.itemData + " == " + this.itemData.item_vehicle);
-                console.log("this is url ====" + this.resourceUrl);
                 axios.post(this.resourceUrl,this.itemData)
                     .then(function(response){
                         console.log("Insert data success");
