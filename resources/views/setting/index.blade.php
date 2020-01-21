@@ -33,7 +33,7 @@
         </div>
         <div class="row">
             <div class="col-4 offset-4">
-                <a href="{{route('vehicle')}}"
+                <a href="{{route('unit-price.index')}}"
                    class="btn btn-lg btn-warning btn-block p-4">{{__('setting.list_of_unit_prices')}}</a>
             </div>
         </div>
