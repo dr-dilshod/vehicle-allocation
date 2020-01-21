@@ -1,4 +1,5 @@
 <template>
+    <form action="#" class="" @submit.prevent="register">
     <div>
         <div class="row">
             <div class="col-2">
@@ -10,16 +11,16 @@
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
+            <div class="col-2"></div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
+                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="clear">Clear</button>
+            </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="table-responsive">
-                    <form action="#" class="form-inline" @submit.prevent="register">
-                    <div class="col-8"></div>
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
-                        <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="clear">Clear</button>
-                    </div>
+                    <br>
                     <table class="table table-sm table-nowrap card-table">
                         <thead>
                          <tr></tr>
@@ -255,11 +256,11 @@
                         </tr>
                         </tbody>
                     </table>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+    </form>
 </template>
 
 <script>
