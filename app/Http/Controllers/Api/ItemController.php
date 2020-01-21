@@ -174,6 +174,7 @@ class ItemController extends Controller
     {
         $shippers = Shipper::select(['shipper_id', 'shipper_name1'])
             ->where('delete_flg',0)
+            ->distinct()
             ->get();
         return response()->json($shippers);
     }
@@ -186,6 +187,7 @@ class ItemController extends Controller
     {
         $drivers = Driver::select(['driver_id', 'driver_name'])
             ->where('delete_flg',0)
+            ->distinct()
             ->get();
         return response()->json($drivers);
     }

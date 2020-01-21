@@ -7,6 +7,7 @@
                    class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
             <div class="col-2">
+                <h6 class="text-center text-danger">* - required</h6>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
@@ -27,14 +28,14 @@
                         </thead>
                         <tbody class="list">
                         <tr>
-                            <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
+                            <td class="orders-order text-right"><span>Stack Date</span><span class="required"> *</span></td>
                             <td>
                                 <div class="input-group">
                                         <input  type="date" placeholder="" class="form-control" for="stack_date"
                                                 id="stack_date" v-model="itemData.stack_date" required/>
                                     </div>
                             </td>
-                            <td class="text-right"><span class="c25479">Stack Time</span></td>
+                            <td class="text-right"><span class="c25479">Stack Time</span><span class="required"> *</span></td>
                             <td class="stack_time_hour">
                                 <select name="stack_time_hour" id="stack_time_hour" v-model="stack_time_hour"
                                         v-on:input="timeFormatter" class="form-control" required>
@@ -65,14 +66,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Down Date</span></td>
+                            <td class="text-right"><span class="c24966">Down Date</span><span class="required"> *</span></td>
                             <td class="orders-order">
                                 <div class="input-group">
                                     <input type="date" placeholder="" class="form-control" for="down_date"
                                        id="down_date" v-model="itemData.down_date" required/>
                                 </div>
                             </td>
-                            <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span></td>
+                            <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span><span class="required"> *</span></td>
                             <td class="orders-date">
                                 <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
                                         v-on:input="timeFormatter" class="form-control" required>
@@ -95,7 +96,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Vehicle Model</span></td>
+                            <td class="text-right"><span class="c24966">Vehicle Model</span><span class="required"> *</span></td>
                             <td class="orders-order">
                                 <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
                                         class="form-control" required>
@@ -113,7 +114,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Shipper</span></td>
+                            <td class="text-right"><span class="c24966">Shipper</span><span class="required"> *</span></td>
                             <td class="orders-order">
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
                                         class="form-control" required>
@@ -130,12 +131,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Stack Point</span></td>
+                            <td class="text-right"><span class="c24966">Stack Point</span><span class="required"> *</span></td>
                             <td class="orders-order">
                                 <input type="text" placeholder="" class="form-control" for="stack_point"
                                        v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">~  Down Point</span>
+                                <span class="required"> *</span>
                             </td>
                             <td class="orders-date">
                                 <input id="down_point" for="down_point" type="text" placeholder="" class="form-control"
@@ -194,7 +196,7 @@
                             <td class="text-right"><span class="c24966">Amount of Money</span></td>
                             <td class="orders-order">
                                 <input type="text" placeholder="" class="form-control" id="item_price"
-                                       v-model="itemData.item_price" readonly/>
+                                       v-model="itemData.item_price" value="" readonly/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-date"></td>
@@ -319,27 +321,38 @@
             }
         },
         mounted() {
-//            alert('Mounted');
             this.fetchShippers(this.shipperUrl);
             this.fetchDrivers(this.driverUrl);
             this.fetchVehicles(this.vehicleUrl);
+            this.fetchCurrentDate();
         },
         methods: {
+            fetchCurrentDate(){
+                let currentDate = new Date();
+                this.itemData.item_completion_date = currentDate;
+            },
             perTonChange() {
-                if ((document.getElementById('per_ton').value == '')
-                    && (document.getElementById('ton').value == '')) {
+                if ((this.per_ton == '')
+                    && (this.ton == '')) {
                     document.getElementById('per_vehicle').disabled = false;
                 } else {
                     document.getElementById('per_vehicle').disabled = true;
+                    if (this.ton == '') {
+                        this.ton = 1;
+                        this.itemData.item_price = this.per_ton;
+                    } else {
+                        this.itemData.item_price = this.per_ton * this.ton;
+                    }
                 }
             },
             perVehicleChange() {
-                if (document.getElementById('per_vehicle').value == '') {
+                if (this.per_vehicle == '') {
                     document.getElementById('per_ton').disabled = false;
                     document.getElementById('ton').disabled = false;
                 } else {
                     document.getElementById('per_ton').disabled = true;
                     document.getElementById('ton').disabled = true;
+                    this.itemData.item_price = this.per_vehicle;
                 }
             },
             timeFormatter() {
@@ -387,3 +400,8 @@
         }
     }
 </script>
+<style>
+    .required {
+        color: red;
+    }
+</style>
