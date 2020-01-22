@@ -45,9 +45,9 @@ class VehicleController extends Controller
      */
     public function companies(Request $request)
     {
-        $companies = Vehicle::select(['vehicle_id', 'company_name'])
+        $companies = Vehicle::distinct()
+            ->select(['company_name'])
             ->where('delete_flg',0)
-            ->distinct()
             ->get();
         return Json::encode($companies);
     }

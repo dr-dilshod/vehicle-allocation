@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="container">
-        <invoice fetch-url="{{ route('vehicle.table') }}"
+        <invoice fetch-url="{{ route('api.invoice.index') }}"
                  back-url="{{route('setting')}}"
-                 shippers-url="{{route('vehicle.companies')}}"
-                 vehicles-url="{{route('vehicle.companies')}}"
+                 shippers-url="{{route('api.shipper.distinct-name')}}"
+                 vehicles-url="{{route('api.driver.vehicle-numbers')}}"
                  resource-url="/api/vehicle"
                  title="Invoice list"
         ></invoice>

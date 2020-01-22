@@ -30,6 +30,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Driver extends Model
 {
+    const SEARCH_FLAG_WORKING = 0;
+    const SEARCH_FLAG_QUIT = 1;
+
     /**
      * The primary key for the model.
      *
@@ -87,5 +90,12 @@ class Driver extends Model
     public function unitPrices()
     {
         return $this->hasMany('App\UnitPrice', null, 'driver_id');
+    }
+
+    public static function getSearchFlagValues(){
+        return [
+            self::SEARCH_FLAG_WORKING => 'Working',
+            self::SEARCH_FLAG_QUIT => 'Quit'
+        ];
     }
 }

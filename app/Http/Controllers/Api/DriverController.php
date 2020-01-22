@@ -81,4 +81,16 @@ class DriverController extends Controller
         Driver::destroy($id);
         return response()->json(null, 204);
     }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getVehicleNumbers(){
+        $vehicles = Driver::select(['vehicle_no3'])
+            ->where('delete_flg',0)
+            ->distinct()
+            ->orderBy('vehicle_no3')
+            ->get();
+        return response()->json($vehicles);
+    }
 }

@@ -25,10 +25,12 @@
     },
     "dependencies": {
         "@syncfusion/ej2-vue-buttons": "^17.4.41",
+        "@syncfusion/ej2-vue-calendars": "^17.4.43",
         "@syncfusion/ej2-vue-dropdowns": "^17.4.40",
         "@syncfusion/ej2-vue-grids": "^17.4.40",
         "@syncfusion/ej2-vue-popups": "^17.4.39",
         "vue-router": "^3.1.3",
-        "vue-simple-alert": "^1.1.1"
+        "vue-simple-alert": "^1.1.1",
+        "vuejs-datepicker": "^1.6.2"
     }
 }
