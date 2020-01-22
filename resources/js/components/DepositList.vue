@@ -23,8 +23,8 @@
                     <div class="form-group ml-1">
                         <select id="shipper" v-model="filter.shipper" class="form-control">
                             <option value=""></option>
-                            <option v-for="shipper in shippers" :value="shipper">
-                                {{ shipper }}
+                            <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                {{ shipper.shipper_name1}}
                             </option>
                         </select>
                     </div>
@@ -32,8 +32,9 @@
                         <label for="year">Deposit year</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="year" v-model="filter.year" class="form-control">
-                            <option v-for="x in 30" :value="x">
+                        <select id="year" v-model="filter.year"
+                                v-on:change="changeDays" class="form-control">
+                            <option v-for="x in 30" :value="new Date().getFullYear() - x + 1">
                                 {{ new Date().getFullYear() - x + 1}}
                             </option>
                         </select>
@@ -42,8 +43,8 @@
                         <label for="month">Deposit month</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="month" v-model="filter.month" class="form-control">
-                            <option v-for="month in months" :value="month">
+                        <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control">
+                            <option v-for="(month, index) in months" :value="index+1">
                                 {{ month }}
                             </option>
                         </select>
@@ -53,7 +54,7 @@
                     </div>
                     <div class="form-group ml-1">
                         <select id="day" v-model="filter.day" class="form-control">
-                            <option v-for="day in days" :value="day">
+                            <option v-for="day in dayCount" :value="day">
                                 {{ day }}
                             </option>
                         </select>
@@ -111,8 +112,6 @@
             <div class="col-1">yen</div>
         </div>
 
-
-
     </div>
 
 </template>
@@ -125,6 +124,7 @@
         props : {
             backUrl : {required : true},
             resourceUrl : {required : true},
+            shipperUrl : {required : true},
         },
         data(){
             return {
@@ -135,20 +135,31 @@
                     month : '',
                     day : ''
                 },
+                shippers : [],
+                months : ['January', 'February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                dayCount : 0,
             }
-
         },
 
         mounted() {
-
-        },
-
-        props : {
-
+            this.fetchShippers();
         },
 
         methods : {
-
+            fetchShippers(){
+                let self = this;
+                axios.get(this.shipperUrl)
+                    .then(response =>
+                        self.shippers = response.data
+                    ).catch (
+                        error => alert(error)
+                    )
+            },
+            changeDays(){
+                if (this.filter.year != '' && this.filter.month != ''){
+                    this.dayCount = new Date(this.filter.year, this.filter.month, 0).getDate();
+                }
+            },
         },
 
         name : 'DepositList'
