@@ -36,7 +36,6 @@ Route::put('/driver/{id}', 'Api\DriverController@update')->name('api.driver.upda
 Route::delete('/driver/{id}', 'Api\DriverController@destroy')->name('api.driver.destroy');
 
 // Shipper routes
-//Route::resource('shipper', 'Api\ShipperController');
 Route::get('/shipper', 'Api\ShipperController@index')->name('api.shipper.index');
 Route::get('/shipper/{id}', 'Api\ShipperController@show')->name('api.shipper.show');
 Route::post('/shipper', 'Api\ShipperController@store')->name('api.shipper.store');
@@ -44,7 +43,7 @@ Route::put('/shipper/{id}', 'Api\ShipperController@update')->name('api.shipper.u
 Route::delete('/shipper/{id}', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
 Route::get("/shippers/distinct-name", 'Api\ShipperController@distinctNames')->name('api.shipper.distinct-name');
 Route::get("/shippers/distinct-company", 'Api\ShipperController@distinctCompanies')->name('api.shipper.distinct-company');
-
+Route::get('/shipper/all', 'Api\ShipperController@getShippers')->name('api.shipper.all');
 /*
  * Item CRUD
  */
@@ -63,3 +62,8 @@ Route::get('/unit-price/{id}', 'Api\UnitPriceController@show')->name('api.unit-p
 Route::post('/unit-price/{id}', 'Api\UnitPriceController@store')->name('api.unit-price.store');
 Route::post('/unit-price/{id}', 'Api\UnitPriceController@update')->name('api.unit-price.update');
 Route::delete('/unit-price/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-price.destroy');
+
+/**
+ * Deposit APIs
+ */
+Route::get('deposit', 'Api\DepositController@index')->name('api.deposit.index');

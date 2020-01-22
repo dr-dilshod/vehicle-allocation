@@ -26,7 +26,6 @@ Route::get('/vehicle/companies', 'VehicleController@companies')->name('vehicle.c
 
 // Shipper
 Route::resource('shipper', 'ShipperController');
-Route::get('/shipper/getShippers', 'Api\ShipperController@getShippers')->name('shipper.shippers');
 
 // Driver
 Route::resource('driver', 'DriverController');
@@ -39,9 +38,11 @@ Route::get('/item/getItemList', 'Api\ItemController@getItemList')->name('item.li
 Route::get('/item/create', 'ItemController@create')->name('item.create');
 Route::get('/item/getVehicleNumbers', 'Api\ItemController@getVehicleNumbers')->name('vehicle.vehicleNumbers');
 
-
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
 
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
+
+// Deposit list
+Route::get('/deposit', 'DepositController@index')->name('deposit.index');

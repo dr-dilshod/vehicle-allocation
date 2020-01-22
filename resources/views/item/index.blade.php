@@ -4,7 +4,7 @@
     <div class="container">
         <item-list item-url="{{route('api.item.list')}}"
                back-url="{{route('top')}}"
-               shipper-url="{{route('api.shipper.shippers')}}"
+               shipper-url="{{route('api.shipper.all')}}"
                vehicle-url="{{route('api.vehicle.vehicleNumbers')}}"
                registration-url="{{route('item.create')}}"
                title="Item list"
