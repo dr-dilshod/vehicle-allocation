@@ -160,6 +160,9 @@
                     this.dayCount = new Date(this.filter.year, this.filter.month, 0).getDate();
                 }
             },
+            search(){
+
+            }
         },
 
         name : 'DepositList'
