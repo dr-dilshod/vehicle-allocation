@@ -1,45 +1,57 @@
 <template>
+    <form action="#" class="" @submit.prevent="register">
     <div>
-        <!--form action="#" class="form-inline" @submit.prevent="register"-->
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
                    class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
             <div class="col-2">
+                <h6 class="text-center text-danger">* - required</h6>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="register">Register</button>
+                <button type="submit" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
                 <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="clear">Clear</button>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="table-responsive">
+                    <br>
                     <table class="table table-sm table-nowrap card-table">
                         <thead>
                          <tr></tr>
                         </thead>
                         <tbody class="list">
                         <tr>
-                            <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
+                            <td class="orders-order text-right"><span>Stack Date</span><span class="required"> *</span></td>
                             <td>
                                 <div class="input-group">
                                         <input  type="date" placeholder="" class="form-control" for="stack_date"
                                                 id="stack_date" v-model="itemData.stack_date" required/>
                                     </div>
                             </td>
-                            <td class="text-right"><span class="c25479">Stack Time</span></td>
+                            <td class="text-right"><span class="c25479">Stack Time</span><span class="required"> *</span></td>
                             <td class="stack_time_hour">
-                                <input type="time" placeholder="" class="form-control" for="stack_time"
-                                       id="stack_time" v-model="itemData.stack_time" required/>
+                                <select name="stack_time_hour" id="stack_time_hour" v-model="stack_time_hour"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="hour in 23" :value="hour">
+                                        {{ hour }}
+                                    </option>
+                                </select>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-date">
+                                <select name="stack_time_min" id="stack_time_min" v-model="stack_time_min"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="min in 59" :value="min">
+                                        {{ min }}
+                                    </option>
+                                </select>
                             </td>
                             <td class="orders-total"><span class="c25479">Billing</span></td>
                             <td class="orders-status"></td>
@@ -54,29 +66,39 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Down Date</span></td>
+                            <td class="text-right"><span class="c24966">Down Date</span><span class="required"> *</span></td>
                             <td class="orders-order">
                                 <div class="input-group">
                                     <input type="date" placeholder="" class="form-control" for="down_date"
                                        id="down_date" v-model="itemData.down_date" required/>
                                 </div>
                             </td>
-                            <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span></td>
+                            <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span><span class="required"> *</span></td>
                             <td class="orders-date">
-                                <input type="time" placeholder="" class="form-control" for="down_time"
-                                       id="down_time" v-model="itemData.down_time" required/>
+                                <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="hour in 23" :value="hour">
+                                        {{ hour }}
+                                    </option>
+                                </select>
                             </td>
                             <th><span class="c25479">:</span></th>
                             <td class="orders-total">
+                                <select name="down_time_min" id="down_time_min" v-model="down_time_min"
+                                        v-on:input="timeFormatter" class="form-control" required>
+                                    <option v-for="min in 59" :value="min">
+                                        {{ min }}
+                                    </option>
+                                </select>
                             </td>
                             <td class="item-status">
                                 <div class="badge badge-success"></div>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Vehicle Model</span></td>
+                            <td class="text-right"><span class="c24966">Vehicle Model</span><span class="required"> *</span></td>
                             <td class="orders-order">
-                                <select name="vehicle_model" id="vehicle_model" v-model="itemData.vehicle_model"
+                                <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
                                         class="form-control" required>
                                     <option value=""></option>
                                     <option value="Wing">Wing</option>
@@ -92,13 +114,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Shipper</span></td>
+                            <td class="text-right"><span class="c24966">Shipper</span><span class="required"> *</span></td>
                             <td class="orders-order">
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option v-for="shipper in shippers" :value="shipper.id">
-                                        {{ shipper.shipper_name1 }}
+                                    <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                        {{ shipper.shipper_name1 + " " + shipper.shipper_name2}}
                                     </option>
                                 </select>
                             </td>
@@ -109,12 +131,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Stack Point</span></td>
+                            <td class="text-right"><span class="c24966">Stack Point</span><span class="required"> *</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" for="stack_point" v-model="itemData.stack_point"
-                                       id="stack_point"/>
+                                <input type="text" placeholder="" class="form-control" for="stack_point"
+                                       v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">~  Down Point</span>
+                                <span class="required"> *</span>
                             </td>
                             <td class="orders-date">
                                 <input id="down_point" for="down_point" type="text" placeholder="" class="form-control"
@@ -145,22 +168,25 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Per ton</span></td>
                             <td class="orders-order">
-                                <input id="per_ton" type="text" placeholder="" class="form-control" v-model="itemData.item_price"/>
+                                <input id="per_ton" type="text" placeholder="" class="form-control"
+                                       v-on:input="perTonChange" v-model="per_ton"/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="x"/>
+                                <input type="text" placeholder="" class="form-control" id="ton"
+                                       v-on:input="perTonChange" v-model="ton" value=""/>
                             </td>
                             <td class="orders-total"><span class="c25479 text-right">t</span></td>
                         </tr>
                         <tr>
                             <td class="text-right"><span class="c24966">Per vehicle</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="per_vehicle" v-model="itemData.vehicle_payment"/>
+                                <input type="text" placeholder="" class="form-control" id="per_vehicle"
+                                       v-on:input="perVehicleChange" :disabled="isDisabled" v-model="per_vehicle"/>
                             </td>
-                            <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
+                            <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="x2" />
+
                             </td>
                             <td class="orders-total"></td>
                             <td class="orders-status">
@@ -169,7 +195,8 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Amount of Money</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="amount" v-model="itemData.down_invoice" readonly/>
+                                <input type="text" placeholder="" class="form-control" id="item_price"
+                                       v-model="itemData.item_price" value="" readonly/>
                             </td>
                             <td class="orders-product"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-date"></td>
@@ -180,13 +207,14 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Vehicle No.</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="vehicle_no" v-model="itemData.vehicle_no"/>
+                                <input type="text" placeholder="" class="form-control" id="vehicle_no"
+                                       v-model="itemData.vehicle_no"/>
                             </td>
                             <td class="orders-product text-right"><span class="c24966">Driver Name</span></td>
                             <td class="orders-date">
                                 <select name="driver_id" id="driver_id" v-model="itemData.driver_id" class="form-control">
                                     <option value=""></option>
-                                    <option v-for="driver in drivers" :value="driver.id">
+                                    <option v-for="driver in drivers" :value="driver.driver_id">
                                         {{ driver.driver_name }}
                                     </option>
                                 </select>
@@ -209,7 +237,8 @@
                             <td class="orders-product text-right"><span class="c24966">Rental Vehicle <br/>Payment<br/></span>
                             </td>
                             <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="vehicle_payment" v-model="itemData.vehicle_payment"/>
+                                <input type="text" placeholder="" class="form-control" id="vehicle_payment"
+                                       v-model="itemData.vehicle_payment"/>
                             </td>
                             <td class="orders-total"><span class="c25479 text-right">yen</span></td>
                             <td class="orders-status">
@@ -232,8 +261,8 @@
                 </div>
             </div>
         </div>
-        <!--/form-->
     </div>
+    </form>
 </template>
 
 <script>
@@ -255,7 +284,7 @@
                     shipper_id: '',
                     driver_id: '',
                     vehicle_no: '',
-                    status:'',
+                    status: 0,
                     stack_date: '',
                     stack_time: '',
                     down_date: '',
@@ -273,23 +302,67 @@
                     vehicle_payment: '',
                     item_completion_date: '',
                     item_remark: '',
-                    delete_flg: '',
+                    delete_flg: 0,
                     create_id: '',
                     update_id: '',
-                    remember_token:''
+                    remember_token:'',
                 },
+                isDisabled: false,
                 shippers: [],
                 drivers: [],
-                vehicles: []
+                vehicles: [],
+                per_ton: '',
+                per_vehicle: '',
+                ton: '',
+                stack_time_hour: '',
+                stack_time_min: '',
+                down_time_hour: '',
+                down_time_min: ''
             }
         },
         mounted() {
-//            alert('Mounted');
             this.fetchShippers(this.shipperUrl);
             this.fetchDrivers(this.driverUrl);
             this.fetchVehicles(this.vehicleUrl);
+            this.fetchCurrentDate();
         },
         methods: {
+            fetchCurrentDate(){
+                let currentDate = new Date();
+                this.itemData.item_completion_date = currentDate;
+            },
+            perTonChange() {
+                if ((this.per_ton == '')
+                    && (this.ton == '')) {
+                    document.getElementById('per_vehicle').disabled = false;
+                } else {
+                    document.getElementById('per_vehicle').disabled = true;
+                    if (this.ton == '') {
+                        this.ton = 1;
+                        this.itemData.item_price = this.per_ton;
+                    } else {
+                        this.itemData.item_price = this.per_ton * this.ton;
+                    }
+                }
+            },
+            perVehicleChange() {
+                if (this.per_vehicle == '') {
+                    document.getElementById('per_ton').disabled = false;
+                    document.getElementById('ton').disabled = false;
+                } else {
+                    document.getElementById('per_ton').disabled = true;
+                    document.getElementById('ton').disabled = true;
+                    this.itemData.item_price = this.per_vehicle;
+                }
+            },
+            timeFormatter() {
+                this.itemData.stack_time = document.getElementById('stack_time_hour').value
+                    + ':' + document.getElementById('stack_time_min').value
+                    + ':00';
+                this.itemData.down_time = document.getElementById('down_time_hour').value
+                    + ':' + document.getElementById('down_time_min').value
+                    + ':00';
+            },
             clear(){
                 alert('clear action');
             },
@@ -312,8 +385,6 @@
                     });
             },
             register(){
-                console.log("this is data sent ==== " + this.itemData + " == " + this.itemData.item_vehicle);
-                console.log("this is url ====" + this.resourceUrl);
                 axios.post(this.resourceUrl,this.itemData)
                     .then(function(response){
                         console.log("Insert data success");
@@ -329,3 +400,8 @@
         }
     }
 </script>
+<style>
+    .required {
+        color: red;
+    }
+</style>

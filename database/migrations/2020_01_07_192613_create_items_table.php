@@ -41,7 +41,7 @@ class CreateItemsTable extends Migration
             $table->integer('vehicle_payment')->nullable();
             $table->date('item_completion_date')->nullable();
             $table->string('item_remark', 255)->nullable();
-            $table->tinyInteger('delete_flg')->default(0)->nullable();
+            $table->tinyInteger('delete_flg')->default(0);
             $table->unsignedBigInteger('create_id')->unsigned()->nullable();
             $table->unsignedBigInteger('update_id')->unsigned()->nullable();
             $table->timestamps();

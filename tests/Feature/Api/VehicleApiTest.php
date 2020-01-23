@@ -3,6 +3,7 @@
 namespace Tests\Feature\Feature\Api;
 
 use App\Vehicle;
+use mysql_xdevapi\Table;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,12 +18,36 @@ class VehicleApiTest extends TestCase
 
     //use WithoutMiddleware;
 
-    public function testVehiclesPage()
+    use WithFaker;
+    public function setUp(): void
+    {
+        parent::setUp();
+        // seeding test data in the data base
+        $user = Vehicle::create([
+            $this->faker->firstName()
+        ]);
+        $test_data = [
+            'vehicle_no' => '0000',
+            'company_name' => 'TestCompanyName',
+            'driver_name' => 'TestDriverName',
+            'offset' => 0,
+            'delete_flg'=> 0
+        ];
+        $request = new Request();
+        $request->headers->set('content-type', 'application/json');
+        $request->setJson(new ParameterBag($test_data));
+        $vehicleController = new VehicleController();
+        $fetch = $vehicleController->store($request);
+    }
+
+    /**
+     * Test the schema of vehicle table
+     */
+    public function testVehicleSchema()
     {
         $response = $this->json('GET', route('api.vehicle.index'));
         $response
             ->assertStatus(200)
-            ->assertJson([])
             ->assertJsonStructure([
                 'data' => [
                     'vehicle_id', 'vehicle_no', 'company_name', 'company_kana_name', 'vehicle_company_abbreviation',
@@ -32,12 +57,21 @@ class VehicleApiTest extends TestCase
             ]);
     }
 
+    /**
+     * Testing vehicle creation
+     */
     public function testCreateVehicle(){
-        $vehicle = factory(Vehicle::class)->make();
+        $vehicle = factory(Vehicle::class)->make([
+            'company_name' => 'TestCompanyName1']);
         $response = $this->json('POST', route('api.vehicle.store'), $vehicle->toArray());
         $response->assertStatus(201);
+        assertTrue(DB::table('vehicles')->where('company_name', 'TestCompanyName1')->exists());
+        DB::table('vehicles')->where('company_name', '=', "TestCompanyName1")->delete();
     }
 
+    /**
+     * Testing structure of one record
+     */
     public function testGetVehicle(){
         $vehicle = factory(Vehicle::class)->create();
         $response = $this->json('GET', route('api.vehicle.show', [$vehicle->vehicle_id]));
@@ -57,9 +91,12 @@ class VehicleApiTest extends TestCase
     }
 
     public function testDeleteVehicle(){
-        $vehicle = factory(Vehicle::class)->create();
+        $vehicle = factory(Vehicle::class)->create([
+            'company_name' => 'TestCompanyName']);
         $response = $this->json('DELETE',route('api.vehicle.destroy',[$vehicle->vehicle_id]));
         $response->assertStatus(204);
+        assertFalse(DB::table('vehicles')->where('company_name', 'TestCompanyName')->exists());
+
     }
 
      /**
@@ -79,37 +116,23 @@ class VehicleApiTest extends TestCase
      */
     public function testCarCompanyDataAcqusition()
     {
-        $test_data = [
-            'vehicle_no' => '1234',
-            'company_name' => 'CompanyName',
-            'driver_name' => 'DriverName',
+        // write the same company name twice, then check if only one is displayed
+        // $faker = Faker::create('App\Vehicle');
+        DB::table('vehicles')->insert([
+            'vehicle_no' => '0000',
+            'company_name' => 'TestCompanyNameDistict',
             'offset' => 0,
-            'delete_flg'=> 0
-        ];
-        $request = new Request();
-        $request->headers->set('content-type', 'application/json');
-        $request->setJson(new ParameterBag($test_data));
-        $vehicleController = new VehicleController();
-        $fetch = $vehicleController->store($request);
+            'delete_flg'=>0,
+        ]);
+        DB::table('vehicles')->insert([
+            'vehicle_no' => '0000',
+            'company_name' => 'TestCompanyNameDistict',
+            'offset' => 0,
+            'delete_flg'=>0,
+        ]);
         $response = $this->json('GET', route('vehicle.companies'));
-        $response->assertStatus(200)
-            ->assertJsonFragment([
-                'company_name' => 'CompanyName',
-            ]);
-        DB::table('vehicles')->where('CompanyName', '=', "CompanyName")->delete();
-    }
-
-    public function testBasicExample()
-    {
-        $response = $this->withHeaders([
-            'X-Header' => 'Value',
-        ])->json('POST', '/user', ['name' => 'Sally']);
-
-        $response
-            ->assertStatus(201)
-            ->assertJson([
-                'created' => true,
-            ]);
+        $response->assertJsonCount('1','company_name','TestCompanyNameDistict');
+        DB::table('vehicles')->where('company_name', '=', "TestCompanyNameDistict")->delete();
     }
 
     /**
@@ -117,15 +140,13 @@ class VehicleApiTest extends TestCase
      */
     public function testSearchCondition()
     {
-
-    }
-
-    /**
-     * Display order: Rental vehicle master. Rental car No. ascending order
-     */
-    public function testDisplayOrder()
-    {
-
+        $response = Vehicle::select()
+            ->where('company_name', 'TestCompanyName')
+            ->get();
+        $response -> assertStatus(200)
+            -> assertJsonFragment([
+            'delete_flg' => 0,
+        ]);
     }
 
     /**
@@ -133,87 +154,50 @@ class VehicleApiTest extends TestCase
     */
     public function testRentalVehicleNo()
     {
-
+        $response = $this->json('GET', route('vehicle.companies'));
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'vehicle_no' => '0000',
+            ]);
     }
 
     /**
-    * Acquisition data: Rental vehicle master. Rental vehicle company name
-    */
-    public function testVehicleCompanyName()
-    {
-
-    }
-
-    /**
-    * Acquisition data: Rental vehicle master. Furigana (company name)
-    */
-    public function testFuriganaCompanyName()
-    {
-
-    }
-
-    /**
-    * Acquisition data: Rental vehicle master.
-    */
-    public function testVehicleMaster()
-    {
-
-    }
-
-    /**
+     * Acquisition data: Rental vehicle master. Rental vehicle company name
+     * Acquisition data: Rental vehicle master. Furigana (company name)
+     * Acquisition data: Rental vehicle master.
      * Acquisition data: Rental vehicle master.Postal code
-     */
-    public function testPostalCode()
-    {
-
-    }
-
-    /**
      * Acquisition data: Rental vehicle master. Address 1
-     */
-    public function testAddress1()
-    {
-
-    }
-
-    /**
      * Acquisition data: Charter Master. Address 2
-     */
-    public function testAddress2()
-    {
-
-    }
-
-    /**
      * Acquisition data: Rental vehicle master.Phone number
-     */
-    public function testPhoneNumber()
-    {
-
-    }
-
-    /**
      * Acquisition data: Rental vehicle master.FAX number
      */
-    public function testFAXNumber()
-    {
-
-    }
-
-    /**
-     * Acquisition data: Search condition: Rental vehicle master. Delete flag = 0
-     */
-    public function testDeleteFlag()
-    {
-
-    }
-
-    /**
-     * Acquisition data: Display order: Rental vehicle master. Rental car No.
-     */
-    public function testRentalCarNo()
-    {
-
+    public function testDataAcquisition() {
+        $vehicle = factory(Vehicle::class)->create([
+            'vehicle_no' => '0000',
+            'company_name' => 'TestCompanyName',
+            'company_kana_name' => 'TestCompanyKanaName',
+            'vehicle_company_abbreviation' => 'vehicle_company_abbreviation',
+            'vehicle_postal_code' => '220100',
+            'vehicle_address1' => '',
+            'vehicle_address2' => '',
+            'vehicle_phone_number' => '+9986333333',
+            'vehicle_fax_number' => '9986333333',
+            'vehicle_remark' => 'test remark',
+        ]);
+        $response = $this->json('GET', route('api.vehicle.show', [$vehicle->vehicle_id]));
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'vehicle_no' => '0000',
+                'company_name' => 'TestCompanyName',
+                'company_kana_name' => 'TestCompanyKanaName',
+                'vehicle_company_abbreviation' => 'vehicle_company_abbreviation',
+                'vehicle_postal_code' => '220100',
+                'vehicle_address1' => '',
+                'vehicle_address2' => '',
+                'vehicle_phone_number' => '+9986333333',
+                'vehicle_fax_number' => '9986333333',
+                'vehicle_remark' => 'test remark',
+            ]);
     }
 
     /**
@@ -225,47 +209,6 @@ class VehicleApiTest extends TestCase
      */
 
 
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental vehicle master Rental vehicle No.
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master. Rental car company name
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master. Furigana (company name)
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master.
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master.Postal code
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master. Address 1
-     */
-    /**
-     * 3. When the search button is pressed: Acquisition data: Charter Master. Address 2
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master.Phone number
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master.FAX number
-     */
-
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master.
-     */
-    /**
-     * 3. When the search button is pressed: Acquisition data: Rental car master.
-     */
     /**
      * 3. When the search button is pressed: Search condition:
      * Rental car master. Rental car company name= Rental car company.Select box

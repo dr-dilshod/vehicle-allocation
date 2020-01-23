@@ -157,15 +157,4 @@ class DriverController extends Controller
         return redirect('driver')->with('flash_message', 'Driver deleted!');
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getDrivers(Request $request)
-    {
-        $drivers = Driver::select(['driver_id', 'driver_name'])
-            ->where('delete_flg',0)
-            ->get();
-        return response()->json($drivers);
-    }
 }

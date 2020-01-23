@@ -29,14 +29,17 @@ Route::resource('shipper', 'ShipperController');
 
 // Driver
 Route::resource('driver', 'DriverController');
-Route::get('/driver/getDrivers', 'DriverController@getDrivers')->name('driver.drivers');
 Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver.table');
 
 // Item
-Route::get('/item', 'ItemController@index')->name('item');
+Route::get('/item', 'ItemController@index')->name('item.index');
 Route::get('/item/getItemList', 'Api\ItemController@getItemList')->name('item.list');
 Route::get('/item/create', 'ItemController@create')->name('item.create');
-Route::get('/item/getVehicleNumbers', 'Api\ItemController@getVehicleNumbers')->name('vehicle.vehicleNumbers');
+Route::get('/item/getItemList', 'Api\ItemController@getItemList')->name('item.list');
+Route::get('/item/getVehicleNumbers', 'Api\ItemController@getVehicleNumbers')->name('item.vehicleNumbers');
+Route::get('/item/getItemShippers', 'Api\ItemController@getItemShippers')->name('item.shippers.dropdown');
+Route::get('/item/getDrivers', 'Api\ItemController@getDrivers')->name('item.drivers');
+Route::get('/item/getShippers', 'Api\ItemController@getShippers')->name('item.shippers');
 
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');

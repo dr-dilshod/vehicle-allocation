@@ -34,6 +34,7 @@ Route::get('/driver/{id}', 'Api\DriverController@show')->name('api.driver.show')
 Route::post('/driver', 'Api\DriverController@store')->name('api.driver.store');
 Route::put('/driver/{id}', 'Api\DriverController@update')->name('api.driver.update');
 Route::delete('/driver/{id}', 'Api\DriverController@destroy')->name('api.driver.destroy');
+Route::get('/drivers/vehicle-numbers', 'Api\DriverController@getVehicleNumbers')->name('api.driver.vehicle-numbers');
 
 // Shipper routes
 Route::get('/shipper', 'Api\ShipperController@index')->name('api.shipper.index');
@@ -67,3 +68,6 @@ Route::delete('/unit-price/{id}', 'Api\UnitPriceController@destroy')->name('api.
  * Deposit APIs
  */
 Route::get('deposit', 'Api\DepositController@index')->name('api.deposit.index');
+
+// Invoice
+Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index');
