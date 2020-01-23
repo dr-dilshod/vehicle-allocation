@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
              ShipperTableSeeder::class,
              DriverTableSeeder::class,
              ItemTableSeeder::class,
+             DepositTableSeeder::class,
          ]);
     }
 }
