@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangeColumnsInvoiceTable extends Migration
+class SetDriverNameUniqueOnDriversTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class ChangeColumnsInvoiceTable extends Migration
      */
     public function up()
     {
-        Schema::table('invoices', function(Blueprint $table) {
-            $table->renameColumn('Billing_recording_date', 'billing_recording_date');
-            $table->renameColumn('Billing_deadline_date', 'billing_deadline_date');
+        Schema::table('drivers', function (Blueprint $table) {
+            $table->unique('driver_name');
         });
     }
 

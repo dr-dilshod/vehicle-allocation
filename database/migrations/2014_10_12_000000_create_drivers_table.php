@@ -31,9 +31,14 @@ class CreateDriversTable extends Migration
             $table->timestamps();
             $table->index('create_id');
             $table->index('update_id');
-            $table->foreign('create_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('update_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('create_id')->references('driver_id')->on('drivers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('update_id')->references('driver_id')->on('drivers')->onDelete('cascade')->onUpdate('cascade');
         });
+
+        $driver = new \App\Driver();
+        $driver->driver_name = 'admin';
+        $driver->driver_pass = Hash::make('admin');
+        $driver->save();
     }
 
     /**

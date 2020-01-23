@@ -32,8 +32,8 @@ class CreateVehiclesTable extends Migration
             $table->timestamps();
 
             $table->index(['create_id','update_id']);
-            $table->foreign('create_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('update_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('create_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('update_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
 
         });
     }

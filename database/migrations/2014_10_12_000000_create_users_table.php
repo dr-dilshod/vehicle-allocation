@@ -16,23 +16,23 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-
-        DB::table('users')->insert([
-            'name' => 'Administrator',
-            'username' => 'admin',
-            'email' => 'admin@va.uz',
-            'password' => Hash::make('admin'),
-        ]);
+//        Schema::create('users', function (Blueprint $table) {
+//            $table->bigIncrements('id');
+//            $table->string('name');
+//            $table->string('username')->unique();
+//            $table->string('email')->unique();
+//            $table->timestamp('email_verified_at')->nullable();
+//            $table->string('password');
+//            $table->rememberToken();
+//            $table->timestamps();
+//        });
+//
+//        DB::table('users')->insert([
+//            'name' => 'Administrator',
+//            'username' => 'admin',
+//            'email' => 'admin@va.uz',
+//            'password' => Hash::make('admin'),
+//        ]);
     }
 
     /**

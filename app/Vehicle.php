@@ -22,9 +22,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
- * @property User $user
- * @property User $updateUser
- * @property Invoice[] $billings
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
+ * @property Invoice[] $invoices
  * @property Payment[] $payments
  */
 class Vehicle extends Model
@@ -85,23 +85,23 @@ class Vehicle extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
-        return $this->belongsTo('App\User', 'create_id');
+        return $this->belongsTo('App\Driver', 'create_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function billings()
+    public function invoices()
     {
         return $this->hasMany('App\Invoice', null, 'vehicle_id');
     }

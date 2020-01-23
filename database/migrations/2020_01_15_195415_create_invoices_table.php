@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBillingsTable extends Migration
+class CreateInvoicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateBillingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('billings', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('invoice_id');
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('shipper_id');
             $table->unsignedBigInteger('vehicle_id');
-            $table->dateTime('Billing_recording_date')->nullable();
-            $table->dateTime('Billing_deadline_date')->nullable();
+            $table->dateTime('billing_recording_date')->nullable();
+            $table->dateTime('billing_deadline_date')->nullable();
             $table->dateTime('payment_record_date')->nullable();
             $table->string('invoice_remark', 255)->nullable();
             $table->tinyInteger('delete_flg')->default(0);
@@ -37,6 +37,6 @@ class CreateBillingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('billings');
+        Schema::dropIfExists('invoices');
     }
 }

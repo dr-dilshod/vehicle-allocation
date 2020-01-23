@@ -17,17 +17,17 @@ class DepositsRelations extends Migration
             $table->index(['invoice_id', 'create_id', 'update_id']);
             $table->foreign('invoice_id')
                 ->references('invoice_id')
-                ->on('billings')
+                ->on('invoices')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
             $table->foreign('create_id')
-                ->references('id')
-                ->on('users')
+                ->references('driver_id')
+                ->on('drivers')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
             $table->foreign('update_id')
-                ->references('id')
-                ->on('users')
+                ->references('driver_id')
+                ->on('drivers')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
         });

@@ -36,9 +36,9 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  * @property string $remember_token
  * @property Driver $driver
  * @property Shipper $shipper
- * @property User $user
- * @property User $updateUser
- * @property Invoice[] $billings
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
+ * @property Invoice[] $invoices
  * @property Dispatch[] $dispatches
  * @property UnitPrice[] $unitPrices
  */
@@ -68,7 +68,7 @@ class Item extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
         return $this->belongsTo('App\User', 'create_id');
     }
@@ -92,15 +92,15 @@ class Item extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function billings()
+    public function invoices()
     {
         return $this->hasMany('App\Invoice', null, 'item_id');
     }
