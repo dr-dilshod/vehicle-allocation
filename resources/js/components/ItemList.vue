@@ -249,7 +249,6 @@
     @import "../../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/material.css";
     .complete {
         background-color: CornflowerBlue;
     }

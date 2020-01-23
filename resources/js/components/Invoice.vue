@@ -14,70 +14,78 @@
             <div class="col-4">
                 <div class="row">
                     <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="register"  :disabled="this.mode != 'editing'">Register</button>
+                        <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode != 'editing'">
+                            Register
+                        </button>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="edit" >Edit</button>
+                        <button class="btn btn-lg btn-danger" @click="edit">Edit</button>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-lg btn-success"  @click="billingMonth">Billing month</button>
+                        <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
+                            Billing month
+                        </button>
                         <br>
-                        <button class="btn btn-lg btn-success mt-1"  @click="listPrinting">List printing</button>
+                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">List printing</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row mt-4 mb-4">
             <form action="#" class="form-inline" method="post" @submit.prevent="search">
-                <table>
+                <table class="table">
                     <tr>
                         <td>
-                            <div class="form-group ml-3">
-                                <label for="shipper">Shipper</label>
-                                <select name="shipper" id="shipper" v-model="formData.shipper" class="form-control">
-                                    <option value=""></option>
-                                    <option v-for="shipperItem in shippers">
-                                        {{ shipperItem }}
-                                    </option>
-                                </select>
-                            </div>
+                            <label for="shipper">Shipper</label>
                         </td>
                         <td>
-                            <div class="form-group">
-                                <label for="invoice_month">Invoice month</label>
-                                <datepicker v-model="invoice_month" :minimumView="'month'" :maximumView="'month'" :format="options.monthFormat"></datepicker>
-                            </div>
+                            <select name="shipper" id="shipper" v-model="formData.shipper" class="form-control">
+                                <option value=""></option>
+                                <option v-for="shipperItem in shippers">
+                                    {{ shipperItem }}
+                                </option>
+                            </select>
                         </td>
                         <td>
-                            <div class="form-group">
-                                <label for="invoice_day">Invoice day</label>
-                                <datepicker v-model="invoice_day" :minimumView="'day'" :format="options.dayFormat" :maximumView="'day'"></datepicker>
-                            </div>
+                            <label for="invoice_month">Invoice month</label>
+                        </td>
+                        <td>
+                            <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'"
+                                            :format="options.monthFormat"></datepicker>
+                        </td>
+                        <td>
+                            <label for="invoice_day">Invoice day</label>
+                        </td>
+                        <td>
+                            <select v-model="formData.invoice_day" class="form-control">
+                                <option value=""></option>
+                                <option value="20">20th</option>
+                                <option value="30">30th</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="form-group ml-3">
-                                <label for="weekday">Weekday</label>
-                                <datepicker v-model="weekday" :minimumView="'day'" :format="options.weekday" :maximumView="'day'"></datepicker>
-                            </div>
+                            <label for="weekday">Weekday</label>
                         </td>
                         <td>
-                            <div class="form-group ml-3">
-                                <label for="vehicle_no">Vehicle No</label>
-                                <select name="vehicle_no" id="vehicle_no" v-model="vehicle_no" class="form-control">
-                                    <option value=""></option>
-                                    <option v-for="vehicle in vehicles">
-                                        {{ vehicle.vehicle_no1 }}
-                                    </option>
-                                </select>
-                            </div>
+                            <datepicker v-model="formData.weekday" :minimumView="'day'" :format="options.weekday"
+                                            :maximumView="'day'"></datepicker>
                         </td>
                         <td>
-                            <div class="form-group ml-3">
-                                <button type="submit" class="btn btn-primary mr-2">Search</button>
-                                <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
-                            </div>
+                            <label for="vehicle_no">Vehicle No</label>
+                        </td>
+                        <td>
+                            <select name="vehicle_no" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
+                                <option value=""></option>
+                                <option v-for="vehicle in vehicles">
+                                    {{ vehicle.vehicle_no3 }}
+                                </option>
+                            </select>
+                        </td>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary mr-2">Search</button>
+                            <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
                         </td>
                     </tr>
                 </table>
@@ -86,18 +94,20 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="270" :frozenColumns="4">
             <e-columns>
-                <e-column field='stack_point' headerText='Loading port' width="150" textAlign="Center" ></e-column>
-                <e-column field='down_point' headerText='Drop off' width="150" textAlign="Center" ></e-column>
+                <e-column field='stack_point' headerText='Loading port' width="150" textAlign="Center"></e-column>
+                <e-column field='down_point' headerText='Drop off' width="150" textAlign="Center"></e-column>
                 <e-column field='item_price' headerText='Amount' width="150" textAlign="Right"></e-column>
-                <e-column field='down_date' headerText='Delivery Date' width="100" textAlign="Center" ></e-column>
-                <e-column field='shipper_name' headerText='Shipper' width="150" textAlign="Center" ></e-column>
+                <e-column field='down_date' headerText='Delivery Date' width="100" textAlign="Center"></e-column>
+                <e-column field='shipper_name' headerText='Shipper' width="150" textAlign="Center"></e-column>
                 <e-column field='vehicle_no' headerText='Vehicle No' width="150" textAlign="Center"></e-column>
                 <e-column field='weight' headerText='Weight' width="150"></e-column>
-                <e-column field='unit_price' headerText='Unit price' textAlign="Right"  editType= 'numericedit' width="100"></e-column>
-                <e-column field='status' headerText='Status' width="100" textAlign="Center" ></e-column>
-                <e-column field='item_id' headerText='Matter No' width="100" textAlign="Center" ></e-column>
-                <e-column field='down_time' headerText='Delivery time'  width="100" textAlign="Center" ></e-column>
-                <e-column field='item_completion_date' headerText='Invoice date' width="150" textAlign="Center"></e-column>
+                <e-column field='unit_price' headerText='Unit price' textAlign="Right" editType='numericedit'
+                          width="100"></e-column>
+                <e-column field='status' headerText='Status' width="100" textAlign="Center"></e-column>
+                <e-column field='item_id' headerText='Matter No' width="100" textAlign="Center"></e-column>
+                <e-column field='down_time' headerText='Delivery time' width="100" textAlign="Center"></e-column>
+                <e-column field='item_completion_date' headerText='Invoice date' width="150"
+                          textAlign="Center"></e-column>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
@@ -109,7 +119,7 @@
                 </div>
                 <div class="form-group">
                     <label for="totalConsumptionTax">Total Consumption Tax</label>
-                    <input type="text" id="totalConsumptionTax" disabled="disabled" v-model="totalConsupmtionTax">
+                    <input type="text" id="totalConsumptionTax" disabled="disabled" v-model="totalConsumptionTax">
                 </div>
                 <div class="form-group">
                     <label for="otherTotals">Other Totals</label>
@@ -121,17 +131,53 @@
                 </div>
             </div>
         </div>
+        <div class="modal" id="billingModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title">Print billing date</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="">
+                            <p class="text-center">Select the billing date you want to print</p>
+                            <div class="form-group text-center" style="margin: 20px calc(32.5%)">
+                                <label for="yearMonth">Year and Month</label>
+                                <datepicker v-model="billing.month" :minimumView="'month'" :maximumView="'month'"
+                                            :format="options.monthFormat"></datepicker>
+                            </div>
+                            <div class="form-group d-flex justify-content-around">
+                                <span>
+                                    <input type="radio" name="billing_day" v-model="billing.day" value="20" id="twenty"/>
+                                    <label for="twenty">20th</label>
+                                </span>
+                                <span>
+                                    <input type="radio" name="billing_day" value="30" v-model="billing.day" id="thirty"/>
+                                    <label for="thirty">30th</label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-around">
+                            <button type="button" class="btn btn-success" @click="billingPrint">Print</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
-    import { VueSimpleAlert } from "vue-simple-alert";
-    import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
+    import {VueSimpleAlert} from "vue-simple-alert";
+    import {GridPlugin, Sort, Freeze, Toolbar, Edit} from '@syncfusion/ej2-vue-grids';
     import Datepicker from "vuejs-datepicker";
     import * as lang from "vuejs-datepicker/src/locale";
 
-    Vue.use( GridPlugin );
-    Vue.use( VueSimpleAlert );
-    Vue.use( Datepicker );
+    Vue.use(GridPlugin);
+    Vue.use(VueSimpleAlert);
+    Vue.use(Datepicker);
 
     export default{
         props: {
@@ -155,6 +201,7 @@
                     invoice_month: '',
                     shipper: '',
                 },
+                billing_month: '',
                 shippers: [],
                 vehicles: [],
                 mode: 'normal',
@@ -164,9 +211,12 @@
                 totalSalesTotal: 0,
                 options: {
                     monthFormat: "yyyy/MM",
-                    dayFormat: "dd",
                     weekday: "yyyy/MM/dd",
                     language: "ja",
+                },
+                billing: {
+                    day: 20,
+                    month: ''
                 }
             }
         },
@@ -178,8 +228,27 @@
             actionBegin(){
 
             },
-            billingMonth(){
-                alert('billing month');
+            showDialog(response) {
+                let message = response.message + ': ';
+                let errors = response.errors;
+                $.each( errors, function( key, value ) {
+                    message += value[0]; //showing only the first error.
+                });
+                this.$alert(message);
+            },
+            showSuccessDialog() {
+                this.$alert('Operation successfully done!');
+            },
+            billingPrint(){
+                let invoice = this;
+                window.location = '/invoice/billing-month-pdf';
+//                axios.get("/invoice/billing-month-pdf",this.formData)
+//                    .then(function(response){
+//                        invoice.showSuccessDialog();
+//                    })
+//                    .catch(function(error){
+//                        invoice.showDialog(error.response.data);
+//                    });
             },
             listPrinting(){
                 alert('list printing');
@@ -217,14 +286,17 @@
                 this.calculateTotals();
             },
             clear(){
-                this.company_name = '';
-                this.search();
+                this.formData.weekday = '';
+                this.formData.invoice_day = '';
+                this.formData.invoice_month = '';
+                this.formData.vehicle_no = '';
+                this.formData.shipper = '';
             },
             refresh(){
                 this.search();
             },
             setEditMode(editMode){
-                if(editMode === 'normal'){
+                if (editMode === 'normal') {
                     this.$refs.grid.ej2Instances.setProperties({
                         toolbar: null,
                         editSettings: {
@@ -234,8 +306,8 @@
                         },
                     });
                 }
-                if(editMode === 'editing'){
-                    let toolbarBtns = ['Edit','Delete','Update','Cancel'];
+                if (editMode === 'editing') {
+                    let toolbarBtns = ['Edit', 'Delete', 'Update', 'Cancel'];
                     this.$refs.grid.ej2Instances.setProperties({
                         toolbar: toolbarBtns,
                         editSettings: {
@@ -252,7 +324,7 @@
             showDialog(response) {
                 let message = response.message + ': ';
                 let errors = response.errors;
-                $.each( errors, function( key, value ) {
+                $.each(errors, function (key, value) {
                     message += value[0]; //showing only the first error.
                 });
                 this.$alert(message);
@@ -262,7 +334,7 @@
             },
         },
         provide: {
-            grid: [Sort,Freeze,Edit,Toolbar]
+            grid: [Sort, Freeze, Edit, Toolbar]
         },
         computed: {
             calculateTotals(){
@@ -279,16 +351,16 @@
     @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
 
-    #invoice label{
+    #invoice label {
         width: 150px;
-        align-items: flex-end;
+        float: right;
     }
-    #invoice .btn{
+    #invoice .btn {
         width: 100px;
         padding: 10px 5px;
         font-size: 12px;
-        -webkit-border-radius:0;
-        -moz-border-radius:0;
-        border-radius:0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
     }
 </style>

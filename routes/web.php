@@ -44,6 +44,7 @@ Route::get('/item/getShippers', 'Api\ItemController@getShippers')->name('item.sh
 
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
+Route::get('/invoice/billing-month-pdf', 'InvoiceController@billingMonthPDF')->name('invoice.billingMonthPDF');
 
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');

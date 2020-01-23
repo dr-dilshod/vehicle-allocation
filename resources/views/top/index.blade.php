@@ -20,7 +20,7 @@
         </div>
         <div class="row p-2">
             <div class="col-4">
-                <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.billing_management')}}</a>
+                <a href="{{route('invoice.index')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.billing_management')}}</a>
             </div>
             <div class="col-4">
                 <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.payment_list')}}</a>
@@ -40,22 +40,11 @@
                     <div class="form-group row">
                         <label for="year" class="col-2 offset-2">{{__('Year')}}</label>
                         <select class="form-control col-7" name="year" id="year">
-                            <option value="2010">2010</option>
-                            <option value="2011">2011</option>
-                            <option value="2012">2012</option>
-                            <option value="2013">2013</option>
-                            <option value="2014">2014</option>
-                            <option value="2015">2015</option>
-                            <option value="2016">2016</option>
-                            <option value="2017">2017</option>
                             <option value="2018">2018</option>
                             <option value="2019">2019</option>
                             <option value="2020">2020</option>
                             <option value="2021">2021</option>
                             <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
                         </select>
                     </div>
                     <div class="form-group row">

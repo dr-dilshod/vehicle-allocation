@@ -27,7 +27,7 @@ class CreateShippersTable extends Migration
             $table->string('fax_number')->nullable();
             $table->tinyInteger('closing_date')->nullable();
             $table->dateTime('payment_date')->nullable();
-            $table->tinyInteger('delete_flg')->nullable();
+            $table->tinyInteger('delete_flg')->default(0);
             $table->unsignedBigInteger('create_id')->nullable();
             $table->unsignedBigInteger('update_id')->nullable();
             $table->timestamps();
