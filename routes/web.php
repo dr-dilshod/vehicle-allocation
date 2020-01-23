@@ -41,9 +41,11 @@ Route::get('/item/getItemShippers', 'Api\ItemController@getItemShippers')->name(
 Route::get('/item/getDrivers', 'Api\ItemController@getDrivers')->name('item.drivers');
 Route::get('/item/getShippers', 'Api\ItemController@getShippers')->name('item.shippers');
 
-
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
 
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
+
+// Deposit list
+Route::get('/deposit', 'DepositController@index')->name('deposit.index');
