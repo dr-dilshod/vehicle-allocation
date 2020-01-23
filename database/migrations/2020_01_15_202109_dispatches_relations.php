@@ -26,13 +26,13 @@ class DispatchesRelations extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
             $table->foreign('create_id')
-                ->references('id')
-                ->on('users')
+                ->references('driver_id')
+                ->on('drivers')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
             $table->foreign('update_id')
-                ->references('id')
-                ->on('users')
+                ->references('driver_id')
+                ->on('drivers')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
         });

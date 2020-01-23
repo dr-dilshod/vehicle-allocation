@@ -33,7 +33,9 @@ class DriverController extends Controller
     public function store(Request $request)
     {
 
-        $driver = Driver::create($request->all());
+        $all = $request->all();
+        $all['driver_pass'] = \Hash::make($all['driver_pass']);
+        $driver = Driver::create($all);
 
         return response()->json($driver, 201);
     }

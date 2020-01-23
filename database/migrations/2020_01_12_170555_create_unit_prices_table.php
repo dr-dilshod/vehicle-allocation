@@ -26,8 +26,8 @@ class CreateUnitPricesTable extends Migration
             $table->timestamps();
 
             $table->index(['create_id', 'update_id', 'shipper_id', 'item_id', 'driver_id'], 'unit_prices-default-indexes');
-            $table->foreign('create_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('update_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('create_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('update_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('shipper_id')->references('shipper_id')->on('shippers')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('item_id')->references('item_id')->on('items')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('driver_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');

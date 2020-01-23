@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -44,6 +45,13 @@ class LoginController extends Controller
      */
     public function username()
     {
-        return 'username';
+        return 'driver_name';
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+            return view('auth.login')->withErrors([
+                $this->username() => [trans('auth.failed')],
+            ]);
     }
 }

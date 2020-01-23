@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
- * @property User $user
- * @property User $updateUser
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
  * @property Driver $driver
  * @property Item $item
  * @property Shipper $shipper
@@ -73,9 +73,9 @@ class UnitPrice extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
-        return $this->belongsTo('App\User', 'create_id');
+        return $this->belongsTo('App\Driver', 'create_id');
     }
 
     /**
@@ -83,7 +83,7 @@ class UnitPrice extends Model
      */
     public function driver()
     {
-        return $this->belongsTo('App\Driver', null, 'driver_id');
+        return $this->belongsTo('App\Driver', 'driver_id', 'driver_id');
     }
 
     /**
@@ -91,7 +91,7 @@ class UnitPrice extends Model
      */
     public function item()
     {
-        return $this->belongsTo('App\Item', null, 'item_id');
+        return $this->belongsTo('App\Item', 'item_id', 'item_id');
     }
 
     /**
@@ -99,14 +99,14 @@ class UnitPrice extends Model
      */
     public function shipper()
     {
-        return $this->belongsTo('App\Shipper', null, 'shipper_id');
+        return $this->belongsTo('App\Shipper', 'shipper_id', 'shipper_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 }

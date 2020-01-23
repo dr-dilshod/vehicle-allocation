@@ -6,15 +6,15 @@
                    class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">Editing</h2>
+                <h2 ref= "editTitle" class="text-center text-danger">Editing</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="register" :disabled="this.mode != 'editing'">Register</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click="edit">Edit</button>
+                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2" >Register</button>
+                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3" >Edit</button>
             </div>
         </div>
         <div class="row mt-4 mb-4">
@@ -62,6 +62,7 @@
     import Vue from "vue";
     import { VueSimpleAlert } from "vue-simple-alert";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
+    import {TableUtil} from '../utils/TableUtil.js';
 
     Vue.use( GridPlugin );
     Vue.use( VueSimpleAlert );
@@ -77,12 +78,13 @@
         data() {
             return {
                 data: [],
+                tableUtil : undefined,
                 company_name: '',
                 companies: [],
-                mode: 'normal',
             }
         },
         mounted() {
+            this.tableUtil = new TableUtil(this);
             this.fetchCompanies(this.companyUrl);
         },
         methods: {
@@ -110,7 +112,6 @@
                     args.cancel = true;
                     if(args.data[0].vehicle_id !== undefined){
                         this.deleteVehicle(args.data[0].vehicle_id);
-
                     }
                 }
             },
@@ -118,8 +119,7 @@
                 const vehicleTable = this;
                 axios.post(this.resourceUrl,vehicle)
                     .then(function(response){
-                        vehicleTable.$refs.grid.closeEdit();
-                        vehicleTable.setEditMode('normal');
+                        vehicleTable.tableUtil.endEditing();
                         vehicleTable.showSuccessDialog();
                         vehicleTable.fetchCompanies();
                     })
@@ -131,8 +131,8 @@
                 const vehicleTable = this;
                 axios.delete(this.resourceUrl+'/'+vehicle_id)
                     .then(function(response){
+                        vehicleTable.tableUtil.endEditing();
                         vehicleTable.showSuccessDialog();
-                        vehicleTable.setEditMode('normal');
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
@@ -146,8 +146,7 @@
                 let id = vehicle.vehicle_id;
                 axios.put(this.resourceUrl+'/'+id, vehicle)
                     .then(function(response){
-                        vehicleTable.$refs.grid.closeEdit();
-                        vehicleTable.setEditMode('normal');
+                        vehicleTable.tableUtil.endEditing();
                         vehicleTable.showSuccessDialog();
                         vehicleTable.fetchCompanies();
                     })
@@ -176,13 +175,6 @@
                         this.companies = companies.data
                     });
             },
-            register(){
-                this.$refs.grid.addRecord();
-            },
-            edit(){
-                this.setEditMode('editing');
-                this.$refs.grid.refresh();
-            },
             search(){
                 return this.fetchData(this.fetchUrl+'?company_name='+this.company_name)
             },
@@ -193,32 +185,6 @@
             refresh(){
                 this.fetchCompanies(this.companyUrl);
                 this.search();
-            },
-            setEditMode(editMode){
-                if(editMode === 'normal'){
-                    this.$refs.grid.ej2Instances.setProperties({
-                        toolbar: null,
-                        editSettings: {
-                            allowDeleting: false,
-                            allowEditing: false,
-                            allowAdding: false,
-                        },
-                    });
-                }
-                if(editMode === 'editing'){
-                    let toolbarBtns = ['Edit','Delete','Update','Cancel'];
-                    this.$refs.grid.ej2Instances.setProperties({
-                        toolbar: toolbarBtns,
-                        editSettings: {
-                            allowDeleting: true,
-                            allowEditing: true,
-                            allowAdding: true,
-                            showDeleteConfirmDialog: true,
-                        },
-                    });
-                }
-                this.$refs.grid.refresh();
-                this.mode = editMode;
             },
         },
         provide: {

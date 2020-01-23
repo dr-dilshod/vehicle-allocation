@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $updated_at
  * @property Driver $driver
  * @property Item $item
- * @property User $user
- * @property User $updateUser
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
  */
 class Dispatch extends Model
 {
@@ -50,9 +50,9 @@ class Dispatch extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
-        return $this->belongsTo('App\User', 'create_id');
+        return $this->belongsTo('App\Driver', 'create_id');
     }
 
     /**
@@ -74,8 +74,8 @@ class Dispatch extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 }

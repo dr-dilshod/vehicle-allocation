@@ -2,7 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property integer $driver_id
@@ -22,14 +23,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
- * @property User $user
- * @property User $updateUser
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
  * @property Dispatch[] $dispatches
  * @property Item[] $items
  * @property UnitPrice[] $unitPrices
  */
-class Driver extends Model
+class Driver extends Authenticatable
 {
+    use Notifiable;
+
     const SEARCH_FLAG_WORKING = 0;
     const SEARCH_FLAG_QUIT = 1;
 
@@ -55,17 +58,17 @@ class Driver extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
-        return $this->belongsTo('App\User', 'create_id');
+        return $this->belongsTo('App\Driver', 'create_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 
     /**
@@ -97,5 +100,10 @@ class Driver extends Model
             self::SEARCH_FLAG_WORKING => 'Working',
             self::SEARCH_FLAG_QUIT => 'Quit'
         ];
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->driver_pass;
     }
 }
