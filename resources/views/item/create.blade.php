@@ -7,7 +7,11 @@
                            driver-url="{{route('item.drivers')}}"
                            vehicle-url="{{route('vehicle.companies')}}"
                            resource-url="/api/item"
+                           fetch-url="{{'api.item.show'}}"
                            title="Item Registration"
+                           operation="Registration"
+                           clearing="Clear"
+                           item-id=""
         ></item-registration>
     </div>
 @endsection

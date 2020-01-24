@@ -2,8 +2,16 @@
 
 @section('content')
     <div class="container">
-        <item-edit back-url="{{route('top')}}"
-                           title="Item Edit"
-        ></item-edit>
+        <item-registration back-url="{{route('top')}}"
+                           shipper-url="{{route('item.shippers')}}"
+                           driver-url="{{route('item.drivers')}}"
+                           vehicle-url="{{route('vehicle.companies')}}"
+                           resource-url="/api/item"
+                           fetch-url="{{'api.item.show'}}"
+                           title="Item Registration"
+                           operation="Update"
+                           clearing="Delete"
+                           item-id="{{$item_id}}">
+        </item-registration>
     </div>
 @endsection

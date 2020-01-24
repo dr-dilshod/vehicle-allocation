@@ -172,7 +172,7 @@ class ItemController extends Controller
      */
     public function getShippers(Request $request)
     {
-        $shippers = Shipper::select(['shipper_id', 'shipper_name1'])
+        $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
             ->where('delete_flg',0)
             ->distinct()
             ->get();
@@ -185,7 +185,7 @@ class ItemController extends Controller
      */
     public function getDrivers(Request $request)
     {
-        $drivers = Driver::select(['driver_id', 'driver_name'])
+        $drivers = Driver::select(['driver_id', 'driver_name', 'vehicle_no3'])
             ->where('delete_flg',0)
             ->distinct()
             ->get();

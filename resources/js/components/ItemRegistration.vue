@@ -12,10 +12,10 @@
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
-            <div class="col-2"></div>
-            <div class="col-2">
-                <button type="submit" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="clear">Clear</button>
+            <div class="col-1"></div>
+            <div class="col-3">
+                <button type="submit" class="btn btn-lg btn-danger p-1 pl-2 pr-2">{{operation}}</button>
+                <button type="reset" class="btn btn-lg btn-danger p-1 pl-4 pr-5" @click.prevent="clear">{{clearing}}</button>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -117,7 +117,7 @@
                             <td class="text-right"><span class="c24966">Shipper</span><span class="required"> *</span></td>
                             <td class="orders-order">
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
-                                        class="form-control" required>
+                                        class="form-control" v-on:change="setShipperName" required>
                                     <option value=""></option>
                                     <option v-for="shipper in shippers" :value="shipper.shipper_id">
                                         {{ shipper.shipper_name1 + " " + shipper.shipper_name2}}
@@ -212,7 +212,8 @@
                             </td>
                             <td class="orders-product text-right"><span class="c24966">Driver Name</span></td>
                             <td class="orders-date">
-                                <select name="driver_id" id="driver_id" v-model="itemData.driver_id" class="form-control">
+                                <select name="driver_id" id="driver_id" v-on:change="setDriverName"
+                                        v-model="itemData.driver_id" class="form-control">
                                     <option value=""></option>
                                     <option v-for="driver in drivers" :value="driver.driver_id">
                                         {{ driver.driver_name }}
@@ -227,7 +228,7 @@
                             <td class="text-right"><span class="c24966">Chartered Vehicle</span></td>
                             <td class="orders-order">
                                 <select name="chartered_vehicle" id="chartered_vehicle"
-                                        v-model="itemData.item_vehicle" class="form-control">
+                                        v-model="itemData.vehicle_no" class="form-control">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                         {{ vehicle.company_name  }}
@@ -266,9 +267,6 @@
 </template>
 
 <script>
-
-
-
     export default {
         props: {
             backUrl: {type: String, required: true},
@@ -276,11 +274,16 @@
             driverUrl: {type: String, required: true},
             vehicleUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
+            fetchUrl: {type: String, required: true},
             title: {type: String, required: true},
+            operation: {type: String, required: true},
+            clearing: {type: String, required: true},
+            item_id: {type: String},
         },
         data() {
             return {
                 itemData: {
+                    item_id: '',
                     shipper_id: '',
                     driver_id: '',
                     vehicle_no: '',
@@ -324,9 +327,32 @@
             this.fetchShippers(this.shipperUrl);
             this.fetchDrivers(this.driverUrl);
             this.fetchVehicles(this.vehicleUrl);
-            this.fetchCurrentDate();
+            this.isEdit(this.resourceUrl);
         },
+
         methods: {
+            isEdit(url){
+                axios.get(url + "/" + new URL(location.href).searchParams.get('item_id'))
+                    .then(response => {
+                        alert(response.data.data);
+                        this.itemData = response.data;
+                    })
+            },
+            setDriverName() {
+                for (let i = 0; i < this.drivers.length; i++) {
+                    if(this.itemData.driver_id === this.drivers[i].driver_id){
+                        this.itemData.item_driver_name = this.drivers[i].driver_name;
+                        this.itemData.vehicle_no3 = this.drivers[i].vehicle_no3;
+                    }
+                }
+            },
+            setShipperName() {
+                for (let i = 0; i < this.shippers.length; i++) {
+                    if(this.itemData.shipper_id === this.shippers[i].shipper_id){
+                        this.itemData.shipper_name = this.shippers[i].shipper_name1 + " " + this.shippers[i].shipper_name2;
+                    }
+                }
+            },
             fetchCurrentDate(){
                 let currentDate = new Date();
                 this.itemData.item_completion_date = currentDate;
@@ -364,7 +390,34 @@
                     + ':00';
             },
             clear(){
-                alert('clear action');
+                this.itemData.shipper_id = '',
+                this.itemData.driver_id = '',
+                this.itemData.vehicle_no = '',
+                this.itemData.stack_date = '',
+                this.itemData.stack_time = '',
+                this.itemData.down_date = '',
+                this.itemData.down_time = '',
+                this.itemData.down_invoice = '',
+                this.itemData.stack_point = '',
+                this.itemData.down_point = '',
+                this.itemData.weight = '',
+                this.itemData.empty_pl = '',
+                this.itemData.item_price = '',
+                this.itemData.item_driver_name = '',
+                this.itemData.vehicle_no3 = '',
+                this.itemData.shipper_name = '',
+                this.itemData.item_vehicle = '',
+                this.itemData.vehicle_payment = '',
+                this.itemData.item_completion_date = '',
+                this.itemData.item_remark = '',
+                this.itemData.remember_token = '',
+                this.per_ton = '',
+                this.per_vehicle = '',
+                this.ton = '',
+                this.stack_time_hour = '',
+                this.stack_time_min = '',
+                this.down_time_hour = '',
+                this.down_time_min = ''
             },
             fetchShippers(url) {
                 axios.get(url)
@@ -385,17 +438,50 @@
                     });
             },
             register(){
+                const itemRegistration = this;
                 axios.post(this.resourceUrl,this.itemData)
                     .then(function(response){
                         console.log("Insert data success");
-                        console.log(response);
+                        this.$alert("Creation Successful!");
+                        window.location.href = '/item';
                     })
                     .catch(function(error){
-                        console.log("Insert data error");
-                        console.log(error.response);
+                        itemRegistration.showDialog(error.response.data);
                         return false;
                     });
                 return true;
+            },
+            updateItem(item){
+                let id = item.item_id;
+                const itemRegistration = this;
+                axios.put(this.resourceUrl+'/'+id, item)
+                    .then(function(response){
+                        this.$alert('Update is successful!');
+                        window.location.href = '/item';
+                    })
+                    .catch(function(error){
+                        itemRegistration.showDialog(error.response.data);
+                    });
+            },
+            deleteItem(item_id){
+                const itemRegistration = this;
+                axios.delete(this.resourceUrl+'/'+item_id)
+                    .then(function(response){
+                        this.$alert('Deletion is successful!');;
+                    })
+                    .catch(function(error){
+                        itemRegistration.showDialog(error.response.data);
+                        return false;
+                    });
+                return true;
+            },
+            showDialog(response) {
+                let message = response.message + ': ';
+                let errors = response.errors;
+                $.each( errors, function( key, value ) {
+                    message += value[0]; //showing only the first error.
+                });
+                this.$alert(message);
             },
         }
     }

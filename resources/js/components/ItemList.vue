@@ -97,8 +97,8 @@
                 </div>
             </div>
         </div>
-        <ejs-grid :dataSource="data" :enableHover='false' :allowSelection='false'
-                  :queryCellInfo='customiseCell' ref="grid" id="grid">
+        <ejs-grid :dataSource="data" :enableHover='false' :allowSelection='true'
+                  :queryCellInfo='customiseCell' ref="grid" id="grid" :recordDoubleClick="editItem">
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' headerText='Status' width="100"></e-column>
@@ -117,6 +117,7 @@
     import Vue from "vue";
     import { VueSimpleAlert } from "vue-simple-alert";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
+    import VueRouter from "vue-router";
 
     Vue.use( GridPlugin );
     Vue.use( VueSimpleAlert );
@@ -166,8 +167,8 @@
                     }
                 }
             },
-            editVehicle(vehicle){
-                // redirect to edit.blade.php
+            editItem: function(args){
+                window.location.href = `/item/edit?item_id=25`;
             },
             fetchItem(url) {
                 let grid = this.$refs.grid.ej2Instances;
