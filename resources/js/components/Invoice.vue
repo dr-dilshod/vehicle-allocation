@@ -363,4 +363,7 @@
         -moz-border-radius: 0;
         border-radius: 0;
     }
+    .vdp-datepicker input{
+        padding: 5px !important;
+    }
 </style>

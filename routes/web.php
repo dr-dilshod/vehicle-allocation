@@ -50,3 +50,6 @@ Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index')
 
 // Deposit list
 Route::get('/deposit', 'DepositController@index')->name('deposit.index');
+
+// Dispatch list
+Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');

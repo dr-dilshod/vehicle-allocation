@@ -71,3 +71,6 @@ Route::get('deposit', 'Api\DepositController@index')->name('api.deposit.index');
 
 // Invoice
 Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index');
+
+// Dispatch
+Route::get('/dispatch', 'Api\DispatchController@index')->name('api.dispatch.index');
