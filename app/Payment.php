@@ -18,10 +18,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
- * @property Invoice $billing
+ * @property Invoice $invoice
  * @property Shipper $shipper
- * @property User $user
- * @property User $updateUser
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
  * @property Vehicle $vehicle
  */
 class Payment extends Model
@@ -48,15 +48,15 @@ class Payment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
-        return $this->belongsTo('App\User', 'create_id');
+        return $this->belongsTo('App\Driver', 'create_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function billing()
+    public function invoice()
     {
         return $this->belongsTo('App\Invoice', 'invoice_id', 'invoice_id');
     }
@@ -72,9 +72,9 @@ class Payment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 
     /**

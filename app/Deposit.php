@@ -15,9 +15,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
- * @property Invoice $billing
- * @property User $user
- * @property User $updateUser
+ * @property Invoice $invoice
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
  */
 class Deposit extends Model
 {
@@ -43,15 +43,15 @@ class Deposit extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
-        return $this->belongsTo('App\User', 'create_id');
+        return $this->belongsTo('App\Driver', 'create_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function billing()
+    public function invoice()
     {
         return $this->belongsTo('App\Invoice', 'invoice_id', 'invoice_id');
     }
@@ -59,8 +59,8 @@ class Deposit extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 }

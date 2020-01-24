@@ -33,7 +33,9 @@ class DriverController extends Controller
     public function store(Request $request)
     {
 
-        $driver = Driver::create($request->all());
+        $all = $request->all();
+        $all['driver_pass'] = \Hash::make($all['driver_pass']);
+        $driver = Driver::create($all);
 
         return response()->json($driver, 201);
     }
@@ -80,5 +82,17 @@ class DriverController extends Controller
     {
         Driver::destroy($id);
         return response()->json(null, 204);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getVehicleNumbers(){
+        $vehicles = Driver::select(['vehicle_no3'])
+            ->where('delete_flg',0)
+            ->distinct()
+            ->orderBy('vehicle_no3')
+            ->get();
+        return response()->json($vehicles);
     }
 }

@@ -27,12 +27,12 @@ class CreateShippersTable extends Migration
             $table->string('fax_number')->nullable();
             $table->tinyInteger('closing_date')->nullable();
             $table->dateTime('payment_date')->nullable();
-            $table->tinyInteger('delete_flg')->nullable();
+            $table->tinyInteger('delete_flg')->default(0);
             $table->unsignedBigInteger('create_id')->nullable();
             $table->unsignedBigInteger('update_id')->nullable();
             $table->timestamps();
-            $table->foreign('create_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('update_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('create_id')->references('driver_id')->on('drivers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('update_id')->references('driver_id')->on('drivers')->onDelete('cascade')->onUpdate('cascade');
             });
     }
 

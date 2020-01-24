@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $vehicle_id
  * @property integer $create_id
  * @property integer $update_id
- * @property string $Billing_recording_date
- * @property string $Billing_deadline_date
+ * @property string $billing_recording_date
+ * @property string $billing_deadline_date
  * @property string $payment_record_date
  * @property string $invoice_remark
  * @property boolean $delete_flg
@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $updated_at
  * @property Item $item
  * @property Shipper $shipper
- * @property User $user
- * @property User $updateUser
+ * @property Driver $createdUser
+ * @property Driver $updatedUser
  * @property Vehicle $vehicle
  * @property Deposit[] $deposits
  * @property Payment[] $payments
@@ -46,14 +46,14 @@ class Invoice extends Model
     /**
      * @var array
      */
-    protected $fillable = ['item_id', 'shipper_id', 'vehicle_id', 'create_id', 'update_id', 'Billing_recording_date', 'Billing_deadline_date', 'payment_record_date', 'invoice_remark', 'delete_flg', 'remember_token', 'created_at', 'updated_at'];
+    protected $fillable = ['item_id', 'shipper_id', 'vehicle_id', 'create_id', 'update_id', 'billing_recording_date', 'billing_deadline_date', 'payment_record_date', 'invoice_remark', 'delete_flg', 'remember_token', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function createdUser()
     {
-        return $this->belongsTo('App\User', 'create_id');
+        return $this->belongsTo('App\Driver', 'create_id');
     }
 
     /**
@@ -75,9 +75,9 @@ class Invoice extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function updateUser()
+    public function updatedUser()
     {
-        return $this->belongsTo('App\User', 'update_id');
+        return $this->belongsTo('App\Driver', 'update_id');
     }
 
     /**
