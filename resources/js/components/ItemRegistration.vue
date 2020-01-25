@@ -39,7 +39,7 @@
                             <td class="stack_time_hour">
                                 <select name="stack_time_hour" id="stack_time_hour" v-model="stack_time_hour"
                                         v-on:input="timeFormatter" class="form-control" required>
-                                    <option v-for="hour in 23" :value="hour">
+                                    <option v-for="hour in getEnumerationHours()" :value="hour">
                                         {{ hour }}
                                     </option>
                                 </select>
@@ -48,12 +48,12 @@
                             <td class="orders-date">
                                 <select name="stack_time_min" id="stack_time_min" v-model="stack_time_min"
                                         v-on:input="timeFormatter" class="form-control" required>
-                                    <option v-for="min in 59" :value="min">
+                                    <option v-for="min in getEnumerationMins()" :value="min">
                                         {{ min }}
                                     </option>
                                 </select>
                             </td>
-                            <td class="orders-total"><span class="c25479">Billing</span></td>
+                            <td class="orders-total"><span class="c25479">Invoice</span></td>
                             <td class="orders-status"></td>
                             <td class="orders-method">
                                 <div class="custom-control custom-checkbox">
@@ -77,7 +77,7 @@
                             <td class="orders-date">
                                 <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
                                         v-on:input="timeFormatter" class="form-control" required>
-                                    <option v-for="hour in 23" :value="hour">
+                                    <option v-for="hour in getEnumerationHours()" :value="hour">
                                         {{ hour }}
                                     </option>
                                 </select>
@@ -86,7 +86,7 @@
                             <td class="orders-total">
                                 <select name="down_time_min" id="down_time_min" v-model="down_time_min"
                                         v-on:input="timeFormatter" class="form-control" required>
-                                    <option v-for="min in 59" :value="min">
+                                    <option v-for="min in getEnumerationMins()" :value="min">
                                         {{ min }}
                                     </option>
                                 </select>
@@ -326,16 +326,23 @@
             this.fetchShippers(this.shipperUrl);
             this.fetchDrivers(this.driverUrl);
             this.fetchVehicles(this.vehicleUrl);
-            this.isEdit(this.resourceUrl);
+            this.isEdit(new URL(location.href).searchParams.get('item_id'));
         },
 
         methods: {
-            isEdit(url){
-                axios.get(url + "/" + new URL(location.href).searchParams.get('item_id'))
-                    .then(response => {
-                        alert(response.data.data);
-                        this.itemData = response.data;
-                    })
+            isEdit(item_id){
+                if (item_id != "") {
+                    axios.get(this.resourceUrl + "/" + item_id)
+                        .then(response => {
+                            this.itemData = response.data;
+                            let stack_time = response.data.stack_time.split(":");
+                            let down_time = response.data.down_time.split(":");
+                            this.stack_time_hour = stack_time[0];
+                            this.stack_time_min = stack_time[1];
+                            this.down_time_hour = down_time[0];
+                            this.down_time_min = down_time[1];
+                        });
+                }
             },
             setDriverName() {
                 for (let i = 0; i < this.drivers.length; i++) {
@@ -389,34 +396,20 @@
                     + ':00';
             },
             clear(){
-                this.itemData.shipper_id = '',
-                this.itemData.driver_id = '',
-                this.itemData.vehicle_no = '',
-                this.itemData.stack_date = '',
-                this.itemData.stack_time = '',
-                this.itemData.down_date = '',
-                this.itemData.down_time = '',
-                this.itemData.down_invoice = '',
-                this.itemData.stack_point = '',
-                this.itemData.down_point = '',
-                this.itemData.weight = '',
-                this.itemData.empty_pl = '',
-                this.itemData.item_price = '',
-                this.itemData.item_driver_name = '',
-                this.itemData.vehicle_no3 = '',
-                this.itemData.shipper_name = '',
-                this.itemData.item_vehicle = '',
-                this.itemData.vehicle_payment = '',
-                this.itemData.item_completion_date = '',
-                this.itemData.item_remark = '',
-                this.itemData.remember_token = '',
-                this.per_ton = '',
-                this.per_vehicle = '',
-                this.ton = '',
-                this.stack_time_hour = '',
-                this.stack_time_min = '',
-                this.down_time_hour = '',
-                this.down_time_min = ''
+                if (this.clearing === 'Delete') {
+                    this.deleteItem(this.itemData.item_id);
+                } else {
+                    for (let i in this.itemData) {
+                        this.itemData[i] = "";
+                    }
+                    this.per_ton = "",
+                    this.per_vehicle = "",
+                    this.ton = "",
+                    this.stack_time_hour = "",
+                    this.stack_time_min = "",
+                    this.down_time_hour = "",
+                    this.down_time_min = ""
+                }
             },
             fetchShippers(url) {
                 axios.get(url)
@@ -438,24 +431,32 @@
             },
             register(){
                 const itemRegistration = this;
-                axios.post(this.resourceUrl,this.itemData)
-                    .then(function(response){
-                        console.log("Insert data success");
-                        this.$alert("Creation Successful!");
-                        window.location.href = '/item';
-                    })
-                    .catch(function(error){
-                        itemRegistration.showDialog(error.response.data);
-                        return false;
-                    });
-                return true;
+                // check whether it is update or create operation
+                if (this.operation === 'Update')
+                {
+                    // update that item if it is update operation
+                    this.updateItem(this.itemData);
+                } else {
+                    // create a new item if it is create operation
+                    axios.post(this.resourceUrl, this.itemData)
+                        .then(function (response) {
+                            console.log("Insert data success");
+                            alert("Creation Successful!");
+                            window.location.href = '/item';
+                        })
+                        .catch(function (error) {
+                            itemRegistration.showDialog(error.response.data);
+                            return false;
+                        });
+                    return true;
+                }
             },
             updateItem(item){
                 let id = item.item_id;
                 const itemRegistration = this;
                 axios.put(this.resourceUrl+'/'+id, item)
                     .then(function(response){
-                        this.$alert('Update is successful!');
+                        alert('Update is successful!');
                         window.location.href = '/item';
                     })
                     .catch(function(error){
@@ -466,7 +467,8 @@
                 const itemRegistration = this;
                 axios.delete(this.resourceUrl+'/'+item_id)
                     .then(function(response){
-                        this.$alert('Deletion is successful!');;
+                        alert('Deletion is successful!');
+                        window.location.href = '/item';
                     })
                     .catch(function(error){
                         itemRegistration.showDialog(error.response.data);
@@ -482,6 +484,18 @@
                 });
                 this.$alert(message);
             },
+            getEnumerationHours(){
+                let hours = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14'
+                    ,'15','16','17','18','19','20','21','22','23'];
+                return hours;
+            },
+            getEnumerationMins(){
+                let mins = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14'
+                    ,'15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'
+                    ,'32','33','34','35','36','37','38','39','40','41','42','44','45','46','47','48','49',
+                    '50','51','52','53','54','55','56','57','58','59'];
+                return mins;
+            }
         }
     }
 </script>
