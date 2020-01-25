@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $update_id
  * @property boolean $type
  * @property integer $price
+ * @property string $car_type
+ * @property string $shipper_no
+ * @property string $stack_point
+ * @property string $down_point
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
@@ -41,7 +45,12 @@ class UnitPrice extends Model
     /**
      * @var array
      */
-    protected $fillable = ['shipper_id', 'item_id', 'driver_id', 'create_id', 'update_id', 'type', 'price', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'shipper_id', 'item_id', 'driver_id', 'create_id',
+        'update_id', 'type', 'price', 'delete_flg',
+        'created_at', 'updated_at', 'car_type', 'shipper_no',
+        'stack_point', 'down_point'
+    ];
 
     /**
      * @var array

@@ -24,7 +24,9 @@ Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
 Vue.component('driver-table',require('./components/DriverTable.vue').default);
 Vue.component('unit-price-table',require('./components/UnitPriceTable').default);
 Vue.component('item-list',require('./components/ItemList.vue').default);
-Vue.component('deposit-list',require('./components/DepositList.vue').default);
+Vue.component('deposit-report',require('./components/DepositReport.vue').default);
+Vue.component('payment-report',require('./components/PaymentReport.vue').default);
+Vue.component('payment-bk-report',require('./components/PaymentBkReport.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -34,6 +36,7 @@ Vue.component('deposit-list',require('./components/DepositList.vue').default);
 
 Vue.component('item-registration',require('./components/ItemRegistration.vue').default);
 Vue.component('invoice',require('./components/Invoice.vue').default);
+Vue.component('dispatch',require('./components/Dispatch.vue').default);
 
 const app = new Vue({
     el: '#app',
