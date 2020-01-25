@@ -70,6 +70,11 @@ Route::delete('/unit-price/{id}', 'Api\UnitPriceController@destroy')->name('api.
  */
 Route::get('deposit', 'Api\DepositController@index')->name('api.deposit.index');
 
+/**
+ * Payment APIs
+ */
+Route::get('payment', 'Api\PaymentController@index')->name('api.payment.index');
+
 // Invoice
 Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index');
 

@@ -25,6 +25,7 @@ Vue.component('driver-table',require('./components/DriverTable.vue').default);
 Vue.component('unit-price-table',require('./components/UnitPriceTable').default);
 Vue.component('item-list',require('./components/ItemList.vue').default);
 Vue.component('deposit-list',require('./components/DepositList.vue').default);
+Vue.component('payment-list',require('./components/PaymentList.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

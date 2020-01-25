@@ -52,5 +52,8 @@ Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index')
 // Deposit list
 Route::get('/deposit', 'DepositController@index')->name('deposit.index');
 
+// Payment list
+Route::get('/payment', 'PaymentController@index')->name('payment.index');
+
 // Dispatch list
 Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');
