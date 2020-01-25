@@ -19,7 +19,6 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('item_id');
-
             $table->unsignedBigInteger('shipper_id')->default(0);
             $table->unsignedBigInteger('driver_id')->default(0);
             $table->string('vehicle_no',4)->default(null);
