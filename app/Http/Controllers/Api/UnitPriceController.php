@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Driver;
 use App\Http\Controllers\Controller;
 use App\Shipper;
 use App\UnitPrice;
@@ -83,13 +84,20 @@ class UnitPriceController extends Controller
     }
 
     public function getDistrictShipperNames() {
-        DB::enableQueryLog();
         $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
             ->where('delete_flg', 0)
             ->orderBy('shipper_name1', 'ASC')
             ->get();
 
         return response()->json($shippers);
+    }
+
+    public function getVehicleTypes()
+    {
+        $vehicleTypes = Driver::query()->select(['driver_id', 'vehicle_type'])
+            ->where('delete_flg', 0)
+            ->get();
+        return response()->json($vehicleTypes);
     }
 
 }
