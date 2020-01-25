@@ -13,9 +13,13 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function index(Request $request)
+    public function report(Request $request)
     {
-        return view('payment.index');
+        return view('payment.report');
+    }
+
+    public function bk_report(Request $request){
+        return view('payment.bk-report');
     }
 
 }

@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class DepositController extends Controller
 {
-    public function index(Request $request)
+    public function report(Request $request)
     {
         return view('deposit.index');
     }

@@ -165,7 +165,7 @@
             }
         },
 
-        name : 'DepositList'
+        name : 'PaymentReport'
 
     }
 

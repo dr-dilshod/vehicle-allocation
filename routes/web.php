@@ -49,11 +49,12 @@ Route::get('/invoice/billing-month-pdf', 'InvoiceController@billingMonthPDF')->n
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
 
-// Deposit list
-Route::get('/deposit', 'DepositController@index')->name('deposit.index');
+// Deposit
+Route::get('/deposit/report', 'DepositController@report')->name('deposit.report');
 
-// Payment list
-Route::get('/payment', 'PaymentController@index')->name('payment.index');
+// Payment
+Route::get('/payment/report', 'PaymentController@report')->name('payment.report');
+Route::get('/payment/bk-report', 'PaymentController@bk_report')->name('payment.bk-report');
 
 // Dispatch list
 Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');
