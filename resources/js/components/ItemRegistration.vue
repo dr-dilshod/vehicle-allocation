@@ -274,7 +274,6 @@
             driverUrl: {type: String, required: true},
             vehicleUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
             title: {type: String, required: true},
             operation: {type: String, required: true},
             clearing: {type: String, required: true},

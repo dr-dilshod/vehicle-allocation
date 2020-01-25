@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Shipper;
+use App\Deposit;
 use Faker\Generator as Faker;
 
-$factory->define(Shipper::class, function (Faker $faker) {
+$factory->define(Deposit::class, function (Faker $faker) {
     return [
         'invoice_id' => $faker->numberBetween(1,10),
         'deposit_amount'=>$faker->numberBetween(100, 1000),
