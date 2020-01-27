@@ -68,7 +68,12 @@ Route::delete('/unit-price/{id}', 'Api\UnitPriceController@destroy')->name('api.
 /**
  * Deposit APIs
  */
-Route::get('deposit/report', 'Api\DepositController@report')->name('api.deposit.report');
+Route::get('deposits/report', 'Api\DepositController@report')->name('api.deposit.report');
+Route::get('deposits', 'Api\DepositController@index')->name('api.deposit.index');
+Route::post('deposits', 'Api\DepositController@store')->name('api.deposit.store');
+Route::put('deposits/{id}', 'Api\DepositController@update')->name('api.deposit.update');
+Route::get('deposits/{id}', 'Api\DepositController@show')->name('api.deposit.show');
+Route::delete('deposits/{id}', 'Api\DepositController@destroy')->name('api.deposit.destroy');
 
 /**
  * Payment APIs
