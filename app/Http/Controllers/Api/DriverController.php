@@ -66,7 +66,10 @@ class DriverController extends Controller
     {
 
         $driver = Driver::findOrFail($id);
-        $driver->update($request->all());
+        $request['driver_pass'] = \Hash::make($request['driver_pass']);
+        $driver->update($request->all()
+
+        );
 
         return response()->json($driver, 200);
     }
