@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $invoice_id
@@ -29,6 +30,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Invoice extends Model
 {
+    use BlameableTrait;
+
     /**
      * The primary key for the model.
      *

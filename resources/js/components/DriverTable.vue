@@ -18,18 +18,18 @@
             </div>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="270" :frozenColumns="3" >
+                  :allowSorting="true" :height="300" :frozenColumns="3"  :enableHover='false' :allowSelection='true' :queryCellInfo='customiseCell'>
             <e-columns>
-                <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
-                <e-column field='vehicle_type' headerText='Type'  editType= 'dropdownedit' :edit='ddParams' width="100">Test</e-column>
+                <e-column field='vehicle_type' headerText='Type' :template='editTemplate' editType='dropdownedit'  width="150">Test</e-column>
                 <e-column field='driver_name' headerText='Name'  width="150"></e-column>
                 <e-column field='driver_mobile_number' headerText='Mobile number' width="150"></e-column>
                 <e-column field='vehicle_no3' headerText='Vehicle No' width="150"></e-column>
                 <e-column field='maximum_Loading' headerText="Max Load" width="100"></e-column>
-                <e-column field='search_flg' headerText='Display'   editType= 'booleanedit' :edit='searchParams' width="50" ></e-column>
-                <e-column field='admin_flg' headerText='Admin' editType= 'booleanedit' :edit='adminParams' width="100" ></e-column>
+                <e-column field='search_flg' headerText='Display'   editType= 'booleanedit' defaultValue="true"  :template='searchTemplate' width="150" ></e-column>
+                <e-column field='admin_flg' headerText='Admin' editType= 'booleanedit' :template='adminTemplate' width="150" ></e-column>
                 <e-column field='driver_remark' headerText='Remarks' width="200"></e-column>
-                <e-column field='driver_pass' :allowEditing='false' :validationRules='driverPassword' defaultValue='parol' headerText='Password' width="200"></e-column>
+                <e-column field='driver_pass' :validationRules='driverPassword' defaultValue='parol1234' headerText='Password' width="200"></e-column>
+                <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
     </div>
@@ -52,11 +52,32 @@
             return {
                 data: [],
                 tableUtil : undefined,
-                ddParams: { params: { value: 'ascsa' } },
-                searchParams: { params: {checked: true } },
-                adminParams: { params: {checked: true } },
+                editTemplate: function () {
+                    return {
+                        template: Vue.component('editOption', {
+                            template: '<label>{{data.vehicle_type}}</label>',
+                            data() { return { data: { data: {} } }; }
+                        })
+                    }
+                },
+                adminTemplate: function () {
+                    return {
+                        template: Vue.component('editOption', {
+                            template: '<label>{{(data.admin_flg==1)? "Administrator":"General"}}</label>',
+                            data() { return { data: { data: {} } }; }
+                        })
+                    }
+                },
+                searchTemplate: function () {
+                    return {
+                        template: Vue.component('editOption', {
+                            template: '<label>{{(data.search_flg==1)? "Show":"Hide"}}</label>',
+                            data() { return { data: { data: {} } }; }
+                        })
+                    }
+                },
+
                 mode: 'normal',
-                driverPassword: { required: true, minLength: 5 }
             };
         },
         mounted() {
@@ -64,6 +85,17 @@
             this.fetchData(this.resourceUrl);
         },
         methods: {
+            customiseCell: function(args) {
+                if (args.column.field === 'admin_flg') {
+                    if (args.data['admin_flg'] == 1) {
+                        console.log("hi!!!");
+                        args.cell.classList.add('below-30');
+                    } else {
+                        console.log("elsehi!!!");
+                        args.cell.classList.add('below-80');
+                    }
+                }
+            },
             fetchData(url) {
                 axios.get(url)
                     .then(data => {
@@ -137,4 +169,11 @@
     @import "../../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
+    @import "../../../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap.css";
+    .below-30 {
+        background-color: orangered;
+    }
+    .below-80 {
+        background-color: yellow;
+    }
 </style>
