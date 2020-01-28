@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $deposit_id
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Deposit extends Model
 {
+    use BlameableTrait;
+
     /**
      * The primary key for the model.
      *

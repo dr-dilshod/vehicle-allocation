@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $dispatch_id
@@ -21,12 +22,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Dispatch extends Model
 {
+    use BlameableTrait;
+
+    const TIMEZONE_MORNING = 1;
+    const TIMEZONE_NOON = 2;
+    const TIMEZONE_NEXT_PRODUCT = 3;
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'dispatch';
+    protected $table = 'dispatches';
 
     /**
      * The primary key for the model.

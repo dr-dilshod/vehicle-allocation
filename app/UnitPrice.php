@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $price_id
@@ -28,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UnitPrice extends Model
 {
+    use BlameableTrait;
+
     /**
      * The primary key for the model.
      *
