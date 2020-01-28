@@ -98,8 +98,9 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        Item::destroy($id);
-
+        $item = Item::findOrFail($id);
+        $item->delete_flg=1;
+        $item->save();
         return response()->json(null, 204);
     }
 
@@ -189,5 +190,18 @@ class ItemController extends Controller
             ->distinct()
             ->get();
         return response()->json($drivers);
+    }
+    /**
+     * Get companies list for dropdown select
+     * @param Request $request
+     * @return string
+     */
+    public function getVehicles(Request $request)
+    {
+        $vehicles = Vehicle::distinct()
+            ->select(['vehicle_id', 'vehicle_no', 'company_name'])
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($vehicles);
     }
 }

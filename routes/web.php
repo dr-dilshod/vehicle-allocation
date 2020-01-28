@@ -38,6 +38,7 @@ Route::get('/item/create', 'ItemController@create')->name('item.create');
 Route::get('/item/edit', 'ItemController@edit')->name('item.edit');
 Route::get('/item/getItemList', 'Api\ItemController@getItemList')->name('item.list');
 Route::get('/item/getVehicleNumbers', 'Api\ItemController@getVehicleNumbers')->name('item.vehicleNumbers');
+Route::get('/item/getVehicles', 'Api\ItemController@getVehicles')->name('item.vehicles');
 Route::get('/item/getItemShippers', 'Api\ItemController@getItemShippers')->name('item.shippers.dropdown');
 Route::get('/item/getDrivers', 'Api\ItemController@getDrivers')->name('item.drivers');
 Route::get('/item/getShippers', 'Api\ItemController@getShippers')->name('item.shippers');

@@ -98,7 +98,7 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Vehicle Model</span><span class="required"> *</span></td>
                             <td class="orders-order">
-                                <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
+                                <select name="item_vehicle" id="item_vehicle" v-model="vehicle_model"
                                         class="form-control" required>
                                     <option value=""></option>
                                     <option value="Wing">Wing</option>
@@ -150,7 +150,8 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Number (t)</span></td>
                             <td class="orders-order">
-                                <input id="weight" type="text" placeholder="" class="form-control" v-model="itemData.weight"/>
+                                <input id="weight" type="text" placeholder=""
+                                       class="form-control" v-model="itemData.weight"/>
                             </td>
                             <td class="orders-product text-right"><span class="c25479 text-right">t     Empty PL</span>
                             </td>
@@ -207,8 +208,8 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Vehicle No.</span></td>
                             <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" id="vehicle_no"
-                                       v-model="itemData.vehicle_no"/>
+                                <input type="text" placeholder="" class="form-control" id="vehicle_no3"
+                                       v-model="itemData.vehicle_no3"/>
                             </td>
                             <td class="orders-product text-right"><span class="c24966">Driver Name</span></td>
                             <td class="orders-date">
@@ -227,8 +228,8 @@
                         <tr>
                             <td class="text-right"><span class="c24966">Chartered Vehicle</span></td>
                             <td class="orders-order">
-                                <select name="chartered_vehicle" id="chartered_vehicle"
-                                        v-model="itemData.vehicle_no" class="form-control">
+                                <select name="chartered_vehicle" id="chartered_vehicle" v-on:change="setVehicleData"
+                                        v-model="vehicle_id" class="form-control">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                         {{ vehicle.company_name  }}
@@ -309,12 +310,14 @@
                     update_id: '',
                     remember_token:'',
                 },
+                vehicle_id: '',
                 isDisabled: false,
                 shippers: [],
                 drivers: [],
                 vehicles: [],
                 per_ton: '',
                 per_vehicle: '',
+                vehicle_model: '',
                 ton: '',
                 stack_time_hour: '',
                 stack_time_min: '',
@@ -349,6 +352,14 @@
                     if(this.itemData.driver_id === this.drivers[i].driver_id){
                         this.itemData.item_driver_name = this.drivers[i].driver_name;
                         this.itemData.vehicle_no3 = this.drivers[i].vehicle_no3;
+                    }
+                }
+            },
+            setVehicleData() {
+                for (let i = 0; i < this.vehicles.length; i++) {
+                    if(this.vehicle_id === this.vehicles[i].vehicle_id){
+                        this.itemData.vehicle_no = this.vehicles[i].vehicle_no;
+                        this.itemData.item_vehicle = this.vehicles[i].company_name;
                     }
                 }
             },

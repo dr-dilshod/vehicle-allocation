@@ -21,7 +21,7 @@ class CreateItemsTable extends Migration
             $table->bigIncrements('item_id');
             $table->unsignedBigInteger('shipper_id')->default(0);
             $table->unsignedBigInteger('driver_id')->default(0);
-            $table->string('vehicle_no',4)->default(null);
+            $table->string('vehicle_no',10)->default(null);
             $table->tinyInteger('status')->default(0);
             $table->date('stack_date');
             $table->time('stack_time');
