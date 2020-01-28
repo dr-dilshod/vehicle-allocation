@@ -117,14 +117,14 @@ class ItemController extends Controller
         //    'delete_flg'=>0
         //])->get();
 
-        $shipper_id = $request->query('shipper_id') ?: '';
+        $shipper_name = $request->query('shipper_name') ?: '';
         $vehicle_no = $request->query('vehicle_no') ?: '';
         $status = $request->query('status') ?: '';
         $stack_date = $request->query('stack_date') ?: '';
         $stack_point = $request->query('stack_point') ?: '';
         $matchThese = ['delete_flg' => 0];
-        if (!empty($shipper_id)) {
-            $matchThese = array_add($matchThese, 'shipper_id', $shipper_id);
+        if (!empty($shipper_name)) {
+            $matchThese = array_add($matchThese, 'shipper_name', $shipper_name);
         } else if (!empty($vehicle_no)) {
             $matchThese = array_add($matchThese, 'vehicle_no', $vehicle_no);
         } else if (!empty($status)) {
@@ -158,11 +158,10 @@ class ItemController extends Controller
      */
     public function getItemShippers(Request $request)
     {
-        $itemsShipper = Item::leftJoin('shippers', 'items.shipper_id', '=', 'shippers.shipper_id')
-            ->where('items.delete_flg',"=", 0)
-            ->orderBy('shippers.shipper_name1','asc')
+        $itemsShipper = Item::select(['shipper_name'])
+            ->where('delete_flg',"=", 0)
+            ->orderBy('shipper_name','asc')
             ->distinct()
-            ->select(['items.shipper_id','shippers.shipper_name1','shippers.shipper_name2'])
             ->get();
         return response()->json($itemsShipper);
     }

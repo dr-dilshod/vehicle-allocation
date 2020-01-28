@@ -35,11 +35,11 @@
                                 </td>
                                 <td class="text-right"><span class="c24966">Shipper</span></td>
                                 <td class="orders-order">
-                                    <select name="selectedShipper" id="selectedShipper" v-model="shipper_id"
+                                    <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
                                             class="form-control">
                                         <option value=""></option>
-                                        <option v-for="shipper in shippers" :value="shipper.shipper_id">
-                                            {{ shipper.shipper_name1 }}
+                                        <option v-for="shipper in shippers" :value="shipper.shipper_name">
+                                            {{ shipper.shipper_name }}
                                         </option>
                                     </select>
                                 </td>
@@ -78,17 +78,12 @@
                                             {{ vehicle.vehicle_no }}
                                         </option>
                                     </select>
-
                                 </td>
                                 <td>
-
                                     <button type="submit" class="btn btn-primary">Search</button>
-
                                 </td>
                                 <td>
-
                                     <button type="submit" class="btn btn-primary">Clear</button>
-
                                 </td>
                             </tr>
                             </tbody>
@@ -140,7 +135,7 @@
                 stack_date: '',
                 stack_point: '',
                 down_point: '',
-                shipper_id: '',
+                shipper_name: '',
                 mode: 'normal',
                 shippers: [],
                 vehicles: [],
@@ -168,7 +163,7 @@
                 }
             },
             editItem: function(args){
-                window.location.href = `/item/edit?item_id=25`;
+                window.location.href = `/item/edit?item_id=24`;
             },
             fetchItem(url) {
                 let grid = this.$refs.grid.ej2Instances;
@@ -203,7 +198,7 @@
             },
             search(){
                 return this.fetchItem(this.itemUrl
-                    +'?shipper_id=' + this.shipper_id
+                    +'?shipper_name=' + this.shipper_name
                     + '&vehicle_no=' + this.vehicle_no
                     + '&status=' + this.status
                     + '&stack_date=' + this.stack_date
