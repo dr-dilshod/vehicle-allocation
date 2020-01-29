@@ -18,6 +18,7 @@ class VehicleTest extends DuskTestCase
                 ->assertButtonDisabled('registerBtn');
         });
     }
+
     /**
      * test if the editing text is not visible in non-editing mode
      */
@@ -28,6 +29,7 @@ class VehicleTest extends DuskTestCase
                 ->assertDontSee('Editing');
         });
     }
+
     /**
      * test if the registration button is enabled in editing mode
      */
@@ -39,6 +41,7 @@ class VehicleTest extends DuskTestCase
                 ->assertButtonDisabled('registerBtn');
         });
     }
+
     /**
      * test if the editing text is visible in editing mode
      */

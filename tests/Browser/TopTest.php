@@ -107,7 +107,8 @@ class TopTest extends DuskTestCase
     public function testItemRegistrationPage() {
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
-            $browser->visit('/item/create')
+            $browser->visit('/top')
+                ->clickLink('top.item_reg')
                 ->assertSee("Item Registration")
                 ->assertPathIs('/item/create');
         });
@@ -120,7 +121,8 @@ class TopTest extends DuskTestCase
     public function testItemListPage() {
         $user = $this->user;
         $this->browse(function ($browser) {
-            $browser->visit('/item/create')
+            $browser->visit('/top')
+                ->clickLink('top.item_list')
                 ->assertSee("Item List")
                 ->assertPathIs('/item/create');
         });
@@ -133,8 +135,9 @@ class TopTest extends DuskTestCase
     public function testVehicleDispatchPage() {
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
-            $browser->visit('/dispatch')
-                ->assertSee("Vehicle Allocation Management")
+            $browser->visit('/top')
+                ->clickLink('top.dispatch_board')
+                ->assertSee("Dispatch board")
                 ->assertPathIs('/dispatch');
         });
     }
@@ -147,8 +150,9 @@ class TopTest extends DuskTestCase
     public function testInvoiceListPage() {
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
-            $browser->visit('/invoice')
-                ->assertSee("Invoice List")
+            $browser->visit('/top')
+                ->clickLink('top.billing_management')
+                ->assertSee("Invoice list")
                 ->assertPathIs('/invoice');
         });
     }
@@ -175,9 +179,19 @@ class TopTest extends DuskTestCase
     public function testPaymentListForAdminPage() {
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
-            $browser->visit('/payment')
-                ->assertSee("Payment List")
-                ->assertPathIs('/item');
+            $browser->visit('/top')
+                ->clickLink('top.payment_list')
+                ->assertSee("Payment list")
+                ->assertPathIs('/payment');
+        });
+    }
+    public function testDepositListForAdminPage() {
+        $user = $this->user;
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/top')
+                ->clickLink('top.deposit_list')
+                ->assertSee("Deposit list")
+                ->assertPathIs('/deposit');
         });
     }
     /**  8. When the setting button is pressed, the following processing is performed.
@@ -185,11 +199,13 @@ class TopTest extends DuskTestCase
      */
     public function testSettingPage() {
         $this->browse(function ($browser) {
-            $browser->visit('/setting')
+            $browser->visit('/top')
+                ->press('setting')
                 ->assertSee("Setting")
                 ->assertPathIs('/setting');
         });
     }
+
     /**
      * 9. When the display button is pressed, the following processing is performed.
     9-1. Only the administrator acquires the following information in the driver sales list.

@@ -9,15 +9,48 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class ShipperTest extends DuskTestCase
 {
     /**
-     * A Dusk test example.
-     *
-     * @return void
+     * test if the registration button is disabled in non-editing mode
      */
-    public function testExample()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
+    public function testDisabledRegistrationButton() {
+        $user = $this->user;
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/shipper')
+                ->assertButtonDisabled('registerBtn');
+        });
+    }
+
+    /**
+     * test if the editing text is not visible in non-editing mode
+     */
+    public function testInvisibleEditingText() {
+        $user = $this->user;
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/shipper')
+                ->assertDontSee('Editing');
+        });
+    }
+
+    /**
+     * test if the registration button is enabled in editing mode
+     */
+    public function testEnabledRegistrationButton() {
+        $user = $this->user;
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/shipper')
+                ->press('editBtn')
+                ->assertButtonDisabled('registerBtn');
+        });
+    }
+
+    /**
+     * test if the editing text is visible in editing mode
+     */
+    public function testVisibleEditingText() {
+        $user = $this->user;
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/shipper')
+                ->press('editBtn')
+                ->assertSee('Editing');
         });
     }
 }
