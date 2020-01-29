@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Browser;
 
 use App\Driver;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class TopTest extends TestCase
+class TopTest extends DuskTestCase
 {
     private $user;
     public function setUp(): void
@@ -73,16 +73,16 @@ class TopTest extends TestCase
     public function testDriverName() {
 
     }
-     /** Opportunity table.Amount									SUM
-      * ・ Search condition
-      * Issue table.							=		Today's date
-                    Matter table.State							=		1
-                    Matter table. Delete flag							=		0
-                ·Display order
-                    Driver master.Driver name									ascending order
-                ・ Join table
-                    Driver master
-    */
+    /** Opportunity table.Amount									SUM
+     * ・ Search condition
+     * Issue table.							=		Today's date
+    Matter table.State							=		1
+    Matter table. Delete flag							=		0
+    ·Display order
+    Driver master.Driver name									ascending order
+    ・ Join table
+    Driver master
+     */
     public function testSearchCondition() {
 
     }
@@ -90,10 +90,10 @@ class TopTest extends TestCase
     /**
      *
      * 1-3. If there is no administrator, perform the following processing.
-            Deactivate the following:
-                ・ Year.Select box
-                ・ Month.Select box
-                ・ Display button
+    Deactivate the following:
+    ・ Year.Select box
+    ・ Month.Select box
+    ・ Display button
      */
     public function testDeactivationForNonAdmin() {
 
@@ -139,7 +139,7 @@ class TopTest extends TestCase
     /**
      * 5. When the billing management button is pressed, the following processing is performed.
      * 5-1. Transit to the “Bill Management” screen.
-            * Active only for admin users
+     * Active only for admin users
      */
     public function testInvoiceListPage() {
         $user = $this->user;
@@ -152,7 +152,7 @@ class TopTest extends TestCase
     /**
      * 6. When the payment list button is pressed, the following processing is performed.
      * 6-1. Transit to the “Payment List” screen.
-            * Active only for admin users
+     * Active only for admin users
      */
     public function testPaymentListPage() {
         $user = $this->user;
@@ -164,8 +164,8 @@ class TopTest extends TestCase
     }
     /**
      * 7. When the payment list button is pressed, the following processing is performed.
-            7-1. Transit to the “Payment List” screen.
-                * Active only for admin users
+    7-1. Transit to the “Payment List” screen.
+     * Active only for admin users
      */
     public function testPaymentListForAdminPage() {
         $user = $this->user;
@@ -176,7 +176,7 @@ class TopTest extends TestCase
         });
     }
     /**  8. When the setting button is pressed, the following processing is performed.
-            8-1. Transit to “Setting” screen.
+    8-1. Transit to “Setting” screen.
      */
     public function testSettingPage() {
         $this->browse(function ($browser) {
@@ -187,25 +187,25 @@ class TopTest extends TestCase
     }
     /**
      * 9. When the display button is pressed, the following processing is performed.
-            9-1. Only the administrator acquires the following information in the driver sales list.
-                ・ Acquisition data
-                    Driver master.Driver name									DISTINCT
-                    Opportunity table.Amount									SUM
-                ・ Search condition
-                    Issue table.							=		Year.select box						+		Month.select box
-                    Matter table.State							=		1
-                    Matter table. Delete flag							=		0
-                ·Display order
-                    Driver master.Driver name									ascending order
-                ・ Join table
-                    Driver master
-                    Matter table
+    9-1. Only the administrator acquires the following information in the driver sales list.
+    ・ Acquisition data
+    Driver master.Driver name									DISTINCT
+    Opportunity table.Amount									SUM
+    ・ Search condition
+    Issue table.							=		Year.select box						+		Month.select box
+    Matter table.State							=		1
+    Matter table. Delete flag							=		0
+    ·Display order
+    Driver master.Driver name									ascending order
+    ・ Join table
+    Driver master
+    Matter table
 
      */
 
     /**
      * 10. When the login button is pressed, the following processing is performed.
-            One common specification.
+    One common specification.
      */
 
 }
