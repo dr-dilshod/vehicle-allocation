@@ -18,6 +18,7 @@ class TopTest extends DuskTestCase
         ]);
         $this->user = $user;
     }
+
     /** 1. Initial display
      * 1-1. Display as above screen.
      */
@@ -47,6 +48,7 @@ class TopTest extends DuskTestCase
                 ->assertSee('2020');
         });
     }
+
     /**
      * Get the past two years
      * In the case of 2020, get `` 2018 '', `` 2019 '', `` 2020 ''
@@ -120,7 +122,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/item/create')
                 ->assertSee("Item List")
-                ->assertPathIs('/item');
+                ->assertPathIs('/item/create');
         });
     }
 
@@ -136,6 +138,7 @@ class TopTest extends DuskTestCase
                 ->assertPathIs('/dispatch');
         });
     }
+
     /**
      * 5. When the billing management button is pressed, the following processing is performed.
      * 5-1. Transit to the “Bill Management” screen.
@@ -149,6 +152,7 @@ class TopTest extends DuskTestCase
                 ->assertPathIs('/invoice');
         });
     }
+
     /**
      * 6. When the payment list button is pressed, the following processing is performed.
      * 6-1. Transit to the “Payment List” screen.
@@ -162,9 +166,10 @@ class TopTest extends DuskTestCase
                 ->assertPathIs('/payment');
         });
     }
+
     /**
      * 7. When the payment list button is pressed, the following processing is performed.
-    7-1. Transit to the “Payment List” screen.
+     *  7-1. Transit to the “Payment List” screen.
      * Active only for admin users
      */
     public function testPaymentListForAdminPage() {
@@ -207,5 +212,22 @@ class TopTest extends DuskTestCase
      * 10. When the login button is pressed, the following processing is performed.
     One common specification.
      */
-
+    public function testLoginPressed() {
+        $user = $this->user;
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/top')
+                ->assertPathIs('/login');
+        });
+    }
+    /**
+     * wrong path test
+     */
+    public function testWrongPath() {
+        $user = $this->user;
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/wrongPath')
+                ->assertSee('Requested page not found.')
+                ->assertPathIs('/wrongPath');
+        });
+    }
 }
