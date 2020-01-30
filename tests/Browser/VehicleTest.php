@@ -38,7 +38,7 @@ class VehicleTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/vehicle')
                 ->press('editBtn')
-                ->assertButtonDisabled('registerBtn');
+                ->assertButtonEnabled('registerBtn');
         });
     }
 
