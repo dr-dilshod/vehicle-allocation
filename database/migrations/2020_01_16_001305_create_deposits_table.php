@@ -15,10 +15,11 @@ class CreateDepositsTable extends Migration
     {
         Schema::create('deposits', function (Blueprint $table) {
             $table->bigIncrements('deposit_id');
-            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('shipper_id');
+            $table->dateTime('deposit_day');
             $table->integer('deposit_amount')->default(0);
+            $table->integer('other')->default(0);
             $table->integer('fee')->default(0);
-            $table->string('deposit_remark', 255)->nullable();
             $table->tinyInteger('delete_flg')->default(0);
             $table->unsignedBigInteger('create_id');
             $table->unsignedBigInteger('update_id');
