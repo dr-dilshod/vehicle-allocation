@@ -57,13 +57,13 @@ Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destro
 /**
  * Unit prices CrUD
  */
-Route::get('/unit-price', 'Api\UnitPriceController@index')->name('api.unit-price.index');
-Route::get('/unit-price/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-price.shipper-names');
-Route::get('/unit-price/vehicle-types', 'Api\UnitPriceController@getVehicleTypes');
-Route::get('/unit-price/{id}', 'Api\UnitPriceController@show')->name('api.unit-price.show');
-Route::post('/unit-price/{id}', 'Api\UnitPriceController@store')->name('api.unit-price.store');
-Route::post('/unit-price/{id}', 'Api\UnitPriceController@update')->name('api.unit-price.update');
-Route::delete('/unit-price/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-price.destroy');
+Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names');
+Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.shipper-names');
+Route::get('/unit-prices/{shipper_id}', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
+Route::get('/unit-prices/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
+Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
+Route::post('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
+Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
 
 /**
  * Deposit APIs
@@ -86,3 +86,5 @@ Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index')
 
 // Dispatch
 Route::get('/dispatch', 'Api\DispatchController@index')->name('api.dispatch.index');
+Route::post('/dispatch', 'Api\DispatchController@store')->name('api.dispatch.store');
+Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('api.dispatch.third');

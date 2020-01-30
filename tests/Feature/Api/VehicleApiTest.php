@@ -96,7 +96,6 @@ class VehicleApiTest extends TestCase
         $response = $this->json('DELETE',route('api.vehicle.destroy',[$vehicle->vehicle_id]));
         $response->assertStatus(204);
         assertFalse(DB::table('vehicles')->where('company_name', 'TestCompanyName')->exists());
-
     }
 
      /**
@@ -203,6 +202,20 @@ class VehicleApiTest extends TestCase
     /**
      * 2-1. When the edit button is pressed: Display "Editing" and enter edit mode.
      */
+    public function testEditingMode() {
+        $user = factory(Driver::class)->create([
+            'driver_name' => 'admin',
+            'driver_pass' => 'admin'
+        ]);
+        $this->browse(function ($browser) use ($user) {
+            $browser->visit('/login')
+                ->type('driver_name', $user->driver_name)
+                ->type('password', $user->driver_pass)
+                ->press('Login')
+                ->assertPathIs('/home');
+        });
+    }
+
 
     /**
      * When the edit button is pressed: 2-2. Activate the “Register” button.
@@ -430,12 +443,6 @@ class VehicleApiTest extends TestCase
      * 5-3. When registering data of the chartered vehicle list.
      * ・ Update data
      * Rental car master. = TODAY
-     */
-
-    /**
-     * 5-3. When registering data of the chartered vehicle list.
-     * ・ Update data
-     * A pop-up is displayed as three common specifications, and the edit mode ends.
      */
 
 }

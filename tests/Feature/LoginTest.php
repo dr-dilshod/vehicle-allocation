@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Driver;
 use Tests\TestCase;
 use App\User;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -43,10 +44,10 @@ class LoginTest extends TestCase
      */
     public function testLoginAValidUser()
     {
-        $user = factory(User::class)->create();
+        $user = factory(Driver::class)->create();
         $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password'
+            'driver_name' => $user->driver_name,
+            'password' => 'admin'
         ]);
         $response->assertStatus(302);
         $this->assertAuthenticatedAs($user);
@@ -57,9 +58,9 @@ class LoginTest extends TestCase
      */
     public function testDoesNotLoginAnInvalidUser()
     {
-        $user = factory(User::class)->create();
+        $user = factory(Driver::class)->create();
         $response = $this->post('/login', [
-            'email' => $user->email,
+            'driver_name' => $user->email,
             'password' => 'invalid'
         ]);
         $response->assertSessionHasErrors();
@@ -71,7 +72,7 @@ class LoginTest extends TestCase
      */
     public function testLogoutAnAuthenticatedUser()
     {
-        $user = factory(User::class)->create();
+        $user = factory(Driver::class)->create();
         $response = $this->actingAs($user)->post('/logout');
         $response->assertStatus(302);
         $this->assertGuest();

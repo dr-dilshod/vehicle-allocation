@@ -8,9 +8,7 @@ use App\Driver;
 use App\Http\Controllers\Controller;
 use App\Shipper;
 use App\UnitPrice;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UnitPriceController extends Controller
 {
@@ -18,13 +16,14 @@ class UnitPriceController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function index(Request $request)
+    public function index($shipper_id)
     {
-        $unitPrices = UnitPrice::with('shipper')->with('item')->with('driver');
-        return $unitPrices->where('delete_flg', 0)->paginate(25);
+        $unitPrices = UnitPrice::with('shipper')
+            ->where('shipper_id', '=', $shipper_id);
+        return $unitPrices->where('delete_flg', 0)->get();
     }
 
-    public function show(Request $request, $id)
+    public function show($id)
     {
         $unit_price = UnitPrice::with('shipper')
             ->with('item')
@@ -46,32 +45,41 @@ class UnitPriceController extends Controller
                 'message' => $validator->errors()->first()
             ]);
         }
-        $unique = UnitPrice::query()->where([
-            'shipper_id' => $request->json('shipper_id'),
-            'item_id' => $request->json('item_id'),
-            'driver_id' => $request->json('driver_id')
-        ])->count();
+        $all = $request->all();
+
+        $unique = UnitPrice::query()->where('shipper_id', $all['shipper_id'])
+            ->where('car_type', $all['car_type'])
+            ->where('stack_point', $all['stack_point'])
+            ->where('down_point', $all['down_point'])
+            ->where('type', $all['type'])
+            ->where('price', $all['price'])
+            ->count();
         if ($unique >= 1) {
             return response()->json([
                 'status' => 'error',
                 'message' => __('validation.unique', ['attribute' => 'Unit price'])
             ]);
         }
-        $unit_price = UnitPrice::create($request->all());
+
+        $shipper = Shipper::find($request->input('shipper_id'));
+        $all = array_merge($all, ['shipper_no' => $shipper->shipper_no]);
+        $unit_price = UnitPrice::create($all);
         return response()->json($unit_price, 201);
     }
 
     public function update(Request $request, $id)
     {
         $unit_price = UnitPrice::findOrFail($id);
-        $validator = validator()->make($request->json()->all(), UnitPrice::$updateValidationRules);
+        $all = $request->json()->all();
+        $validator = validator()->make($all, UnitPrice::$updateValidationRules);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
                 'message' => $validator->errors()->first()
             ]);
         }
-        $unit_price->update($request->json()->all());
+        $all = array_merge($all, ['update_id' => \Auth::id()]);
+        $unit_price->update($all);
         return response()->json($unit_price);
     }
 
@@ -87,15 +95,17 @@ class UnitPriceController extends Controller
         $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
             ->where('delete_flg', 0)
             ->orderBy('shipper_name1', 'ASC')
-            ->get();
+            ->get()->all();
 
         return response()->json($shippers);
     }
 
     public function getVehicleTypes()
     {
-        $vehicleTypes = Driver::query()->select(['driver_id', 'vehicle_type'])
+        $vehicleTypes = Driver::query()->select(['vehicle_type'])
+            ->where('vehicle_type', '!=', null)
             ->where('delete_flg', 0)
+            ->distinct()
             ->get();
         return response()->json($vehicleTypes);
     }

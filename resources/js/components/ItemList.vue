@@ -35,11 +35,11 @@
                                 </td>
                                 <td class="text-right"><span class="c24966">Shipper</span></td>
                                 <td class="orders-order">
-                                    <select name="selectedShipper" id="selectedShipper" v-model="shipper_id"
+                                    <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
                                             class="form-control">
                                         <option value=""></option>
-                                        <option v-for="shipper in shippers" :value="shipper.shipper_id">
-                                            {{ shipper.shipper_name1 }}
+                                        <option v-for="shipper in shippers" :value="shipper.shipper_name">
+                                            {{ shipper.shipper_name }}
                                         </option>
                                     </select>
                                 </td>
@@ -48,8 +48,8 @@
                                     <select name="status" id="status" v-model="status"
                                             class="form-control">
                                         <option value=""></option>
-                                        <option value="complete">Completed</option>
-                                        <option value="incomplete">Incomplete</option>
+                                        <option value=1>Completed</option>
+                                        <option value=0>Incomplete</option>
                                     </select>
                                 </td>
 
@@ -78,17 +78,12 @@
                                             {{ vehicle.vehicle_no }}
                                         </option>
                                     </select>
-
                                 </td>
                                 <td>
-
                                     <button type="submit" class="btn btn-primary">Search</button>
-
                                 </td>
                                 <td>
-
                                     <button type="submit" class="btn btn-primary">Clear</button>
-
                                 </td>
                             </tr>
                             </tbody>
@@ -101,7 +96,8 @@
                   :queryCellInfo='customiseCell' ref="grid" id="grid" :recordDoubleClick="editItem">
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
-                <e-column field='status' headerText='Status' width="100"></e-column>
+                <e-column field='status' headerText='Status' width="100" textAlign="Center"
+                          :valueAccessor='statusParser'></e-column>
                 <e-column field='stack_date' headerText='Stack date' width="150"></e-column>
                 <e-column field='stack_time' headerText='Stack Time' width="150"></e-column>
                 <e-column field='shipper_name' headerText='Shipper name'  width="150"></e-column>
@@ -117,8 +113,9 @@
     import Vue from "vue";
     import { VueSimpleAlert } from "vue-simple-alert";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
-    import VueRouter from "vue-router";
+    import { ButtonPlugin } from "@syncfusion/ej2-vue-buttons";
 
+    Vue.use(ButtonPlugin);
     Vue.use( GridPlugin );
     Vue.use( VueSimpleAlert );
 
@@ -140,10 +137,11 @@
                 stack_date: '',
                 stack_point: '',
                 down_point: '',
-                shipper_id: '',
+                shipper_name: '',
                 mode: 'normal',
                 shippers: [],
                 vehicles: [],
+                selected: {},
             }
         },
         mounted() {
@@ -151,24 +149,45 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-            actionBegin(args){
-                if(args.requestType == 'edit'){
-                    this.editVehicle(args.data);
+            actionTemplate: function () {
+                return {
+                    template: Vue.component('columnTemplate', {
+                        template: `<router-link :to="{name: 'CasePage', params: { item_id: this.data.item_id }}">
+                             <a :href="registrationUrl"></a>
+                          </router-link>`,
+                        data() {
+                            return {
+                                item_id:'',
+                                data: {},
+                            };
+                        },
+                        methods: {},
+                    })
                 }
             },
             customiseCell: function(args) {
                 if (args.column.field == 'status') {
                     if (args.data['status'] === 1) {
                         args.cell.classList.add('complete');
-                        args.data['status'] = 'Complete';
+                        //args.data['status'] = 'Complete';
                     } else if (args.data['status'] === 0) {
                         args.cell.classList.add('incomplete');
-                        args.data['status'] = 'Incomplete';
+                        //args.data['status'] = 'Incomplete';
                     }
                 }
             },
+            statusParser: function (field, data, column) {
+                if (data[field] === 0) {
+                    return 'Incomplete'
+                } else {
+                    return 'Complete';
+                }
+            },
+            popup: function() {
+                alert("this.");
+            },
             editItem: function(args){
-                window.location.href = `/item/edit?item_id=25`;
+                window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
             },
             fetchItem(url) {
                 let grid = this.$refs.grid.ej2Instances;
@@ -203,7 +222,7 @@
             },
             search(){
                 return this.fetchItem(this.itemUrl
-                    +'?shipper_id=' + this.shipper_id
+                    +'?shipper_name=' + this.shipper_name
                     + '&vehicle_no=' + this.vehicle_no
                     + '&status=' + this.status
                     + '&stack_date=' + this.stack_date
@@ -251,9 +270,25 @@
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
     .complete {
+        display: inline-block;
+        text-align: center;
+        margin: 2px 0;
+        border: solid 1px transparent;
+        border-radius: 4px;
+        padding: 0.5em 1em;
+        text-decoration-color: white;
         background-color: CornflowerBlue;
+        cursor:pointer;
     }
     .incomplete {
         background-color: firebrick;
+        display: inline-block;
+        text-align: center;
+        margin: 2px 0;
+        border: solid 1px transparent;
+        border-radius: 4px;
+        padding: 0.5em 1em;
+        text-decoration-color: white;
+        cursor:pointer;
     }
 </style>

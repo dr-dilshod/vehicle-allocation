@@ -27,7 +27,7 @@ class Deposit extends Model
     use BlameableTrait;
 
     const validationRules = [
-        'invoice_id' => 'required',
+        'shipper_id' => 'required',
     ];
 
     /**

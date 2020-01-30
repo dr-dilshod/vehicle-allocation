@@ -15,7 +15,7 @@
                 <a href="{{route('item.index')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.item_list')}}</a>
             </div>
             <div class="col-4">
-                <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.dispatch_board')}}</a>
+                <a href="{{route('dispatch.index')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.dispatch_board')}}</a>
             </div>
         </div>
         <div class="row p-2">
@@ -65,7 +65,7 @@
                         </select>
                     </div>
                     <div class="form-group row">
-                        <div class="col-9 offset-2">
+                        <div class="col-9 offset-2 pr-0">
                             <button type="submit" id="display" class="btn btn-lg btn-block btn-primary">{{__('Display')}}</button>
                         </div>
                     </div>

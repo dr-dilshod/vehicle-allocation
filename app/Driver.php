@@ -106,4 +106,8 @@ class Driver extends Authenticatable
     {
         return $this->driver_pass;
     }
+
+    public function getItemsByDate($date){
+//        $dispatches = Dispatch::where([])
+    }
 }

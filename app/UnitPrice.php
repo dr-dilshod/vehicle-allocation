@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $price_id
@@ -13,6 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $update_id
  * @property boolean $type
  * @property integer $price
+ * @property string $car_type
+ * @property string $shipper_no
+ * @property string $stack_point
+ * @property string $down_point
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
@@ -24,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UnitPrice extends Model
 {
+    use BlameableTrait;
+
     /**
      * The primary key for the model.
      *
@@ -41,7 +48,12 @@ class UnitPrice extends Model
     /**
      * @var array
      */
-    protected $fillable = ['shipper_id', 'item_id', 'driver_id', 'create_id', 'update_id', 'type', 'price', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'shipper_id', 'item_id', 'driver_id', 'create_id',
+        'update_id', 'type', 'price', 'delete_flg',
+        'created_at', 'updated_at', 'car_type', 'shipper_no',
+        'stack_point', 'down_point'
+    ];
 
     /**
      * @var array
@@ -52,9 +64,12 @@ class UnitPrice extends Model
      * @var array
      */
     public static $createValidationRules = [
-        'shipper_id' => 'bail|required|exists:shippers,id|numeric',
-        'item_id' => 'bail|required|exists:items,item_id|numeric',
-        'driver_id' => 'bail|required|exists:drivers,driver_id|numeric',
+        'shipper_id' => 'bail|required|exists:shippers,shipper_id|numeric',
+        'item_id' => 'nullable|exists:items,item_id|numeric',
+        'driver_id' => 'nullable|exists:drivers,driver_id|numeric',
+        'stack_point' => 'required|string|max:60',
+        'down_point' => 'required|string|max:60',
+        'car_type' => 'required|string|max:10',
         'type' => 'bail|required|numeric',
         'price' => 'bail|required|numeric',
     ];
@@ -63,9 +78,12 @@ class UnitPrice extends Model
      * @var array
      */
     public static $updateValidationRules = [
-        'shipper_id' => 'bail|required|exists:shippers,id|numeric',
-        'item_id' => 'bail|required|exists:items,item_id|numeric',
-        'driver_id' => 'bail|required|exists:drivers,driver_id|numeric',
+        'shipper_id' => 'bail|required|exists:shippers,shipper_id|numeric',
+        'item_id' => 'nullable|exists:items,item_id|numeric',
+        'driver_id' => 'nullable|exists:drivers,driver_id|numeric',
+        'stack_point' => 'required|string|max:60',
+        'down_point' => 'required|string|max:60',
+        'car_type' => 'required|string|max:10',
         'type' => 'bail|required|numeric',
         'price' => 'bail|required|numeric',
     ];

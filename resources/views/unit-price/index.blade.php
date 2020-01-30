@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <unit-price-table
-            resource-url="{{route('api.unit-price.index')}}"
+            resource-url="api/unit-prices"
             back-url="{{route('setting')}}"
             title="Unit price list"
         ></unit-price-table>
