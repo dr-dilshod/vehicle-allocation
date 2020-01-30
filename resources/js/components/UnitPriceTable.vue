@@ -6,17 +6,16 @@
                    class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" v-if="this.mode === 'editing'">Editing</h2>
+                <h2 class="text-center text-danger" ref="editTitle">Editing</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click="register"
-                        :disabled="this.mode !== 'editing'">Register
+                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" ref="registerBtn">Register
                 </button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click="edit">Edit</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" ref="editBtn">Edit</button>
             </div>
         </div>
         <div class="row align-items-center mt-4">
@@ -26,10 +25,10 @@
                         <div class="form-group row">
                             <label for="shipperSelect" class="col-4 col-form-label ">Shipper</label>
                             <div class="col-8">
-                                <select name="shipper" id="shipperSelect" class="form-control">
+                                <select name="shipper" id="shipperSelect" ref="shipperSelect" class="form-control">
                                     <option value="0">-- Select --</option>
-                                    <option v-for="shipper in shippers" :value="shipper.shipper_id">
-                                        {{shipper.shipper_name1 + ' ' + shipper.shipper_name2}}
+                                    <option v-for="shipper in shippers" :value="shipper.id">
+                                        {{shipper.shipper}}
                                     </option>
                                 </select>
                             </div>
@@ -37,12 +36,12 @@
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <button class="btn btn-lg btn-primary btn-block p-1">Search</button>
+                            <button v-on:click="search" class="btn btn-lg btn-primary btn-block p-1">Search</button>
                         </div>
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <button class="btn btn-lg btn-primary btn-block p-1">Clear</button>
+                            <button v-on:click="clear" class="btn btn-lg btn-primary btn-block p-1">Clear</button>
                         </div>
                     </div>
                 </div>
@@ -53,9 +52,13 @@
                   :allowSorting="true" :editSettings="editSettings" :height="270"
                   :actionBegin="actionBegin" :toolbar="toolbarBtns">
             <e-columns>
-                <e-column field='vehicle_type' headerText='Car type' :editTemplate="vehicleTypeEditTemplate"
+                <e-column field='car_type' headerText='Car type'
+                          editType='dropdownedit'
+                          :edit="params.vehicleTypesParams"
+                          :validationRules="rules.car_type"
                           width="200"></e-column>
-                <e-column field='shipper_name1' headerText='Shipper' :editTemplate="shipperEditTemplate"
+                <e-column field='shipper_id' headerText='Shipper' editType='dropdownedit'
+                          :edit="params.shippersParams"
                           width="200"></e-column>
                 <e-column field='stack_point' headerText='Loading port' width="200"></e-column>
                 <e-column field='down_point' headerText='Drop off' width="200"></e-column>
@@ -63,19 +66,23 @@
                 <e-column field='price' headerText='Unit price' width="100"></e-column>
                 <e-column field='price_id' headerText='Unit Price ID' width="5" :isPrimaryKey="true"
                           :visible=false></e-column>
+                <e-column field='shipperId' headerText='Shipper ID' width="5"
+                          :visible=false></e-column>
             </e-columns>
         </ejs-grid>
 
     </div>
-</template>s
+</template>
 
 <script>
     import Vue from "vue";
     import {Edit, Freeze, GridPlugin, Sort, Toolbar} from '@syncfusion/ej2-vue-grids';
     import {DropDownListPlugin} from '@syncfusion/ej2-vue-dropdowns';
-
+    import { Query } from '@syncfusion/ej2-data';
+    import {TableUtil} from "../utils/TableUtil";
     Vue.use(GridPlugin);
     Vue.use(DropDownListPlugin);
+    let shippers = [];
     export default {
         name: "UnitPriceTable",
         props: {
@@ -86,130 +93,160 @@
         data() {
             return {
                 mode: 'normal',
+                tableUtil: null,
                 toolbarBtns: null,
                 editSettings: {
-                    allowEditing: true,
-                    allowAdding: true,
-                    allowDeleting: true,
+                    allowEditing: false,
+                    allowAdding: false,
+                    allowDeleting: false,
                     showDeleteConfirmDialog: true,
                 },
                 shippers: [],
-                data: []
-            };
+                vehicle_type: [],
+                data: [],
+                params: {
+                    shippersParams: {
+                        params: {
+                            allowFiltering: true,
+                            dataSource: this.shippers,
+                            fields: {text: "shipper", value: "id"},
+                            query: new Query()
+                        }
+                    },
+                    vehicleTypesParams: {
+                        params: {
+                            allowFiltering: true,
+                            dataSource: this.vehicle_type,
+                            fields: {text: "vehicle", value: "vehicle"},
+                            query: new Query()
+                        }
+                    }
+                },
+                rules: {
+                    car_type: {required: true}
+                }
+            }
+        },
+        created() {
+            this.fetchShipperNames(`${this.resourceUrl}/shipper-names`);
+            this.fetchVehicleTypes(`${this.resourceUrl}/vehicle-types`);
         },
         mounted() {
-            this.fetchData(this.resourceUrl);
-            this.fetchShipperNames(`${this.resourceUrl}/shipper-names`);
+            this.tableUtil = new TableUtil(this);
             this.$refs.grid.hideSpinner();
         },
         methods: {
-            vehicleTypeEditTemplate() {
-                return {
-                    template: Vue.component('vehicle-types', {
-                        template: `
-                            <ejs-dropdownlist id='dropdownlist' placeholder='Select vehicle type'
-                                              :dataSource='vehicle_type' :fields='fields'></ejs-dropdownlist>
-                        `,
-                        data() {
-                            return {
-                                vehicle_type: [],
-                                fields: {text: 'VehicleType', value: 'Id'},
-                            };
-                        },
-                        beforeMount() {
-                            this.fetchVehicleTypes(`/api/unit-price/vehicle-types`);
-                        },
-                        methods: {
-                            fetchVehicleTypes(url) {
-                                axios.get(url)
-                                    .then(response => {
-                                        this.vehicle_type = response.data.map(e => {
-                                            return {VehicleType: e.vehicle_type, Id: e.driver_id};
-                                        });
-                                    })
-                                    .catch(err => {
-                                        alert('Bu yer ' + err);
-                                    });
-                            },
+            search() {
+                let id = this.$refs.shipperSelect.value;
+                axios.get(`${this.resourceUrl}/${id}`)
+                    .then(response => {
+                        if (response.data && response.data.length > 0) {
+                            this.data = response.data.map(e => {
+                                return {
+                                    price_id: e.price_id,
+                                    car_type: e.car_type,
+                                    shipperId: e.shipper_id,
+                                    shipper_id: e.shipper.shipper_name1 + ' ' + e.shipper.shipper_name2,
+                                    stack_point: e.stack_point,
+                                    down_point: e.down_point,
+                                    type: e.type,
+                                    price: e.price
+                                };
+                            });
+                            this.$refs.grid.refresh();
                         }
                     })
-                };
+                    .catch(err => {
+                        alert('aaa' + err);
+                    });
             },
-            shipperEditTemplate() {
-                return {
-                    template: Vue.component('shipper-names', {
-                        template: `
-                            <ejs-dropdownlist id='shipperdrpdwn' placeholder='Select shipper'
-                                              :dataSource='shippers' :fields='fields'></ejs-dropdownlist>
-                        `,
-                        data() {
-                            return {
-                                shippers: [],
-                                fields: {text: 'Shipper', value: 'Id'},
-                            };
-                        },
-                        beforeMount() {
-                            this.fetchVehicleTypes(`/api/unit-price/shipper-names`);
-                        },
-                        methods: {
-                            fetchVehicleTypes(url) {
-                                axios.get(url)
-                                    .then(response => {
-                                        this.shippers = response.data.map(e => {
-                                            return {Shipper: `${e.shipper_name1} ${e.shipper_name2}`, Id: e.shipper_id};
-                                        });
-                                    })
-                                    .catch(err => {
-                                        alert(err);
-                                    });
-                            },
-                        }
-                    })
-                };
+            clear() {
+                this.$refs.shipperSelect.value = 0;
             },
             register() {
                 this.$refs.grid.addRecord();
             },
-
             edit() {
                 this.toolbarBtns = ['Edit', 'Delete', 'Update', 'Cancel'];
                 this.mode = 'editing';
                 this.editSettings.allowEditing = true;
                 this.editSettings.allowDeleting = true;
             },
-            fetchData(url) {
+            fetchShipperNames(url) {
                 axios.get(url)
                     .then(response => {
-                        if (response.data && response.data.data && response.data.data.length > 0) {
-                            this.data = response.data.data.map(e => {
-                                return {
-                                    price_id: e.price_id,
-                                    vehicle_type: e.driver.vehicle_type,
-                                    shipper_name1: e.shipper.shipper_name1 + ' ' + e.shipper.shipper_name2,
-                                    stack_point: e.item.stack_point,
-                                    down_point: e.item.down_point,
-                                    type: e.type,
-                                    price: e.price
-                                };
+                        if (response.data.length > 0) {
+                            this.shippers = response.data.map(e => {
+                                return {shipper: e.shipper_name1 + ' ' + e.shipper_name2, id: e.shipper_id};
                             });
                         }
                     })
                     .catch(err => {
-                        alert(err);
+                        alert('wtf' + err);
                     });
             },
-            fetchShipperNames(url) {
+            fetchVehicleTypes(url) {
                 axios.get(url)
                     .then(response => {
-                        this.shippers = response.data;
+                        this.vehicle_type = response.data.map(e => {
+                            return {
+                                vehicle: e.vehicle_type
+                            };
+                        });
                     })
                     .catch(err => {
-                        alert(err);
+                        alert('Bu yer ' + err);
                     });
             },
+            insertData(unitPrice) {
+                axios.post(this.resourceUrl, unitPrice)
+                    .then(response =>{
+                        document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
+                        this.search();
+                        this.tableUtil.endEditing();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
+            updateData(unitPrice) {
+                unitPrice = unitPrice.data;
+                unitPrice.shipper_id = unitPrice.shipperId;
+                axios.post(this.resourceUrl + '/' + unitPrice.price_id, unitPrice)
+                    .then(response =>{
+                        document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
+                        this.search();
+                        this.tableUtil.endEditing();
+                    })
+                    .catch(function(error){
+                        alert(error)
+                    });
+            },
+            deleteData(id) {
+                let tableUtil = this.tableUtil;
+              axios.delete(this.resourceUrl + '/' + id)
+              .then(response => {
+                    this.tableUtil.endEditing();
+              }).catch(err => {
+                    alert(err);
+              })
+            },
             actionBegin(args) {
+                console.log(args.requestType);
                 if (args.requestType === 'save') {
-                    args.cancel = true;
+                    if (args.hasOwnProperty('data') && args.data.hasOwnProperty('price_id') && args.data.price_id === undefined) {
+                        this.insertData(args.data);
+                    } else {
+                        console.log(args);
+                        this.updateData(args);
+                    }
+                } else if (args.requestType === 'delete') {
+                    if(args.data[0].price_id !== undefined){
+                        this.deleteData(args.data[0].price_id);
+                    }
+                } else if (args.requestType === 'beginEdit' || args.requestType === 'add') {
+                    this.$refs.grid.getColumnByField('shipper_id').edit.params.dataSource = this.shippers;
+                    this.$refs.grid.getColumnByField('car_type').edit.params.dataSource = this.vehicle_type;
                 }
             }
 

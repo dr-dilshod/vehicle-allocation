@@ -64,9 +64,12 @@ class UnitPrice extends Model
      * @var array
      */
     public static $createValidationRules = [
-        'shipper_id' => 'bail|required|exists:shippers,id|numeric',
-        'item_id' => 'bail|required|exists:items,item_id|numeric',
-        'driver_id' => 'bail|required|exists:drivers,driver_id|numeric',
+        'shipper_id' => 'bail|required|exists:shippers,shipper_id|numeric',
+        'item_id' => 'nullable|exists:items,item_id|numeric',
+        'driver_id' => 'nullable|exists:drivers,driver_id|numeric',
+        'stack_point' => 'required|string|max:60',
+        'down_point' => 'required|string|max:60',
+        'car_type' => 'required|string|max:10',
         'type' => 'bail|required|numeric',
         'price' => 'bail|required|numeric',
     ];
@@ -75,9 +78,12 @@ class UnitPrice extends Model
      * @var array
      */
     public static $updateValidationRules = [
-        'shipper_id' => 'bail|required|exists:shippers,id|numeric',
-        'item_id' => 'bail|required|exists:items,item_id|numeric',
-        'driver_id' => 'bail|required|exists:drivers,driver_id|numeric',
+        'shipper_id' => 'bail|required|exists:shippers,shipper_id|numeric',
+        'item_id' => 'nullable|exists:items,item_id|numeric',
+        'driver_id' => 'nullable|exists:drivers,driver_id|numeric',
+        'stack_point' => 'required|string|max:60',
+        'down_point' => 'required|string|max:60',
+        'car_type' => 'required|string|max:10',
         'type' => 'bail|required|numeric',
         'price' => 'bail|required|numeric',
     ];
