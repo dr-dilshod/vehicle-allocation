@@ -82,4 +82,5 @@ Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index')
 // Dispatch
 Route::get('/dispatch', 'Api\DispatchController@index')->name('api.dispatch.index');
 Route::post('/dispatch', 'Api\DispatchController@store')->name('api.dispatch.store');
+Route::delete('/dispatch/{id}', 'Api\DispatchController@destroy')->name('api.dispatch.destroy');
 Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('api.dispatch.third');

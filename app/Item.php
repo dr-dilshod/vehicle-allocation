@@ -34,6 +34,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  * @property string $created_at
  * @property string $updated_at
  * @property string $remember_token
+ * @property int $dispatch_status
  * @property Driver $driver
  * @property Shipper $shipper
  * @property Driver $createdUser
@@ -46,6 +47,8 @@ class Item extends Model
 {
     use BlameableTrait;
 
+    const DISPATCH_STATUS_IN_DISPATCH = 1;
+    const DISPATCH_STATUS_OUT_DISPATCH = 0;
     /**
      * The primary key for the model.
      *
