@@ -53,6 +53,8 @@ Route::get('/item/{id}', 'Api\ItemController@show')->name('api.item.show');
 Route::post('/item', 'Api\ItemController@store')->name('api.item.store');
 Route::put('/item/{id}', 'Api\ItemController@update')->name('api.item.update');
 Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destroy');
+Route::put('/item/toIncomplete', 'Api\ItemController@toIncomplete')->name('api.item.toIncomplete');
+
 
 /**
  * Unit prices CrUD

@@ -105,6 +105,51 @@ class ItemController extends Controller
     }
 
     /**
+     * Change the status of an item to incomplete
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function toIncomplete(Request $request)
+    {
+        $id = $request->query('id') ?: '';
+        $item = Item::findOrFail($id);
+        $item->status=0;
+        $item->item_completion_date=null;
+        $item->save();
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Change the status of an item to complete
+     * and set today as the completion date
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setTodayAsCompletion(Request $request)
+    {
+        $id = $request->query('id') ?: '';
+        $item = Item::findOrFail($id);
+        $item->status=1;
+        $item->item_completion_date=date("Y-m-d");
+        $item->save();
+        return response()->json(null, 204);
+    }
+
+    /**
+     * set the date of departure to the date of completion of transportation
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setDeptDateAsCompletion(Request $request)
+    {
+        $id = $request->query('id') ?: '';
+        $item = Item::findOrFail($id);
+        $item->status=1;
+        $item->item_completion_date=$item['stack_date'];
+        $item->save();
+        return response()->json(null, 204);
+    }
+    /**
      * returns the list of item based on the query on the item list view
      *
      * @param Request $request
