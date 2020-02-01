@@ -37,6 +37,7 @@ Vue.component('payment-bk-report',require('./components/PaymentBkReport.vue').de
 Vue.component('item-registration',require('./components/ItemRegistration.vue').default);
 Vue.component('invoice',require('./components/Invoice.vue').default);
 Vue.component('dispatch',require('./components/Dispatch.vue').default);
+Vue.component('top',require('./components/Top.vue').default);
 
 const app = new Vue({
     el: '#app',
