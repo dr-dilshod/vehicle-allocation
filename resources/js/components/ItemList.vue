@@ -83,7 +83,7 @@
                                     <button type="submit" class="btn btn-primary">Search</button>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary">Clear</button>
+                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -92,19 +92,19 @@
                 </div>
             </div>
         </div>
-        <ejs-grid :dataSource="data" :enableHover='false' :allowSelection='true'
-                  :queryCellInfo='customiseCell' ref="grid" id="grid" :recordDoubleClick="editItem">
+        <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
+                  ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar' >
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
-                <e-column field='status' headerText='Status' width="100" textAlign="Center"
-                          :valueAccessor='statusParser'></e-column>
-                <e-column field='stack_date' headerText='Stack date' width="150"></e-column>
-                <e-column field='stack_time' headerText='Stack Time' width="150"></e-column>
-                <e-column field='shipper_name' headerText='Shipper name'  width="150"></e-column>
-                <e-column field='stack_point' textAlign="Stack point" headerText='Stack point' width="150"></e-column>
-                <e-column field='down_point' headerText='Down point' width="200"></e-column>
-                <e-column field='item_price' headerText='Item price' width="200"></e-column>
-                <e-column field='item_remark' headerText='Remarks' width="200"></e-column>
+                <e-column field='status' :allowEditing= 'false'  headerText='Status' width="120" textAlign="Center"
+                          :template="actionTemplate"></e-column>
+                <e-column field='stack_date' :allowEditing= 'false' headerText='Stack date' width="150"></e-column>
+                <e-column field='stack_time' :allowEditing= 'false' headerText='Stack Time' width="150"></e-column>
+                <e-column field='shipper_name' :allowEditing= 'false' headerText='Shipper name'  width="150"></e-column>
+                <e-column field='stack_point' :allowEditing= 'false' textAlign="Stack point" headerText='Stack point' width="150"></e-column>
+                <e-column field='down_point' :allowEditing= 'false' headerText='Down point' width="200"></e-column>
+                <e-column field='item_price' :allowEditing= 'false' headerText='Item price' width="200"></e-column>
+                <e-column field='item_remark' :allowEditing= 'false' headerText='Remarks' width="200"></e-column>
             </e-columns>
         </ejs-grid>
     </div>
@@ -113,11 +113,13 @@
     import Vue from "vue";
     import { VueSimpleAlert } from "vue-simple-alert";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
-    import { ButtonPlugin } from "@syncfusion/ej2-vue-buttons";
+    import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
+    import { DialogPlugin } from '@syncfusion/ej2-vue-popups';
 
     Vue.use(ButtonPlugin);
     Vue.use( GridPlugin );
     Vue.use( VueSimpleAlert );
+    Vue.use(DialogPlugin);
 
     export default{
         name: 'ItemList',
@@ -127,12 +129,14 @@
             shipperUrl: {type: String, required: true},
             vehicleUrl: {type: String, required: true},
             registrationUrl: {type: String, required: true},
+            resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
         },
         data() {
             return {
                 data: [],
                 vehicle_no: '',
+                self: this,
                 status: '',
                 stack_date: '',
                 stack_point: '',
@@ -142,6 +146,136 @@
                 shippers: [],
                 vehicles: [],
                 selected: {},
+                editSettings: { allowEditing: true, allowAdding: false, allowDeleting: false},
+                toolbar: ['Edit'],
+                actionTemplate:function () {
+                return {
+                    template: Vue.component('editOption', {
+                        template:
+                        `
+                            <div v-if="data.status != 0">
+                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>Complete
+                                </ejs-button>
+                            </div>
+                            <div v-else>
+                                <div v-if="data.stack_date == getDate()">
+                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>Incomplete
+                                    </ejs-button>
+                                </div>
+                                <div v-else>
+                                    <ejs-button cssClass='e-primary' data-toggle="modal" data-target="#updateStatusModal">
+                                        Incomplete
+                                    </ejs-button>
+                                    <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-primary">
+                                                    <h5 class="modal-title">Update the status of item transportation</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="">
+                                                        <br class="form-group text-center d-flex justify-content-around">
+                                                        <h3>What is your choice?</h3>
+                                                        <div id="radio-group" class="col-md-4">
+                                                            <form>
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> Set the date of
+                                                                departure as the date of completion of transportation<br>
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> Set today as the
+                                                                transportation completion date
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-around mt-2">
+                                                    <button type="button" class="btn btn-danger" @click="checkStatus(data.item_id)">
+                                                        Register
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                                 <div class="d-flex justify-content-around mt-2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `,
+
+                        data() {
+                            return {
+                                data:{},
+                                stat: '',
+                            };
+                        },
+                        methods: {
+                            toIncomplete: function (id,departure_date) {
+                                if (departure_date == this.getDate()) {
+                                    const itemTable = this;
+                                    axios.get('/item/toIncomplete?id='+id)
+                                        .then(function(response){
+                                            alert("Status of Selection is changed to Incomplete when stack and current dates are not same.");
+                                            this.refresh();
+                                        })
+                                        .catch(function(error){
+                                            itemTable.showDialog(error.response.data);
+                                        });
+                                }
+                            },
+                            setTodayAsCompletion: function (id) {
+                                const itemTable = this;
+                                axios.get('/item/setTodayAsCompletion?id='+id)
+                                    .then(function(response){
+                                        //itemTable.showSuccessDialog();
+                                        alert("Status of Selection is changed to Complete and Today is set as Completion Date.");
+                                        $('#updateStatusModal').modal('hide');
+                                        this.refresh();
+                                    })
+                                    .catch(function(error){
+                                        itemTable.showDialog(error.response.data);
+                                    });
+                            },
+                            setDeptDateAsCompletion: function (id) {
+                                const itemTable = this;
+                                axios.get('/item/setDeptDateAsCompletion?id='+id)
+                                    .then(function(response){
+                                        //itemTable.showSuccessDialog();
+                                        alert("Status of Selection is changed to Complete and Stack Date is set as Completion Date.")
+                                        $('#updateStatusModal').modal('hide');
+                                        this.refresh();
+                                    })
+                                    .catch(function(error){
+                                        itemTable.showDialog(error.response.data);
+                                    });
+                            },
+                            checkStatus: function (id) {
+                                if (this.stat == this.getDate()) {
+                                    this.setTodayAsCompletion(id);
+                                } else {
+                                    this.setDeptDateAsCompletion(id);
+                                }
+                            },
+                            refresh(){
+                                self.search();
+                            },
+                            getDate () {
+                                const toTwoDigits = num => num < 10 ? '0' + num : num;
+                                let today = new Date();
+                                let year = today.getFullYear();
+                                let month = toTwoDigits(today.getMonth() + 1);
+                                let day = toTwoDigits(today.getDate());
+                                return `${year}-${month}-${day}`;
+                            }
+                        },
+
+                    })
+                }
+            },
             }
         },
         mounted() {
@@ -149,45 +283,10 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-            actionTemplate: function () {
-                return {
-                    template: Vue.component('columnTemplate', {
-                        template: `<router-link :to="{name: 'CasePage', params: { item_id: this.data.item_id }}">
-                             <a :href="registrationUrl"></a>
-                          </router-link>`,
-                        data() {
-                            return {
-                                item_id:'',
-                                data: {},
-                            };
-                        },
-                        methods: {},
-                    })
+            actionBegin(args){
+                if(args.requestType === 'beginEdit'){
+                    window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
                 }
-            },
-            customiseCell: function(args) {
-                if (args.column.field == 'status') {
-                    if (args.data['status'] === 1) {
-                        args.cell.classList.add('complete');
-                        //args.data['status'] = 'Complete';
-                    } else if (args.data['status'] === 0) {
-                        args.cell.classList.add('incomplete');
-                        //args.data['status'] = 'Incomplete';
-                    }
-                }
-            },
-            statusParser: function (field, data, column) {
-                if (data[field] === 0) {
-                    return 'Incomplete'
-                } else {
-                    return 'Complete';
-                }
-            },
-            popup: function() {
-                alert("this.");
-            },
-            editItem: function(args){
-                window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
             },
             fetchItem(url) {
                 let grid = this.$refs.grid.ej2Instances;
@@ -216,10 +315,6 @@
                         this.vehicles = response.data
                     });
             },
-            edit(){
-                this.setEditMode('editing');
-                this.$refs.grid.refresh();
-            },
             search(){
                 return this.fetchItem(this.itemUrl
                     +'?shipper_name=' + this.shipper_name
@@ -230,31 +325,13 @@
             },
             clear(){
                 this.stack_date = '';
+                this.vehicle_no = '';
+                this.status = '';
+                this.stack_date = '';
+                this.stack_point = '';
+                this.down_point = '';
+                this.shipper_name = '';
                 this.search();
-            },
-            setEditMode(editMode){
-                if(editMode === 'normal'){
-                    this.$refs.grid.ej2Instances.setProperties({
-                        toolbar: null,
-                        editSettings: {
-                            allowDeleting: false,
-                            allowEditing: false,
-                            allowAdding: false,
-                        },
-                    });
-                }
-                let toolbarBtns = ['Edit','Delete','Update','Cancel'];
-                this.$refs.grid.ej2Instances.setProperties({
-                    toolbar: toolbarBtns,
-                    editSettings: {
-                        allowDeleting: true,
-                        allowEditing: true,
-                        allowAdding: true,
-                        showDeleteConfirmDialog: true,
-                    },
-                });
-                this.$refs.grid.refresh();
-                this.mode = editMode;
             },
         },
         provide: {
@@ -263,32 +340,12 @@
         name: 'ItemTable'
     }
 </script>
-<style>
+<style scoped>
     @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
-    .complete {
-        display: inline-block;
-        text-align: center;
-        margin: 2px 0;
-        border: solid 1px transparent;
-        border-radius: 4px;
-        padding: 0.5em 1em;
-        text-decoration-color: white;
-        background-color: CornflowerBlue;
-        cursor:pointer;
-    }
-    .incomplete {
-        background-color: firebrick;
-        display: inline-block;
-        text-align: center;
-        margin: 2px 0;
-        border: solid 1px transparent;
-        border-radius: 4px;
-        padding: 0.5em 1em;
-        text-decoration-color: white;
-        cursor:pointer;
-    }
+    @import '../../../node_modules/@syncfusion/ej2-base/styles/material.css';
+    @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+
 </style>

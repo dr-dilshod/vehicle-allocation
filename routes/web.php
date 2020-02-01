@@ -42,6 +42,10 @@ Route::get('/item/getVehicles', 'Api\ItemController@getVehicles')->name('item.ve
 Route::get('/item/getItemShippers', 'Api\ItemController@getItemShippers')->name('item.shippers.dropdown');
 Route::get('/item/getDrivers', 'Api\ItemController@getDrivers')->name('item.drivers');
 Route::get('/item/getShippers', 'Api\ItemController@getShippers')->name('item.shippers');
+Route::get('/item/toIncomplete', 'Api\ItemController@toIncomplete');
+Route::get('/item/setTodayAsCompletion', 'Api\ItemController@setTodayAsCompletion');
+Route::get('/item/setDeptDateAsCompletion', 'Api\ItemController@setDeptDateAsCompletion');
+
 
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
