@@ -435,6 +435,9 @@
                     });
             },
             register(){
+                console.log()
+                this.itemData.stack_date = this.itemData.stack_date.toISOString().slice(0,10);
+                this.itemData.down_date = this.itemData.down_date.toISOString().slice(0,10);
                 const itemRegistration = this;
                 // check whether it is update or create operation
                 if (this.operation === 'Update') {

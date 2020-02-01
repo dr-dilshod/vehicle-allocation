@@ -21,10 +21,10 @@
                 <form action="#">
                     <div class="row">
                         <div class="col-5">
-                            <div class="form-group">
+                            <div class="form-group d-flex">
                                 <label for="dispatch_day">Dispatch day</label>
-                                <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day"
-                                            :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
+                                            :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
                             </div>
                         </div>
@@ -218,7 +218,7 @@
             backUrl: {type: String, required: true},
             title: {type: String, required: true},
             fetchUrl: {type: String, required: true},
-            resourceUrl: {type: String, required: true},
+            thirdListUrl: {type: String, required: true},
         },
         data(){
             return {
@@ -301,7 +301,7 @@
                     firstDate: this.firstList.date,
                     drivers: this.tableDriverList
                 };
-                axios.post('/api/dispatch/third-list',data)
+                axios.post(componentInstance.thirdListUrl,data)
                     .then(data => {
                         componentInstance.thirdList = data.data.dispatches;
                         return true;
@@ -357,7 +357,7 @@
             },
             fetchDriverTable(){
                 let componentInstance = this;
-                axios.get('/api/dispatch/third-list')
+                axios.get(componentInstance.thirdListUrl)
                     .then(data => {
                         componentInstance.thirdList = data.data;
                     })
@@ -431,24 +431,5 @@
         background: #fff;
         height: 450px;
         overflow-y: scroll;
-    }
-    /* width */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: #3490dc;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
     }
 </style>

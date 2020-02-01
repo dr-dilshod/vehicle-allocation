@@ -5,7 +5,6 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 
 /**
@@ -18,6 +17,7 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+Vue.mixin(require('./utils/translation'));
 
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
@@ -37,6 +37,7 @@ Vue.component('payment-bk-report',require('./components/PaymentBkReport.vue').de
 Vue.component('item-registration',require('./components/ItemRegistration.vue').default);
 Vue.component('invoice',require('./components/Invoice.vue').default);
 Vue.component('dispatch',require('./components/Dispatch.vue').default);
+Vue.component('top',require('./components/Top.vue').default);
 
 const app = new Vue({
     el: '#app',

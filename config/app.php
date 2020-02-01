@@ -177,6 +177,7 @@ return [
 
         RichanFongdasen\EloquentBlameable\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        App\Providers\TranslationServiceProvider::class,
 
     ],
 
