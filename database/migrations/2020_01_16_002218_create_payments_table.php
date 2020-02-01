@@ -24,11 +24,6 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('create_id')->nullable();
             $table->unsignedBigInteger('update_id')->nullable();
             $table->timestamps();
-            $table->index(['shipper_id', 'create_id', 'update_id']);
-            $table->foreign('shipper_id')->references('shipper_id')->on('shippers')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('create_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('update_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
-
         });
     }
 
