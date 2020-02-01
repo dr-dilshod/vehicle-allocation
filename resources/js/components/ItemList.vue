@@ -83,7 +83,7 @@
                                     <button type="submit" class="btn btn-primary">Search</button>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary">Clear</button>
+                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -129,13 +129,14 @@
             shipperUrl: {type: String, required: true},
             vehicleUrl: {type: String, required: true},
             registrationUrl: {type: String, required: true},
+            resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
         },
         data() {
             return {
                 data: [],
-                self: this,
                 vehicle_no: '',
+                self: this,
                 status: '',
                 stack_date: '',
                 stack_point: '',
@@ -153,70 +154,125 @@
                         template:
                         `
                             <div v-if="data.status != 0">
-                                <ejs-button v-on:click.native='show(data.item_id)' cssClass='e-primary'>Complete
+                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>Complete
                                 </ejs-button>
                             </div>
                             <div v-else>
-                                <ejs-button cssClass='e-info' data-toggle="modal" data-target="#updateStatusModal">
-                                    Incomplete
-                                </ejs-button>
-                                <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-primary">
-                                                <h5 class="modal-title">Update the status of item transportation</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="">
-                                                    <br class="form-group text-center d-flex justify-content-around">
-                                                    <h3>What is your choice?</h3>
-                                                    <div id="radio-group" class="col-md-4">
-                                                        <section>
-                                                            <input type="radio" v-model="substatus" value="0"> Set the date of
-                                                            departure to the date of completion of transportation<br>
-                                                            <input type="radio" v-model="substatus" value="1"> Set today as the
-                                                            transportation completion date
-                                                        </section>
+                                <div v-if="data.stack_date == getDate()">
+                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>Incomplete
+                                    </ejs-button>
+                                </div>
+                                <div v-else>
+                                    <ejs-button cssClass='e-primary' data-toggle="modal" data-target="#updateStatusModal">
+                                        Incomplete
+                                    </ejs-button>
+                                    <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-primary">
+                                                    <h5 class="modal-title">Update the status of item transportation</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="">
+                                                        <br class="form-group text-center d-flex justify-content-around">
+                                                        <h3>What is your choice?</h3>
+                                                        <div id="radio-group" class="col-md-4">
+                                                            <form>
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> Set the date of
+                                                                departure as the date of completion of transportation<br>
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> Set today as the
+                                                                transportation completion date
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="d-flex justify-content-around mt-2">
-                                                <button type="button" class="btn btn-danger" @click="statusUpdate">
-                                                    Register
-                                                </button>
-                                                <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                                    Cancel
-                                                </button>
-                                            </div>
-                                             <div class="d-flex justify-content-around mt-2">
-
+                                                <div class="d-flex justify-content-around mt-2">
+                                                    <button type="button" class="btn btn-danger" @click="checkStatus(data.item_id)">
+                                                        Register
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                                 <div class="d-flex justify-content-around mt-2">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         `,
-                        props: {
-                            substatus: '',
-                        },
+
                         data() {
                             return {
-                                data:
-                                    {
-
-                                        data: {}
-                                    }
+                                data:{},
+                                stat: '',
                             };
                         },
                         methods: {
-                            show: function (id) {
-                                alert('status of item with id ' + id  + ' will be updated to 0');
+                            toIncomplete: function (id,departure_date) {
+                                if (departure_date == this.getDate()) {
+                                    const itemTable = this;
+                                    axios.get('/item/toIncomplete?id='+id)
+                                        .then(function(response){
+                                            alert("Status of Selection is changed to Incomplete when stack and current dates are not same.");
+                                            this.refresh();
+                                        })
+                                        .catch(function(error){
+                                            itemTable.showDialog(error.response.data);
+                                        });
+                                }
+                            },
+                            setTodayAsCompletion: function (id) {
+                                const itemTable = this;
+                                axios.get('/item/setTodayAsCompletion?id='+id)
+                                    .then(function(response){
+                                        //itemTable.showSuccessDialog();
+                                        alert("Status of Selection is changed to Complete and Today is set as Completion Date.");
+                                        $('#updateStatusModal').modal('hide');
+                                        this.refresh();
+                                    })
+                                    .catch(function(error){
+                                        itemTable.showDialog(error.response.data);
+                                    });
+                            },
+                            setDeptDateAsCompletion: function (id) {
+                                const itemTable = this;
+                                axios.get('/item/setDeptDateAsCompletion?id='+id)
+                                    .then(function(response){
+                                        //itemTable.showSuccessDialog();
+                                        alert("Status of Selection is changed to Complete and Stack Date is set as Completion Date.")
+                                        $('#updateStatusModal').modal('hide');
+                                        this.refresh();
+                                    })
+                                    .catch(function(error){
+                                        itemTable.showDialog(error.response.data);
+                                    });
+                            },
+                            checkStatus: function (id) {
+                                if (this.stat == this.getDate()) {
+                                    this.setTodayAsCompletion(id);
+                                } else {
+                                    this.setDeptDateAsCompletion(id);
+                                }
+                            },
+                            refresh(){
+                                self.search();
+                            },
+                            getDate () {
+                                const toTwoDigits = num => num < 10 ? '0' + num : num;
+                                let today = new Date();
+                                let year = today.getFullYear();
+                                let month = toTwoDigits(today.getMonth() + 1);
+                                let day = toTwoDigits(today.getDate());
+                                return `${year}-${month}-${day}`;
                             }
-                        }
+                        },
+
                     })
                 }
             },
@@ -269,6 +325,12 @@
             },
             clear(){
                 this.stack_date = '';
+                this.vehicle_no = '';
+                this.status = '';
+                this.stack_date = '';
+                this.stack_point = '';
+                this.down_point = '';
+                this.shipper_name = '';
                 this.search();
             },
         },

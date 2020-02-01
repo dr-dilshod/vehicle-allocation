@@ -53,6 +53,8 @@ Route::get('/item/{id}', 'Api\ItemController@show')->name('api.item.show');
 Route::post('/item', 'Api\ItemController@store')->name('api.item.store');
 Route::put('/item/{id}', 'Api\ItemController@update')->name('api.item.update');
 Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destroy');
+Route::put('/item/toIncomplete', 'Api\ItemController@toIncomplete')->name('api.item.toIncomplete');
+
 
 /**
  * Unit prices CrUD
@@ -68,7 +70,11 @@ Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api
 /**
  * Deposit APIs
  */
-Route::get('deposit/report', 'Api\DepositController@report')->name('api.deposit.report');
+Route::post('/deposits', 'Api\DepositController@index')->name('api.deposit.index');
+Route::post('/deposits', 'Api\DepositController@store')->name('api.deposit.store');
+Route::put('/deposits/{id}', 'Api\DepositController@update')->name('api.deposit.update');
+Route::get('/deposits/{id}', 'Api\DepositController@show')->name('api.deposit.show');
+Route::delete('/deposits/{id}', 'Api\DepositController@destroy')->name('api.deposit.destroy');
 
 /**
  * Payment APIs

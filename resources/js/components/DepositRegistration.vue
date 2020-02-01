@@ -2,14 +2,19 @@
 
     <div id="app">
 
-        <div class="row mb-4">
+        <div class="row mt-4 mb-4">
             <div class="col-2">
                 <a :href="backUrl"
                    class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
 
-            <div class="col-8">
+            <div class="col-6">
                 <h2 class="text-center">Deposit list</h2>
+            </div>
+            <div class="col-4 text-right">
+                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3">Edit</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3">Delete</button>
             </div>
         </div>
 
@@ -23,8 +28,8 @@
                     <div class="form-group ml-1">
                         <select id="shipper" v-model="filter.shipper" class="form-control">
                             <option value=""></option>
-                            <option v-for="shipper in shippers" :value="shipper.shipper_id">
-                                {{ shipper.shipper_name1}}
+                            <option v-for="shipper in shippers" :value="shipper">
+                                {{ shipper}}
                             </option>
                         </select>
                     </div>
@@ -71,46 +76,59 @@
 
         </div>
 
-        <form class="form-inline">
+        <table cellpadding="5" class="mt-4">
 
-            <div class="form-group mx-auto mt-4">
-                <label for="tb">Total billed</label>
-                <input id="tb" type="text" class="form-control ml-1 mr-1" disabled /> <span>yen</span>
-                <label for="dt" class="ml-4">Deposit total</label>
-                <input id="dt" type="text" class="form-control ml-1 mr-1" disabled /> <span>yen</span>
-                <label for="to" class="ml-4">Total offset</label>
-                <input id="to" type="text" class="form-control ml-1 mr-1" disabled /> <span>yen</span>
-            </div>
-            <div class="form-group mx-auto mt-3">
-                <label for="tc">Total commission</label>
-                <input id="tc" type="text" class="form-control ml-1 mr-1" disabled/> <span>yen</span>
-                <label for="ot" class="ml-4">Others</label>
-                <input id="ot" type="text" class="form-control ml-1 mr-1" disabled /> <span>yen</span>
-            </div>
-        </form>
-        <div class="row mt-5">
-            <div class="col-2 text-right">Transfer</div>
-            <div class="col-3"><input type="text" class="form-control" disabled/></div>
-            <div class="col-1">yen</div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Other</div>
-            <div class="col-3"><input type="text" class="form-control" disabled/></div>
-            <div class="col-1">yen</div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Transfer fee</div>
-            <div class="col-3"><input type="text" class="form-control" disabled/></div>
-            <div class="col-1">yen</div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Total deposit amount</div>
-            <div class="col-3 "><input type="text" class="form-control" disabled/></div>
-            <div class="col-1">yen</div>
-            <div class="col-2 text-right">Invoice</div>
-            <div class="col-3"><input type="text" class="form-control" disabled/></div>
-            <div class="col-1">yen</div>
-        </div>
+            <tbody>
+            <tr>
+                <td class="text-right">Shipper</td>
+                <td>
+                    <select class="form-control">
+                        <option>Shipper 1</option>
+                        <option>Shipper 2</option>
+                        <option>Shipper 3</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="text-right">Payment</td>
+                <td><input type="date" class="form-control" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="text-right">Transfer</td>
+                <td><input type="text" class="form-control"/></td>
+                <td>yen</td>
+            </tr>
+            <tr>
+                <td class="text-right">Offset</td>
+                <td><input type="text" class="form-control" /></td>
+                <td>yen</td>
+            </tr>
+            <tr>
+                <td class="text-right">Other</td>
+                <td><input type="text" class="form-control"/></td>
+                <td>yen</td>
+            </tr>
+            <tr>
+                <td class="text-right">Transfer fee</td>
+                <td><input type="text" class="form-control"></td>
+                <td>yen</td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td class="text-right">Total credit amount</td>
+                <td><input type="text" class="form-control" disabled/></td>
+                <td>yen</td>
+                <td> &nbsp;&nbsp;&nbsp; </td>
+                <td class="text-right">Invoice balance</td>
+                <td><input type="text" class="form-control" disabled/></td>
+                <td>yen</td>
+            </tr>
+            </tfoot>
+        </table>
 
     </div>
 
@@ -151,8 +169,8 @@
                 axios.get(this.shipperUrl)
                     .then(response =>
                         self.shippers = response.data
-                    ).catch (
-                        error => alert(error)
+                    ).catch (error =>
+                        alert(error)
                     )
             },
             changeDays(){
@@ -161,7 +179,13 @@
                 }
             },
             search(){
-
+                let self = this;
+                axios.post(this.resourceUrl,this.filter)
+                    .then(response =>
+                        console.log(response)
+                    ).catch (error =>
+                        console.log(error)
+                    )
             }
         },
 

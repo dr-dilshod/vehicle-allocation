@@ -3,26 +3,32 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $deposit_id
- * @property integer $invoice_id
- * @property integer $create_id
- * @property integer $update_id
+ * @property integer $shipper_id
+ * @property Date deposit_day
  * @property int $deposit_amount
+ * @property int other
  * @property int $fee
- * @property string $deposit_remark
  * @property boolean $delete_flg
+ * @property integer $create_id
  * @property string $created_at
+ * @property integer $update_id
  * @property string $updated_at
- * @property Invoice $invoice
+ * @property Shipper $shipper
  * @property Driver $createdUser
  * @property Driver $updatedUser
  */
 class Deposit extends Model
 {
-    use BlameableTrait;
+//    use BlameableTrait;
+
+    const validationRules = [
+        'shipper_id' => 'required',
+    ];
 
     /**
      * The primary key for the model.
@@ -41,7 +47,7 @@ class Deposit extends Model
     /**
      * @var array
      */
-    protected $fillable = ['invoice_id', 'create_id', 'update_id', 'deposit_amount', 'fee', 'deposit_remark', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = ['shipper_id', 'deposit_day', 'deposit_amount', 'other', 'fee', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -54,9 +60,9 @@ class Deposit extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function invoice()
+    public function shipper()
     {
-        return $this->belongsTo('App\Invoice', 'invoice_id', 'invoice_id');
+        return $this->belongsTo('App\Shipper', 'shipper_id', 'shipper_id');
     }
 
     /**
