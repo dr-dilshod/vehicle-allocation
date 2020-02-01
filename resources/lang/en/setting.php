@@ -6,8 +6,6 @@
  * Time: 10:08
  */
 return [
-    'log_out' => 'Logout',
-    'back' => 'Back',
     'driver_list' => 'Driver List',
     'shipper_list' => 'Shipper List',
     'car_list' => 'Car list',
