@@ -5,7 +5,7 @@
         <driver-table   fetch-url="{{ route('driver.table') }}"
                         back-url="{{route('setting')}}"
                         resource-url="/api/driver"
-                        title="Dirver list"
+                        title="Driver list"
         ></driver-table>
     </div>
 @endsection

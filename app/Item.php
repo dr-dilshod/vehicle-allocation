@@ -11,7 +11,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  * @property integer $driver_id
  * @property integer $create_id
  * @property integer $update_id
- * @property string $vehicle_no
+ * @property integer $vehicle_id
  * @property boolean $status
  * @property string $stack_date
  * @property string $stack_time
@@ -66,7 +66,7 @@ class Item extends Model
     /**
      * @var array
      */
-    protected $fillable = ['shipper_id', 'driver_id', 'create_id', 'update_id', 'vehicle_no', 'status', 'stack_date', 'stack_time', 'down_date', 'down_time', 'down_invoice', 'stack_point', 'down_point', 'weight', 'empty_pl', 'item_price', 'item_driver_name', 'vehicle_no3', 'shipper_name', 'item_vehicle', 'vehicle_payment', 'item_completion_date', 'item_remark', 'delete_flg', 'created_at', 'updated_at', 'remember_token'];
+    protected $fillable = ['shipper_id', 'driver_id', 'create_id', 'update_id', 'vehicle_id', 'status', 'stack_date', 'stack_time', 'down_date', 'down_time', 'down_invoice', 'stack_point', 'down_point', 'weight', 'empty_pl', 'item_price', 'item_driver_name', 'vehicle_no3', 'shipper_name', 'item_vehicle', 'vehicle_payment', 'item_completion_date', 'item_remark', 'delete_flg', 'created_at', 'updated_at', 'remember_token'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -90,6 +90,14 @@ class Item extends Model
     public function shipper()
     {
         return $this->belongsTo('App\Shipper', null, 'shipper_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function vehicle()
+    {
+        return $this->belongsTo('App\Vehicle', null, 'vehicle_id');
     }
 
     /**

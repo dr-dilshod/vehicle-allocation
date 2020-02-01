@@ -23,8 +23,8 @@ class CreateInvoicesTable extends Migration
             $table->dateTime('payment_record_date')->nullable();
             $table->string('invoice_remark', 255)->nullable();
             $table->tinyInteger('delete_flg')->default(0);
-            $table->unsignedBigInteger('create_id');
-            $table->unsignedBigInteger('update_id');
+            $table->unsignedBigInteger('create_id')->nullable();
+            $table->unsignedBigInteger('update_id')->nullable();
             $table->string('remember_token', 100)->nullable();
             $table->timestamps();
         });

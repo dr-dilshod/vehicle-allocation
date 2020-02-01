@@ -9,7 +9,7 @@ $factory->define(Item::class, function (Faker $faker) {
     return [
         'shipper_id' => $faker->numberBetween(1,10),
         'driver_id' => $faker->numberBetween(1,10),
-        'vehicle_no' => $faker->numberBetween(1,9999),
+        'vehicle_id' => $faker->numberBetween(1,10),
         'status' => $faker->numberBetween(0,1),
         'stack_date' => $faker->date(),
         'stack_time'=> $faker->time(),
