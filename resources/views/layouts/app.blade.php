@@ -65,5 +65,8 @@
         </main>
     </div>
     @stack('scripts')
+    <script>
+        window._translations = {!! cache('translations') !!};
+    </script>
 </body>
 </html>
