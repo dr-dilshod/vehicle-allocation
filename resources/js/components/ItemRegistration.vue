@@ -1,42 +1,48 @@
 <template>
-    <form action="#" class="" @submit.prevent="register">
-    <div>
-        <div class="row">
-            <div class="col-2">
-                <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+    <form action="#" @submit.prevent="register">
+        <div id="item-registration">
+            <div class="row">
+                <div class="col-2">
+                    <a :href="backUrl"
+                       class="btn btn-lg btn-warning btn-block">Back</a>
+                </div>
+                <div class="col-2">
+                    <h6 class="text-center text-danger">* - required</h6>
+                </div>
+                <div class="col-4">
+                    <h2 class="text-center">{{title}}</h2>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <p class="text-right">
+                        <button type="submit" class="btn btn-lg btn-danger">{{operation}}</button>
+                        <button type="reset" class="btn btn-lg btn-danger" @click.prevent="clear">
+                            {{clearing}}
+                        </button>
+                    </p>
+                </div>
             </div>
-            <div class="col-2">
-                <h6 class="text-center text-danger">* - required</h6>
-            </div>
-            <div class="col-4">
-                <h2 class="text-center">{{title}}</h2>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-3">
-                <button type="submit" class="btn btn-lg btn-danger p-1 pl-2 pr-2">{{operation}}</button>
-                <button type="reset" class="btn btn-lg btn-danger p-1 pl-4 pr-5" @click.prevent="clear">{{clearing}}</button>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="table-responsive">
+            <div class="row">
+                <div class="col-9">
                     <br>
-                    <table class="table table-sm table-nowrap card-table">
-                        <thead>
-                         <tr></tr>
-                        </thead>
+                    <table>
                         <tbody class="list">
                         <tr>
-                            <td class="orders-order text-right"><span>Stack Date</span><span class="required"> *</span></td>
-                            <td>
-                                <div class="input-group">
-                                        <input  type="date" placeholder="" class="form-control" for="stack_date"
-                                                id="stack_date" v-model="itemData.stack_date" required/>
-                                    </div>
+                            <td class="text-right" width="15%">
+                                <span class="required"> *</span>
+                                <label for="stack_date">Stack Date</label>
                             </td>
-                            <td class="text-right"><span class="c25479">Stack Time</span><span class="required"> *</span></td>
-                            <td class="stack_time_hour">
+                            <td width="25%">
+                                <datepicker v-model="itemData.stack_date" id="stack_date" name="stack_date" :bootstrap-styling="true"
+                                           :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                ></datepicker>
+                            </td>
+                            <td width="5%"></td>
+                            <td class="text-right" width="15%">
+                                <span class="required">*</span>
+                                <label for="stack_time_hour">Stack Time</label>
+                            </td>
+                            <td class="stack_time_hour" width="10%">
                                 <select name="stack_time_hour" id="stack_time_hour" v-model="stack_time_hour"
                                         v-on:input="timeFormatter" class="form-control" required>
                                     <option v-for="hour in getEnumerationHours()" :value="hour">
@@ -44,8 +50,8 @@
                                     </option>
                                 </select>
                             </td>
-                            <th><span class="c25479">:</span></th>
-                            <td class="orders-date">
+                            <th width="3%" class="text-center"><span>:</span></th>
+                            <td width="10%">
                                 <select name="stack_time_min" id="stack_time_min" v-model="stack_time_min"
                                         v-on:input="timeFormatter" class="form-control" required>
                                     <option v-for="min in getEnumerationMins()" :value="min">
@@ -53,28 +59,29 @@
                                     </option>
                                 </select>
                             </td>
-                            <td class="orders-total"><span class="c25479">Invoice</span></td>
-                            <td class="orders-status"></td>
-                            <td class="orders-method">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="billing"
-                                           v-model="itemData.down_invoice">
-                                    <label class="custom-control-label" for="billing"></label>
-                                </div>
-                            </td>
-                            <td class="text-right">
+                            <td width="10%" class="text-right"><label for="billing">Invoice</label></td>
+                            <td width="7%" class="text-center">
+                                <input type="checkbox" name="down_invoice" id="billing"
+                                       v-model="itemData.down_invoice">
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Down Date</span><span class="required"> *</span></td>
-                            <td class="orders-order">
-                                <div class="input-group">
-                                    <input type="date" placeholder="" class="form-control" for="down_date"
-                                       id="down_date" v-model="itemData.down_date" required/>
-                                </div>
+                            <td class="text-right">
+                                <label for="down_date">Down Date</label>
+                                <span class="required"> *</span>
                             </td>
-                            <td class="orders-product text-right"><span class="c25479 text-right">Down Time</span><span class="required"> *</span></td>
-                            <td class="orders-date">
+                            <td>
+
+                                <datepicker v-model="itemData.down_date" id="down_date" name="down_date" :bootstrap-styling="true"
+                                            :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                ></datepicker>
+                            </td>
+                            <td></td>
+                            <td class="text-right">
+                                <label for="down_time_hour">Down Time</label>
+                                <span class="required"> *</span>
+                            </td>
+                            <td>
                                 <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
                                         v-on:input="timeFormatter" class="form-control" required>
                                     <option v-for="hour in getEnumerationHours()" :value="hour">
@@ -82,8 +89,10 @@
                                     </option>
                                 </select>
                             </td>
-                            <th><span class="c25479">:</span></th>
-                            <td class="orders-total">
+                            <th class="text-center">
+                                <span class="">:</span>
+                            </th>
+                            <td>
                                 <select name="down_time_min" id="down_time_min" v-model="down_time_min"
                                         v-on:input="timeFormatter" class="form-control" required>
                                     <option v-for="min in getEnumerationMins()" :value="min">
@@ -91,13 +100,13 @@
                                     </option>
                                 </select>
                             </td>
-                            <td class="item-status">
-                                <div class="badge badge-success"></div>
-                            </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Vehicle Model</span><span class="required"> *</span></td>
-                            <td class="orders-order">
+                            <td class="text-right">
+                                <label for="item_vehicle">Vehicle Model</label>
+                                <span class="required"> *</span>
+                            </td>
+                            <td>
                                 <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
                                         class="form-control" required>
                                     <option value=""></option>
@@ -107,15 +116,13 @@
                                     <option value="Bulk">Bulk</option>
                                 </select>
                             </td>
-                            <td class="orders-product"></td>
-                            <td class="orders-date"></td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
-                            </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Shipper</span><span class="required"> *</span></td>
-                            <td class="orders-order">
+                            <td class="text-right">
+                                <label for="shipper_id">Shipper</label>
+                                <span class="required"> *</span>
+                            </td>
+                            <td>
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
                                         class="form-control" v-on:change="setShipperName" required>
                                     <option value=""></option>
@@ -124,94 +131,87 @@
                                     </option>
                                 </select>
                             </td>
-                            <td class="orders-product"></td>
-                            <td class="orders-date"></td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
-                            </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Stack Point</span><span class="required"> *</span></td>
-                            <td class="orders-order">
-                                <input type="text" placeholder="" class="form-control" for="stack_point"
-                                       v-model="itemData.stack_point" id="stack_point" required/>
-                            </td>
-                            <td class="orders-product text-right"><span class="c25479 text-right">~  Down Point</span>
+                            <td class="text-right">
+                                <label for="stack_point">Stack Point</label>
                                 <span class="required"> *</span>
                             </td>
-                            <td class="orders-date">
-                                <input id="down_point" for="down_point" type="text" placeholder="" class="form-control"
-                                      v-model="itemData.down_point" required/>
+                            <td>
+                                <input type="text" placeholder="" class="form-control"
+                                       v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
+                            <td class="text-center">~</td>
+                            <td class="text-right">
+                                <label for="down_point">Down Point</label>
+                                <span class="required"> *</span>
+                            </td>
+                            <td colspan="3">
+                                <input id="down_point" for="down_point" type="text" placeholder=""
+                                       class="form-control"
+                                       v-model="itemData.down_point" required/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Number (t)</span></td>
-                            <td class="orders-order">
-                                <input id="weight" type="text" placeholder="" class="form-control" v-model="itemData.weight"/>
+                            <td class="text-right">
+                                <label for="weight">Number (t)</label>
                             </td>
-                            <td class="orders-product text-right"><span class="c25479 text-right">t     Empty PL</span>
+                            <td>
+                                <input id="weight" type="text" placeholder="" class="form-control"
+                                       v-model="itemData.weight"/>
                             </td>
-                            <td class="orders-date">
-                                <select name="empty_pl" id="empty_pl" v-model="itemData.empty_pl" class="form-control">
+                            <td class="text-center">t</td>
+                            <td class="text-right">
+                                <label for="empty_pl">Empty PL</label>
+                            </td>
+                            <td colspan="2">
+                                <select name="empty_pl" id="empty_pl" v-model="itemData.empty_pl"
+                                        class="form-control">
                                     <option value=""></option>
                                     <option value="1">Yes</option>
                                     <option value="0">None</option>
                                 </select>
                             </td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
-                            </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Per ton</span></td>
-                            <td class="orders-order">
+                            <td class="text-right"><label for="per_ton">Per ton</label></td>
+                            <td>
                                 <input id="per_ton" type="text" placeholder="" class="form-control"
                                        v-on:input="perTonChange" v-model="per_ton"/>
                             </td>
-                            <td class="orders-product"><span class="c25479 text-right">yen     x</span></td>
-                            <td class="orders-date">
+                            <td class="text-center">yen</td>
+                            <td><span class="text-center">x</span></td>
+                            <td colspan="3">
                                 <input type="text" placeholder="" class="form-control" id="ton"
                                        v-on:input="perTonChange" v-model="ton" value=""/>
                             </td>
-                            <td class="orders-total"><span class="c25479 text-right">t</span></td>
+                            <td><span class="text-right">t</span></td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Per vehicle</span></td>
-                            <td class="orders-order">
+                            <td class="text-right"><label for="per_vehicle">Per vehicle</label></td>
+                            <td>
                                 <input type="text" placeholder="" class="form-control" id="per_vehicle"
                                        v-on:input="perVehicleChange" :disabled="isDisabled" v-model="per_vehicle"/>
                             </td>
-                            <td class="orders-product"><span class="c25479 text-right">yen</span></td>
-                            <td class="orders-date">
-
-                            </td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
-                            </td>
+                            <td class="text-center">yen</td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Amount of Money</span></td>
-                            <td class="orders-order">
+                            <td class="text-right"><label for="item_price">Amount of Money</label></td>
+                            <td>
                                 <input type="text" placeholder="" class="form-control" id="item_price"
                                        v-model="itemData.item_price" value="" readonly/>
                             </td>
-                            <td class="orders-product"><span class="c25479 text-right">yen</span></td>
-                            <td class="orders-date"></td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
-                            </td>
+                            <td class="text-center">yen</td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Vehicle No.</span></td>
-                            <td class="orders-order">
+                            <td class="text-right"><label for="vehicle_no">Vehicle No.</label></td>
+                            <td>
                                 <input type="text" placeholder="" class="form-control" id="vehicle_no"
                                        v-model="itemData.vehicle_no"/>
                             </td>
-                            <td class="orders-product text-right"><span class="c24966">Driver Name</span></td>
-                            <td class="orders-date">
+                            <td></td>
+                            <td class="text-right"><label for="driver_id">Driver Name</label></td>
+                            <td colspan="3">
                                 <select name="driver_id" id="driver_id" v-on:change="setDriverName"
                                         v-model="itemData.driver_id" class="form-control">
                                     <option value=""></option>
@@ -220,41 +220,33 @@
                                     </option>
                                 </select>
                             </td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
-                            </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Chartered Vehicle</span></td>
-                            <td class="orders-order">
+                            <td class="text-right"><label for="chartered_vehicle">Chartered Vehicle</label></td>
+                            <td>
                                 <select name="chartered_vehicle" id="chartered_vehicle"
                                         v-model="itemData.vehicle_no" class="form-control">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
-                                        {{ vehicle.company_name  }}
+                                        {{ vehicle.company_name }}
                                     </option>
                                 </select>
                             </td>
-                            <td class="orders-product text-right"><span class="c24966">Rental Vehicle <br/>Payment<br/></span>
+                            <td></td>
+                            <td class="text-right">
+                                <label for="vehicle_payment">Rental Vehicle Payment</label>
                             </td>
-                            <td class="orders-date">
-                                <input type="text" placeholder="" class="form-control" id="vehicle_payment"
+                            <td colspan="2">
+                                <input type="text" class="form-control" id="vehicle_payment"
                                        v-model="itemData.vehicle_payment"/>
                             </td>
-                            <td class="orders-total"><span class="c25479 text-right">yen</span></td>
-                            <td class="orders-status">
-                            </td>
+                            <td><span class="text-right">yen</span></td>
                         </tr>
                         <tr>
-                            <td class="text-right"><span class="c24966">Remarks</span></td>
-                            <td colspan="6" class="orders-order">
+                            <td class="text-right"><label for="item_remark">Remarks</label></td>
+                            <td colspan="6">
                                 <textarea rows="3" class="form-control" id="item_remark"
-                                          v-model="itemData.item_remark"></textarea>
-                            </td>
-                            <td class="orders-product"></td>
-                            <td class="orders-date"></td>
-                            <td class="orders-total"></td>
-                            <td class="orders-status">
+                                      v-model="itemData.item_remark"></textarea>
                             </td>
                         </tr>
                         </tbody>
@@ -262,12 +254,17 @@
                 </div>
             </div>
         </div>
-    </div>
     </form>
 </template>
 
 <script>
+    import Datepicker from "vuejs-datepicker";
+    import {en, ja} from 'vuejs-datepicker/dist/locale'
+
     export default {
+        components: {
+            Datepicker
+        },
         props: {
             backUrl: {type: String, required: true},
             shipperUrl: {type: String, required: true},
@@ -307,7 +304,7 @@
                     delete_flg: 0,
                     create_id: '',
                     update_id: '',
-                    remember_token:'',
+                    remember_token: '',
                 },
                 isDisabled: false,
                 shippers: [],
@@ -319,7 +316,15 @@
                 stack_time_hour: '',
                 stack_time_min: '',
                 down_time_hour: '',
-                down_time_min: ''
+                down_time_min: '',
+                options: {
+                    monthFormat: "yyyy/MM",
+                    weekday: "yyyy/MM/dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
+                },
             }
         },
         mounted() {
@@ -346,7 +351,7 @@
             },
             setDriverName() {
                 for (let i = 0; i < this.drivers.length; i++) {
-                    if(this.itemData.driver_id === this.drivers[i].driver_id){
+                    if (this.itemData.driver_id === this.drivers[i].driver_id) {
                         this.itemData.item_driver_name = this.drivers[i].driver_name;
                         this.itemData.vehicle_no3 = this.drivers[i].vehicle_no3;
                     }
@@ -354,7 +359,7 @@
             },
             setShipperName() {
                 for (let i = 0; i < this.shippers.length; i++) {
-                    if(this.itemData.shipper_id === this.shippers[i].shipper_id){
+                    if (this.itemData.shipper_id === this.shippers[i].shipper_id) {
                         this.itemData.shipper_name = this.shippers[i].shipper_name1 + " " + this.shippers[i].shipper_name2;
                     }
                 }
@@ -403,12 +408,12 @@
                         this.itemData[i] = "";
                     }
                     this.per_ton = "",
-                    this.per_vehicle = "",
-                    this.ton = "",
-                    this.stack_time_hour = "",
-                    this.stack_time_min = "",
-                    this.down_time_hour = "",
-                    this.down_time_min = ""
+                        this.per_vehicle = "",
+                        this.ton = "",
+                        this.stack_time_hour = "",
+                        this.stack_time_min = "",
+                        this.down_time_hour = "",
+                        this.down_time_min = ""
                 }
             },
             fetchShippers(url) {
@@ -432,8 +437,7 @@
             register(){
                 const itemRegistration = this;
                 // check whether it is update or create operation
-                if (this.operation === 'Update')
-                {
+                if (this.operation === 'Update') {
                     // update that item if it is update operation
                     this.updateItem(this.itemData);
                 } else {
@@ -454,23 +458,23 @@
             updateItem(item){
                 let id = item.item_id;
                 const itemRegistration = this;
-                axios.put(this.resourceUrl+'/'+id, item)
-                    .then(function(response){
+                axios.put(this.resourceUrl + '/' + id, item)
+                    .then(function (response) {
                         alert('Update is successful!');
                         window.location.href = '/item';
                     })
-                    .catch(function(error){
+                    .catch(function (error) {
                         itemRegistration.showDialog(error.response.data);
                     });
             },
             deleteItem(item_id){
                 const itemRegistration = this;
-                axios.delete(this.resourceUrl+'/'+item_id)
-                    .then(function(response){
+                axios.delete(this.resourceUrl + '/' + item_id)
+                    .then(function (response) {
                         alert('Deletion is successful!');
                         window.location.href = '/item';
                     })
-                    .catch(function(error){
+                    .catch(function (error) {
                         itemRegistration.showDialog(error.response.data);
                         return false;
                     });
@@ -479,21 +483,21 @@
             showDialog(response) {
                 let message = response.message + ': ';
                 let errors = response.errors;
-                $.each( errors, function( key, value ) {
+                $.each(errors, function (key, value) {
                     message += value[0]; //showing only the first error.
                 });
                 this.$alert(message);
             },
             getEnumerationHours(){
-                let hours = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14'
-                    ,'15','16','17','18','19','20','21','22','23'];
+                let hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
+                    , '15', '16', '17', '18', '19', '20', '21', '22', '23'];
                 return hours;
             },
             getEnumerationMins(){
-                let mins = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14'
-                    ,'15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'
-                    ,'32','33','34','35','36','37','38','39','40','41','42','44','45','46','47','48','49',
-                    '50','51','52','53','54','55','56','57','58','59'];
+                let mins = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
+                    , '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
+                    , '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', '48', '49',
+                    '50', '51', '52', '53', '54', '55', '56', '57', '58', '59'];
                 return mins;
             }
         }
@@ -502,5 +506,8 @@
 <style>
     .required {
         color: red;
+    }
+    #item-registration td{
+        padding-top: 0.5rem;
     }
 </style>
