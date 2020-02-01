@@ -61,7 +61,6 @@
                   :allowSorting="true" :height="270"
                   :frozenColumns="6"  >
             <e-columns>
-                <e-column field='shipper_id' headerText='Shipper id' width="50" :isPrimaryKey="true" :visible=false></e-column>
                 <e-column field='shipper_no' headerText='Shipper No' :validationRules='shipperNoRules' width="100"></e-column>
                 <e-column headerText='Shipper' width="200" :columns="shipperNameCols"></e-column>
                 <e-column headerText='Furigana' width="200" :columns="furiganaCols"></e-column>
@@ -73,6 +72,7 @@
                 <e-column field='fax_number' headerText='Fax number' width="200" :validationRules='max12'></e-column>
                 <e-column field='closing_date' headerText='Closing date' width="200"></e-column>
                 <e-column field='payment_date' headerText='Payment date' width="200"></e-column>
+                <e-column field='shipper_id' headerText='Shipper id' width="50" :isPrimaryKey="true" :visible=false></e-column>
             </e-columns>
         </ejs-grid>
     </div>
