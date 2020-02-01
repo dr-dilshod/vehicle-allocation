@@ -23,7 +23,7 @@
                 <a href="{{route('invoice.index')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.billing_management')}}</a>
             </div>
             <div class="col-4">
-                <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.payment_list')}}</a>
+                <a href="{{route('payment.registration')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.payment_reg')}}</a>
             </div>
             <div class="col-4">
                 <a href="{{route('top')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.deposit_list')}}</a>

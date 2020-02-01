@@ -15,17 +15,20 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('payment_id');
-            $table->unsignedBigInteger('invoice_id');
-            $table->unsignedBigInteger('vehicle_id');
             $table->unsignedBigInteger('shipper_id');
-            $table->integer('shipper_deposit');
-            $table->integer('shipper_highway');
-            $table->integer('vehicle_deposit');
-            $table->integer('vehicle_highway');
+            $table->dateTime('payment_day');
+            $table->integer('payment_amount')->default(0);
+            $table->integer('other')->default(0);
+            $table->integer('fee')->default(0);
             $table->tinyInteger('delete_flg')->default(0);
-            $table->unsignedBigInteger('create_id');
-            $table->unsignedBigInteger('update_id');
+            $table->unsignedBigInteger('create_id')->nullable();
+            $table->unsignedBigInteger('update_id')->nullable();
             $table->timestamps();
+            $table->index(['shipper_id', 'create_id', 'update_id']);
+            $table->foreign('shipper_id')->references('shipper_id')->on('shippers')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('create_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('update_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
+
         });
     }
 

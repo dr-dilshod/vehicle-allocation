@@ -25,7 +25,7 @@ Vue.component('driver-table',require('./components/DriverTable.vue').default);
 Vue.component('unit-price-table',require('./components/UnitPriceTable').default);
 Vue.component('item-list',require('./components/ItemList.vue').default);
 Vue.component('deposit-report',require('./components/DepositReport.vue').default);
-Vue.component('payment-report',require('./components/PaymentReport.vue').default);
+Vue.component('payment-registration',require('./components/PaymentRegistration.vue').default);
 Vue.component('payment-bk-report',require('./components/PaymentBkReport.vue').default);
 
 /**

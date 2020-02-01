@@ -14,28 +14,18 @@ class PaymentsRelations extends Migration
     public function up()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->index(['invoice_id', 'shipper_id', 'vehicle_id', 'create_id', 'update_id'], 'payments_default_indexes');
-            $table->foreign('invoice_id')
-                ->references('invoice_id')
-                ->on('invoices')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
-            $table->foreign('shipper_id')
+            $table->index(['shipper_id', 'create_id', 'update_id'], 'payments_default_indexes');
+                $table->foreign('shipper_id')
                 ->references('shipper_id')
                 ->on('shippers')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
-            $table->foreign('vehicle_id')
-                ->references('vehicle_id')
-                ->on('vehicles')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
-            $table->foreign('create_id')
+                $table->foreign('create_id')
                 ->references('driver_id')
                 ->on('drivers')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
-            $table->foreign('update_id')
+                $table->foreign('update_id')
                 ->references('driver_id')
                 ->on('drivers')
                 ->onDelete('restrict')

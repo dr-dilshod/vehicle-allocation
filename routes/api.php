@@ -73,7 +73,7 @@ Route::get('deposit/report', 'Api\DepositController@report')->name('api.deposit.
 /**
  * Payment APIs
  */
-Route::get('payment/report', 'Api\PaymentController@index')->name('api.payment.report');
+Route::get('payment/registration', 'Api\PaymentController@index')->name('api.payment.registration');
 Route::get('payment/bk-report', 'Api\PaymentController@index')->name('api.payment.bk-report');
 
 // Invoice
