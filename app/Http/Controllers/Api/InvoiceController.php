@@ -65,4 +65,33 @@ class InvoiceController extends Controller
     {
         //
     }
+
+    /**
+     * returns the list of invoices based on the query on the invoice list view
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getInvoiceList(Request $request)
+    {
+        $weekday = $request->query('weekday') ?: '';
+        $vehicle_id = $request->query('vehicle_id') ?: '';
+        $invoice_day = $request->query('invoice_day') ?: '';
+        $invoice_month = $request->query('invoice_month') ?: '';
+        $shipper_id = $request->query('shipper_id') ?: '';
+        $matchThese = ['delete_flg' => 0];
+        if (!empty($weekday)) {
+            $matchThese = array_add($matchThese, 'weekday', $weekday);
+        } else if (!empty($vehicle_id)) {
+            $matchThese = array_add($matchThese, 'vehicle_id', $vehicle_id);
+        } else if (!empty($invoice_day)) {
+            $matchThese = array_add($matchThese, 'invoice_day', $invoice_day);
+        } else if (!empty($invoice_month)) {
+            $matchThese = array_add($matchThese, 'invoice_month', $invoice_month);
+        } else if (!empty($shipper_id)) {
+            $matchThese = array_add($matchThese, 'shipper_id', $shipper_id);
+        }
+        $invoiceTable = Item::where($matchThese)->get();
+        return response()->json($invoiceTable);
+    }
 }

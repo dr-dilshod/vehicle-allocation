@@ -50,6 +50,8 @@ Route::get('/item/setDeptDateAsCompletion', 'Api\ItemController@setDeptDateAsCom
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
 Route::get('/invoice/billing-month-pdf', 'InvoiceController@billingMonthPDF')->name('invoice.billingMonthPDF');
+Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->name('invoice.list');
+
 
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');

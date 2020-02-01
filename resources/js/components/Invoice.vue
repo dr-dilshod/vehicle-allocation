@@ -39,9 +39,9 @@
                             <label for="shipper">Shipper</label>
                         </td>
                         <td>
-                            <select name="shipper" id="shipper" v-model="formData.shipper" class="form-control">
+                            <select name="shipper" id="shipper" v-model="formData.shipper_id" class="form-control">
                                 <option value=""></option>
-                                <option v-for="shipperItem in shippers">
+                                <option v-for="shipperItem in shippers" :value="shipperItem.shipper_id">
                                     {{ shipperItem }}
                                 </option>
                             </select>
@@ -78,7 +78,7 @@
                         <td>
                             <select name="vehicle_no" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
                                 <option value=""></option>
-                                <option v-for="vehicle in vehicles">
+                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                     {{ vehicle.vehicle_no3 }}
                                 </option>
                             </select>
@@ -181,12 +181,12 @@
 
     export default{
         props: {
+            invoiceUrl: {type: String, required: true},
             backUrl: {type: String, required: true},
-            title: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
             shippersUrl: {type: String, required: true},
             vehiclesUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
+            title: {type: String, required: true},
         },
         components: {
             Datepicker
@@ -196,10 +196,10 @@
                 data: [],
                 formData: {
                     weekday: '',
-                    vehicle_no: '',
+                    vehicle_id: '',
                     invoice_day: '',
                     invoice_month: '',
-                    shipper: '',
+                    shipper_id: '',
                 },
                 billing_month: '',
                 shippers: [],
@@ -282,15 +282,20 @@
                 this.$refs.grid.refresh();
             },
             search(){
-                this.fetchData(this.fetchUrl);
-                this.calculateTotals();
+                this.fetchData(this.invoiceUrl
+                    +'?weekday=' + this.formData.weekday,
+                    + '&vehicle_id=' + this.formData.vehicle_id,
+                    + '&invoice_day=' + this.formData.invoice_day,
+                    + '&invoice_month=' + this.formData.invoice_month,
+                    + '&shipper_id=' + this.formData.shipper_id);
+                //this.calculateTotals();
             },
             clear(){
                 this.formData.weekday = '';
                 this.formData.invoice_day = '';
                 this.formData.invoice_month = '';
-                this.formData.vehicle_no = '';
-                this.formData.shipper = '';
+                this.formData.vehicle_id = '';
+                this.formData.shipper_id = '';
             },
             refresh(){
                 this.search();
