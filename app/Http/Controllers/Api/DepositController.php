@@ -10,16 +10,17 @@ class DepositController extends Controller
 {
 
     public function report(Request $request){
-        $shipper = $request->get('shipper');
-        $year = $request->get('year');
-        $month = $request->get('month');
-        $day = $request->get('day');
+
     }
 
     public function index(Request $request)
     {
-        $deposits = Deposit::where('delete_flg',0)->latest()->paginate(25);
-        return $deposits;
+        $shipper = $request->get('shipper');
+        $year = $request->get('year');
+        $month = $request->get('month');
+        $day = $request->get('day');
+
+        return Deposit::findOrFail(1);
     }
 
     /**

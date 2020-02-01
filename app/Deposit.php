@@ -24,7 +24,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  */
 class Deposit extends Model
 {
-    use BlameableTrait;
+//    use BlameableTrait;
 
     const validationRules = [
         'shipper_id' => 'required',

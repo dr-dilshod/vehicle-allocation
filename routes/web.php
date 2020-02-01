@@ -51,7 +51,7 @@ Route::get('/invoice/billing-month-pdf', 'InvoiceController@billingMonthPDF')->n
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
 
 // Deposit
-Route::get('/deposit/report', 'DepositController@report')->name('deposit.report');
+Route::get('/deposit', 'DepositController@report')->name('deposit.report');
 
 // Payment
 Route::get('/payment/report', 'PaymentController@report')->name('payment.report');
