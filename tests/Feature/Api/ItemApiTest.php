@@ -48,7 +48,6 @@ class ItemApiTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testUpdateItem(){
-
         $id = factory(Item::class)->create()->item_id;
         $item = factory(Item::class)->make();
         $response = $this->json('PUT', route('api.item.update',[$id]), $item->toArray());
@@ -60,5 +59,4 @@ class ItemApiTest extends \PHPUnit_Framework_TestCase
         $response = $this->json('DELETE',route('api.item.destroy',[$item->item_id]));
         $response->assertStatus(204);
     }
-
 }

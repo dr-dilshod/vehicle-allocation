@@ -53,27 +53,33 @@ Route::get('/item/{id}', 'Api\ItemController@show')->name('api.item.show');
 Route::post('/item', 'Api\ItemController@store')->name('api.item.store');
 Route::put('/item/{id}', 'Api\ItemController@update')->name('api.item.update');
 Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destroy');
+Route::put('/item/toIncomplete', 'Api\ItemController@toIncomplete')->name('api.item.toIncomplete');
+
 
 /**
  * Unit prices CrUD
  */
-Route::get('/unit-price', 'Api\UnitPriceController@index')->name('api.unit-price.index');
-Route::get('/unit-price/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-price.shipper-names');
-Route::get('/unit-price/vehicle-types', 'Api\UnitPriceController@getVehicleTypes');
-Route::get('/unit-price/{id}', 'Api\UnitPriceController@show')->name('api.unit-price.show');
-Route::post('/unit-price/{id}', 'Api\UnitPriceController@store')->name('api.unit-price.store');
-Route::post('/unit-price/{id}', 'Api\UnitPriceController@update')->name('api.unit-price.update');
-Route::delete('/unit-price/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-price.destroy');
+Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names');
+Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.shipper-names');
+Route::get('/unit-prices/{shipper_id}', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
+Route::get('/unit-prices/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
+Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
+Route::post('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
+Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
 
 /**
  * Deposit APIs
  */
-Route::get('deposit/report', 'Api\DepositController@report')->name('api.deposit.report');
+Route::post('/deposits', 'Api\DepositController@index')->name('api.deposit.index');
+Route::post('/deposits', 'Api\DepositController@store')->name('api.deposit.store');
+Route::put('/deposits/{id}', 'Api\DepositController@update')->name('api.deposit.update');
+Route::get('/deposits/{id}', 'Api\DepositController@show')->name('api.deposit.show');
+Route::delete('/deposits/{id}', 'Api\DepositController@destroy')->name('api.deposit.destroy');
 
 /**
  * Payment APIs
  */
-Route::get('payment/report', 'Api\PaymentController@index')->name('api.payment.report');
+Route::get('payment/registration', 'Api\PaymentController@index')->name('api.payment.registration');
 Route::get('payment/bk-report', 'Api\PaymentController@index')->name('api.payment.bk-report');
 
 // Invoice

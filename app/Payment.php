@@ -6,24 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
- * @property integer $payment_id
- * @property integer $invoice_id
- * @property integer $vehicle_id
- * @property integer $shipper_id
+ * @property integer $driver_id
  * @property integer $create_id
  * @property integer $update_id
- * @property int $shipper_deposit
- * @property int $shipper_highway
- * @property int $vehicle_deposit
- * @property int $vehicle_highway
+ * @property integer $payment_id
+ * @property integer $shipper_id
  * @property boolean $delete_flg
  * @property string $created_at
  * @property string $updated_at
- * @property Invoice $invoice
  * @property Shipper $shipper
  * @property Driver $createdUser
  * @property Driver $updatedUser
- * @property Vehicle $vehicle
  */
 class Payment extends Model
 {
@@ -45,7 +38,7 @@ class Payment extends Model
     /**
      * @var array
      */
-    protected $fillable = ['invoice_id', 'vehicle_id', 'shipper_id', 'create_id', 'update_id', 'shipper_deposit', 'shipper_highway', 'vehicle_deposit', 'vehicle_highway', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = [ 'create_id', 'update_id', 'shipper_id','payment_day','payment_amount','other','fee', 'delete_flg', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -53,22 +46,6 @@ class Payment extends Model
     public function createdUser()
     {
         return $this->belongsTo('App\Driver', 'create_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function invoice()
-    {
-        return $this->belongsTo('App\Invoice', 'invoice_id', 'invoice_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function shipper()
-    {
-        return $this->belongsTo('App\Shipper', null, 'shipper_id');
     }
 
     /**
@@ -82,8 +59,9 @@ class Payment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function vehicle()
+    public function shipper()
     {
-        return $this->belongsTo('App\Vehicle', null, 'vehicle_id');
+        return $this->belongsTo('App\Shipper', null, 'shipper_id');
     }
+
 }

@@ -14,10 +14,10 @@ class DepositsRelations extends Migration
     public function up()
     {
         Schema::table('deposits', function (Blueprint $table) {
-            $table->index(['invoice_id', 'create_id', 'update_id']);
-            $table->foreign('invoice_id')
-                ->references('invoice_id')
-                ->on('invoices')
+            $table->index(['shipper_id', 'create_id', 'update_id']);
+            $table->foreign('shipper_id')
+                ->references('shipper_id')
+                ->on('shippers')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
             $table->foreign('create_id')

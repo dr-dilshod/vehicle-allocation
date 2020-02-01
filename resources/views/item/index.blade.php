@@ -7,6 +7,7 @@
                    shipper-url="{{route('item.shippers.dropdown')}}"
                    vehicle-url="{{route('item.vehicleNumbers')}}"
                    registration-url="{{route('item.create')}}"
+                   resource-url="/api/item"
                title="Item list"
         ></item-list>
     </div>

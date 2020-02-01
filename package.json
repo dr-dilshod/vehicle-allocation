@@ -32,6 +32,7 @@
         "vue-router": "^3.1.5",
         "vue-simple-alert": "^1.1.1",
         "vuedraggable": "^2.23.2",
-        "vuejs-datepicker": "^1.6.2"
+        "vuejs-datepicker": "^1.6.2",
+        "@syncfusion/ej2-data": "latest"
     }
 }

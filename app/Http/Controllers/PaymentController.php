@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function report(Request $request)
+    public function registration(Request $request)
     {
-        return view('payment.report');
+        return view('payment.registration');
     }
 
     public function bk_report(Request $request){

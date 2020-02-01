@@ -30,7 +30,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  */
 class Invoice extends Model
 {
-    use BlameableTrait;
+//    use BlameableTrait;
 
     /**
      * The primary key for the model.

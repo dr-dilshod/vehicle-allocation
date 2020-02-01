@@ -98,11 +98,57 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        Item::destroy($id);
-
+        $item = Item::findOrFail($id);
+        $item->delete_flg=1;
+        $item->save();
         return response()->json(null, 204);
     }
 
+    /**
+     * Change the status of an item to incomplete
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function toIncomplete(Request $request)
+    {
+        $id = $request->query('id') ?: '';
+        $item = Item::findOrFail($id);
+        $item->status=0;
+        $item->item_completion_date=null;
+        $item->save();
+        return response()->json(null, 204);
+    }
+
+    /**
+     * Change the status of an item to complete
+     * and set today as the completion date
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setTodayAsCompletion(Request $request)
+    {
+        $id = $request->query('id') ?: '';
+        $item = Item::findOrFail($id);
+        $item->status=1;
+        $item->item_completion_date=date("Y-m-d");
+        $item->save();
+        return response()->json(null, 204);
+    }
+
+    /**
+     * set the date of departure to the date of completion of transportation
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setDeptDateAsCompletion(Request $request)
+    {
+        $id = $request->query('id') ?: '';
+        $item = Item::findOrFail($id);
+        $item->status=1;
+        $item->item_completion_date=$item['stack_date'];
+        $item->save();
+        return response()->json(null, 204);
+    }
     /**
      * returns the list of item based on the query on the item list view
      *
@@ -189,5 +235,18 @@ class ItemController extends Controller
             ->distinct()
             ->get();
         return response()->json($drivers);
+    }
+    /**
+     * Get companies list for dropdown select
+     * @param Request $request
+     * @return string
+     */
+    public function getVehicles(Request $request)
+    {
+        $vehicles = Vehicle::distinct()
+            ->select(['vehicle_id', 'vehicle_no', 'company_name'])
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($vehicles);
     }
 }
