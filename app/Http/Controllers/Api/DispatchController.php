@@ -28,12 +28,12 @@ class DispatchController extends Controller
             $secondDate = date('Y/m/d',strtotime($secondDate." +1 day"));
 
         $firstListItems = \DB::table('items')
-            ->select(['items.item_id','items.driver_id','items.shipper_id','items.down_date',
+            ->select(['items.item_id','items.driver_id','items.shipper_id','items.down_date','items.down_time',
             'items.down_point','items.shipper_name','items.stack_point','items.weight','items.empty_pl','items.item_remark'])
             ->where(['items.down_date'=>$firstDate,'items.delete_flg'=>0,'dispatch_status'=>Item::DISPATCH_STATUS_OUT_DISPATCH])
             ->get();
         $secondListItems = \DB::table('items')
-            ->select(['items.item_id','items.driver_id','items.shipper_id','items.down_date',
+            ->select(['items.item_id','items.driver_id','items.shipper_id','items.down_date','items.down_time',
             'items.down_point','items.shipper_name','items.stack_point','items.weight','items.empty_pl','items.item_remark'])
             ->where(['items.down_date'=>$secondDate,'items.delete_flg'=>0,'dispatch_status'=>Item::DISPATCH_STATUS_OUT_DISPATCH])
             ->get();

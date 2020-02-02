@@ -53,7 +53,7 @@
                     <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
-                        {{ item.down_point }} - {{ item.stack_point }} <br>
+                        {{ item.stack_point }} - {{ item.down_point }} <br>
                         {{ item.weight }}t <span v-if="item.empty_pl != 1">PL available</span> <br>
                         Remarks: {{ item.remarks }}<br>
                     </div>
