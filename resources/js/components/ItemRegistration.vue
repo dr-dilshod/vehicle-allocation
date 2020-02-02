@@ -67,8 +67,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="down_date">Down Date</label>
                                 <span class="required"> *</span>
+                                <label for="down_date">Down Date</label>
                             </td>
                             <td>
 
@@ -78,8 +78,8 @@
                             </td>
                             <td></td>
                             <td class="text-right">
-                                <label for="down_time_hour">Down Time</label>
                                 <span class="required"> *</span>
+                                <label for="down_time_hour">Down Time</label>
                             </td>
                             <td>
                                 <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
@@ -103,8 +103,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="vehicle_model">Vehicle Model</label>
                                 <span class="required"> *</span>
+                                <label for="vehicle_model">Vehicle Model</label>
                             </td>
                             <td>
                                 <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
@@ -119,8 +119,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="shipper_id">Shipper</label>
                                 <span class="required"> *</span>
+                                <label for="shipper_id">Shipper</label>
                             </td>
                             <td>
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
@@ -134,8 +134,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="stack_point">Stack Point</label>
                                 <span class="required"> *</span>
+                                <label for="stack_point">Stack Point</label>
                             </td>
                             <td>
                                 <input type="text" placeholder="" class="form-control"
@@ -143,12 +143,12 @@
                             </td>
                             <td class="text-center">~</td>
                             <td class="text-right">
-                                <label for="down_point">Down Point</label>
                                 <span class="required"> *</span>
+                                <label for="down_point">Down Point</label>
                             </td>
                             <td colspan="3">
                                 <input id="down_point" for="down_point" type="text" placeholder=""
-                                       class="form-control"
+                                       class="form-control" v-on:focusout="calcUnitPrice"
                                        v-model="itemData.down_point" required/>
                             </td>
                         </tr>
@@ -158,7 +158,7 @@
                             </td>
                             <td>
                                 <input id="weight" type="text" placeholder="" class="form-control"
-                                       v-on:input="calcUnitPrice" v-model="itemData.weight"/>
+                                      v-on:input="setWeight" v-model="itemData.weight"/>
                             </td>
                             <td class="text-center">t</td>
                             <td class="text-right">
@@ -373,9 +373,8 @@
                     }
                 }
             },
-            fetchCurrentDate(){
-                let currentDate = new Date();
-                this.itemData.item_completion_date = currentDate;
+            setWeight() {
+                this.ton = this.itemData.weight;
             },
             perTonChange() {
                 if ((this.per_ton == '')
@@ -393,15 +392,14 @@
             },
             calcUnitPrice() {
                 let component = this;
-                if ((this.vehicle_model != '') && (this.itemData.shipper_id != '')
-                && (this.itemData.stack_point!='') && (this.itemData.down_point!='')) {
-                    axios.get(component.unitPriceUrl+'?vehicle_model=' + this.vehicle_model
+                if ((this.vehicle_model!=='') && (this.itemData.shipper_id!=='')
+                && (this.itemData.stack_point!=='') && (this.itemData.down_point!=='')) {
+                    axios.get('/item/getUnitPrice?vehicle_model=' + this.vehicle_model
                         + '&shipper_id=' + this.itemData.shipper_id
                         + '&stack_point=' + this.itemData.stack_point
                         + '&down_point=' + this.itemData.down_point)
                             .then(response => {
-                                console.log(response.data);
-                                component.per_ton = response.data[0].price;
+                                component.per_ton = response.data.price;
                             });
                     }
             },
@@ -458,10 +456,9 @@
                     });
             },
             register(){
-                console.log()
+                const itemReg = this;
                 this.itemData.stack_date = this.itemData.stack_date.toISOString().slice(0,10);
                 this.itemData.down_date = this.itemData.down_date.toISOString().slice(0,10);
-                const itemRegistration = this;
                 // check whether it is update or create operation
                 if (this.operation === 'Update') {
                     // update that item if it is update operation
@@ -470,12 +467,10 @@
                     // create a new item if it is create operation
                     axios.post(this.resourceUrl, this.itemData)
                         .then(function (response) {
-                            console.log("Insert data success");
-                            alert("Creation Successful!");
-                            window.location.href = '/item';
+                            itemReg.showSuccessDialog();
                         })
                         .catch(function (error) {
-                            itemRegistration.showDialog(error.response.data);
+                            itemReg.showDialog(error.response.data);
                             return false;
                         });
                     return true;
@@ -486,8 +481,7 @@
                 const itemRegistration = this;
                 axios.put(this.resourceUrl + '/' + id, item)
                     .then(function (response) {
-                        alert('Update is successful!');
-                        window.location.href = '/item';
+                        itemRegistration.showSuccessDialog();
                     })
                     .catch(function (error) {
                         itemRegistration.showDialog(error.response.data);
@@ -497,8 +491,7 @@
                 const itemRegistration = this;
                 axios.delete(this.resourceUrl + '/' + item_id)
                     .then(function (response) {
-                        alert('Deletion is successful!');
-                        window.location.href = '/item';
+                        itemRegistration.showSuccessDialog();
                     })
                     .catch(function (error) {
                         itemRegistration.showDialog(error.response.data);
@@ -525,7 +518,17 @@
                     , '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', '48', '49',
                     '50', '51', '52', '53', '54', '55', '56', '57', '58', '59'];
                 return mins;
-            }
+            },
+            showSuccessDialog() {
+                this.$fire({
+                    title: "Info Message",
+                    text: "Operation is successful",
+                    type: "success",
+                    timer: 5000
+                }).then(r => {
+                    window.location.href = '/item';
+                });
+            },
         }
     }
 </script>

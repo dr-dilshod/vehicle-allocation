@@ -79,25 +79,9 @@ class Item extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function driver()
-    {
-        return $this->belongsTo('App\Driver', null, 'driver_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function shipper()
     {
         return $this->belongsTo('App\Shipper', null, 'shipper_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function vehicle()
-    {
-        return $this->belongsTo('App\Vehicle', null, 'vehicle_id');
     }
 
     /**

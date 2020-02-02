@@ -71,11 +71,11 @@
                                 </td>
                                 <td class="text-right"><span class="c24966">Vehicle No.</span></td>
                                 <td class="orders-order">
-                                    <select name="vehicleNo" id="vehicle_no" v-model="vehicle_no"
+                                    <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
                                             class="form-control">
                                         <option value=""></option>
-                                        <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no">
-                                            {{ vehicle.vehicle_no }}
+                                        <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
+                                            {{ vehicle.vehicle_no3 }}
                                         </option>
                                     </select>
                                 </td>
@@ -120,6 +120,7 @@
     Vue.use( GridPlugin );
     Vue.use( VueSimpleAlert );
     Vue.use(DialogPlugin);
+    window["isDoubleClick"] = false;
 
     export default{
         name: 'ItemList',
@@ -135,7 +136,7 @@
         data() {
             return {
                 data: [],
-                vehicle_no: '',
+                vehicle_no3: '',
                 self: this,
                 status: '',
                 stack_date: '',
@@ -153,7 +154,7 @@
                     template: Vue.component('editOption', {
                         template:
                         `
-                            <div v-if="data.status != 0">
+                            <div v-if="data.status === 1">
                                 <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>Complete
                                 </ejs-button>
                             </div>
@@ -175,6 +176,7 @@
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
+                                                    <input type="text" v-model="this.data" v-bind="data" hidden>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="">
@@ -219,8 +221,7 @@
                                     const itemTable = this;
                                     axios.get('/item/toIncomplete?id='+id)
                                         .then(function(response){
-                                            alert("Status of Selection is changed to Incomplete when stack and current dates are not same.");
-                                            this.refresh();
+                                            itemTable.showSuccessDialog("Status of Selection is changed to Incomplete when stack and current dates are not same.");
                                         })
                                         .catch(function(error){
                                             itemTable.showDialog(error.response.data);
@@ -231,10 +232,8 @@
                                 const itemTable = this;
                                 axios.get('/item/setTodayAsCompletion?id='+id)
                                     .then(function(response){
-                                        //itemTable.showSuccessDialog();
-                                        alert("Status of Selection is changed to Complete and Today is set as Completion Date.");
+                                        itemTable.showSuccessDialog("Status of Selection is changed to Complete and Today is set as Completion Date.");
                                         $('#updateStatusModal').modal('hide');
-                                        this.refresh();
                                     })
                                     .catch(function(error){
                                         itemTable.showDialog(error.response.data);
@@ -244,10 +243,8 @@
                                 const itemTable = this;
                                 axios.get('/item/setDeptDateAsCompletion?id='+id)
                                     .then(function(response){
-                                        //itemTable.showSuccessDialog();
-                                        alert("Status of Selection is changed to Complete and Stack Date is set as Completion Date.")
+                                        itemTable.showSuccessDialog("Status of Selection is changed to Complete and Stack Date is set as Completion Date.");
                                         $('#updateStatusModal').modal('hide');
-                                        this.refresh();
                                     })
                                     .catch(function(error){
                                         itemTable.showDialog(error.response.data);
@@ -260,9 +257,6 @@
                                     this.setDeptDateAsCompletion(id);
                                 }
                             },
-                            refresh(){
-                                self.search();
-                            },
                             getDate () {
                                 const toTwoDigits = num => num < 10 ? '0' + num : num;
                                 let today = new Date();
@@ -270,7 +264,25 @@
                                 let month = toTwoDigits(today.getMonth() + 1);
                                 let day = toTwoDigits(today.getDate());
                                 return `${year}-${month}-${day}`;
-                            }
+                            },
+                            showSuccessDialog(text) {
+                                this.$fire({
+                                    title: "Info Message",
+                                    text: text,
+                                    type: "success",
+                                    timer: 5000
+                                }).then(r => {
+                                    this.$root.$children['item-list'].search();
+                                });
+                            },
+                            showDialog(response) {
+                                let message = response.message + ': ';
+                                let errors = response.errors;
+                                $.each(errors, function (key, value) {
+                                    message += value[0]; //showing only the first error.
+                                });
+                                this.$alert(message);
+                            },
                         },
 
                     })
@@ -318,14 +330,14 @@
             search(){
                 return this.fetchItem(this.itemUrl
                     +'?shipper_name=' + this.shipper_name
-                    + '&vehicle_no=' + this.vehicle_no
+                    + '&vehicle_no3=' + this.vehicle_no3
                     + '&status=' + this.status
                     + '&stack_date=' + this.stack_date
                     + '&stack_point=' + this.stack_point)
             },
             clear(){
                 this.stack_date = '';
-                this.vehicle_no = '';
+                this.vehicle_no3 = '';
                 this.status = '';
                 this.stack_date = '';
                 this.stack_point = '';
@@ -335,7 +347,7 @@
             },
         },
         provide: {
-            grid: [Sort,Freeze,Edit,Toolbar]
+            grid: [Sort,Freeze,Edit,Toolbar],
         },
         name: 'ItemTable'
     }

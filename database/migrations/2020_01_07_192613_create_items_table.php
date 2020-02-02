@@ -44,10 +44,9 @@ class CreateItemsTable extends Migration
             $table->unsignedBigInteger('create_id')->unsigned()->nullable();
             $table->unsignedBigInteger('update_id')->unsigned()->nullable();
             $table->timestamps();
-            $table->index(['create_id', 'update_id', 'driver_id', 'shipper_id'], 'items-driver-shipper-default-indexes');
+            $table->index(['create_id', 'update_id', 'shipper_id'], 'items-driver-shipper-default-indexes');
             $table->foreign('create_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('update_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('driver_id')->references('driver_id')->on('drivers')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('shipper_id')->references('shipper_id')->on('shippers')->onDelete('restrict')->onUpdate('restrict');
 
             $table->rememberToken();
