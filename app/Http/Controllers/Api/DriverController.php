@@ -67,6 +67,8 @@ class DriverController extends Controller
 
         $driver = Driver::findOrFail($id);
         $request['driver_pass'] = \Hash::make($request['driver_pass']);
+        $request['admin_flg'] = 1;
+        $request['search_flg'] = 1;
         $driver->update($request->all()
 
         );
@@ -83,7 +85,9 @@ class DriverController extends Controller
      */
     public function destroy($id)
     {
-        Driver::destroy($id);
+        $driver = Driver::findOrFail($id);
+        $driver->delete_flg=1;
+        $driver->save();
         return response()->json(null, 204);
     }
 

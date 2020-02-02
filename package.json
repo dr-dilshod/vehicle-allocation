@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "@syncfusion/ej2-data": "latest",
+        "@syncfusion/ej2-dropdowns": "^17.4.46",
         "@syncfusion/ej2-vue-buttons": "^17.4.43",
         "@syncfusion/ej2-vue-calendars": "^17.4.43",
         "@syncfusion/ej2-vue-dropdowns": "^17.4.44",
@@ -32,7 +34,6 @@
         "vue-router": "^3.1.5",
         "vue-simple-alert": "^1.1.1",
         "vuedraggable": "^2.23.2",
-        "vuejs-datepicker": "^1.6.2",
-        "@syncfusion/ej2-data": "latest"
+        "vuejs-datepicker": "^1.6.2"
     }
 }
