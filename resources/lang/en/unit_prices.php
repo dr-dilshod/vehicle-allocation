@@ -9,5 +9,11 @@ return [
     'type' => 'Type',
     'unit_price' => 'Unit price',
     'unit_price_id' => 'Unit price ID',
-    'shipper_id' => 'Shipper ID'
+    'shipper_id' => 'Shipper ID',
+    'car_types' => [
+        'wing' => 'Wing',
+        'flat' => 'Flat',
+        'trailer' => 'Trailer',
+        'bulk' => 'Bulk'
+    ]
 ];
