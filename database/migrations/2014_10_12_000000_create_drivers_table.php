@@ -18,8 +18,8 @@ class CreateDriversTable extends Migration
             $table->string('driver_name')->nullable();
             $table->string('driver_mobile_number')->nullable();
             $table->string('maximum_Loading')->nullable();
-            $table->tinyInteger('search_flg')->nullable();
-            $table->tinyInteger('admin_flg')->nullable();
+            $table->tinyInteger('search_flg')->default(1);
+            $table->tinyInteger('admin_flg')->default(0);
             $table->string('vehicle_no1')->nullable();
             $table->string('vehicle_no2')->nullable();
             $table->string('vehicle_no3')->nullable();

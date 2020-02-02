@@ -39,22 +39,22 @@
                             <label for="shipper">Shipper</label>
                         </td>
                         <td>
-                            <select name="shipper" id="shipper" v-model="formData.shipper" class="form-control">
+                            <select name="shipper" id="shipper" v-model="formData.shipper_id" class="form-control">
                                 <option value=""></option>
-                                <option v-for="shipperItem in shippers">
+                                <option v-for="shipperItem in shippers" :value="shipperItem.shipper_id">
                                     {{ shipperItem }}
                                 </option>
                             </select>
                         </td>
                         <td>
-                            <label for="invoice_month">Invoice month</label>
+                            <label>Invoice month</label>
                         </td>
                         <td>
                             <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'"
                                             :format="options.monthFormat"></datepicker>
                         </td>
                         <td>
-                            <label for="invoice_day">Invoice day</label>
+                            <label>Invoice day</label>
                         </td>
                         <td>
                             <select v-model="formData.invoice_day" class="form-control">
@@ -66,10 +66,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="weekday">Weekday</label>
+                            <label>Stack Date</label>
                         </td>
                         <td>
-                            <datepicker v-model="formData.weekday" :minimumView="'day'" :format="options.weekday"
+                            <datepicker v-model="formData.stack_date" :minimumView="'day'" :format="options.stack_date"
                                             :maximumView="'day'"></datepicker>
                         </td>
                         <td>
@@ -78,7 +78,7 @@
                         <td>
                             <select name="vehicle_no" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
                                 <option value=""></option>
-                                <option v-for="vehicle in vehicles">
+                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                     {{ vehicle.vehicle_no3 }}
                                 </option>
                             </select>
@@ -92,23 +92,25 @@
             </form>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="270" :frozenColumns="4">
+                  :allowSorting="true" :height="270" :frozenColumns="4" :rowSelected='rowSelected'>
             <e-columns>
                 <e-column field='stack_point' headerText='Loading port' width="150" textAlign="Center"></e-column>
                 <e-column field='down_point' headerText='Drop off' width="150" textAlign="Center"></e-column>
-                <e-column field='item_price' headerText='Amount' width="150" textAlign="Right"></e-column>
+                <e-column field='vehicle_payment' headerText='Amount' width="150" textAlign="Right"></e-column>
                 <e-column field='down_date' headerText='Delivery Date' width="100" textAlign="Center"></e-column>
                 <e-column field='shipper_name' headerText='Shipper' width="150" textAlign="Center"></e-column>
-                <e-column field='vehicle_no' headerText='Vehicle No' width="150" textAlign="Center"></e-column>
+                <e-column field='vehicle_no3' headerText='Vehicle No' width="150" textAlign="Center"></e-column>
                 <e-column field='weight' headerText='Weight' width="150"></e-column>
-                <e-column field='unit_price' headerText='Unit price' textAlign="Right" editType='numericedit'
+                <e-column field='item_price' headerText='Item price' textAlign="Right" editType='numericedit'
                           width="100"></e-column>
                 <e-column field='status' headerText='Status' width="100" textAlign="Center"></e-column>
-                <e-column field='item_id' headerText='Matter No' width="100" textAlign="Center"></e-column>
+                <e-column field='item_vehicle' headerText='Item vehicle' width="100" textAlign="Center"></e-column>
                 <e-column field='down_time' headerText='Delivery time' width="100" textAlign="Center"></e-column>
                 <e-column field='item_completion_date' headerText='Invoice date' width="150"
                           textAlign="Center"></e-column>
-                <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
+                <e-column field='item_id' :visible="false" width="0"></e-column>
+                <e-column field='shipper_id' :visible="false" width="0"></e-column>
+                <e-column field='vehicle_id' :visible="false" width="0"></e-column>
             </e-columns>
         </ejs-grid>
         <div class="row">
@@ -144,7 +146,7 @@
                         <div class="">
                             <p class="text-center">Select the billing date you want to print</p>
                             <div class="form-group text-center" style="margin: 20px calc(32.5%)">
-                                <label for="yearMonth">Year and Month</label>
+                                <label>Year and Month</label>
                                 <datepicker v-model="billing.month" :minimumView="'month'" :maximumView="'month'"
                                             :format="options.monthFormat"></datepicker>
                             </div>
@@ -181,12 +183,12 @@
 
     export default{
         props: {
+            invoiceUrl: {type: String, required: true},
             backUrl: {type: String, required: true},
-            title: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
             shippersUrl: {type: String, required: true},
             vehiclesUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
+            title: {type: String, required: true},
         },
         components: {
             Datepicker
@@ -195,11 +197,11 @@
             return {
                 data: [],
                 formData: {
-                    weekday: '',
-                    vehicle_no: '',
+                    stack_date: '',
+                    vehicle_id: '',
                     invoice_day: '',
                     invoice_month: '',
-                    shipper: '',
+                    shipper_id: '',
                 },
                 billing_month: '',
                 shippers: [],
@@ -211,12 +213,21 @@
                 totalSalesTotal: 0,
                 options: {
                     monthFormat: "yyyy/MM",
-                    weekday: "yyyy/MM/dd",
+                    stack_date: "yyyy/MM/dd",
                     language: "ja",
                 },
                 billing: {
                     day: 20,
                     month: ''
+                },
+                invoiceData: {
+                    item_id: '',
+                    shipper_id: '',
+                    vehicle_id: '',
+                    billing_recording_date: '',
+                    billing_deadline_date: '',
+                    payment_record_date: '',
+                    invoice_remark: '',
                 }
             }
         },
@@ -225,8 +236,55 @@
             this.fetchVehicles();
         },
         methods: {
-            actionBegin(){
-
+            actionBegin(args){
+                if(args.requestType == 'delete'){
+                    args.cancel = true;
+                    if(args.data[0].item_id !== undefined){
+                        this.deleteInvoice(args.data[0].item_id);
+                    }
+                }
+            },
+            rowSelected: function(args) {
+                this.invoiceData.item_id = args.data.item_id;
+                this.invoiceData.shipper_id = args.data.shipper_id;
+                this.invoiceData.vehicle_id = args.data.vehicle_id;
+                this.invoiceData.billing_recording_date = this.getDate();
+                this.invoiceData.billing_deadline_date = args.data.item_completion_date;
+            },
+            getDate () {
+                const toTwoDigits = num => num < 10 ? '0' + num : num;
+                let today = new Date();
+                let year = today.getFullYear();
+                let month = toTwoDigits(today.getMonth() + 1);
+                let day = toTwoDigits(today.getDate());
+                return `${year}-${month}-${day}`;
+            },
+            register(){
+                const invoiceTable = this;
+                axios.post(this.resourceUrl,this.invoiceData)
+                    .then(function(response){
+                        //invoiceTable.tableUtil.endEditing();
+                        //invoiceTable.showSuccessDialog();
+                        alert("Selected item is added to Invoice List.")
+                    })
+                    .catch(function(error){
+                        invoiceTable.showDialog(error.response.data);
+                    });
+            },
+            deleteInvoice(item_id){
+                const invoiceTable = this;
+                axios.delete(this.resourceUrl+'/'+item_id)
+                    .then(function(response){
+                        invoiceTable.tableUtil.endEditing();
+                        //invoiceTable.showSuccessDialog();
+                        //invoiceTable.refresh();
+                        alert("Selected item is removed from invoice list.")
+                    })
+                    .catch(function(error){
+                        invoiceTable.showDialog(error.response.data);
+                        return false;
+                    });
+                return true;
             },
             showDialog(response) {
                 let message = response.message + ': ';
@@ -274,23 +332,27 @@
                         this.data = data.data;
                     })
             },
-            register(){
-                this.$refs.grid.addRecord();
-            },
+
             edit(){
                 this.setEditMode('editing');
                 this.$refs.grid.refresh();
+
             },
             search(){
-                this.fetchData(this.fetchUrl);
-                this.calculateTotals();
+                this.fetchData(this.invoiceUrl
+                    +'?stack_date=' + this.formData.stack_date,
+                    + '&vehicle_id=' + this.formData.vehicle_id,
+                    + '&invoice_day=' + this.formData.invoice_day,
+                    + '&invoice_month=' + this.formData.invoice_month,
+                    + '&shipper_id=' + this.formData.shipper_id);
+                //this.calculateTotals();
             },
             clear(){
-                this.formData.weekday = '';
+                this.formData.stack_date = '';
                 this.formData.invoice_day = '';
                 this.formData.invoice_month = '';
-                this.formData.vehicle_no = '';
-                this.formData.shipper = '';
+                this.formData.vehicle_id = '';
+                this.formData.shipper_id = '';
             },
             refresh(){
                 this.search();
@@ -307,13 +369,13 @@
                     });
                 }
                 if (editMode === 'editing') {
-                    let toolbarBtns = ['Edit', 'Delete', 'Update', 'Cancel'];
+                    let toolbarBtns = ['Delete'];
                     this.$refs.grid.ej2Instances.setProperties({
                         toolbar: toolbarBtns,
                         editSettings: {
                             allowDeleting: true,
-                            allowEditing: true,
-                            allowAdding: true,
+                            allowEditing: false,
+                            allowAdding: false,
                             showDeleteConfirmDialog: true,
                         },
                     });

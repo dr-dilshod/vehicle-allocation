@@ -6,11 +6,16 @@
  * Time: 20:28
  */
 return [
-    'back' => 'Back',
-    'register' => 'Register',
-    'edit' => 'Edit',
     'vehicle_list' => 'Vehicle list',
     'company_name' => 'Company name',
-    'btn_search' => 'Search',
-    'btn_clear' => 'Clear',
+    'vehicle_no' => 'Vehicle No',
+    'kana_name' => 'Kana name',
+    'company_abbr' => 'Company Abbr',
+    'postal_code' => 'Postal code',
+    'address' => 'Address',
+    'address1' => 'Address 2',
+    'phone' => 'Phone',
+    'fax' => 'Fax',
+    'offset' => 'Offset',
+    'remark' => 'Remark'
 ];

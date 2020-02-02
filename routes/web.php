@@ -50,6 +50,8 @@ Route::get('/item/setDeptDateAsCompletion', 'Api\ItemController@setDeptDateAsCom
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
 Route::get('/invoice/billing-month-pdf', 'InvoiceController@billingMonthPDF')->name('invoice.billingMonthPDF');
+Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->name('invoice.list');
+
 
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
@@ -58,8 +60,9 @@ Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index')
 Route::get('/deposit', 'DepositController@report')->name('deposit.report');
 
 // Payment
-Route::get('/payment/report', 'PaymentController@report')->name('payment.report');
-Route::get('/payment/bk-report', 'PaymentController@bk_report')->name('payment.bk-report');
+Route::get('/payment/registration', 'PaymentController@registration')->name('payment.registration');
+Route::get('/payment/search', 'Api\PaymentController@search')->name('payment.search');
+Route::get('/payment/getShippers', 'Api\PaymentController@getShippers')->name('payment.shippers');
 
 // Dispatch list
 Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');

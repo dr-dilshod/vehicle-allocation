@@ -6,10 +6,12 @@
  * Time: 17:18
  */
 return [
-    'back' => 'Back',
-    'editing' => 'Editing',
-    'title' => 'Driver list',
-    'registration' => 'Registration',
-    'edit' => 'Edit',
-
+    'driver_list' => 'Driver list',
+    'type' => 'Type',
+    'name' => 'Name',
+    'mobile_number' => 'Mobile number',
+    'vehicle_no' => 'Vehicle No',
+    'max_load' => 'Max Load',
+    'display' => 'Display',
+    'remarks' => 'Remarks'
 ];

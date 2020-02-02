@@ -4,7 +4,7 @@
     <dispatch
             fetch-url="{{ route('api.dispatch.index') }}"
             back-url="{{route('top')}}"
-            resource-url="/api/dispatch"
-            title="Dispatch board"
+            third-list-url="{{ route('api.dispatch.third') }}"
+            title="{{__('Dispatch board')}}"
     ></dispatch>
 @endsection

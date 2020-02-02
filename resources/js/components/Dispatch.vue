@@ -21,17 +21,18 @@
                 <form action="#">
                     <div class="row">
                         <div class="col-5">
-                            <div class="form-group">
+                            <div class="form-group d-flex">
                                 <label for="dispatch_day">Dispatch day</label>
-                                <input type="date" name="dispatch_day" id="dispatch_day" required class="p-1"
-                                       v-model="dispatch_day">
+                                <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
+                                            :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                ></datepicker>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <button class="btn btn-primary" id="display" @click="display">Display</button>
-                                <button class="btn btn-primary" id="nextProduct" @click="nextProduct">Next day</button>
-                                <button class="btn btn-primary" id="twoDaysLater" @click="twoDaysLater">Two days later
+                                <button type="button" class="btn btn-primary" id="display" @click.prevent="display">Display</button>
+                                <button type="button" class="btn btn-primary" id="nextDay" @click.prevent="nextDay">Next day</button>
+                                <button type="button" class="btn btn-primary" id="twoDaysLater" @click.prevent="twoDaysLater">Two days later
                                 </button>
                             </div>
                         </div>
@@ -49,7 +50,7 @@
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ firstList.date }}</h5>
                 <draggable v-model="firstList.data" group="elems" @add="noAdd" class="elem-list">
-                    <div v-for="item in firstList.data" :key="item.item_id" class="elem">
+                    <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.down_point }} - {{ item.stack_point }} <br>
@@ -61,7 +62,7 @@
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ secondList.date }}</h5>
                 <draggable v-model="secondList.data" group="elems" @add="noAdd" class="elem-list">
-                    <div v-for="item in secondList.data" :key="item.item_id" class="elem">
+                    <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.down_point }} - {{ item.stack_point }} <br>
@@ -82,20 +83,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(elem, idx) in thirdList" :key="elem.vehicle_no">
+                    <tr v-for="(elem, idx) in thirdList" :key="elem.vehicle_no" :data-driver-id="elem.driver_id">
                         <td width="10%">{{elem.vehicle_no}}</td>
                         <td width="15%">
                             <div class="driver">
-                                {{elem.driver_name}}
                                 <button type="button" class="close" @click="removeRow(idx, elem)" aria-label="Close">
                                     <span aria-hidden="true" class="text-danger">&times;</span>
                                 </button>
+                                {{elem.driver_name}}
                             </div>
                         </td>
                         <td width="25%">
-                            <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none"
+                            <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" @add="add" ghost-class="new"
                                        style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
-                                <div class="elem" v-for="item in elem.morning" :key="item.item_id">
+                                <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
@@ -109,9 +110,9 @@
                             </draggable>
                         </td>
                         <td width="25%">
-                            <draggable :list="elem.noon" group="elems" @change="addNoon" handle=".none"
+                            <draggable :list="elem.noon" group="elems" @change="addNoon" handle=".none" ghost-class="new"
                                        style="display: block; min-height: 50px" class="noon" :data-driver-id="elem.driver_id">
-                                <div class="elem" v-for="item in elem.noon" :key="item.item_id">
+                                <div class="elem" v-for="item in elem.noon" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
@@ -125,9 +126,9 @@
                             </draggable>
                         </td>
                         <td width="25%">
-                            <draggable :list="elem.nextProduct" group="elems" @change="addNextProduct" handle=".none"
+                            <draggable :list="elem.nextProduct" group="elems" @change="addNextProduct" handle=".none" ghost-class="new"
                                        style="display: block; min-height: 50px" class="next-product" :data-driver-id="elem.driver_id">
-                                <div class="elem" v-for="item in elem.nextProduct" :key="item.item_id">
+                                <div class="elem" v-for="item in elem.nextProduct" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
@@ -204,17 +205,20 @@
 </template>
 <script>
     import draggable from 'vuedraggable'
+    import Datepicker from "vuejs-datepicker";
+    import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     export default{
         name: 'Dispatch',
         components: {
             draggable,
+            Datepicker
         },
         props: {
             backUrl: {type: String, required: true},
             title: {type: String, required: true},
             fetchUrl: {type: String, required: true},
-            resourceUrl: {type: String, required: true},
+            thirdListUrl: {type: String, required: true},
         },
         data(){
             return {
@@ -223,188 +227,153 @@
                 tableDriverList: [],
                 firstList: [],
                 secondList: [],
-                thirdList: [
-                    {
-                        'driver_id': 11,
-                        'vehicle_no': 1111,
-                        'driver_name': "Driver A",
-                        'morning': [
-                            {
-                                'item_id': 4,
-                                'shipper_name': 'Pet West',
-                                'stack_point': 'Nagoya',
-                                'down_point': 'Gifu',
-                                'down_date': '2019/12/09',
-                                'down_time': '12:11',
-                                'weight': 100000,
-                                'empty_pl': 0,
-                                'remarks': 'High-speed fee'
-                            },
-                        ],
-                        'noon': [],
-                        'nextProduct': [],
-                    },
-                    {
-                        'driver_id': 12,
-                        'vehicle_no': 1112,
-                        'driver_name': "Driver B",
-                        'morning': [],
-                        'noon': [
-                            {
-                                'item_id': 5,
-                                'shipper_name': 'Pet West',
-                                'stack_point': 'Nagoya',
-                                'down_point': 'Gifu',
-                                'down_date': '2019/12/09',
-                                'down_time': '12:11',
-                                'weight': 100000,
-                                'empty_pl': 1,
-                                'remarks': 'High-speed fee'
-                            },
-                        ],
-                        'nextProduct': [],
-                    },
-                    {
-                        'driver_id': 14,
-                        'vehicle_no': 1114,
-                        'driver_name': "Driver C",
-                        'morning': [],
-                        'noon': [],
-                        'nextProduct': [
-                            {
-                                'item_id': 6,
-                                'shipper_name': 'Pet West',
-                                'stack_point': 'Nagoya',
-                                'down_point': 'Gifu',
-                                'down_date': '2019/12/09',
-                                'down_time': '12:11',
-                                'weight': 100000,
-                                'empty_pl': 1,
-                                'remarks': 'High-speed fee'
-                            },
-                        ],
-                    }
-                ],
+                thirdList: [],
                 dispatch_day: '',
+                options: {
+                    monthFormat: "yyyy/MM",
+                    weekday: "yyyy/MM/dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
+                },
             };
         },
         methods: {
             addMorning: function (evt) {
+                let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
                 let postData = {
                     timezone: 1,
                     item_id: evt.added.element.item_id,
-                    driver_id: evt.added.element.driver_id,
+                    driver_id: driver_id,
                 };
-                axios.post('/api/dispatch',postData)
+                axios.post(this.fetchUrl,postData)
                     .then(response => {
-                        console.log(response);
+
                     })
                     .catch(function (error) {
                         console.error(error);
                     });
-                alert('morning');
-                console.log(evt);
+            },
+            add(evt){
+                evt.item.classList += ' new';
             },
             addNoon: function (evt) {
+                let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
                 let postData = {
                     timezone: 2,
                     item_id: evt.added.element.item_id,
-                    driver_id: evt.added.element.driver_id,
+                    driver_id: driver_id,
                 };
-                axios.post('/api/dispatch',postData)
+                axios.post(this.fetchUrl,postData)
                     .then(response => {
-                        console.log(response);
+
                     })
                     .catch(function (error) {
                         console.error(error);
                     });
-                alert('noon');
-                console.log(evt);
             },
             addNextProduct: function (evt) {
+                let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
                 let postData = {
                     timezone: 3,
                     item_id: evt.added.element.item_id,
-                    driver_id: evt.added.element.driver_id,
+                    driver_id: driver_id,
                 };
-                axios.post('/api/dispatch',postData)
+                axios.post(this.fetchUrl,postData)
                     .then(response => {
-                        console.log(response);
+
                     })
                     .catch(function (error) {
                         console.error(error);
                     });
-                alert('next');
-                console.log(evt);
             },
             noAdd(evt){
                 evt.preventDefault();
-            },
-            replace: function () {
-                alert('replace');
+                return false;
             },
             register(){
-                alert('register');
+//                alert('register');
             },
             registerDriver(){
                 let componentInstance = this;
-                axios.post('/api/dispatch/third-list',componentInstance.tableDriverList)
+                let data = {
+                    firstDate: this.firstList.date,
+                    drivers: this.tableDriverList
+                };
+                axios.post(componentInstance.thirdListUrl,data)
                     .then(data => {
-                        console.log(data.data);
-//                        componentInstance.thirdList = data.data;
+                        componentInstance.thirdList = data.data.dispatches;
+                        return true;
                     })
                     .catch(function(error){
-
+                        console.error(error);
                     });
-                console.log(this.tableDriverList);
-                alert('register driver');
+                $('#addDriverModal').modal('toggle');
             },
             print(){
-                alert('print');
+//                alert('print');
             },
             display(){
-                alert('display');
+                let date = new Date(this.dispatch_day);
+                this.fetchLists(date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate());
             },
-            nextProduct(){
-                alert('next day');
+            nextDay(){
+                this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),1);
             },
             twoDaysLater(){
-                alert('Two days later');
+                this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),2);
             },
             removeRow(id, elem){
-                console.log(elem);
+                let index = this.tableDriverList.indexOf(elem.driver_id);
+                if (index !== -1) this.tableDriverList.splice(index, 1);
                 this.thirdList.splice(id, 1);
             },
             removeElem(id){
-                alert(id + ' to be deleted');
-            },
-            fetchLists(){
                 let componentInstance = this;
-                axios.get(this.fetchUrl)
+                axios.delete('/api/dispatch/'+id)
+                    .then(response => {
+                        componentInstance.fetchLists(componentInstance.dispatch_day);
+                    })
+                    .catch(function(error){
+                        console.error(error);
+                    });
+            },
+            fetchLists(date){
+                let componentInstance = this;
+                axios.get(this.fetchUrl+'?date='+date)
                     .then(result => {
-//                        console.log(result);
+                        this.dispatch_day = result.data.first_list.date;
                         this.firstList = result.data.first_list;
                         this.secondList = result.data.second_list;
                         this.drivers = result.data.drivers;
+                        this.thirdList = result.data.dispatches;
+                        this.tableDriverList = result.data.tableDriverList;
                     })
                     .catch(function (error) {
-                        componentInstance.$alert(error.response.message);
+//                        componentInstance.$alert(error.response.message);
                     });
                 ;
             },
             fetchDriverTable(){
                 let componentInstance = this;
-                axios.get('/api/dispatch/third-list')
+                axios.get(componentInstance.thirdListUrl)
                     .then(data => {
                         componentInstance.thirdList = data.data;
                     })
                     .catch(function (error) {
-                        componentInstance.$alert(error.response.message);
+//                        componentInstance.$alert(error.response.message);
                     });
+            },
+            getNextWorkday(d,days=1){
+                d.setDate(d.getDate()+days); // tomorrow
+                if (d.getDay() == 0) d.setDate(d.getDate()+1);
+                return d.toISOString().slice(0,10);
             }
         },
         mounted(){
-            this.fetchLists();
+            this.dispatch_day = this.getNextWorkday(new Date());
+            this.fetchLists(this.dispatch_day);
         },
         computed: {
             filteredDrivers(){
@@ -419,14 +388,12 @@
     .table {
         background: #fff;
     }
-
     .fixed-header tbody {
         display: block;
         overflow: auto;
         height: 370px;
         width: 100%;
     }
-
     .driver-list .driver-data {
         display: block;
         overflow-y: auto;
@@ -434,60 +401,35 @@
         height: 150px;
         width: 100%;
     }
-
     .fixed-header thead tr {
         display: block;
     }
-
     .table th {
         vertical-align: middle;
     }
-
     .close {
         display: none;
     }
-
     .driver:hover .close {
         display: inline;
     }
-
     .elem:hover .close {
         display: inline;
     }
-
     .elem {
-        background: lightblue;
+        background: #9fdee6;
         border-radius: 5px;
         margin: 4px;
     }
-
     .new {
-        background: lightgreen;
+        background: #c0eebd;
     }
-
+    .vdp-datepicker{
+        display: inline-block;
+    }
     .elem-list {
         background: #fff;
         height: 450px;
         overflow-y: scroll;
-    }
-
-    /* width */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: lightblue;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
     }
 </style>
