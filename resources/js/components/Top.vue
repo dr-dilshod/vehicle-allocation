@@ -37,14 +37,14 @@
                 <table class="table fixed-header">
                     <thead>
                     <tr>
-                        <th width="50%">Driver name</th>
-                        <th width="50%">Amount</th>
+                        <th class="text-center">Driver name</th>
+                        <th class="text-center">Amount</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="item in tableData">
-                        <td width="50%">{{ item.driver_name }}</td>
-                        <td width="50%">{{ item.amount }}</td>
+                        <td class="text-center">{{ item.driver_name }}</td>
+                        <td class="text-center">{{ item.amount }}</td>
                     </tr>
                     </tbody>
                 </table>
