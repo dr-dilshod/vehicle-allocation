@@ -46,7 +46,11 @@ class DispatchController extends Controller
             'data'=>$secondListItems
         ];
         $drivers = Driver::select(['driver_id','driver_name','vehicle_no3'])
-            ->where(['admin_flg'=>0,'delete_flg'=>0,'search_flg'=>0])
+            ->where([
+//                'admin_flg'=>0,
+                'delete_flg'=>0,
+                'search_flg'=>0
+            ])
             ->get();
         $dispatch_drivers = \DB::table('dispatches')
             ->select(['dispatches.driver_id','drivers.vehicle_no3','drivers.driver_name'])

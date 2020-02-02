@@ -5,13 +5,13 @@
                 <form action="#" role="form">
                     <div class="form-group row">
                         <label for="year" class="col-2 offset-2">Year</label>
-                        <select class="form-control col-7" name="year" id="year">
+                        <select class="form-control col-7" name="year" id="year" v-model="selectedYear">
                             <option v-for="year in years">{{year}}</option>
                         </select>
                     </div>
                     <div class="form-group row">
                         <label for="month" class="col-2 offset-2">Month</label>
-                        <select class="form-control col-7" name="month" id="month">
+                        <select class="form-control col-7" name="month" id="month" v-model="selectedMonth">
                             <option value="01">January</option>
                             <option value="02">February</option>
                             <option value="03">March</option>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-9 offset-2 pr-0">
-                            <button type="submit" id="display" class="btn btn-lg btn-block btn-primary">Display</button>
+                            <button type="submit" id="display" class="btn btn-lg btn-block btn-primary" @click.prevent="fetchByMonth">Display</button>
                         </div>
                     </div>
                 </form>
@@ -37,14 +37,14 @@
                 <table class="table fixed-header">
                     <thead>
                     <tr>
-                        <th>Driver name</th>
-                        <th>Amount</th>
+                        <th width="50%">Driver name</th>
+                        <th width="50%">Amount</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="item in tableData">
-                        <td>{{ item.driver_name }}</td>
-                        <td>{{ item.amount }}</td>
+                        <td width="50%">{{ item.driver_name }}</td>
+                        <td width="50%">{{ item.amount }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -57,11 +57,14 @@
         name: 'Top',
         props: {
             fetchUrl: {type: String, required: true},
+            monthUrl: {type: String, required: true},
         },
         data(){
             return {
                 tableData: [],
                 years: [],
+                selectedYear: new Date().getFullYear(),
+                selectedMonth: String('0'+(new Date().getMonth()+1)).slice(-2),
             };
         },
         methods: {
@@ -69,21 +72,27 @@
                 let component = this;
                 axios.get(this.fetchUrl)
                     .then(data => {
-                        console.log(data);
                         component.tableData = data.data;
                     })
                     .catch(function (error) {
-                        alert(error);
+                        console.error(error);
                     })
+            },
+            fetchByMonth(){
+                let component = this;
+                axios.get(this.monthUrl+'?year='+this.selectedYear+'&month='+this.selectedMonth)
+                    .then(data => {
+                        component.tableData = data.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             }
         },
         mounted(){
             let currentYear = new Date().getFullYear();
-            this.years = [currentYear,currentYear-1,currentYear-2];
+            this.years = [currentYear-2,currentYear-1,currentYear];
             this.fetchData();
-        },
-        computed: {
-
         }
     }
 </script>
@@ -91,10 +100,24 @@
     .table {
         background: #fff;
     }
-    .fixed-header tbody {
+    .fixed-header{
+        width: 503px;
+        table-layout: fixed;
+    }
+    .fixed-header tbody{
         display: block;
-        overflow: auto;
-        height: 230px;
+        overflow-y: auto;
+        height: 250px;
         width: 100%;
+    }
+    .fixed-header thead tr{
+        display: block;
+        position: relative;
+    }
+    td:nth-child(1), th:nth-child(1) {
+        min-width: 250px
+    }
+    td:nth-child(2), th:nth-child(2) {
+        min-width: 250px
     }
 </style>
