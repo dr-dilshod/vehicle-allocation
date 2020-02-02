@@ -13,5 +13,13 @@ return [
     'vehicle_no' => 'Vehicle No',
     'max_load' => 'Max Load',
     'display' => 'Display',
-    'remarks' => 'Remarks'
+    'remarks' => 'Remarks',
+    'car_types' => [
+        '10tw' => '10tW',
+        '10t_flat' => '10t flat',
+        '4tw' => '4tW',
+        '4t_flat' => '4t flat',
+        'controller' => 'Controller',
+        'back' => 'Back'
+    ]
 ];

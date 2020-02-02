@@ -7,5 +7,7 @@ return [
     'loading_port' => 'Loading port',
     'drop_off' => 'Drop off',
     'type' => 'Type',
-    'unit_price' => 'Unit price'
+    'unit_price' => 'Unit price',
+    'unit_price_id' => 'Unit price ID',
+    'shipper_id' => 'Shipper ID'
 ];
