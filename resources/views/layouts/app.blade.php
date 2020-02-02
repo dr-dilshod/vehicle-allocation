@@ -40,22 +40,13 @@
                             <!-- Right Side Of Navbar -->
                             <!-- Authentication Links -->
                             @guest
-                            <ul class="navbar-nav ml-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('common.login') }}</a>
-                                </li>
-                                @if (Route::has('register'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('register') }}">{{ __('common.register') }}</a>
-                                    </li>
-                            </ul>
-                            @endif
+
                             @else
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-warning btn-lg">{{__('common.logout')}}</button>
                                 </form>
-                                @endguest
+                            @endguest
                         </div>
                     </nav>
         </div>
