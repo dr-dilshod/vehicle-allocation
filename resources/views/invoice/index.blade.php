@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <invoice invoice-url="{{route('invoice.list')}}"
-                 back-url="{{route('setting')}}"
+                 back-url="{{route('top')}}"
                  shippers-url="{{route('api.shipper.distinct-name')}}"
                  vehicles-url="{{route('api.driver.vehicle-numbers')}}"
                  resource-url="/api/invoice"

@@ -272,7 +272,7 @@
                                     type: "success",
                                     timer: 5000
                                 }).then(r => {
-                                    this.$root.$children['item-list'].search();
+                                    //this.$root.$children['item-list'].search();
                                 });
                             },
                             showDialog(response) {
