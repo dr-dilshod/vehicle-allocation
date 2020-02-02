@@ -67,3 +67,4 @@ Route::get('/payment/getShippers', 'Api\PaymentController@getShippers')->name('p
 
 // Dispatch list
 Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');
+Route::get('/dispatch/print', 'DispatchController@printPdf')->name('dispatch.pdf');
