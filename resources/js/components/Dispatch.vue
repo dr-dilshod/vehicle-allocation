@@ -18,7 +18,7 @@
         </div>
         <div class="row mt-2 mb-2">
             <div class="col-8 offset-2">
-                <form action="#">
+                <form action="#" @submit.prevent="display">
                     <div class="row">
                         <div class="col-5">
                             <div class="form-group d-flex">
@@ -316,7 +316,8 @@
             },
             display(){
                 let date = new Date(this.dispatch_day);
-                this.fetchLists(date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate());
+                let dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+                this.fetchLists(dateString);
             },
             nextDay(){
                 this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),1);
@@ -368,18 +369,26 @@
             getNextWorkday(d,days=1){
                 d.setDate(d.getDate()+days); // tomorrow
                 if (d.getDay() == 0) d.setDate(d.getDate()+1);
-                return d.toISOString().slice(0,10);
+                return d;
             }
         },
         mounted(){
             this.dispatch_day = this.getNextWorkday(new Date());
-            this.fetchLists(this.dispatch_day);
+//            this.fetchLists(this.dispatch_day);
         },
         computed: {
             filteredDrivers(){
                 return this.drivers.filter((driver) => {
                     return driver.driver_name.match(this.driver_search);
                 });
+            }
+        },
+        watch: {
+            dispatch_day: function(val){
+                let date = new Date(this.dispatch_day);
+                let dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+                this.fetchLists(dateString);
+                console.log(val)
             }
         }
     }
