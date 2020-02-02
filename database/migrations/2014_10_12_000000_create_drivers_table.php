@@ -38,6 +38,8 @@ class CreateDriversTable extends Migration
         $driver = new \App\Driver();
         $driver->driver_name = 'admin';
         $driver->driver_pass = Hash::make('admin');
+        $driver->admin_flg = 1;
+        $driver->search_flg = 0;
         $driver->save();
     }
 
