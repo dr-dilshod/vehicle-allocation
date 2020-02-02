@@ -67,16 +67,14 @@ class DriverController extends Controller
 
         $driver = Driver::findOrFail($id);
         $request['driver_pass'] = \Hash::make($request['driver_pass']);
-        $request['admin_flg'] = 1;
-        $request['search_flg'] = 1;
+//        $request['admin_flg'] = 1;
+//        $request['search_flg'] = 1;
         $driver->update($request->all()
-
         );
-
         return response()->json($driver, 200);
     }
 
-    /**
+    /*
      * Remove the specified resource from storage.
      *
      * @param  int  $id
