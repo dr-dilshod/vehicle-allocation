@@ -11,6 +11,6 @@ return  [
     'clear' => 'Clear',
     'admin' => 'Admin',
     'password' => 'Password',
-    'select-input' => '--Select--',
+    'select_input' => '--Select--',
     'delete' => 'Delete'
 ];

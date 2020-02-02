@@ -7,5 +7,11 @@ return [
     'loading_port' => 'Loading port',
     'drop_off' => 'Drop off',
     'type' => 'Type',
-    'unit_price' => 'Unit price'
+    'unit_price' => 'Unit price',
+    'car_types' => [
+        'wing' => 'Wing',
+        'flat' => 'Flat',
+        'trailer' => 'Trailer',
+        'bulk' => 'Bulk'
+    ]
 ];
