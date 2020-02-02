@@ -3,8 +3,8 @@
 @section('content')
     <div class="container">
         <deposit-report
-                resource-url="{{route('api.deposit.index')}}"
-                shipper-url="{{route('api.shipper.distinct-name')}}"
+                resource-url="/api/deposits"
+                shipper-url="{{route('api.shipper.fullname')}}"
                 back-url="{{route('setting')}}"
         ></deposit-report>
     </div>

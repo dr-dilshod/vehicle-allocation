@@ -43,6 +43,7 @@ Route::post('/shipper', 'Api\ShipperController@store')->name('api.shipper.store'
 Route::put('/shipper/{id}', 'Api\ShipperController@update')->name('api.shipper.update');
 Route::delete('/shipper/{id}', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
 Route::get("/shippers/distinct-name", 'Api\ShipperController@distinctNames')->name('api.shipper.distinct-name');
+Route::get("/shippers/fullname", 'Api\ShipperController@getFullnames')->name('api.shipper.fullname');
 Route::get("/shippers/distinct-company", 'Api\ShipperController@distinctCompanies')->name('api.shipper.distinct-company');
 Route::get('/shippers/all', 'Api\ShipperController@getShippers')->name('api.shipper.all');
 /*
@@ -70,7 +71,7 @@ Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api
 /**
  * Deposit APIs
  */
-Route::post('/deposits', 'Api\DepositController@index')->name('api.deposit.index');
+Route::post('/deposits/filter', 'Api\DepositController@filter')->name('api.deposit.filter');
 Route::post('/deposits', 'Api\DepositController@store')->name('api.deposit.store');
 Route::put('/deposits/{id}', 'Api\DepositController@update')->name('api.deposit.update');
 Route::get('/deposits/{id}', 'Api\DepositController@show')->name('api.deposit.show');
