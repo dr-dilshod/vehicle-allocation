@@ -154,4 +154,15 @@ class ShipperController extends Controller
         return response()->json($result, 200);
     }
 
+    public function getFullnames(Request $request)
+    {
+        $shippers = Shipper::select('shipper_id',
+            DB::raw('concat(shipper_name1,\' \', shipper_name2) as fullname'))
+            ->where('delete_flg',0)
+            ->orderBy('fullname', 'asc')
+            ->get();
+
+        return response()->json($shippers, 200);
+    }
+
 }

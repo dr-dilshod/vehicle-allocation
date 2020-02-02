@@ -42,18 +42,18 @@
                             @guest
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('common.login') }}</a>
                                 </li>
                                 @if (Route::has('register'))
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                        <a class="nav-link" href="{{ route('register') }}">{{ __('common.register') }}</a>
                                     </li>
                             </ul>
                             @endif
                             @else
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-warning btn-lg">{{__('Logout')}}</button>
+                                    <button type="submit" class="btn btn-warning btn-lg">{{__('common.logout')}}</button>
                                 </form>
                                 @endguest
                         </div>
@@ -65,5 +65,8 @@
         </main>
     </div>
     @stack('scripts')
+    <script>
+        window._translations = {!! cache('translations') !!};
+    </script>
 </body>
 </html>
