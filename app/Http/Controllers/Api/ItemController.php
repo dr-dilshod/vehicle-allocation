@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Item;
 use App\Shipper;
+use App\UnitPrice;
 use App\Vehicle;
 use Illuminate\Http\Request;
 
@@ -248,5 +249,27 @@ class ItemController extends Controller
             ->where('delete_flg',0)
             ->get();
         return response()->json($vehicles);
+    }
+
+    /**
+     * Get the price of one unit for auto-calculation
+     * @param Request $request
+     * @return string
+     */
+    public function getUnitPrice(Request $request)
+    {
+        $shipper_id = $request->query('shipper_id') ?: '';
+        $vehicle_model = $request->query('vehicle_model') ?: '';
+        $stack_point = $request->query('stack_point') ?: '';
+        $down_point = $request->query('down_point') ?: '';
+
+        $price = UnitPrice::select(['price'])
+            ->where('delete_flg',0)
+            ->where('shipper_id',$shipper_id)
+            ->where('car_type', $vehicle_model)
+            ->where('stack_point', $stack_point)
+            ->where('down_point', $down_point)
+            ->first();
+        return response()->json($price);
     }
 }

@@ -261,15 +261,19 @@
             },
             register(){
                 const invoiceTable = this;
-                axios.post(this.resourceUrl,this.invoiceData)
-                    .then(function(response){
-                        //invoiceTable.tableUtil.endEditing();
-                        //invoiceTable.showSuccessDialog();
-                        alert("Selected item is added to Invoice List.")
-                    })
-                    .catch(function(error){
-                        invoiceTable.showDialog(error.response.data);
-                    });
+                if (this.invoiceData.item_id !== '') {
+                    axios.post(this.resourceUrl, this.invoiceData)
+                        .then(function (response) {
+                            //invoiceTable.tableUtil.endEditing();
+                            //invoiceTable.showSuccessDialog();
+                            alert("Selected item is added to Invoice List.")
+                        })
+                        .catch(function (error) {
+                            invoiceTable.showDialog(error.response.data);
+                        });
+                } else {
+                    alert("Please, select an item to add to invoice list.");
+                }
             },
             deleteInvoice(item_id){
                 const invoiceTable = this;

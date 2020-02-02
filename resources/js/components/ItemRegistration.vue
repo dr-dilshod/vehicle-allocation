@@ -103,11 +103,11 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="item_vehicle">Vehicle Model</label>
+                                <label for="vehicle_model">Vehicle Model</label>
                                 <span class="required"> *</span>
                             </td>
                             <td>
-                                <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
+                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
                                         class="form-control" required>
                                     <option value=""></option>
                                     <option value="Wing">Wing</option>
@@ -158,7 +158,7 @@
                             </td>
                             <td>
                                 <input id="weight" type="text" placeholder="" class="form-control"
-                                       v-model="itemData.weight"/>
+                                       v-on:input="calcUnitPrice" v-model="itemData.weight"/>
                             </td>
                             <td class="text-center">t</td>
                             <td class="text-right">
@@ -204,10 +204,10 @@
                             <td class="text-center">yen</td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="vehicle_no">Vehicle No.</label></td>
+                            <td class="text-right"><label for="vehicle_no3">Vehicle No.</label></td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" id="vehicle_no"
-                                       v-model="itemData.vehicle_no"/>
+                                <input type="text" placeholder="" class="form-control" id="vehicle_no3"
+                                       v-model="itemData.vehicle_no3"/>
                             </td>
                             <td></td>
                             <td class="text-right"><label for="driver_id">Driver Name</label></td>
@@ -224,8 +224,8 @@
                         <tr>
                             <td class="text-right"><label for="chartered_vehicle">Chartered Vehicle</label></td>
                             <td>
-                                <select name="chartered_vehicle" id="chartered_vehicle"
-                                        v-model="itemData.vehicle_no" class="form-control">
+                                <select name="chartered_vehicle" id="chartered_vehicle" v-on:change="setVehicleName"
+                                        v-model="itemData.vehicle_id" class="form-control">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                         {{ vehicle.company_name }}
@@ -270,6 +270,7 @@
             shipperUrl: {type: String, required: true},
             driverUrl: {type: String, required: true},
             vehicleUrl: {type: String, required: true},
+            unitPriceUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
             operation: {type: String, required: true},
@@ -282,7 +283,7 @@
                     item_id: '',
                     shipper_id: '',
                     driver_id: '',
-                    vehicle_no: '',
+                    vehicle_id: '',
                     status: 0,
                     stack_date: '',
                     stack_time: '',
@@ -317,6 +318,7 @@
                 stack_time_min: '',
                 down_time_hour: '',
                 down_time_min: '',
+                vehicle_model: '',
                 options: {
                     monthFormat: "yyyy/MM",
                     weekday: "yyyy/MM/dd",
@@ -364,6 +366,13 @@
                     }
                 }
             },
+            setVehicleName() {
+                for (let i = 0; i < this.vehicles.length; i++) {
+                    if (this.itemData.vehicle_id === this.vehicles[i].vehicle_id) {
+                        this.itemData.item_vehicle = this.vehicles[i].company_name;
+                    }
+                }
+            },
             fetchCurrentDate(){
                 let currentDate = new Date();
                 this.itemData.item_completion_date = currentDate;
@@ -381,6 +390,20 @@
                         this.itemData.item_price = this.per_ton * this.ton;
                     }
                 }
+            },
+            calcUnitPrice() {
+                let component = this;
+                if ((this.vehicle_model != '') && (this.itemData.shipper_id != '')
+                && (this.itemData.stack_point!='') && (this.itemData.down_point!='')) {
+                    axios.get(component.unitPriceUrl+'?vehicle_model=' + this.vehicle_model
+                        + '&shipper_id=' + this.itemData.shipper_id
+                        + '&stack_point=' + this.itemData.stack_point
+                        + '&down_point=' + this.itemData.down_point)
+                            .then(response => {
+                                console.log(response.data);
+                                component.per_ton = response.data[0].price;
+                            });
+                    }
             },
             perVehicleChange() {
                 if (this.per_vehicle == '') {
