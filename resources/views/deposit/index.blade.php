@@ -5,7 +5,7 @@
         <deposit-report
                 resource-url="/api/deposits"
                 shipper-url="{{route('api.shipper.fullname')}}"
-                back-url="{{route('setting')}}"
+                back-url="{{route('top')}}"
         ></deposit-report>
     </div>
 @endsection
