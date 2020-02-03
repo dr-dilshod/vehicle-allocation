@@ -82,6 +82,11 @@ Route::delete('/deposits/{id}', 'Api\DepositController@destroy')->name('api.depo
  */
 Route::get('payment/registration', 'Api\PaymentController@index')->name('api.payment.registration');
 Route::get('payment/bk-report', 'Api\PaymentController@index')->name('api.payment.bk-report');
+Route::post('/payments/filter', 'Api\PaymentController@filter')->name('api.payment.filter');
+Route::post('/payments', 'Api\PaymentController@store')->name('api.payment.store');
+Route::put('/payments/{id}', 'Api\PaymentController@update')->name('api.payment.update');
+Route::get('/payments/{id}', 'Api\PaymentController@show')->name('api.payment.show');
+Route::delete('/payments/{id}', 'Api\PaymentController@destroy')->name('api.payment.destroy');
 
 /**
  * Invoice APIs
