@@ -313,7 +313,7 @@
                 $('#addDriverModal').modal('toggle');
             },
             print(){
-                let date = this.dispatch_day.toISOString().slice(0,10);
+                let date = this.dispatch_day;
                 window.location.href = this.pdfUrl + '?date=' + date;
             },
             display(){

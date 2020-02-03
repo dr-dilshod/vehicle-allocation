@@ -1,112 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <title>Billing month</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>毎日の発送</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <style>
+        table, td, th{
+            border-collapse: collapse;
+        }
+        @font-face {
+            font-family: 'Noto Sans JP';
+            font-style: normal;
+            font-weight: normal;
+            src: url(https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap) format('truetype');
+        }
+        body{
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        td{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1 align="center">REPORT</h1>
-<code>
-    @foreach($params as $key=>$param)
-        {{  $key }} = {{ $param }} <br>
-    @endforeach
-</code>
+<h1 align="center">{{$params['date']}}の毎日のディスパッチ出力</h1>
 <div>
-    <table align="center" width="100%" style="width:100%">
-        <tr>
-            <td>Jap 123-1234</td>
-            <td>19 jan 2020 report</td>
-            <td><strong>bir yaponcha gap</strong></td>
-        </tr>
-        <tr>
-            <td colspan="2">Yaponcha uzun gap</td>
-            <td>490-1435</td>
-        </tr>
-        <tr>
-            <td colspan="2">Yaponcha gaplar</td>
-            <td>Yaponcha gaplar</td>
-        </tr>
-    </table>
-
     <br>
-    <p>Yaponcha uzundan uzoq gaplar</p>
     <table width="100%" style="width:100%" border="1">
-        <tr style="background: #444444; color: white">
-            <th>money</th>
-            <th>subtotal</th>
-            <th>count</th>
-            <th>count</th>
-            <th>sales</th>
-            <th>tax</th>
-            <th>driverni poyi</th>
-            <th style="border-top:0;border-bottom:0;width:20px"></th>
-            <th>Total</th>
-        </tr>
         <tr>
-            <td>248.000</td>
-            <td>248.000</td>
-            <td>248.000</td>
-            <td>248.000</td>
-            <td>248.000</td>
-            <td>248.000</td>
-            <td>248.000</td>
-            <td style="border-top:0;border-bottom:0;width:20px"></td>
-            <td>248.000</td>
+            <th>車輌No</th>
+            <th>降～当日</th>
+            <th>荷主</th>
+            <th>空PL</th>
+            <th>翌積</th>
+            <th>備考</th>
         </tr>
+        @foreach($dispatches as $dispatch)
+        <tr>
+            <td>{{ $dispatch['vehicle_no'] }} <br> {{$dispatch['driver_name']}}</td>
+            <td>
+                @foreach($dispatch['items'] as $item)
+                    {{$item->stack_point}} ~ {{$item->down_point}},
+                @endforeach
+            </td>
+            <td>
+                {{$item->shipper_name}}
+            </td>
+            <td>
+                {{$item->empty_pl ? 'Yes' : 'None' }}
+            </td>
+            <td>
+
+            </td>
+            <td>
+                {{$item->item_remark}}
+            </td>
+        </tr>
+        @endforeach
     </table>
-
-    <br>
-
-    <table width="100%" style="width:100%" border="1">
-        <tr style="background: #444444; color: white">
-            <th>money</th>
-            <th>subtotal</th>
-            <th>count</th>
-            <th>count</th>
-            <th>sales</th>
-            <th>tax</th>
-            <th>driverni poyi</th>
-            <th>Kompaniyani poyi</th>
-            <th width="25%">Izohlar</th>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
-
-    <br>
-
-    <hr>
 </div>
 </body>
 </html>
