@@ -99,4 +99,15 @@ class UnitPriceController extends Controller
 
         return response()->json($shippers);
     }
+
+    public function getVehicleTypes()
+    {
+        $vehicleTypes = Driver::query()->select(['vehicle_type'])
+            ->where('vehicle_type', '!=', null)
+            ->where('delete_flg', 0)
+            ->distinct()
+            ->get();
+        return response()->json($vehicleTypes);
+    }
+
 }
