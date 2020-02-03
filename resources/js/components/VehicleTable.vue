@@ -94,10 +94,20 @@
                 $.each( errors, function( key, value ) {
                     message += value[0]; //showing only the first error.
                 });
-                this.$alert(message);
+                this.$fire({
+                    title: "Message",
+                    text: message,
+                    type: "error",
+//                    timer: 5000
+                });
             },
             showSuccessDialog() {
-                this.$alert('Operation successfully done!');
+                this.$fire({
+                    title: "Message",
+                    text: "Operation successfully done!",
+                    type: "success",
+//                    timer: 5000
+                });
             },
             actionBegin(args){
                 if(args.requestType == 'save'){
@@ -122,6 +132,7 @@
                         vehicleTable.tableUtil.endEditing();
                         vehicleTable.createSuccessDialog();
                         vehicleTable.fetchCompanies();
+                        vehicleTable.refresh();
                     })
                     .catch(function(error){
                         vehicleTable.errorDialog(error.response.data);
@@ -149,6 +160,7 @@
                         vehicleTable.tableUtil.endEditing();
                         vehicleTable.updateSuccessDialog();
                         vehicleTable.fetchCompanies();
+                        vehicleTable.refresh();
                     })
                     .catch(function(error){
                         vehicleTable.errorDialog(error.response.data);
