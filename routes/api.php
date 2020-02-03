@@ -61,7 +61,6 @@ Route::put('/item/toIncomplete', 'Api\ItemController@toIncomplete')->name('api.i
  * Unit prices CrUD
  */
 Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names');
-Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.shipper-names');
 Route::get('/unit-prices/{shipper_id}', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
 Route::get('/unit-prices/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
@@ -104,3 +103,4 @@ Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('a
 
 // Top
 Route::get('/top', 'Api\TopController@index')->name('api.top.index');
+Route::get('/top/month', 'Api\TopController@getByMonth')->name('api.top.month');

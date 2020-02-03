@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Item;
 use App\Shipper;
+use App\UnitPrice;
 use App\Vehicle;
 use Illuminate\Http\Request;
 
@@ -164,24 +165,27 @@ class ItemController extends Controller
         //])->get();
 
         $shipper_name = $request->query('shipper_name') ?: '';
-        $vehicle_no = $request->query('vehicle_no') ?: '';
+        $vehicle_no3 = $request->query('vehicle_no3') ?: '';
         $status = $request->query('status') ?: '';
         $stack_date = $request->query('stack_date') ?: '';
         $stack_point = $request->query('stack_point') ?: '';
-        $matchThese = ['delete_flg' => 0];
-        if (!empty($shipper_name)) {
-            $matchThese = array_add($matchThese, 'shipper_name', $shipper_name);
-        } else if (!empty($vehicle_no)) {
-            $matchThese = array_add($matchThese, 'vehicle_no', $vehicle_no);
-        } else if (!empty($status)) {
-            $matchThese = array_add($matchThese, 'status', $status);
-        } else if (!empty($stack_date)) {
-            $matchThese = array_add($matchThese, 'stack_date', $stack_date);
-        } else if (!empty($stack_point)) {
-            $matchThese = array_add($matchThese, 'stack_point', $stack_point);
-        }
-        $itemTable = Item::where($matchThese)->get();
-        return response()->json($itemTable);
+        $itemTable = Item::select()->where('delete_flg', 0);
+        if (!empty($shipper_name))
+            $itemTable -> where('shipper_name', $shipper_name);
+
+        if (!empty($vehicle_no3))
+            $itemTable -> where('vehicle_no3', $vehicle_no3);
+
+        if (!empty($status))
+            $itemTable -> where('status', $status);
+
+        if (!empty($stack_date))
+            $itemTable -> where('stack_date', $stack_date);
+
+        if (!empty($stack_point))
+            $itemTable -> where('stack_point', $stack_point);
+
+        return response()->json($itemTable->get());
     }
 
     /**
@@ -191,9 +195,9 @@ class ItemController extends Controller
      */
     public function getVehicleNumbers(Request $request)
     {
-        $vehicleNumbers = Item::select(['vehicle_no'])
+        $vehicleNumbers = Item::select(['vehicle_no3'])
             ->where('delete_flg',0)
-            ->orderBy('vehicle_no','asc')
+            ->orderBy('vehicle_no3','asc')
             ->distinct()
             ->get();
         return response()->json($vehicleNumbers);
@@ -248,5 +252,27 @@ class ItemController extends Controller
             ->where('delete_flg',0)
             ->get();
         return response()->json($vehicles);
+    }
+
+    /**
+     * Get the price of one unit for auto-calculation
+     * @param Request $request
+     * @return string
+     */
+    public function getUnitPrice(Request $request)
+    {
+        $shipper_id = $request->query('shipper_id') ?: '';
+        $vehicle_model = $request->query('vehicle_model') ?: '';
+        $stack_point = $request->query('stack_point') ?: '';
+        $down_point = $request->query('down_point') ?: '';
+
+        $price = UnitPrice::select(['price'])
+            ->where('delete_flg',0)
+            ->where('shipper_id',$shipper_id)
+            ->where('car_type', $vehicle_model)
+            ->where('stack_point', $stack_point)
+            ->where('down_point', $down_point)
+            ->first();
+        return response()->json($price);
     }
 }

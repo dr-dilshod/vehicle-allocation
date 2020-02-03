@@ -110,4 +110,8 @@ class Driver extends Authenticatable
     public function getItemsByDate($date){
 //        $dispatches = Dispatch::where([])
     }
+
+    public function isAdmin(){
+        return $this->admin_flg;
+    }
 }
