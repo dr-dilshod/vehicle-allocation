@@ -9,7 +9,7 @@
             </div>
 
             <div class="col-6">
-                <h2 class="text-center">Deposit list</h2>
+                <h2 class="text-center">Deposit registration</h2>
             </div>
             <div class="col-4 text-right">
                 <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">Register</button>
@@ -280,7 +280,7 @@
             }
         },
 
-        name : 'DepositList'
+        name : 'DepositRegistration'
 
     }
 

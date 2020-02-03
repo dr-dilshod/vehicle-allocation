@@ -62,7 +62,7 @@ Route::get('/invoice/getShipperList', 'Api\InvoiceController@getShipperList')->n
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
 
 // Deposit
-Route::get('/deposit', 'DepositController@report')->name('deposit.report');
+Route::get('/deposit', 'DepositController@index')->name('deposit.index');
 
 // Payment
 Route::get('/payment/registration', 'PaymentController@registration')->name('payment.registration');
@@ -71,3 +71,4 @@ Route::get('/payment/getShippers', 'Api\PaymentController@getShippers')->name('p
 
 // Dispatch list
 Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');
+Route::get('/dispatch/print', 'DispatchController@printPdf')->name('dispatch.pdf');

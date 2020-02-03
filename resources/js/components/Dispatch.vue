@@ -219,6 +219,7 @@
             title: {type: String, required: true},
             fetchUrl: {type: String, required: true},
             thirdListUrl: {type: String, required: true},
+            pdfUrl: {type: String, required: true},
         },
         data(){
             return {
@@ -312,18 +313,21 @@
                 $('#addDriverModal').modal('toggle');
             },
             print(){
-//                alert('print');
+                let date = this.dispatch_day;
+                window.location.href = this.pdfUrl + '?date=' + date;
             },
             display(){
-                let date = new Date(this.dispatch_day);
+                let date = this.dispatch_day;
                 let dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
                 this.fetchLists(dateString);
             },
             nextDay(){
                 this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),1);
+                this.display();
             },
             twoDaysLater(){
                 this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),2);
+                this.display();
             },
             removeRow(id, elem){
                 let index = this.tableDriverList.indexOf(elem.driver_id);
@@ -374,7 +378,7 @@
         },
         mounted(){
             this.dispatch_day = this.getNextWorkday(new Date());
-//            this.fetchLists(this.dispatch_day);
+            this.display();
         },
         computed: {
             filteredDrivers(){
@@ -384,12 +388,7 @@
             }
         },
         watch: {
-            dispatch_day: function(val){
-                let date = new Date(this.dispatch_day);
-                let dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-                this.fetchLists(dateString);
-                console.log(val)
-            }
+
         }
     }
 </script>

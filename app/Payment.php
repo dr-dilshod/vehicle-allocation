@@ -21,7 +21,12 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
 class Payment extends Model
 {
     use BlameableTrait;
-    const validationRules = [];
+
+    const validationRules = [
+        'shipper_id' => 'required',
+        'payment_day' => 'required',
+        'payment_amount' => 'required',
+    ];
     /**
      * The primary key for the model.
      *

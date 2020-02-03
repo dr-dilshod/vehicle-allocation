@@ -94,10 +94,20 @@
                 $.each( errors, function( key, value ) {
                     message += value[0]; //showing only the first error.
                 });
-                this.$alert(message);
+                this.$fire({
+                    title: "Message",
+                    text: message,
+                    type: "error",
+//                    timer: 5000
+                });
             },
             showSuccessDialog() {
-                this.$alert('Operation successfully done!');
+                this.$fire({
+                    title: "Message",
+                    text: "Operation successfully done!",
+                    type: "success",
+//                    timer: 5000
+                });
             },
             actionBegin(args){
                 if(args.requestType == 'save'){
@@ -120,11 +130,12 @@
                 axios.post(this.resourceUrl,vehicle)
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
-                        vehicleTable.showSuccessDialog();
+                        vehicleTable.createSuccessDialog();
                         vehicleTable.fetchCompanies();
+                        vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        vehicleTable.showDialog(error.response.data);
+                        vehicleTable.errorDialog(error.response.data);
                     });
             },
             deleteVehicle(vehicle_id){
@@ -132,11 +143,11 @@
                 axios.delete(this.resourceUrl+'/'+vehicle_id)
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
-                        vehicleTable.showSuccessDialog();
+                        vehicleTable.deleteSuccessDialog();
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        vehicleTable.showDialog(error.response.data);
+                        vehicleTable.errorDialog(error.response.data);
                         return false;
                     });
                 return true;
@@ -147,11 +158,12 @@
                 axios.put(this.resourceUrl+'/'+id, vehicle)
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
-                        vehicleTable.showSuccessDialog();
+                        vehicleTable.updateSuccessDialog();
                         vehicleTable.fetchCompanies();
+                        vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        vehicleTable.showDialog(error.response.data);
+                        vehicleTable.errorDialog(error.response.data);
                     });
             },
             fetchData(url) {
