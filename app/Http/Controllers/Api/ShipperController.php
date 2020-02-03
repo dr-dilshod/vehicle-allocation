@@ -106,7 +106,7 @@ class ShipperController extends Controller
     public function destroy($id)
     {
         $shipper = Shipper::findOrFail($id);
-        $shipper->deleted_flg = 1;
+        $shipper->delete_flg = 1;
         $shipper->save();
 
         return response()->json(null, 204);

@@ -45,7 +45,7 @@
                     <div class="col-2">
                         <div class="form-group">
                             <button v-on:click="clear" class="btn btn-lg btn-primary btn-block p-1">
-                                {{__('common.search')}}
+                                {{__('common.clear')}}
                             </button>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                 <e-column field='stack_point' :validationRules="rules.stack_point" :headerText="__('unit_prices.loading_port')" width="200"></e-column>
                 <e-column field='down_point' :validationRules="rules.down_point" :headerText="__('unit_prices.drop_off')" width="200"></e-column>
                 <e-column field='type' :validationRules="rules.type" :headerText="__('unit_prices.type')" width="100"></e-column>
-                <e-column field='price' :validationRules="rules.price" :headerText="__('unit_prices.unit_price')" width="100"></e-column>
+                <e-column field='price' :validationRules="rules.price"  :headerText="__('unit_prices.unit_price')" width="100"></e-column>
                 <e-column field='price_id' :headerText="__('unit_prices.unit_price_id')" width="5" :isPrimaryKey="true"
                           :visible=false></e-column>
                 <e-column field='shipperId' :headerText="__('unit_prices.shipper_id')" width="5"
@@ -111,23 +111,17 @@
                 shippers: [],
                 vehicle_types: [
                     {
-                        "vehicle_type": this.__('driver.car_types.10tw'),
+                        "vehicle_type": this.__('unit_prices.car_types.wing'),
                     },
                     {
-                        "vehicle_type": this.__('driver.car_types.10t_flat'),
+                        "vehicle_type": this.__('unit_prices.car_types.flat'),
                     },
                     {
-                        "vehicle_type": this.__('driver.car_types.4tw'),
+                        "vehicle_type": this.__('unit_prices.car_types.trailer'),
                     },
                     {
-                        "vehicle_type": this.__('driver.car_types.4t_flat'),
-                    },
-                    {
-                        "vehicle_type": this.__('driver.car_types.controller'),
-                    },
-                    {
-                        "vehicle_type": this.__('driver.car_types.back')
-                    },
+                        "vehicle_type": this.__('unit_prices.car_types.bulk'),
+                    }
                 ],
                 data: [],
                 params: {
@@ -155,8 +149,8 @@
                     shipper_id: {required: true},
                     stack_point: {required: true},
                     down_point: {required: true},
-                    type: {required: true},
-                    price: {required: true},
+                    type: {required: true, number: true},
+                    price: {required: true, number: true},
                 }
             }
         },
@@ -191,11 +185,13 @@
                         }
                     })
                     .catch(err => {
-                        alert('aaa' + err);
+                        alert(err);
                     });
             },
             clear() {
                 this.$refs.shipperSelect.value = 0;
+                this.data = [];
+                this.$refs.grid.refresh();
             },
             register() {
                 this.$refs.grid.addRecord();
@@ -216,7 +212,7 @@
                         }
                     })
                     .catch(err => {
-                        alert('wtf' + err);
+                        alert(err);
                     });
             },
             insertData(unitPrice) {
@@ -252,7 +248,6 @@
                 })
             },
             actionBegin(args) {
-                console.log(args.requestType);
                 if (args.requestType === 'save') {
                     if (args.hasOwnProperty('data') && args.data.hasOwnProperty('price_id') && args.data.price_id === undefined) {
                         this.insertData(args.data);

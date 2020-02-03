@@ -28,6 +28,8 @@ class Deposit extends Model
 
     const validationRules = [
         'shipper_id' => 'required',
+        'deposit_day' => 'required',
+        'deposit_amount' => 'required'
     ];
 
     /**

@@ -68,9 +68,15 @@ class DepositController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate(Deposit::validationRules);
-        $deposit = Deposit::create($request->all());
-
+        $request->validate(Deposit::validationRules);
+        $data = $request->all();
+        if (empty($data['other'])){
+            $data['other'] = 0;
+        }
+        if (empty($data['fee'])){
+            $data['fee'] = 0;
+        }
+        $deposit = Deposit::create($data);
         return response()->json($deposit, 201);
     }
 

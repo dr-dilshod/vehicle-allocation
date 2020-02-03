@@ -21,6 +21,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
 class Payment extends Model
 {
     use BlameableTrait;
+    const validationRules = [];
     /**
      * The primary key for the model.
      *
@@ -38,7 +39,7 @@ class Payment extends Model
     /**
      * @var array
      */
-    protected $fillable = [ 'create_id', 'update_id', 'shipper_id','payment_day','payment_amount','other','fee', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = [ 'shipper_id','payment_day','payment_amount','other','fee', 'delete_flg', 'create_id', 'update_id', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

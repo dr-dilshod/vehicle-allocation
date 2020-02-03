@@ -18,17 +18,17 @@
             </div>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="300" :frozenColumns="3"  :enableHover='false' :allowSelection='true' :queryCellInfo='customiseCell'>
+                  :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true'>
             <e-columns>
-                <e-column field='vehicle_type' headerText='Type' :template='editTemplate' editType='dropdownedit'  width="150">Test</e-column>
+                <e-column field='vehicle_type' headerText='Type' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
                 <e-column field='driver_name' headerText='Name'  width="150"></e-column>
                 <e-column field='driver_mobile_number' headerText='Mobile number' width="150"></e-column>
                 <e-column field='vehicle_no3' headerText='Vehicle No' width="150"></e-column>
                 <e-column field='maximum_Loading' headerText="Max Load" width="100"></e-column>
-                <e-column field='search_flg' headerText='Display'   editType= 'booleanedit' defaultValue="true"  :template='searchTemplate' width="150" ></e-column>
-                <e-column field='admin_flg' headerText='Admin' editType= 'booleanedit' :template='adminTemplate' width="150" ></e-column>
+                <e-column field='search_flg' headerText='Display'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
+                <e-column field='admin_flg' headerText='Admin' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
                 <e-column field='driver_remark' headerText='Remarks' width="200"></e-column>
-                <e-column field='driver_pass' :validationRules='driverPassword' defaultValue='parol1234' headerText='Password' width="200"></e-column>
+                <e-column field='driver_pass' defaultValue='parol1234' headerText='Password' width="200"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
@@ -37,10 +37,22 @@
 
 <script>
     import Vue from "vue";
+    import { createElement } from '@syncfusion/ej2-base';
+    import { DropDownList } from "@syncfusion/ej2-dropdowns";
+    import { Query } from '@syncfusion/ej2-data';
     import {GridPlugin, Sort, Freeze, Toolbar, Edit} from '@syncfusion/ej2-vue-grids';
     import {TableUtil} from '../utils/TableUtil.js'
 
+    let vehicleTypes= [
+        { vehicleType: 'Blank'},
+        { vehicleType: '10tW'},
+        { vehicleType: '10t flat'},
+        { vehicleType: '4tW'},
+        { vehicleType: '4t flat'},
+        { vehicleType: 'Controller'},
+    ];
     Vue.use(GridPlugin);
+
     export default {
         props: {
             backUrl: {type: String, required: true},
@@ -52,18 +64,17 @@
             return {
                 data: [],
                 tableUtil : undefined,
-                editTemplate: function () {
-                    return {
-                        template: Vue.component('editOption', {
-                            template: '<label>{{data.vehicle_type}}</label>',
-                            data() { return { data: { data: {} } }; }
-                        })
+                vehicleTypeParams: {
+                    params:   {
+                        dataSource: vehicleTypes,
+                        fields: {text:"vehicleType",value:"vehicleType"},
+                        query: new Query(),
                     }
                 },
                 adminTemplate: function () {
                     return {
                         template: Vue.component('editOption', {
-                            template: '<label>{{(data.admin_flg==1)? "Administrator":"General"}}</label>',
+                            template: '<label>{{(data.admin_flg == 1)? "Administrator":"General"}}</label>',
                             data() { return { data: { data: {} } }; }
                         })
                     }
@@ -71,7 +82,7 @@
                 searchTemplate: function () {
                     return {
                         template: Vue.component('editOption', {
-                            template: '<label>{{(data.search_flg==1)? "Show":"Hide"}}</label>',
+                            template: '<label>{{(data.search_flg == 1)? "Show":"Hide"}}</label>',
                             data() { return { data: { data: {} } }; }
                         })
                     }
@@ -85,17 +96,6 @@
             this.fetchData(this.resourceUrl);
         },
         methods: {
-            customiseCell: function(args) {
-                if (args.column.field === 'admin_flg') {
-                    if (args.data['admin_flg'] == 1) {
-                        console.log("hi!!!");
-                        args.cell.classList.add('below-30');
-                    } else {
-                        console.log("elsehi!!!");
-                        args.cell.classList.add('below-80');
-                    }
-                }
-            },
             fetchData(url) {
                 axios.get(url)
                     .then(data => {
@@ -112,6 +112,8 @@
                 }
                 if (args.requestType == 'delete') {
                     if(args.data[0].driver_id !== undefined){
+                        console.log('args.data[0]==');
+                        console.log(args.data[0]);
                         this.deleteData(args.data[0].driver_id);
                     }
                 }
@@ -142,6 +144,7 @@
                 let driverTable = this;
                 let id = driver.driver_id;
                 delete driver.driver_id;
+                console.log(driver);
                 axios.put(this.resourceUrl+'/'+id, driver)
                     .then(function(response){
                         driverTable.tableUtil.endEditing();
