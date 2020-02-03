@@ -58,7 +58,7 @@ Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->n
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
 
 // Deposit
-Route::get('/deposit', 'DepositController@report')->name('deposit.report');
+Route::get('/deposit', 'DepositController@index')->name('deposit.index');
 
 // Payment
 Route::get('/payment/registration', 'PaymentController@registration')->name('payment.registration');
