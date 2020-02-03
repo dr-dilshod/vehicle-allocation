@@ -529,7 +529,8 @@
                     window.location.href = '/item';
                 });
             },
-        }
+        },
+        name : 'ItemRegistration'
     }
 </script>
 <style>

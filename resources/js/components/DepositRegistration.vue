@@ -280,7 +280,7 @@
             }
         },
 
-        name : 'DepositList'
+        name : 'DepositRegistration'
 
     }
 

@@ -409,7 +409,8 @@
                 this.otherTotals = 20;
                 this.totalSalesTotal = 40;
             }
-        }
+        },
+        name : 'Invoice'
     }
 </script>
 <style scoped>

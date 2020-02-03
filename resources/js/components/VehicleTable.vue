@@ -120,11 +120,11 @@
                 axios.post(this.resourceUrl,vehicle)
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
-                        vehicleTable.showSuccessDialog();
+                        vehicleTable.createSuccessDialog();
                         vehicleTable.fetchCompanies();
                     })
                     .catch(function(error){
-                        vehicleTable.showDialog(error.response.data);
+                        vehicleTable.errorDialog(error.response.data);
                     });
             },
             deleteVehicle(vehicle_id){
@@ -132,11 +132,11 @@
                 axios.delete(this.resourceUrl+'/'+vehicle_id)
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
-                        vehicleTable.showSuccessDialog();
+                        vehicleTable.deleteSuccessDialog();
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        vehicleTable.showDialog(error.response.data);
+                        vehicleTable.errorDialog(error.response.data);
                         return false;
                     });
                 return true;
@@ -147,11 +147,11 @@
                 axios.put(this.resourceUrl+'/'+id, vehicle)
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
-                        vehicleTable.showSuccessDialog();
+                        vehicleTable.updateSuccessDialog();
                         vehicleTable.fetchCompanies();
                     })
                     .catch(function(error){
-                        vehicleTable.showDialog(error.response.data);
+                        vehicleTable.errorDialog(error.response.data);
                     });
             },
             fetchData(url) {
