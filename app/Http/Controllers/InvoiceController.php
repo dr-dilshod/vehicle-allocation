@@ -18,9 +18,7 @@ class InvoiceController extends Controller
      */
     public function billingMonthPDF(Request $request){
         $params = $request->all();
-        $pdf = \PDF::loadView('invoice.pdf.billing_month', [
-            'params' => $params,
-        ]);
+        $pdf = \PDF::loadView('invoice.pdf.billing_month', array('params' => $params));
         return $pdf->download('billingMonth.pdf');
     }
 }

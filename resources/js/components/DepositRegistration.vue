@@ -9,7 +9,7 @@
             </div>
 
             <div class="col-6">
-                <h2 class="text-center">Deposit list</h2>
+                <h2 class="text-center">Deposit registration</h2>
             </div>
             <div class="col-4 text-right">
                 <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">Register</button>
@@ -79,13 +79,14 @@
 
         </div>
 
+        <form>
         <table cellpadding="5" class="mt-4">
 
             <tbody>
             <tr>
                 <td class="text-right">Shipper</td>
                 <td>
-                    <select class="form-control" v-model="deposit.shipper_id" :disabled="!registerMode">
+                    <select class="form-control" v-model="deposit.shipper_id" :disabled="!registerMode" required>
                         <option v-for="shipper in shippers" :value="shipper.shipper_id">
                             {{shipper.fullname}}
                         </option>
@@ -96,12 +97,16 @@
             <tr>
                 <input type="hidden" v-model="deposit.deposit_id"/>
                 <td class="text-right">Payment</td>
-                <td><input type="date" class="form-control" v-model="deposit.deposit_day" :disabled="!registerMode"/></td>
+                <td>
+                    <datepicker v-model="deposit.deposit_day" :disabled="!registerMode" required
+                        :bootstrap-styling="true" :typeable="true" :format="options.weekday"
+                        :clear-button="true" :language="options.language.ja"></datepicker>
+                </td>
                 <td></td>
             </tr>
             <tr>
                 <td class="text-right">Transfer</td>
-                <td><input type="text" class="form-control" v-model="deposit.deposit_amount"/></td>
+                <td><input type="text" class="form-control" v-model="deposit.deposit_amount" required/></td>
                 <td>yen</td>
             </tr>
             <tr>
@@ -133,7 +138,7 @@
             </tr>
             </tfoot>
         </table>
-
+        </form>
     </div>
 
 </template>
@@ -141,8 +146,13 @@
 <script>
 
     import Vue from "vue";
+    import Datepicker from "vuejs-datepicker";
+    import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     export default {
+        components: {
+            Datepicker
+        },
         props : {
             backUrl : {required : true},
             resourceUrl : {required : true},
@@ -172,6 +182,14 @@
                 shippers : [],
                 months : ['January', 'February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                 dayCount : 0,
+                options: {
+                    monthFormat: "yyyy/MM",
+                    weekday: "yyyy-MM-dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
+                },
             }
         },
 
@@ -211,6 +229,7 @@
             },
             create(){
                 let self = this;
+                this.deposit.deposit_day = this.deposit.deposit_day.toISOString().slice(0,10);
                 axios.post(this.resourceUrl, this.deposit)
                     .then(response => {
                         alert('Deposit created successfully');
@@ -261,7 +280,7 @@
             }
         },
 
-        name : 'DepositList'
+        name : 'DepositRegistration'
 
     }
 

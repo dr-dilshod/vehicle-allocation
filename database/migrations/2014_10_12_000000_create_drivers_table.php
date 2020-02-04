@@ -18,7 +18,7 @@ class CreateDriversTable extends Migration
             $table->string('driver_name')->nullable();
             $table->string('driver_mobile_number')->nullable();
             $table->string('maximum_Loading')->nullable();
-            $table->tinyInteger('search_flg')->default(1);
+            $table->tinyInteger('search_flg')->default(0);
             $table->tinyInteger('admin_flg')->default(0);
             $table->string('vehicle_no1')->nullable();
             $table->string('vehicle_no2')->nullable();
@@ -38,6 +38,8 @@ class CreateDriversTable extends Migration
         $driver = new \App\Driver();
         $driver->driver_name = 'admin';
         $driver->driver_pass = Hash::make('admin');
+        $driver->admin_flg = 1;
+        $driver->search_flg = 0;
         $driver->save();
     }
 

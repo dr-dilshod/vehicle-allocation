@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="container">
-        <deposit-report
+        <deposit-registration
                 resource-url="/api/deposits"
                 shipper-url="{{route('api.shipper.fullname')}}"
-                back-url="{{route('setting')}}"
-        ></deposit-report>
+                back-url="{{route('top')}}"
+        ></deposit-registration>
     </div>
 @endsection

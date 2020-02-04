@@ -2,126 +2,143 @@
 
     <div id="app">
 
-        <div class="row mb-4">
+        <div class="row mt-4 mb-4">
             <div class="col-2">
                 <a :href="backUrl"
                    class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
-            <div class="col-2">
-                <h2 ref="editTitle" class="text-center text-danger">Editing</h2>
-            </div>
 
-            <div class="col-4 align-items-end">
+            <div class="col-6">
                 <h2 class="text-center">Payment registration</h2>
             </div>
-            <div class="col-4 ">
-                <div class="form-group text-right">
-                    <button ref="" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
-                    <button ref="" class="btn btn-lg btn-danger p-1 pl-3 pr-3">Edit</button>
-                    <button ref="" class="btn btn-lg btn-danger p-1 pl-3 pr-3">Delete</button>
-                </div>
+            <div class="col-4 text-right">
+                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">Register</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "update" :disabled="!editable">Edit</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "remove" :disabled="!editable">Delete</button>
             </div>
-        </div>
-        <div class="row mb-4">
-            <div class="">
-                <form action="#" class="form-inline float-sm-right col-12" @submit.prevent="search"  @reset.prevent="">
-                        <div class="form-group ml-3">
-                            <label for="shipper">Shipper</label>
-                        </div>
-                        <div class="form-group ml-1">
-                            <select id="shipper" v-model="filter.shipper" class="form-control">
-                                <option value=""></option>
-                                <option v-for="shipper in shippers" :value="shipper.shipper_id">
-                                    {{ shipper.shipper_name1+" "+shipper.shipper_name2}}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group ml-3">
-                            <label for="year">Payment <br>year</label>
-                        </div>
-                        <div class="form-group ml-1">
-                            <select id="year" v-model="filter.year"
-                                    v-on:change="changeDays" class="form-control">
-                                <option v-for="x in 30" :value="new Date().getFullYear() - x + 1">
-                                    {{ new Date().getFullYear() - x + 1}}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group ml-3">
-                            <label for="month">Payment <br>month</label>
-                        </div>
-                        <div class="form-group ml-1">
-                            <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control">
-                                <option v-for="(month, index) in months" :value="index+1">
-                                    {{ month }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group ml-3">
-                            <label for="day">Payment <br>day</label>
-                        </div>
-                        <div class="form-group ml-1">
-                            <select id="day" v-model="filter.day" class="form-control">
-                                <option v-for="day in dayCount" :value="day">
-                                    {{ day }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group ml-3">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </div>
-                        <div class="form-group ml-1">
-                            <button type="reset" class="btn btn-primary">Clear</button>
-                        </div>
-                </form>
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-2 text-right">Shipper</div>
-            <div class="col-3">
-                <select name="" id="" class="form-control">
-                    <option value="">Shipper name1 </option>
-                    <option value="">Shipper name2 </option>
-                    <option value="">Shipper name3 </option>
-                    <option value="">Shipper name4 </option>
-                </select>
-            </div>
-            <div class="col-1"></div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Payment date</div>
-            <div class="col-3"><input type="date" class="form-control"/></div>
-            <div class="col-1"></div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Transfer</div>
-            <div class="col-3"><input type="text" class="form-control" /></div>
-            <div class="col-1">yen</div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Offset</div>
-            <div class="col-3"><input type="text" class="form-control" /></div>
-            <div class="col-1">yen</div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Other</div>
-            <div class="col-3"><input type="text" class="form-control" /></div>
-            <div class="col-1">yen</div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Transfer fee</div>
-            <div class="col-3"><input type="text" class="form-control" /></div>
-            <div class="col-1">yen</div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-2 text-right">Total payment</div>
-            <div class="col-3 "><input type="text" class="form-control" disabled/></div>
-            <div class="col-1">yen</div>
-            <div class="col-2 text-right">Outgoing balance</div>
-            <div class="col-3"><input type="text" class="form-control" disabled/></div>
-            <div class="col-1">yen</div>
         </div>
 
+        <div class="row mt-4 mb-4">
+            <div class="mx-auto">
+
+                <form action="#" class="form-inline" @submit.prevent="search">
+                    <div class="form-group ml-3">
+                        <label for="shipper">Shipper</label>
+                    </div>
+                    <div class="form-group ml-1">
+                        <select id="shipper" v-model="filter.shipper" class="form-control" style="max-width:200px;" required>
+                            <option value=""></option>
+                            <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                {{shipper.fullname}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group ml-3">
+                        <label for="year">Payment year</label>
+                    </div>
+                    <div class="form-group ml-1">
+                        <select id="year" v-model="filter.year"
+                                v-on:change="changeDays" class="form-control" required>
+                            <option value=""></option>
+                            <option v-for="x in 30" :value="new Date().getFullYear() - x + 1">
+                                {{ new Date().getFullYear() - x + 1}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group ml-3">
+                        <label for="month">Payment month</label>
+                    </div>
+                    <div class="form-group ml-1">
+                        <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control" required>
+                            <option value=""></option>
+                            <option v-for="(month, index) in months" :value="index+1">
+                                {{ month }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group ml-3">
+                        <label for="day">Payment day</label>
+                    </div>
+                    <div class="form-group ml-1">
+                        <select id="day" v-model="filter.day" class="form-control" required>
+                            <option value=""></option>
+                            <option v-for="day in dayCount" :value="day">
+                                {{ day }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group ml-3">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                    <div class="form-group ml-1">
+                        <button type="reset" @click='clear' class="btn btn-primary">Clear</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+        <form>
+            <table cellpadding="5" class="mt-4">
+
+                <tbody>
+                <tr>
+                    <td class="text-right">Shipper</td>
+                    <td>
+                        <select class="form-control" v-model="payment.shipper_id" :disabled="!registerMode" required>
+                            <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                {{shipper.fullname}}
+                            </option>
+                        </select>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <input type="hidden" v-model="payment.payment_id"/>
+                    <td class="text-right">Payment</td>
+                    <td>
+                        <datepicker v-model="payment.payment_day" :disabled="!registerMode" required
+                                    :bootstrap-styling="true" :typeable="true" :format="options.weekday"
+                                    :clear-button="true" :language="options.language.ja"></datepicker>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-right">Transfer</td>
+                    <td><input type="text" class="form-control" v-model="payment.payment_amount" required/></td>
+                    <td>yen</td>
+                </tr>
+                <tr>
+                    <td class="text-right">Offset</td>
+                    <td><input type="text" class="form-control" v-model="offset" disabled/></td>
+                    <td>yen</td>
+                </tr>
+                <tr>
+                    <td class="text-right">Other</td>
+                    <td><input type="text" class="form-control" v-model="payment.other"/></td>
+                    <td>yen</td>
+                </tr>
+                <tr>
+                    <td class="text-right">Transfer fee</td>
+                    <td><input type="text" class="form-control" v-model="payment.fee"/></td>
+                    <td>yen</td>
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <td class="text-right">Total credit amount</td>
+                    <td><input type="text" class="form-control" v-model="total" disabled/></td>
+                    <td>yen</td>
+                    <td> &nbsp;&nbsp;&nbsp; </td>
+                    <td class="text-right">Invoice balance</td>
+                    <td><input type="text" class="form-control" v-model="invoice" disabled/></td>
+                    <td>yen</td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
     </div>
 
 </template>
@@ -129,16 +146,33 @@
 <script>
 
     import Vue from "vue";
+    import Datepicker from "vuejs-datepicker";
+    import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     export default {
+        components: {
+            Datepicker
+        },
         props : {
             backUrl : {required : true},
-            searchUrl : {required : true},
+            resourceUrl : {required : true},
             shipperUrl : {required : true},
         },
         data(){
             return {
-                data : {},
+                payment : {
+                    payment_id : null,
+                    shipper_id : null,
+                    payment_day : null,
+                    payment_amount : null,
+                    other : null,
+                    fee : null,
+                },
+                offset : null,
+                total : null,
+                invoice : null,
+                editable : false,
+                registerMode : true,
                 filter : {
                     shipper : '',
                     year : '',
@@ -148,24 +182,30 @@
                 shippers : [],
                 months : ['January', 'February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                 dayCount : 0,
+                options: {
+                    monthFormat: "yyyy/MM",
+                    weekday: "yyyy-MM-dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
+                },
             }
         },
 
         mounted() {
-            this.fetchShippers(this.shipperUrl);
+            this.fetchShippers();
         },
 
         methods : {
-            fetchShippers(url){
-                axios.get(url)
+            fetchShippers(){
+                let self = this;
+                axios.get(this.shipperUrl)
                     .then(response =>
-                        this.shippers = response.data
-                    ).catch (
-                        error => alert(error)
-                    );
-
-                console.log('this.shippers=');
-                console.log(this.shippers);
+                        self.shippers = response.data
+                    ).catch (error =>
+                    alert(error)
+                )
             },
             changeDays(){
                 if (this.filter.year != '' && this.filter.month != ''){
@@ -173,20 +213,70 @@
                 }
             },
             search(){
-                console.log(this.filter.shipper);
-                // console.log(this.filter.year);
-                // console.log(this.filter.month);
-                // console.log(this.filter.day);
-                let result;
-                axios.get(this.searchUrl)
-                    .then(response =>
-                        result = response.data
-                    ).catch (
-                    error => alert(error)
-                );
-                console.log('this.shippers=');
-                console.log(this.searchUrl);
-                console.log(result);
+                let self = this;
+                axios.post(this.resourceUrl+'/filter',this.filter)
+                    .then(response => {
+                        self.payment = response.data.payment;
+                        self.offset = response.data.offset;
+                        self.total = response.data.total;
+                        self.invoice = response.data.invoice;
+                        self.editable = response.data.unique;
+                        self.registerMode = false;
+                    }).catch (error => {
+                    alert(error);
+                    self.clear();
+                })
+            },
+            create(){
+                let self = this;
+                this.payment.payment_day = this.payment.payment_day.toISOString().slice(0,10);
+                axios.post(this.resourceUrl, this.payment)
+                    .then(response => {
+                        alert('Payment created successfully');
+                        self.clear();
+                    }).catch(error => {
+                    alert("Error while creating payment")
+                })
+            },
+            update(){
+                let self = this;
+                axios.put(this.resourceUrl+'/'+this.payment.payment_id, this.payment)
+                    .then(response => {
+                        alert('Payment updated successfully');
+                    }).catch(error => {
+                    alert("Error while updating payment")
+                })
+            },
+            remove(){
+                let self = this;
+                axios.delete(this.resourceUrl+'/'+this.payment.payment_id)
+                    .then(response => {
+                        alert('Payment deleted successfully');
+                        self.clear();
+                    }).catch(error => {
+                    alert('Error on deleting payment');
+                })
+            },
+            clear(){
+                this.payment = {
+                    payment_id : null,
+                    shipper_id : null,
+                    payment_day : null,
+                    payment_amount : null,
+                    other : null,
+                    fee : null,
+                };
+                this.offset = null;
+                this.total = null;
+                this.invoice = null;
+                this.editable = false;
+                this.registerMode = true;
+                this.filter = {
+                    shipper : '',
+                    year : '',
+                    month : '',
+                    day : ''
+                };
             }
         },
 
@@ -197,7 +287,9 @@
 
 </script>
 
+
 <style scoped>
     @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
+
 </style>
