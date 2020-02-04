@@ -25,7 +25,7 @@
                 <a href="{{route('payment.registration')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.payment_reg')}}</a>
             </div>
             <div class="col-4 p-2">
-                <a href="{{route('deposit.report')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.deposit_list')}}</a>
+                <a href="{{route('deposit.index')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.deposit_list')}}</a>
             </div>
         @endif
             <div class="col-4 p-2">
