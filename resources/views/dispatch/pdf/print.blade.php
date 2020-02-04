@@ -3,19 +3,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>毎日の発送</title>
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet">
     <style>
         table, td, th{
             border-collapse: collapse;
         }
-        @font-face {
-            font-family: 'Noto Sans JP';
-            font-style: normal;
-            font-weight: normal;
-            src: url(https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap) format('truetype');
-        }
         body{
-            font-family: 'Noto Sans JP', sans-serif;
+            font-family: ipaexg, sans-serif;
         }
         td{
             text-align: center;
@@ -23,7 +16,7 @@
     </style>
 </head>
 <body>
-<h1 align="center">{{$params['date']}}の毎日のディスパッチ出力</h1>
+<h1 align="center" style="font-family: ipaexg, sans-serif">{{$params['date']}}の毎日のディスパッチ出力</h1>
 <div>
     <br>
     <table width="100%" style="width:100%" border="1">
