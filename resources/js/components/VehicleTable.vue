@@ -135,7 +135,7 @@
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        vehicleTable.errorDialog(error.response.data);
+                        vehicleTable.errorDialog(error);
                     });
             },
             deleteVehicle(vehicle_id){
@@ -147,7 +147,7 @@
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        vehicleTable.errorDialog(error.response.data);
+                        vehicleTable.errorDialog(error);
                         return false;
                     });
                 return true;
@@ -163,7 +163,7 @@
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
-                        vehicleTable.errorDialog(error.response.data);
+                        vehicleTable.errorDialog(error);
                     });
             },
             fetchData(url) {
