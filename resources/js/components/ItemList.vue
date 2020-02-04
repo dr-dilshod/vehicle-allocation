@@ -83,7 +83,7 @@
                                     <button type="submit" class="btn btn-primary">{{__('item.search')}}</button>
                                 </td>
                                 <td>
-                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clearing')}}</button>
+                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clear')}}</button>
                                 </td>
                             </tr>
                             </tbody>
