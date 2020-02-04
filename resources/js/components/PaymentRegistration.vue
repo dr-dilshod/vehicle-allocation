@@ -5,16 +5,16 @@
         <div class="row mt-4 mb-4">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('payment.back')}}</a>
             </div>
 
             <div class="col-6">
-                <h2 class="text-center">Payment registration</h2>
+                <h2 class="text-center">{{__('payment.payment_registration')}}</h2>
             </div>
             <div class="col-4 text-right">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">Register</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "update" :disabled="!editable">Edit</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "remove" :disabled="!editable">Delete</button>
+                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">{{__('payment.register')}}</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "update" :disabled="!editable">{{__('payment.edit')}}</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "remove" :disabled="!editable">{{__('payment.delete')}}</button>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
 
                 <form action="#" class="form-inline" @submit.prevent="search">
                     <div class="form-group ml-3">
-                        <label for="shipper">Shipper</label>
+                        <label for="shipper">{{__('payment.shipper')}}</label>
                     </div>
                     <div class="form-group ml-1">
                         <select id="shipper" v-model="filter.shipper" class="form-control" style="max-width:200px;" required>
@@ -34,7 +34,7 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <label for="year">Payment year</label>
+                        <label for="year">{{__('payment.payment_year')}}</label>
                     </div>
                     <div class="form-group ml-1">
                         <select id="year" v-model="filter.year"
@@ -46,7 +46,7 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <label for="month">Payment month</label>
+                        <label for="month">{{__('payment.payment_month')}}</label>
                     </div>
                     <div class="form-group ml-1">
                         <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control" required>
@@ -57,7 +57,7 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <label for="day">Payment day</label>
+                        <label for="day">{{__('payment.payment_date')}}</label>
                     </div>
                     <div class="form-group ml-1">
                         <select id="day" v-model="filter.day" class="form-control" required>
@@ -68,10 +68,10 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">{{__('payment.search')}}</button>
                     </div>
                     <div class="form-group ml-1">
-                        <button type="reset" @click='clear' class="btn btn-primary">Clear</button>
+                        <button type="reset" @click='clear' class="btn btn-primary">{{__('payment.clear')}}</button>
                     </div>
                 </form>
 
@@ -84,7 +84,7 @@
 
                 <tbody>
                 <tr>
-                    <td class="text-right">Shipper</td>
+                    <td class="text-right">{{__('payment.shipper')}}</td>
                     <td>
                         <select class="form-control" v-model="payment.shipper_id" :disabled="!registerMode" required>
                             <option v-for="shipper in shippers" :value="shipper.shipper_id">
@@ -96,7 +96,7 @@
                 </tr>
                 <tr>
                     <input type="hidden" v-model="payment.payment_id"/>
-                    <td class="text-right">Payment</td>
+                    <td class="text-right">{{__('payment.payment_date')}}</td>
                     <td>
                         <datepicker v-model="payment.payment_day" :disabled="!registerMode" required
                                     :bootstrap-styling="true" :typeable="true" :format="options.weekday"
@@ -105,36 +105,36 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="text-right">Transfer</td>
+                    <td class="text-right">{{__('payment.transfer')}}</td>
                     <td><input type="text" class="form-control" v-model="payment.payment_amount" required/></td>
-                    <td>yen</td>
+                    <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
-                    <td class="text-right">Offset</td>
+                    <td class="text-right">{{__('payment.offset')}}</td>
                     <td><input type="text" class="form-control" v-model="offset" disabled/></td>
-                    <td>yen</td>
+                    <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
-                    <td class="text-right">Other</td>
+                    <td class="text-right">{{__('payment.other')}}</td>
                     <td><input type="text" class="form-control" v-model="payment.other"/></td>
-                    <td>yen</td>
+                    <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
-                    <td class="text-right">Transfer fee</td>
+                    <td class="text-right">{{__('payment.transfer_fee')}}</td>
                     <td><input type="text" class="form-control" v-model="payment.fee"/></td>
-                    <td>yen</td>
+                    <td>{{__('payment.yen')}}</td>
                 </tr>
                 </tbody>
 
                 <tfoot>
                 <tr>
-                    <td class="text-right">Total credit amount</td>
+                    <td class="text-right">{{__('payment.total_credit_amount')}}</td>
                     <td><input type="text" class="form-control" v-model="total" disabled/></td>
-                    <td>yen</td>
+                    <td>{{__('payment.yen')}}</td>
                     <td> &nbsp;&nbsp;&nbsp; </td>
-                    <td class="text-right">Invoice balance</td>
+                    <td class="text-right">{{__('payment.outgoing_balance')}}</td>
                     <td><input type="text" class="form-control" v-model="invoice" disabled/></td>
-                    <td>yen</td>
+                    <td>{{__('payment.yen')}}</td>
                 </tr>
                 </tfoot>
             </table>
@@ -180,7 +180,7 @@
                     day : ''
                 },
                 shippers : [],
-                months : ['January', 'February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                months : [this.__('payment.january'), this.__('payment.february'),this.__('payment.march'),this.__('payment.april'), this.__('payment.may'), this.__('payment.june'), this.__('payment.july'), this.__('payment.august'), this.__('payment.september'), this.__('payment.october'), this.__('payment.november'), this.__('payment.december')],
                 dayCount : 0,
                 options: {
                     monthFormat: "yyyy/MM",

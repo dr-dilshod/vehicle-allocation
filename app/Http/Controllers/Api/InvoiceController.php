@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Deposit;
 use App\Invoice;
 use App\Item;
+use App\Shipper;
+use App\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -98,5 +101,44 @@ class InvoiceController extends Controller
             ->select()
             ->get();
         return response()->json($invoiceTable);
+    }
+    /**
+     * returns the list of deposits for a specific shipper
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getDepositList(Request $request)
+    {
+        $shipper_id = $request->query('shipper_id') ?: '';
+        $deposits = Deposit::where('shipper_id','=',$shipper_id)->get();
+        return response()->json($deposits);
+    }
+
+    /**
+     * returns the list of payments for a specific shipper
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getPaymentList(Request $request)
+    {
+        $shipper_id = $request->query('shipper_id') ?: '';
+        $payments = Payment::where('shipper_id','=',$shipper_id)->get();
+        return response()->json($payments);
+    }
+
+    /**
+     * returns the list of shippers for the dropdown list
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function getShipperList(Request $request)
+    {
+        $shippers = Shipper::select()
+            ->where('delete_flg',0)
+            ->get();
+        return response()->json($shippers);
     }
 }

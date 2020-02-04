@@ -6,8 +6,13 @@
  * Time: 17:18
  */
 return [
+    'back'=>'Back',
+    'edit'=>'Editing',
+    'title'=>'Title',
+    'operation'=>'Register',
+    'clearing'=>'Clear',
     'unloading_place' => 'Unloading place',
-    'stack_date' => 'Stack Date',
+    'stack_date' => 'Stack date',
     'down_date' => 'Down Date',
     'stack_time' => 'Stack Time',
     'down_time' => 'Down Time',
@@ -32,5 +37,11 @@ return [
     'item_list' => 'Item list',
     'item_registration' => 'Item registration',
     'required' => 'required',
-    'yen' => 'yen'
+    'yen' => 'yen',
+     'yes'=>'Yes',
+    'none'=>'None',
+    'register'=>'Register',
+    'completed'=>'Completed',
+    'incomplete'=>'Incomplete',
+    'search'=>'Search',
 ];

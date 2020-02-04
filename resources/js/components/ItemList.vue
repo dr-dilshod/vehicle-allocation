@@ -4,14 +4,14 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">Back</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('item.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2">
                 <a :href="registrationUrl"
-                   class="btn btn-lg btn-warning btn-block">Register</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('item.register')}}</a>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -25,7 +25,7 @@
                             </thead>
                             <tbody class="list">
                             <tr>
-                                <td class="orders-order text-right"><span class="c24966">Stack Date</span></td>
+                                <td class="orders-order text-right"><span class="c24966">{{__('item.stack_date')}}</span></td>
                                 <td>
 
                                     <div class="input-group">
@@ -33,7 +33,7 @@
                                                id="week_day" v-model="stack_date"/>
                                     </div>
                                 </td>
-                                <td class="text-right"><span class="c24966">Shipper</span></td>
+                                <td class="text-right"><span class="c24966">{{__('item.shipper')}}</span></td>
                                 <td class="orders-order">
                                     <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
                                             class="form-control">
@@ -43,33 +43,33 @@
                                         </option>
                                     </select>
                                 </td>
-                                <td class="text-right"><span class="c24966">Status</span></td>
+                                <td class="text-right"><span class="c24966">{{__('item.status')}}</span></td>
                                 <td class="orders-order">
                                     <select name="status" id="status" v-model="status"
                                             class="form-control">
                                         <option value=""></option>
-                                        <option value=1>Completed</option>
-                                        <option value=0>Incomplete</option>
+                                        <option value=1>{{__('item.completed')}}</option>
+                                        <option value=0>{{__('item.incomplete')}}</option>
                                     </select>
                                 </td>
 
                             </tr>
                             <tr>
-                                <td class="text-right"><span class="c24966">Stack Point</span></td>
+                                <td class="text-right"><span class="c24966">{{__('item.stack_point')}}</span></td>
                                 <td class="orders-order">
                                     <input type="text" placeholder="" class="form-control" for="stack_point"
                                            v-model="stack_point"
                                            id="stack_point"/>
                                 </td>
                                 <td class="orders-product text-right"><span
-                                        class="c25479 text-right">~  Down Point</span>
+                                        class="c25479 text-right">{{__('item.down_point')}}</span>
                                 </td>
                                 <td class="orders-date">
                                     <input id="down_point" for="down_point" type="text" placeholder=""
                                            class="form-control"
                                            v-model="down_point"/>
                                 </td>
-                                <td class="text-right"><span class="c24966">Vehicle No.</span></td>
+                                <td class="text-right"><span class="c24966">{{__('item.vehicle_no')}}</span></td>
                                 <td class="orders-order">
                                     <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
                                             class="form-control">
@@ -80,10 +80,10 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <button type="submit" class="btn btn-primary">{{__('item.search')}}</button>
                                 </td>
                                 <td>
-                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
+                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clearing')}}</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -96,15 +96,15 @@
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar' >
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
-                <e-column field='status' :allowEditing= 'false'  headerText='Status' width="120" textAlign="Center"
+                <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
                           :template="actionTemplate"></e-column>
-                <e-column field='stack_date' :allowEditing= 'false' headerText='Stack date' width="150"></e-column>
-                <e-column field='stack_time' :allowEditing= 'false' headerText='Stack Time' width="150"></e-column>
-                <e-column field='shipper_name' :allowEditing= 'false' headerText='Shipper name'  width="150"></e-column>
-                <e-column field='stack_point' :allowEditing= 'false' textAlign="Stack point" headerText='Stack point' width="150"></e-column>
-                <e-column field='down_point' :allowEditing= 'false' headerText='Down point' width="200"></e-column>
-                <e-column field='item_price' :allowEditing= 'false' headerText='Item price' width="200"></e-column>
-                <e-column field='item_remark' :allowEditing= 'false' headerText='Remarks' width="200"></e-column>
+                <e-column field='stack_date' :allowEditing= 'false' :headerText='__("item.stack_date")' width="150"></e-column>
+                <e-column field='stack_time' :allowEditing= 'false' :headerText='__("item.stack_time")' width="150"></e-column>
+                <e-column field='shipper_name' :allowEditing= 'false' :headerText='__("item.shipper_name")'  width="150"></e-column>
+                <e-column field='stack_point' :allowEditing= 'false' textAlign="Stack point" :headerText='__("item.stack_point")' width="150"></e-column>
+                <e-column field='down_point' :allowEditing= 'false' :headerText='__("item.down_point")' width="200"></e-column>
+                <e-column field='item_price' :allowEditing= 'false' :headerText='__("item.item_price")' width="200"></e-column>
+                <e-column field='item_remark' :allowEditing= 'false' :headerText='__("item.remarks")' width="200"></e-column>
             </e-columns>
         </ejs-grid>
     </div>

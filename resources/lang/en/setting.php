@@ -10,4 +10,6 @@ return [
     'shipper_list' => 'Shipper List',
     'car_list' => 'Car list',
     'list_of_unit_prices' => 'List of unit prices',
+    'back'=>'Back',
+    'setting'=>'Setting',
 ];

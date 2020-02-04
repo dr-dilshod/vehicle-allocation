@@ -52,13 +52,17 @@ Route::get('/item/setDeptDateAsCompletion', 'Api\ItemController@setDeptDateAsCom
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
 Route::get('/invoice/billing-month-pdf', 'InvoiceController@billingMonthPDF')->name('invoice.billingMonthPDF');
 Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->name('invoice.list');
+Route::get('/invoice/getPaymentList', 'Api\InvoiceController@getPaymentList')->name('payment.list');
+Route::get('/invoice/getDepositList', 'Api\InvoiceController@getDepositList')->name('deposit.list');
+Route::get('/invoice/getShipperList', 'Api\InvoiceController@getShipperList')->name('shipper.list');
+
 
 
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
 
 // Deposit
-Route::get('/deposit', 'DepositController@report')->name('deposit.report');
+Route::get('/deposit', 'DepositController@index')->name('deposit.index');
 
 // Payment
 Route::get('/payment/registration', 'PaymentController@registration')->name('payment.registration');

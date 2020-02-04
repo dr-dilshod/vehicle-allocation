@@ -35,28 +35,30 @@
             <form action="#" class="form-inline" method="post" @submit.prevent="search">
                 <table class="table">
                     <tr>
-                        <td>
+                        <td width="10%">
                             <label for="shipper">Shipper</label>
                         </td>
-                        <td>
+                        <td with="20%">
+                            <div class="col-2">
                             <select name="shipper" id="shipper" v-model="formData.shipper_id" class="form-control">
                                 <option value=""></option>
-                                <option v-for="shipperItem in shippers" :value="shipperItem.shipper_id">
-                                    {{ shipperItem }}
+                                <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                    {{ shipper. shipper_name1 + " " + shipper. shipper_name2 }}
                                 </option>
                             </select>
+                            </div>
                         </td>
-                        <td>
+                        <td width="15%">
                             <label>Invoice month</label>
                         </td>
-                        <td>
+                        <td width="15%">
                             <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'"
                                             :format="options.monthFormat"></datepicker>
                         </td>
-                        <td>
+                        <td  width="20%">
                             <label>Invoice day</label>
                         </td>
-                        <td>
+                        <td  width="20%">
                             <select v-model="formData.invoice_day" class="form-control">
                                 <option value=""></option>
                                 <option value="20">20th</option>
@@ -68,7 +70,7 @@
                         <td>
                             <label>Stack Date</label>
                         </td>
-                        <td>
+                        <td  with="15%">
                             <datepicker v-model="formData.stack_date" :minimumView="'day'" :format="options.stack_date"
                                             :maximumView="'day'"></datepicker>
                         </td>
@@ -116,8 +118,8 @@
         <div class="row">
             <div class="col-2 offset-md-10">
                 <div class="form-group">
-                    <label for="totalSales">Total Sales</label>
-                    <input type="text" disabled="disabled" id="totalSales" v-model="totalSales">
+                    <label for="totalSales">Sales</label>
+                    <input type="text" disabled="disabled" id="totalSales" v-model="sales">
                 </div>
                 <div class="form-group">
                     <label for="totalConsumptionTax">Total Consumption Tax</label>
@@ -128,8 +130,8 @@
                     <input type="text" id="otherTotals" disabled="disabled" v-model="otherTotals">
                 </div>
                 <div class="form-group">
-                    <label for="totalSalesTotal">Sales Total</label>
-                    <input type="text" id="totalSalesTotal" disabled="disabled" v-model="totalSalesTotal">
+                    <label for="totalSalesTotal">Total Sales</label>
+                    <input type="text" id="totalSalesTotal" disabled="disabled" v-model="totalSales">
                 </div>
             </div>
         </div>
@@ -189,6 +191,8 @@
             vehiclesUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
+            paymentUrl: {type: String, required: true},
+            depositUrl: {type: String, required: true},
         },
         components: {
             Datepicker
@@ -207,18 +211,26 @@
                 shippers: [],
                 vehicles: [],
                 mode: 'normal',
-                totalSales: 0,
+                sales: 0,
                 totalConsumptionTax: 0,
                 otherTotals: 0,
-                totalSalesTotal: 0,
+                totalSales: 0,
                 options: {
                     monthFormat: "yyyy/MM",
                     stack_date: "yyyy/MM/dd",
                     language: "ja",
                 },
                 billing: {
-                    day: 20,
-                    month: ''
+                    shipper_data: {},
+                    previous_month_billing: 0,
+                    deposit: 0,
+                    offset_discount: 0,
+                    carry_over_amount: 0,
+                    same_day_sales: 0,
+                    consumption_tax: 0,
+                    tax_free: 0,
+                    invoice_amount: 0,
+                    item_data: [],
                 },
                 invoiceData: {
                     item_id: '',
@@ -228,7 +240,12 @@
                     billing_deadline_date: '',
                     payment_record_date: '',
                     invoice_remark: '',
-                }
+                },
+                billingListData: {
+
+                },
+                paymentList: [],
+                depositList: [],
             }
         },
         created(){
@@ -251,28 +268,18 @@
                 this.invoiceData.billing_recording_date = this.getDate();
                 this.invoiceData.billing_deadline_date = args.data.item_completion_date;
             },
-            getDate () {
-                const toTwoDigits = num => num < 10 ? '0' + num : num;
-                let today = new Date();
-                let year = today.getFullYear();
-                let month = toTwoDigits(today.getMonth() + 1);
-                let day = toTwoDigits(today.getDate());
-                return `${year}-${month}-${day}`;
-            },
             register(){
                 const invoiceTable = this;
                 if (this.invoiceData.item_id !== '') {
                     axios.post(this.resourceUrl, this.invoiceData)
                         .then(function (response) {
-                            //invoiceTable.tableUtil.endEditing();
-                            //invoiceTable.showSuccessDialog();
-                            alert("Selected item is added to Invoice List.")
+                            invoiceTable.showSuccessDialog("Selected item is added to Invoice List.")
                         })
                         .catch(function (error) {
                             invoiceTable.showDialog(error.response.data);
                         });
                 } else {
-                    alert("Please, select an item to add to invoice list.");
+                    invoiceTable.showDialog("Please, select an item to add to invoice list.");
                 }
             },
             deleteInvoice(item_id){
@@ -282,7 +289,7 @@
                         invoiceTable.tableUtil.endEditing();
                         //invoiceTable.showSuccessDialog();
                         //invoiceTable.refresh();
-                        alert("Selected item is removed from invoice list.")
+                        invoiceTable.showWarningDialog("Selected item is removed from invoice list.")
                     })
                     .catch(function(error){
                         invoiceTable.showDialog(error.response.data);
@@ -290,35 +297,77 @@
                     });
                 return true;
             },
-            showDialog(response) {
-                let message = response.message + ': ';
-                let errors = response.errors;
-                $.each( errors, function( key, value ) {
-                    message += value[0]; //showing only the first error.
-                });
-                this.$alert(message);
-            },
-            showSuccessDialog() {
-                this.$alert('Operation successfully done!');
-            },
             billingPrint(){
-                let invoice = this;
-                window.location = '/invoice/billing-month-pdf';
-//                axios.get("/invoice/billing-month-pdf",this.formData)
-//                    .then(function(response){
-//                        invoice.showSuccessDialog();
-//                    })
-//                    .catch(function(error){
-//                        invoice.showDialog(error.response.data);
-//                    });
+                if (this.data.length>0) {
+                    this.billing.shipper_data = this.shippers;
+                    this.billing.item_data = this.data;
+                    let itemList = this.data;
+                    let previous_month_billing = 0;
+
+                    let today = new Date();
+                    let currentMonth = today.getMonth();
+                    for (let i = 0; i < itemList.length; i++) {
+                        let completionDate = itemList[i].item_completion_date;
+                        let completionMonth = new Date(completionDate).getMonth();
+                        if (currentMonth - completionMonth == 1) {
+                            previous_month_billing = previous_month_billing + itemList[i].item_price;
+                        }
+                    }
+                    this.billing.previous_month_billing = previous_month_billing;
+
+                    this.fetchDepositList(this.depositUrl
+                        + '?shipper_id='
+                        + this.formData.shipper_id);
+                    let deposit = 0;
+                    let depositList = this.depositList;
+                    for (let i = 0; i < depositList.length; i++) {
+                        let deposit_day = depositList[i].deposit_day;
+                        let depositMonth = new Date(deposit_day).getMonth();
+                        if (currentMonth - depositMonth == 1) {
+                            deposit = deposit + depositList[i].deposit_amount;
+                        }
+                    }
+                    this.billing.deposit = deposit;
+
+                    this.fetchPaymentList(this.paymentUrl
+                        + '?shipper_id='
+                        + this.formData.shipper_id);
+                    let same_day_sales = 0;
+                    let paymentList = this.paymentList;
+                    for (let i = 0; i < paymentList.length; i++) {
+                        let payment_day  = paymentList[i].payment_day;
+                        let paymentMonth = new Date(payment_day).getMonth();
+                        if (currentMonth - paymentMonth == 1) {
+                            same_day_sales = same_day_sales + paymentList[i].payment_amount;
+                        }
+                    }
+                    this.billing.same_day_sales = same_day_sales;
+                    this.billing.consumption_tax = previous_month_billing*0.1;
+
+
+                     // offset_discount: 0, ? don't where it comes from?
+                    this.billing.carry_over_amount = deposit - same_day_sales;
+
+                    this.billing.invoice_amount = previous_month_billing + deposit - this.billing.carry_over_amount;
+                    this.billing.tax_free = this.billing.invoice_amount - same_day_sales - this.billing.consumption_tax;
+
+                    axios.get("/invoice/billing-month-pdf",this.this.billing)
+                        .then(function(response){
+                            invoice.showSuccessDialog("Invoice generation is successful.");
+                        })
+                        .catch(function(error){
+                            invoice.showDialog(error.response.data);
+                        });
+                    window.location = '/invoice/billing-month-pdf';
+                }
             },
             listPrinting(){
-                alert('list printing');
+                const invoiceTable = this;
+                invoiceTable.showWarningDialog("This feature is under development.");
             },
             fetchShippers() {
                 axios.get(this.shippersUrl)
                     .then(shippers => {
-//                        console.log(shippers);
                         this.shippers = shippers.data
                     });
             },
@@ -328,28 +377,67 @@
                         this.vehicles = vehicles.data
                     });
             },
-            fetchData(url) {
-                let grid = this.$refs.grid.ej2Instances;
-                axios.get(url)
-                    .then(data => {
-                        console.log(data);
-                        this.data = data.data;
-                    })
-            },
-
             edit(){
                 this.setEditMode('editing');
                 this.$refs.grid.refresh();
 
             },
-            search(){
-                this.fetchData(this.invoiceUrl
-                    +'?stack_date=' + this.formData.stack_date,
+            fetchData(url) {
+                axios.get(url)
+                    .then(response => {
+                        this.data = response.data;
+                    })
+            },
+            fetchPaymentList(url) {
+                axios.get(url)
+                    .then(response => {
+                        this.paymentList = response.data;
+                    })
+            },
+            fetchDepositList(url) {
+                axios.get(url)
+                    .then(response => {
+                        this.depositList = response.data;
+                    })
+            },
+            search: function(){
+                this.data = this.fetchData(this.invoiceUrl
+                    + '?stack_date=' + this.formData.stack_date,
                     + '&vehicle_id=' + this.formData.vehicle_id,
                     + '&invoice_day=' + this.formData.invoice_day,
                     + '&invoice_month=' + this.formData.invoice_month,
                     + '&shipper_id=' + this.formData.shipper_id);
-                //this.calculateTotals();
+
+                this.fetchPaymentList(this.paymentUrl
+                    + '?shipper_id='
+                    + this.formData.shipper_id);
+                if (this.paymentList.length>0){
+                    this.calculateTotals();
+                }
+            },
+            calculateTotals: function() {
+                /**
+                 * calculate total sales
+                 */
+                let pl = this.paymentList;
+                let sales = 0;
+                let other = 0;
+                let totalSales = 0;
+                let today = new Date();
+                let currentMonth = today.getMonth();
+                for (let i = 0; i < pl.length; i++) {
+                    let paymentDate = pl[i].payment_day;
+                    let paymentMonth = new Date(paymentDate).getMonth();
+                    if (currentMonth - paymentMonth == 1) {
+                        sales = sales + pl[i].payment_amount;
+                        other = other + pl[i].other;
+                    }
+                    totalSales = totalSales + pl[i].payment_amount;
+                }
+                this.sales = sales;
+                this.totalConsumptionTax = sales*0.1;
+                this.otherTotals = other;
+                this.totalSales = totalSales;
             },
             clear(){
                 this.formData.stack_date = '';
@@ -395,21 +483,34 @@
                 });
                 this.$alert(message);
             },
-            showSuccessDialog() {
-                this.$alert('Operation successfully done!');
+            showSuccessDialog(text) {
+                this.$fire({
+                    title: "Info Message",
+                    text: text,
+                    type: "success",
+                    timer: 5000
+                });
+            },
+            showWarningDialog(text) {
+                this.$fire({
+                    title: "Warning",
+                    text: text,
+                    type: "warning",
+                    timer: 5000
+                });
             },
         },
         provide: {
             grid: [Sort, Freeze, Edit, Toolbar]
         },
-        computed: {
+        /**computed: {
             calculateTotals(){
                 this.totalSales = 10;
                 this.totalConsumptionTax = 10;
                 this.otherTotals = 20;
                 this.totalSalesTotal = 40;
             }
-        }
+        }*/
     }
 </script>
 <style scoped>

@@ -4,13 +4,13 @@
             <div class="row">
                 <div class="col-2">
                     <a :href="backUrl"
-                       class="btn btn-lg btn-warning btn-block">Back</a>
+                       class="btn btn-lg btn-warning btn-block">{{__('item.back')}}</a>
                 </div>
                 <div class="col-2">
-                    <h6 class="text-center text-danger">* - required</h6>
+                    <h6 class="text-center text-danger">* {{__('item.edit')}}</h6>
                 </div>
                 <div class="col-4">
-                    <h2 class="text-center">{{title}}</h2>
+                    <h2 class="text-center">{{__('item.title')}}</h2>
                 </div>
                 <div class="col-1"></div>
                 <div class="col-3">
@@ -30,7 +30,7 @@
                         <tr>
                             <td class="text-right" width="15%">
                                 <span class="required"> *</span>
-                                <label for="stack_date">Stack Date</label>
+                                <label for="stack_date">{{__('item.stack_date')}}</label>
                             </td>
                             <td width="25%">
                                 <datepicker v-model="itemData.stack_date" id="stack_date" name="stack_date" :bootstrap-styling="true"
@@ -40,7 +40,7 @@
                             <td width="5%"></td>
                             <td class="text-right" width="15%">
                                 <span class="required">*</span>
-                                <label for="stack_time_hour">Stack Time</label>
+                                <label for="stack_time_hour">{{__('item.stack_time')}}</label>
                             </td>
                             <td class="stack_time_hour" width="10%">
                                 <select name="stack_time_hour" id="stack_time_hour" v-model="stack_time_hour"
@@ -59,7 +59,7 @@
                                     </option>
                                 </select>
                             </td>
-                            <td width="10%" class="text-right"><label for="billing">Invoice</label></td>
+                            <td width="10%" class="text-right"><label for="billing">{{__('item.invoice')}}</label></td>
                             <td width="7%" class="text-center">
                                 <input type="checkbox" name="down_invoice" id="billing"
                                        v-model="itemData.down_invoice">
@@ -67,8 +67,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
+                                <label for="down_date">{{__('item.down_date')}}</label>
                                 <span class="required"> *</span>
-                                <label for="down_date">Down Date</label>
                             </td>
                             <td>
 
@@ -78,8 +78,8 @@
                             </td>
                             <td></td>
                             <td class="text-right">
+                                <label for="down_time_hour">{{__('item.down_time')}}</label>
                                 <span class="required"> *</span>
-                                <label for="down_time_hour">Down Time</label>
                             </td>
                             <td>
                                 <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
@@ -103,8 +103,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
+                                <label for="vehicle_model">{{__('item.vehicle_model')}}</label>
                                 <span class="required"> *</span>
-                                <label for="vehicle_model">Vehicle Model</label>
                             </td>
                             <td>
                                 <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
@@ -119,8 +119,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
+                                <label for="shipper_id">{{__('item.shipper')}}</label>
                                 <span class="required"> *</span>
-                                <label for="shipper_id">Shipper</label>
                             </td>
                             <td>
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
@@ -134,8 +134,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
+                                <label for="stack_point">{{__('item.stack_point')}}</label>
                                 <span class="required"> *</span>
-                                <label for="stack_point">Stack Point</label>
                             </td>
                             <td>
                                 <input type="text" placeholder="" class="form-control"
@@ -143,8 +143,8 @@
                             </td>
                             <td class="text-center">~</td>
                             <td class="text-right">
+                                <label for="down_point">{{__('item.down_point')}}</label>
                                 <span class="required"> *</span>
-                                <label for="down_point">Down Point</label>
                             </td>
                             <td colspan="3">
                                 <input id="down_point" for="down_point" type="text" placeholder=""
@@ -154,7 +154,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="weight">Number (t)</label>
+                                <label for="weight">{{__('item.number_t')}}</label>
                             </td>
                             <td>
                                 <input id="weight" type="text" placeholder="" class="form-control"
@@ -162,24 +162,24 @@
                             </td>
                             <td class="text-center">t</td>
                             <td class="text-right">
-                                <label for="empty_pl">Empty PL</label>
+                                <label for="empty_pl">{{__('item.empty_pl')}}</label>
                             </td>
                             <td colspan="2">
                                 <select name="empty_pl" id="empty_pl" v-model="itemData.empty_pl"
                                         class="form-control">
                                     <option value=""></option>
-                                    <option value="1">Yes</option>
-                                    <option value="0">None</option>
+                                    <option value="1">{{__('item.yes')}}</option>
+                                    <option value="0">{{__('item.none')}}</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="per_ton">Per ton</label></td>
+                            <td class="text-right"><label for="per_ton">{{__('item.per_ton')}}</label></td>
                             <td>
                                 <input id="per_ton" type="text" placeholder="" class="form-control"
                                        v-on:input="perTonChange" v-model="per_ton"/>
                             </td>
-                            <td class="text-center">yen</td>
+                            <td class="text-center">{{__('item.yen')}}</td>
                             <td><span class="text-center">x</span></td>
                             <td colspan="3">
                                 <input type="text" placeholder="" class="form-control" id="ton"
@@ -188,29 +188,29 @@
                             <td><span class="text-right">t</span></td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="per_vehicle">Per vehicle</label></td>
+                            <td class="text-right"><label for="per_vehicle">{{__('item.per_vehicle')}}</label></td>
                             <td>
                                 <input type="text" placeholder="" class="form-control" id="per_vehicle"
                                        v-on:input="perVehicleChange" :disabled="isDisabled" v-model="per_vehicle"/>
                             </td>
-                            <td class="text-center">yen</td>
+                            <td class="text-center">{{__('item.yen')}}</td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="item_price">Amount of Money</label></td>
+                            <td class="text-right"><label for="item_price">{{__('item.amount_of_money')}}</label></td>
                             <td>
                                 <input type="text" placeholder="" class="form-control" id="item_price"
                                        v-model="itemData.item_price" value="" readonly/>
                             </td>
-                            <td class="text-center">yen</td>
+                            <td class="text-center">{{__('item.yen')}}</td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="vehicle_no3">Vehicle No.</label></td>
+                            <td class="text-right"><label for="vehicle_no3">{{__('item.vehicle_no')}}</label></td>
                             <td>
                                 <input type="text" placeholder="" class="form-control" id="vehicle_no3"
                                        v-model="itemData.vehicle_no3"/>
                             </td>
                             <td></td>
-                            <td class="text-right"><label for="driver_id">Driver Name</label></td>
+                            <td class="text-right"><label for="driver_id">{{__('item.driver_name')}}</label></td>
                             <td colspan="3">
                                 <select name="driver_id" id="driver_id" v-on:change="setDriverName"
                                         v-model="itemData.driver_id" class="form-control">
@@ -222,7 +222,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="chartered_vehicle">Chartered Vehicle</label></td>
+                            <td class="text-right"><label for="chartered_vehicle">{{__('item.chartered_vehicle')}}</label></td>
                             <td>
                                 <select name="chartered_vehicle" id="chartered_vehicle" v-on:change="setVehicleName"
                                         v-model="itemData.vehicle_id" class="form-control">
@@ -234,16 +234,16 @@
                             </td>
                             <td></td>
                             <td class="text-right">
-                                <label for="vehicle_payment">Rental Vehicle Payment</label>
+                                <label for="vehicle_payment">{{__('item.rental_vehicle_payment')}}</label>
                             </td>
                             <td colspan="2">
                                 <input type="text" class="form-control" id="vehicle_payment"
                                        v-model="itemData.vehicle_payment"/>
                             </td>
-                            <td><span class="text-right">yen</span></td>
+                            <td><span class="text-right">{{__('item.yen')}}</span></td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="item_remark">Remarks</label></td>
+                            <td class="text-right"><label for="item_remark">{{__('item.remarks')}}</label></td>
                             <td colspan="6">
                                 <textarea rows="3" class="form-control" id="item_remark"
                                       v-model="itemData.item_remark"></textarea>
@@ -529,7 +529,8 @@
                     window.location.href = '/item';
                 });
             },
-        }
+        },
+        name : 'ItemRegistration'
     }
 </script>
 <style>
