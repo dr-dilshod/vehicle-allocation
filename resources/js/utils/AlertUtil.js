@@ -6,28 +6,36 @@ module.exports = {
     methods : {
 
         operationSuccessDialog() {
-            this.$alert('Operation successfully done!');
+            this.$alert('Operation successfully done!', null, 'success');
         },
 
         updateSuccessDialog(){
-            this.$alert(this.entityName()+' successfully updated!');
+            this.$alert(this.entityName()+' successfully updated!', null, 'success');
         },
 
         deleteSuccessDialog(){
-            this.$alert(this.entityName()+' successfully deleted!');
+            this.$alert(this.entityName()+' successfully deleted!', null, 'success');
         },
 
         createSuccessDialog(){
-            this.$alert(this.entityName()+' successfully created!');
+            this.$alert(this.entityName()+' successfully created!', null, 'success');
         },
 
-        errorDialog(response){
-            let message = response.message + ': ';
-            let errors = response.errors;
+        errorDialog(error){
+            let status = error.response.status;
+            let message = error.response.data.message;
+            let errors = error.response.data.errors;
+
+            message = '<h4>'+message+'</h4>';
+            message += '<ol class="text-danger text-left h6">';
             $.each( errors, function( key, value ) {
-                message += value[0]; //showing only the first error.
+                message += '<li>'+value[0]+'</li>'; //showing only the first error.
             });
-            this.$alert(message);
+            message += '</ol>';
+            this.$fire({
+                icon : 'error',
+                html : message,
+            });
         },
 
         entityName(){
