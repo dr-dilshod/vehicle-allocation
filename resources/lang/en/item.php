@@ -40,4 +40,8 @@ return [
     'yen' => 'yen',
      'yes'=>'Yes',
     'none'=>'None',
+    'register'=>'Register',
+    'completed'=>'Completed',
+    'incomplete'=>'Incomplete',
+    'search'=>'Search',
 ];

@@ -4,12 +4,12 @@
 
     <div class="container">
         <div class="row">
-            <div clNPass="col-2">
+            <div class="col-2">
                 <a href="{{route('top')}}"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('setting.back')}}</a>
             </div>
             <div class="col-8">
-                <h2 class="text-center">Setting</h2>
+                <h2 class="text-center">{{__('setting.setting')}}</h2>
             </div>
         </div>
 
