@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('./utils/Translation');
 window.Vue = require('vue');
 
 /**
@@ -17,7 +18,7 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-Vue.mixin(require('./utils/translation'));
+Vue.mixin(require('./utils/TranslationMixin'));
 Vue.mixin(require('./utils/AlertUtil'));
 
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
