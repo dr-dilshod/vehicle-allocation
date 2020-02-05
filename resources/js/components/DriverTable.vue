@@ -3,32 +3,32 @@
         <div class="row mb-4">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('driver.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 ref="editTitle" class="text-center text-danger">Editing</h2>
+                <h2 ref="editTitle" class="text-center text-danger">{{__('driver.editing')}}</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
-                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">Edit</button>
+                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">{{__('driver.register')}}</button>
+                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">{{__('driver.edit')}}</button>
             </div>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true'>
             <e-columns>
-                <e-column field='vehicle_type' headerText='Type' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
-                <e-column field='driver_name' headerText='Name'  width="150"></e-column>
-                <e-column field='driver_mobile_number' headerText='Mobile number' width="150"></e-column>
-                <e-column field='vehicle_no3' headerText='Vehicle No' width="150"></e-column>
-                <e-column field='maximum_Loading' headerText="Max Load" width="100"></e-column>
-                <e-column field='search_flg' headerText='Display'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
-                <e-column field='admin_flg' headerText='Admin' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
-                <e-column field='driver_remark' headerText='Remarks' width="200"></e-column>
-                <e-column field='driver_pass' defaultValue='parol1234' headerText='Password' width="200"></e-column>
+                <e-column field='vehicle_type' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
+                <e-column field='driver_name' :headerText= '__("driver.name")'  width="150"></e-column>
+                <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
+                <e-column field='vehicle_no3' :headerText= '__("driver.vehicle_no")' width="150"></e-column>
+                <e-column field='maximum_Loading' :headerText= '__("driver.max_load")' width="100"></e-column>
+                <e-column field='search_flg' :headerText= '__("driver.display")'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
+                <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
+                <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
+                <e-column field='driver_pass' defaultValue='parol1234' :headerText= '__("driver.password")' width="200"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
@@ -44,7 +44,7 @@
     import {TableUtil} from '../utils/TableUtil.js'
 
     let vehicleTypes= [
-        { vehicleType: 'Blank'},
+        { vehicleType: '__("driver.bulk")'},
         { vehicleType: '10tW'},
         { vehicleType: '10t flat'},
         { vehicleType: '4tW'},
