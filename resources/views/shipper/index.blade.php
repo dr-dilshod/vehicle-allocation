@@ -3,11 +3,9 @@
 @section('content')
     <div class="container">
         <shipper-table
-                resource-url="{{route('api.shipper.index')}}"
-                back-url="{{route('setting')}}"
-                shipper-name-url="{{route('api.shipper.distinct-name')}}"
-                company-url="{{route('api.shipper.distinct-company')}}"
-                title="Shipper list"
-        ></shipper-table>
+                resource-url="/api/shippers"
+                back-url="{{route('setting')}}">
+
+        </shipper-table>
     </div>
 @endsection

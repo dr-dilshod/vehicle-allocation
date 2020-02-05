@@ -18,6 +18,6 @@ class ShipperController extends Controller
      */
     public function index(Request $request)
     {
-        return view('shipper.index', compact('shipper'));
+        return view('shipper.index');
     }
 }

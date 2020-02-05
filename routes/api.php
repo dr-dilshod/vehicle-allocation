@@ -37,15 +37,16 @@ Route::delete('/driver/{id}', 'Api\DriverController@destroy')->name('api.driver.
 Route::get('/drivers/vehicle-numbers', 'Api\DriverController@getVehicleNumbers')->name('api.driver.vehicle-numbers');
 
 // Shipper routes
-Route::get('/shipper', 'Api\ShipperController@index')->name('api.shipper.index');
-Route::get('/shipper/{id}', 'Api\ShipperController@show')->name('api.shipper.show');
-Route::post('/shipper', 'Api\ShipperController@store')->name('api.shipper.store');
-Route::put('/shipper/{id}', 'Api\ShipperController@update')->name('api.shipper.update');
-Route::delete('/shipper/{id}', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
+Route::get('/shippers', 'Api\ShipperController@index')->name('api.shipper.index');
+Route::post('/shippers/filter', 'Api\ShipperController@filter')->name('api.shipper.filter');
+Route::post('/shippers', 'Api\ShipperController@store')->name('api.shipper.store');
 Route::get("/shippers/distinct-name", 'Api\ShipperController@distinctNames')->name('api.shipper.distinct-name');
 Route::get("/shippers/fullname", 'Api\ShipperController@getFullnames')->name('api.shipper.fullname');
 Route::get("/shippers/distinct-company", 'Api\ShipperController@distinctCompanies')->name('api.shipper.distinct-company');
 Route::get('/shippers/all', 'Api\ShipperController@getShippers')->name('api.shipper.all');
+Route::get('/shippers/{id}', 'Api\ShipperController@show')->name('api.shipper.show');
+Route::put('/shippers/{id}', 'Api\ShipperController@update')->name('api.shipper.update');
+Route::delete('/shippers/{id}', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
 /*
  * Item CRUD
  */
