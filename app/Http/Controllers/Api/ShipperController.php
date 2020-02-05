@@ -179,6 +179,8 @@ class ShipperController extends Controller
     {
         $distinctCompanies = Shipper::select('shipper_company_abbreviation')
             ->where('delete_flg',0)
+            ->where('shipper_company_abbreviation','<>','')
+            ->where('shipper_company_abbreviation','<>', null)
             ->distinct()
             ->orderBy('shipper_company_abbreviation', 'asc')
             ->get();
@@ -193,7 +195,7 @@ class ShipperController extends Controller
     public function getFullnames(Request $request)
     {
         $shippers = Shipper::select('shipper_id',
-            DB::raw('concat(shipper_name1,\' \', shipper_name2) as fullname'))
+            DB::raw('concat(shipper_name1, \' \', ifnull(shipper_name2,\'\')) as fullname'))
             ->where('delete_flg',0)
             ->orderBy('fullname', 'asc')
             ->get();

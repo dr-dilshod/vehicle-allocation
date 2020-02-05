@@ -204,12 +204,11 @@
                     shipper : '',
                     billTo : '',
                 };
-//                this.search();
             },
             refresh(){
                 this.clear();
-                this.fetchShipperNames(this.shipperNameUrl);
-                this.fetchCompanies(this.companyUrl);
+                this.fetchShipperNames();
+                this.fetchCompanies();
                 this.search();
             },
         },
