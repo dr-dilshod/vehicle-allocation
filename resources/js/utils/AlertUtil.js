@@ -44,6 +44,7 @@ module.exports = {
             this.$fire({
                 icon : 'error',
                 html : message,
+                type: "error",
             });
         },
 

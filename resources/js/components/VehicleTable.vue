@@ -88,27 +88,6 @@
             this.fetchCompanies(this.companyUrl);
         },
         methods: {
-            showDialog(response) {
-                let message = response.message + ': ';
-                let errors = response.errors;
-                $.each( errors, function( key, value ) {
-                    message += value[0]; //showing only the first error.
-                });
-                this.$fire({
-                    title: "Message",
-                    text: message,
-                    type: "error",
-//                    timer: 5000
-                });
-            },
-            showSuccessDialog() {
-                this.$fire({
-                    title: "Message",
-                    text: "Operation successfully done!",
-                    type: "success",
-//                    timer: 5000
-                });
-            },
             actionBegin(args){
                 if(args.requestType == 'save'){
                     args.cancel = true;
