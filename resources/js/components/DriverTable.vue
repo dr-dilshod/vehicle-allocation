@@ -44,12 +44,12 @@
     import {TableUtil} from '../utils/TableUtil.js'
 
     let vehicleTypes= [
-        { vehicleType: '__("driver.bulk")'},
-        { vehicleType: '10tW'},
-        { vehicleType: '10t flat'},
-        { vehicleType: '4tW'},
-        { vehicleType: '4t flat'},
-        { vehicleType: 'Controller'},
+        { vehicleType: __('driver.bulk')},
+        { vehicleType: __('driver.10tw')},
+        { vehicleType: __('driver.10t_flat')},
+        { vehicleType: __('driver.4tw')},
+        { vehicleType: __('driver.4t_flat')},
+        { vehicleType: __('driver.controller')},
     ];
     Vue.use(GridPlugin);
 
