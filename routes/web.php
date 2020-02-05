@@ -25,7 +25,7 @@ Route::get('/vehicle/companies', 'VehicleController@companies')->name('vehicle.c
 
 
 // Shipper
-Route::resource('shipper', 'ShipperController');
+Route::get('/shipper', 'ShipperController@index');
 
 // Driver
 Route::resource('driver', 'DriverController');
