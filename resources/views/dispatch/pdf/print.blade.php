@@ -10,7 +10,7 @@
         body{
             font-family: ipaexg, sans-serif;
         }
-        td{
+        td, th{
             text-align: center;
         }
     </style>
