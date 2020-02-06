@@ -3,18 +3,18 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 ref="editTitle" class="text-center text-danger">Editing</h2>
+                <h2 ref="editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
             </div>
             <div class="col-4">
-                <h2 class="text-center">Shipper list</h2>
+                <h2 class="text-center">{{__('shipper.shipper_list')}}</h2>
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
-                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">Edit</button>
+                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">{{__('common.register')}}</button>
+                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">{{__('common.edit')}}</button>
             </div>
         </div>
         <div class="row mt-4 mb-4">
@@ -22,7 +22,7 @@
 
                 <form action="#" class="form-inline" @submit.prevent="search">
                     <div class="form-group ml-3">
-                        <label for="selectedShipper">Shipper</label>
+                        <label for="selectedShipper">{{__('shipper.shipper')}}</label>
                     </div>
                     <div class="form-group ml-3">
                         <select id="selectedShipper" v-model="filter.shipper" class="form-control">
@@ -33,7 +33,7 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <label for="selectedCompany">Bill-to</label>
+                        <label for="selectedCompany">{{__('shipper.bill_to')}}</label>
                     </div>
                     <div class="form-group ml-3">
                         <select name="selectedCompany" id="selectedCompany" v-model="filter.billTo" class="form-control">
@@ -44,10 +44,10 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="reset" @click = "clear" class="btn btn-primary">Clear</button>
+                        <button type="reset" @click = "clear" class="btn btn-primary">{{__('common.clear')}}</button>
                     </div>
                 </form>
 
@@ -59,19 +59,19 @@
                   :allowSorting="true" :height="270"
                   :frozenColumns="6"  >
             <e-columns>
-                <e-column field='shipper_no' headerText='Shipper No' width="100"></e-column>
-                <e-column headerText='Shipper' width="200" :columns="shipperNameCols"></e-column>
-                <e-column headerText='Furigana' width="200" :columns="furiganaCols"></e-column>
-                <e-column field='shipper_company_abbreviation' headerText='Abbreviation' width="150" ></e-column>
-                <e-column field='postal_code' headerText='Postal Code' width="150" ></e-column>
-                <e-column field='address1' headerText='Address 1' width="200" ></e-column>
-                <e-column field='address2' headerText='Address 2' width="200" ></e-column>
-                <e-column field='phone_number' headerText='Phone number' width="200"></e-column>
-                <e-column field='fax_number' headerText='Fax number' width="200" ></e-column>
-                <e-column field='closing_date' headerText='Closing date' type="number" min="0" step="1" editType= 'numericedit' :edit='numericParams' width="150"></e-column>
-                <e-column field='payment_date' headerText='Payment date' type='date' format= 'y-M-d'
+                <e-column field='shipper_no' :headerText='__("shipper.shipper_no")' width="100"></e-column>
+                <e-column :headerText='__("shipper.shipper")' width="200" :columns="shipperNameCols"></e-column>
+                <e-column :headerText='__("shipper.furigana")' width="200" :columns="furiganaCols"></e-column>
+                <e-column field='shipper_company_abbreviation' :headerText='__("shipper.abbreviation")' width="150" ></e-column>
+                <e-column field='postal_code' :headerText='__("shipper.postal_code")' width="150" ></e-column>
+                <e-column field='address1' :headerText='__("shipper.address1")' width="200" ></e-column>
+                <e-column field='address2' :headerText='__("shipper.address2")' width="200" ></e-column>
+                <e-column field='phone_number' :headerText='__("shipper.phone_number")' width="200"></e-column>
+                <e-column field='fax_number' :headerText='__("shipper.fax_number")' width="200" ></e-column>
+                <e-column field='closing_date' :headerText='__("shipper.closing_date")' type="number" min="0" step="1" editType= 'numericedit' :edit='numericParams' width="150"></e-column>
+                <e-column field='payment_date' :headerText='__("shipper.payment_date")' type='date' format= 'y-M-d'
                           editType = 'datepickeredit' :editTemplate="editTemplate" width="200" ></e-column>
-                <e-column field='shipper_id' headerText='Shipper id' :isPrimaryKey="true" :visible=false></e-column>
+                <e-column field='shipper_id' :headerText='__("shipper.shipper_id")' :isPrimaryKey="true" :visible=false></e-column>
             </e-columns>
         </ejs-grid>
 
@@ -117,13 +117,13 @@
                 shipperNameCols : [
                     {
                         field : 'shipper_name1',
-                        headerText : 'Name1',
+                        headerText : this.__('shipper.name1'),
                         width : 100,
                         validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     },
                     {
                         field : 'shipper_name2',
-                        headerText : 'Name2',
+                        headerText : this.__('shipper.name2'),
                         width : 100,
                         validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     }
@@ -131,13 +131,13 @@
                 furiganaCols : [
                     {
                         field : 'shipper_kana_name1',
-                        headerText : 'Name1',
+                        headerText : this.__('shipper.name1'),
                         width : 100,
                         validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     },
                     {
                         field : 'shipper_kana_name2',
-                        headerText : 'Name2',
+                        headerText : this.__('shipper.name2'),
                         width : 100,
                         validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
                     }
