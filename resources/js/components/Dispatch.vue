@@ -67,7 +67,7 @@
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.down_point }} - {{ item.stack_point }} <br>
                         {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
-                        Remarks: {{ item.remarks }}<br>
+                        {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
                     </div>
                 </draggable>
             </div>
@@ -105,7 +105,7 @@
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
-                                    Remarks: {{ item.remarks }}<br>
+                                    {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
                                 </div>
                             </draggable>
                         </td>
@@ -121,7 +121,7 @@
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
-                                    Remarks: {{ item.remarks }}<br>
+                                    {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
                                 </div>
                             </draggable>
                         </td>
@@ -137,7 +137,7 @@
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
-                                    Remarks: {{ item.remarks }}<br>
+                                    {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
                                 </div>
                             </draggable>
                         </td>
@@ -158,7 +158,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
-                        <h5 class="modal-title">Add Driver</h5>
+                        <h5 class="modal-title">{{__('dispatch.add_driver')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -166,16 +166,16 @@
                     <div class="modal-body">
                         <div class="">
                             <div class="form-group text-center d-flex justify-content-around">
-                                <label for="driverName" class="pt-2">Driver name</label>
+                                <label for="driverName" class="pt-2">{{__('dispatch.driver_name')}}</label>
                                 <input type="text" id="driverName" v-model="driver_search" class="form-control"
                                        style="width: calc(50%)"/>
-                                <button class="btn btn-primary">Search</button>
+                                <button class="btn btn-primary">{{__('common.search')}}</button>
                             </div>
                             <div class="driver-list">
                                 <div class="row">
-                                    <div class="col-2"><strong>Check</strong></div>
-                                    <div class="col-4"><strong>Car no</strong></div>
-                                    <div class="col-6"><strong>Driver name</strong></div>
+                                    <div class="col-2"><strong>{{__('dispatch.check')}}</strong></div>
+                                    <div class="col-4"><strong>{{__('dispatch.car_no')}}</strong></div>
+                                    <div class="col-6"><strong>{{__('dispatch.driver_name')}}</strong></div>
                                 </div>
                                 <div class="driver-data">
                                     <div class="row p-1" v-for="driver in filteredDrivers">
@@ -193,8 +193,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-around mt-2">
-                            <button type="button" class="btn btn-danger" @click="registerDriver">Register</button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" @click="registerDriver">{{__('common.register')}}</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
                         </div>
                     </div>
                 </div>

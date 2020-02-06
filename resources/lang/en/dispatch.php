@@ -14,5 +14,8 @@ return [
     'printing'=>'Printing',
     'remarks'=>'Remarks',
     'pl_available'=>'PL available',
+    'add_driver'=>'Add Driver',
+    'check'=>'Check',
+    'cancel'=>'Cancel',
 
 ];

@@ -14,4 +14,7 @@ return [
     'printing'=>'印刷',
     'remarks'=>'備考',
     'pl_available'=>'利用できるPL',
+    'add_driver'=>'ドライバーを追加',
+    'check'=>'小切手',
+    'cancel'=>'キャンセル',
 ];
