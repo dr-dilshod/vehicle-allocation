@@ -95,4 +95,7 @@
     'italic' => $fontDir . '/ipaexm',
     'bold_italic' => $fontDir . '/ipaexm',
   ),
+  'roboto' => array(
+    'normal' => $fontDir . '/roboto-normal_cf99a9d56c411ce3fa8a2fc49c520e74',
+  ),
 ) ?>
