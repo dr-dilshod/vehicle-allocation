@@ -6,10 +6,8 @@
  * Time: 17:18
  */
 return [
-    'back'=>'戻る',
-    'edit'=>'必須項目',
-    'title'=>'案件登録',
-    'operation'=>'登録',
+
+
     'unloading_place' => 'Unloading place',
     'stack_date' => '積日',
     'down_date' => '降日',
@@ -37,13 +35,11 @@ return [
     'item_registration' => '案件登録',
     'required' => 'required',
     'yen' => '円',
-    'clear'=>'クリア',
+
     'yes'=>'はい',
     'none'=>'なし',
-    'register'=>'新規登録',
     'completed'=>'完了',
     'incomplete'=>'未完了',
-    'search'=>'検索',
     'delete'=>'削除',
     'update'=>'更新',
     'wing'=>'ウィング',

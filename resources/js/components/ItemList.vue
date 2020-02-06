@@ -4,14 +4,14 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('item.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2">
                 <a :href="registrationUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('item.register')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.register')}}</a>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -80,10 +80,10 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary">{{__('item.search')}}</button>
+                                    <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
                                 </td>
                                 <td>
-                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clear')}}</button>
+                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
                                 </td>
                             </tr>
                             </tbody>
