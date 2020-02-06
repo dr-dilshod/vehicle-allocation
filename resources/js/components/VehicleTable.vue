@@ -3,24 +3,24 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('vehicle.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 ref= "editTitle" class="text-center text-danger">Editing</h2>
+                <h2 ref= "editTitle" class="text-center text-danger">{{__('vehicle.editing')}}</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2" >Register</button>
-                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3" >Edit</button>
+                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2" >{{__('vehicle.register')}}</button>
+                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3" >{{__('vehicle.edit')}}</button>
             </div>
         </div>
         <div class="row mt-4 mb-4">
             <form action="#" class="form-inline" @submit.prevent="search">
                 <div class="form-group ml-3">
-                    <label for="company_name">Company name</label>
+                    <label for="company_name">{{__('vehicle.company_name')}}</label>
                 </div>
                 <div class="form-group ml-3">
                     <select name="company_name" id="company_name" v-model="company_name" class="form-control">
@@ -31,10 +31,10 @@
                     </select>
                 </div>
                 <div class="form-group ml-3">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" class="btn btn-primary">{{__('vehicle.search')}}</button>
                 </div>
                 <div class="form-group ml-3">
-                    <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
+                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('vehicle.clear')}}</button>
                 </div>
             </form>
         </div>
@@ -42,17 +42,17 @@
                   :allowSorting="true" :height="270">
             <e-columns>
                 <e-column field='vehicle_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
-                <e-column field='vehicle_no' headerText='Vehicle No' width="100"></e-column>
-                <e-column field='company_name' headerText='Company Name' width="150"></e-column>
-                <e-column field='company_kana_name' headerText='Kana Name' width="150"></e-column>
-                <e-column field='vehicle_company_abbreviation' headerText='Company Abbr'  width="150"></e-column>
-                <e-column field='vehicle_postal_code' textAlign="Center" headerText='Postal Code'  editType= 'numericedit' width="150"></e-column>
-                <e-column field='vehicle_address1' headerText='Address' width="200"></e-column>
-                <e-column field='vehicle_address2' headerText='Address 2' width="200"></e-column>
-                <e-column field='vehicle_phone_number' headerText='Phone' width="200"></e-column>
-                <e-column field='vehicle_fax_number' headerText='Fax' width="200"></e-column>
-                <e-column field='offset' headerText='Offset' textAlign="Center"  editType= 'numericedit' width="100"></e-column>
-                <e-column field='vehicle_remark' headerText='Remark' width="250"></e-column>
+                <e-column field='vehicle_no' :headerText='__("vehicle.vehicle_no")' width="100"></e-column>
+                <e-column field='company_name' :headerText='__("vehicle.company_name")' width="150"></e-column>
+                <e-column field='company_kana_name' :headerText='__("vehicle.kana_name")' width="150"></e-column>
+                <e-column field='vehicle_company_abbreviation' :headerText='__("vehicle.company_abbr")'  width="150"></e-column>
+                <e-column field='vehicle_postal_code' textAlign="Center" :headerText='__("vehicle.postal_code")'  editType= 'numericedit' width="150"></e-column>
+                <e-column field='vehicle_address1' :headerText='__("vehicle.address")' width="200"></e-column>
+                <e-column field='vehicle_address2' :headerText='__("vehicle.address1")' width="200"></e-column>
+                <e-column field='vehicle_phone_number' :headerText='__("vehicle.phone")' width="200"></e-column>
+                <e-column field='vehicle_fax_number' :headerText='__("vehicle.fax")' width="200"></e-column>
+                <e-column field='offset' :headerText='__("vehicle.offset")' textAlign="Center"  editType= 'numericedit' width="100"></e-column>
+                <e-column field='vehicle_remark' :headerText='__("vehicle.remark")' width="250"></e-column>
             </e-columns>
         </ejs-grid>
 
@@ -88,27 +88,6 @@
             this.fetchCompanies(this.companyUrl);
         },
         methods: {
-            showDialog(response) {
-                let message = response.message + ': ';
-                let errors = response.errors;
-                $.each( errors, function( key, value ) {
-                    message += value[0]; //showing only the first error.
-                });
-                this.$fire({
-                    title: "Message",
-                    text: message,
-                    type: "error",
-//                    timer: 5000
-                });
-            },
-            showSuccessDialog() {
-                this.$fire({
-                    title: "Message",
-                    text: "Operation successfully done!",
-                    type: "success",
-//                    timer: 5000
-                });
-            },
             actionBegin(args){
                 if(args.requestType == 'save'){
                     args.cancel = true;

@@ -8,7 +8,7 @@
                    vehicle-url="{{route('item.vehicleNumbers')}}"
                    registration-url="{{route('item.create')}}"
                    resource-url="/api/item"
-               title="Item list"
+               title="{{__('item.item_list')}}"
         ></item-list>
     </div>
 @endsection

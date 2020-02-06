@@ -110,10 +110,10 @@
                                 <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option value="Wing">Wing</option>
-                                    <option value="Flat">Flat</option>
-                                    <option value="Trailer">Trailer</option>
-                                    <option value="Bulk">Bulk</option>
+                                    <option value="Wing">{{__('item.wing')}}</option>
+                                    <option value="Flat">{{__('item.flat')}}</option>
+                                    <option value="Trailer">{{__('item.trailer')}}</option>
+                                    <option value="Bulk">{{__('item.bulk')}}</option>
                                 </select>
                             </td>
                         </tr>

@@ -25,7 +25,7 @@ Route::get('/vehicle/companies', 'VehicleController@companies')->name('vehicle.c
 
 
 // Shipper
-Route::resource('shipper', 'ShipperController');
+Route::get('/shipper', 'ShipperController@index')->name('shipper.index');
 
 // Driver
 Route::resource('driver', 'DriverController');
@@ -50,12 +50,11 @@ Route::get('/item/setDeptDateAsCompletion', 'Api\ItemController@setDeptDateAsCom
 
 // Invoice
 Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
-Route::get('/invoice/billing-month-pdf', 'InvoiceController@billingMonthPDF')->name('invoice.billingMonthPDF');
 Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->name('invoice.list');
 Route::get('/invoice/getPaymentList', 'Api\InvoiceController@getPaymentList')->name('payment.list');
 Route::get('/invoice/getDepositList', 'Api\InvoiceController@getDepositList')->name('deposit.list');
 Route::get('/invoice/getShipperList', 'Api\InvoiceController@getShipperList')->name('shipper.list');
-
+Route::get('/invoice/billingMonthPDF', 'Api\InvoiceController@billingMonthPDF')->name('billing.month');
 
 
 // Unit price

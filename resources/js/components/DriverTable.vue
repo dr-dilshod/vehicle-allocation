@@ -13,22 +13,22 @@
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">Register</button>
-                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">Edit</button>
+                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">{{__('driver.register')}}</button>
+                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">{{__('driver.edit')}}</button>
             </div>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true'>
             <e-columns>
-                <e-column field='vehicle_type' headerText='Type' :validationRules='vehicltTypeRules' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
-                <e-column field='driver_name' headerText='Name' :validationRules='driverNameRules'   width="150"></e-column>
-                <e-column field='driver_mobile_number' headerText='Mobile number' width="150"></e-column>
-                <e-column field='vehicle_no3' headerText='Vehicle No' width="150"></e-column>
-                <e-column field='maximum_Loading' headerText="Max Load" width="100"></e-column>
-                <e-column field='search_flg' headerText='Display'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
-                <e-column field='admin_flg' headerText='Admin'  editType= 'booleanedit' :template='adminTemplate' width="150" ></e-column>
-                <e-column field='driver_remark' headerText='Remarks' width="200"></e-column>
-                <e-column field='driver_pass' :validationRules='driverPasswordRules' headerText='Password' width="200"></e-column>
+                <e-column field='vehicle_type' :headerText= '__("driver.type")' :validationRules='vehicltTypeRules'  editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
+                <e-column field='driver_name' :headerText= '__("driver.name")' :validationRules='driverNameRules' width="150"></e-column>
+                <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
+                <e-column field='vehicle_no3' :headerText= '__("driver.vehicle_no")' width="150"></e-column>
+                <e-column field='maximum_Loading' :headerText= '__("driver.max_load")' width="100"></e-column>
+                <e-column field='search_flg' :headerText= '__("driver.display")'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
+                <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
+                <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
+                <e-column field='driver_pass' defaultValue='parol1234' :headerText= '__("driver.password")' width="200"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
@@ -44,12 +44,12 @@
     import {TableUtil} from '../utils/TableUtil.js'
 
     let vehicleTypes= [
-        { vehicleType: 'Blank'},
-        { vehicleType: '10tW'},
-        { vehicleType: '10t flat'},
-        { vehicleType: '4tW'},
-        { vehicleType: '4t flat'},
-        { vehicleType: 'Controller'},
+        { vehicleType: __('driver.bulk')},
+        { vehicleType: __('driver.10tw')},
+        { vehicleType: __('driver.10t_flat')},
+        { vehicleType: __('driver.4tw')},
+        { vehicleType: __('driver.4t_flat')},
+        { vehicleType: __('driver.controller')},
     ];
     Vue.use(GridPlugin);
     export default {
@@ -210,10 +210,4 @@
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap.css";
-    .below-30 {
-        background-color: orangered;
-    }
-    .below-80 {
-        background-color: yellow;
-    }
 </style>

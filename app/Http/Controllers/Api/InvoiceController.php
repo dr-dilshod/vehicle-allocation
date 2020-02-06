@@ -141,4 +141,93 @@ class InvoiceController extends Controller
             ->get();
         return response()->json($shippers);
     }
+
+    /**
+     * Billing month printing
+     */
+    public function billingMonthPDF(Request $request)
+    {
+        $shipper_id = $request->query('shipper_id') ?: '';
+        $billing_month = $request->query('billing_month') ?: '';
+        $billing_day = $request->query('billing_day') ?: '';
+
+        $shipper = Shipper::where('shipper_id', $shipper_id)
+            ->where('delete_flg', 0)
+            ->first();
+
+        $shipper_data = [
+            'shipper_no' => $shipper->shipper_no,
+            'closing_date' => $shipper->closing_date,
+            'shipper_name1' => $shipper->shipper_name1,
+            'shipper_name2' => $shipper->shipper_name2,
+            'address1' => $shipper->address1,
+            'address2' => $shipper->address2,
+            'postal_code' => $shipper->postal_code,
+            'shipper_kana_name1' => $shipper->shipper_kana_name1
+        ];
+
+        $items = Item::where('shipper_id', $shipper_id)
+            ->get();
+
+        $item_list = [];
+
+        $previous_month_billing = 0;
+        $today = Carbon::today();
+        foreach ($items as $item) {
+            //$completion_date = Carbon::parse($item->item_completion_date);
+            //$diff = $today->diffInMonths($completion_date);
+            //if ($diff == 1) {
+                $previous_month_billing = $previous_month_billing + $item->item_price;
+                array_push($item_list, $item);
+            //}
+        }
+
+        $deposits = Deposit::where('shipper_id', $shipper_id)
+            ->where('delete_flg', 0)
+            ->get();
+        $deposit = 0;
+        foreach ($deposits as $dep) {
+            $dep_day = Carbon::parse($dep->deposit_day);
+            $diff = $today->diffInMonths($dep_day);
+            if ($diff == 1) {
+                $deposit = $deposit + $dep->deposit_day;
+            }
+        }
+
+        $payments = Payment::where('shipper_id', $shipper_id)
+            ->where('delete_flg', 0)
+            ->get();
+
+        $same_day_sales = 0;
+        foreach ($payments as $payment) {
+            $pay_day = Carbon::parse($payment->payment_day);
+            $diff = $today->diffInMonths($pay_day);
+            if ($diff == 1) {
+                $same_day_sales = $same_day_sales + $payment->payment_amount;
+            }
+        }
+
+        $consumption_tax = $previous_month_billing * 0.1;
+        $offset_discount = 0; // ? don't where it comes from?
+        $carry_over_amount = $deposit - $same_day_sales;
+
+        $invoice_amount = $previous_month_billing + $deposit - $carry_over_amount;
+        $tax_free = $invoice_amount - $same_day_sales - $consumption_tax;
+        $calculations = [
+            'previous_month_billing' => $previous_month_billing,
+            'deposit' => $deposit,
+            'same_day_sales' => $same_day_sales,
+            'consumption_tax' => $consumption_tax,
+            'offset_discount' => $offset_discount,
+            'carry_over_amount' => $carry_over_amount,
+            'invoice_amount' => $invoice_amount,
+            'tax_free' => $tax_free,
+        ];
+
+        $pdf = \PDF::loadView('invoice.pdf.billing_month', [
+            'calculations' => $calculations,
+            'shipper_data' => $shipper_data,
+            'item_data' => $item_list]);
+        return $pdf->download('billingMonth.pdf');
+    }
 }

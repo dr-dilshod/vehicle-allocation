@@ -83,7 +83,7 @@
                                     <button type="submit" class="btn btn-primary">{{__('item.search')}}</button>
                                 </td>
                                 <td>
-                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clearing')}}</button>
+                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clear')}}</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -92,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
+        <ejs-grid :test="search" :dataSource="data" :actionBegin="actionBegin" :allowSelection='true' :recordDoubleClick="redirect"
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar' >
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
@@ -115,12 +115,12 @@
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
     import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
     import { DialogPlugin } from '@syncfusion/ej2-vue-popups';
+    import {TableUtil} from "../utils/TableUtil";
 
     Vue.use(ButtonPlugin);
     Vue.use( GridPlugin );
     Vue.use( VueSimpleAlert );
     Vue.use(DialogPlugin);
-    window["isDoubleClick"] = false;
 
     export default{
         name: 'ItemList',
@@ -208,12 +208,16 @@
                                 </div>
                             </div>
                         `,
-
                         data() {
                             return {
                                 data:{},
                                 stat: '',
                             };
+                        },
+                        props: {
+                            method: {
+                                type: Function
+                            },
                         },
                         methods: {
                             toIncomplete: function (id,departure_date) {
@@ -256,6 +260,7 @@
                                 } else {
                                     this.setDeptDateAsCompletion(id);
                                 }
+                                this.$emit('test');
                             },
                             getDate () {
                                 const toTwoDigits = num => num < 10 ? '0' + num : num;
@@ -272,7 +277,7 @@
                                     type: "success",
                                     timer: 5000
                                 }).then(r => {
-                                    //this.$root.$children['item-list'].search();
+                                    this.$parent.$refs.grid.refresh();
                                 });
                             },
                             showDialog(response) {
@@ -284,7 +289,6 @@
                                 this.$alert(message);
                             },
                         },
-
                     })
                 }
             },
@@ -295,9 +299,19 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
+            redirect(e) {
+                window.location.href = `/item/edit?item_id=` + e.rowData['item_id'];
+            },
             actionBegin(args){
                 if(args.requestType === 'beginEdit'){
-                    window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
+                    this.$refs.grid.ej2Instances.setProperties({
+                        toolbar: [],
+                        editSettings: {
+                            allowDeleting: false,
+                            allowEditing: false,
+                            allowAdding: false,
+                        },
+                    });
                 }
             },
             fetchItem(url) {

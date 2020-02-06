@@ -3,10 +3,10 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">Back</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('invoice.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">Editing</h2>
+                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">{{__('invoice.editing')}}</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
@@ -15,67 +15,69 @@
                 <div class="row">
                     <div class="col-4">
                         <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode != 'editing'">
-                            Register
+                            {{__('invoice.register')}}
                         </button>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="edit">Edit</button>
+                        <button class="btn btn-lg btn-danger" @click="edit">{{__('invoice.edit')}}</button>
                     </div>
                     <div class="col-4">
                         <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
-                            Billing month
+                            {{__('invoice.billing_month')}}
                         </button>
                         <br>
-                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">List printing</button>
+                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">{{__('invoice.list_printing')}}</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row mt-4 mb-4">
             <form action="#" class="form-inline" method="post" @submit.prevent="search">
-                <table class="table">
+                <table class="table" border="0" style="width: 90%">
                     <tr>
-                        <td width="10%">
-                            <label for="shipper">Shipper</label>
+                        <td align="left">
+                            <label for="shipper">{{__('invoice.shipper')}}</label>
                         </td>
-                        <td with="20%">
-                            <div class="col-2">
-                            <select name="shipper" id="shipper" v-model="formData.shipper_id" class="form-control">
-                                <option value=""></option>
-                                <option v-for="shipper in shippers" :value="shipper.shipper_id">
-                                    {{ shipper. shipper_name1 + " " + shipper. shipper_name2 }}
-                                </option>
-                            </select>
+                        <td align="left">
+                            <div class="col-md-6">
+                                <div class="md-form form-group w-25">
+                                    <select name="shipper" id="shipper" v-model="formData.shipper_id"  style="width:230px">
+                                        <option value=""></option>
+                                        <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                            {{ shipper. shipper_name1 + " " + shipper. shipper_name2 }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </td>
-                        <td width="15%">
-                            <label>Invoice month</label>
+                        <td>
+                            <label>{{__('invoice.invoice_month')}}</label>
                         </td>
-                        <td width="15%">
+                        <td>
                             <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'"
                                             :format="options.monthFormat"></datepicker>
                         </td>
-                        <td  width="20%">
-                            <label>Invoice day</label>
+                        <td  width="40%">
+                            <label>{{__('invoice.invoice_day')}}</label>
                         </td>
-                        <td  width="20%">
+                        <td  width="40%">
                             <select v-model="formData.invoice_day" class="form-control">
                                 <option value=""></option>
-                                <option value="20">20th</option>
-                                <option value="30">30th</option>
+                                <option value="20">{{__('invoice.20th')}}</option>
+                                <option value="30">{{__('invoice.30th')}}</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>Stack Date</label>
+                            <label>{{__('invoice.stack_date')}}</label>
                         </td>
-                        <td  with="15%">
+                        <td align="center">
                             <datepicker v-model="formData.stack_date" :minimumView="'day'" :format="options.stack_date"
-                                            :maximumView="'day'"></datepicker>
+                                            :maximumView="'day'"/>
                         </td>
                         <td>
-                            <label for="vehicle_no">Vehicle No</label>
+                            <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
                         </td>
                         <td>
                             <select name="vehicle_no" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
@@ -84,10 +86,13 @@
                                     {{ vehicle.vehicle_no3 }}
                                 </option>
                             </select>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-primary">{{__('invoice.search')}}</button>
                         </td>
                         <td colspan="2">
-                            <button type="submit" class="btn btn-primary mr-2">Search</button>
-                            <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
+                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('invoice.clear')}}</button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-primary" @click.prevent="listPrinting">{{__('invoice.aggregate')}}</button>
                         </td>
                     </tr>
                 </table>
@@ -96,19 +101,19 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="270" :frozenColumns="4" :rowSelected='rowSelected'>
             <e-columns>
-                <e-column field='stack_point' headerText='Loading port' width="150" textAlign="Center"></e-column>
-                <e-column field='down_point' headerText='Drop off' width="150" textAlign="Center"></e-column>
-                <e-column field='vehicle_payment' headerText='Amount' width="150" textAlign="Right"></e-column>
-                <e-column field='down_date' headerText='Delivery Date' width="100" textAlign="Center"></e-column>
-                <e-column field='shipper_name' headerText='Shipper' width="150" textAlign="Center"></e-column>
-                <e-column field='vehicle_no3' headerText='Vehicle No' width="150" textAlign="Center"></e-column>
-                <e-column field='weight' headerText='Weight' width="150"></e-column>
-                <e-column field='item_price' headerText='Item price' textAlign="Right" editType='numericedit'
+                <e-column field='stack_point' :headerText='__("invoice.loading_port")' width="150" textAlign="Center"></e-column>
+                <e-column field='down_point' :headerText='__("invoice.drop_off")' width="150" textAlign="Center"></e-column>
+                <e-column field='vehicle_payment' :headerText='__("invoice.amount")' width="150" textAlign="Right"></e-column>
+                <e-column field='down_date' :headerText='__("invoice.delivery_date")' width="100" textAlign="Center"></e-column>
+                <e-column field='shipper_name' :headerText='__("invoice.shipper")' width="150" textAlign="Center"></e-column>
+                <e-column field='vehicle_no3' :headerText='__("invoice.vehicle_no")' width="150" textAlign="Center"></e-column>
+                <e-column field='weight' :headerText='__("invoice.weight")' width="150"></e-column>
+                <e-column field='item_price' :headerText='__("invoice.item_price")' textAlign="Right" editType='numericedit'
                           width="100"></e-column>
-                <e-column field='status' headerText='Status' width="100" textAlign="Center"></e-column>
-                <e-column field='item_vehicle' headerText='Item vehicle' width="100" textAlign="Center"></e-column>
-                <e-column field='down_time' headerText='Delivery time' width="100" textAlign="Center"></e-column>
-                <e-column field='item_completion_date' headerText='Invoice date' width="150"
+                <e-column field='status' :headerText='__("invoice.status")' width="100" textAlign="Center"></e-column>
+                <e-column field='item_vehicle' :headerText='__("invoice.item_vehicle")' width="100" textAlign="Center"></e-column>
+                <e-column field='down_time' :headerText='__("invoice.delivery_time")' width="100" textAlign="Center"></e-column>
+                <e-column field='item_completion_date' :headerText='__("invoice.invoice_date")' width="150"
                           textAlign="Center"></e-column>
                 <e-column field='item_id' :visible="false" width="0"></e-column>
                 <e-column field='shipper_id' :visible="false" width="0"></e-column>
@@ -116,30 +121,65 @@
             </e-columns>
         </ejs-grid>
         <div class="row">
-            <div class="col-2 offset-md-10">
-                <div class="form-group">
-                    <label for="totalSales">Sales</label>
-                    <input type="text" disabled="disabled" id="totalSales" v-model="sales">
-                </div>
-                <div class="form-group">
-                    <label for="totalConsumptionTax">Total Consumption Tax</label>
-                    <input type="text" id="totalConsumptionTax" disabled="disabled" v-model="totalConsumptionTax">
-                </div>
-                <div class="form-group">
-                    <label for="otherTotals">Other Totals</label>
-                    <input type="text" id="otherTotals" disabled="disabled" v-model="otherTotals">
-                </div>
-                <div class="form-group">
-                    <label for="totalSalesTotal">Total Sales</label>
-                    <input type="text" id="totalSalesTotal" disabled="disabled" v-model="totalSales">
-                </div>
+            <div class="col-4 offset-md-8">
+                <br>
+                <table>
+                    <tr>
+                        <td>
+                        </td>
+                        <td align="right">
+                            <label for="totalSales">{{__('invoice.total_sales')}}</label>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                            <input type="text" disabled="disabled" id="totalSales" v-model="sales">
+                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td align="right">
+                        <label for="totalConsumptionTax">{{__('invoice.total_consumption_tax')}}</label>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                        <input type="text" id="totalConsumptionTax" disabled="disabled" v-model="totalConsumptionTax">
+                    </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td align="right">
+                        <label for="otherTotals">{{__('invoice.other_totals')}}</label>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                        <input type="text" id="otherTotals" disabled="disabled" v-model="otherTotals">
+                    </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td align="right">
+                            <label for="totalSalesTotal">{{__('invoice.sales_total')}}</label>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                            <input type="text" id="totalSalesTotal" disabled="disabled" v-model="totalSales">
+                        </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div class="modal" id="billingModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
-                        <h5 class="modal-title">Print billing date</h5>
+                        <h5 class="modal-title">{{__('invoice.print_billing_date')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -149,23 +189,23 @@
                             <p class="text-center">Select the billing date you want to print</p>
                             <div class="form-group text-center" style="margin: 20px calc(32.5%)">
                                 <label>Year and Month</label>
-                                <datepicker v-model="billing.month" :minimumView="'month'" :maximumView="'month'"
+                                <datepicker v-model="billing_month" :minimumView="'month'" :maximumView="'month'"
                                             :format="options.monthFormat"></datepicker>
                             </div>
                             <div class="form-group d-flex justify-content-around">
                                 <span>
-                                    <input type="radio" name="billing_day" v-model="billing.day" value="20" id="twenty"/>
-                                    <label for="twenty">20th</label>
+                                    <input type="radio" name="billing_day" v-model="billing_day" value="20" id="twenty"/>
+                                    <label for="twenty">{{__('invoice.20th')}}</label>
                                 </span>
                                 <span>
-                                    <input type="radio" name="billing_day" value="30" v-model="billing.day" id="thirty"/>
-                                    <label for="thirty">30th</label>
+                                    <input type="radio" name="billing_day" value="30" v-model="billing_day" id="thirty"/>
+                                    <label for="thirty">{{__('invoice.30th')}}</label>
                                 </span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-around">
-                            <button type="button" class="btn btn-success" @click="billingPrint">Print</button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" @click="billingPrint">{{__('invoice.print')}}</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">{{__('invoice.cancel')}}</button>
                         </div>
                     </div>
                 </div>
@@ -193,6 +233,7 @@
             title: {type: String, required: true},
             paymentUrl: {type: String, required: true},
             depositUrl: {type: String, required: true},
+            billingMonthUrl: {type: String, required: true},
         },
         components: {
             Datepicker
@@ -208,6 +249,7 @@
                     shipper_id: '',
                 },
                 billing_month: '',
+                billing_day: '',
                 shippers: [],
                 vehicles: [],
                 mode: 'normal',
@@ -279,7 +321,7 @@
                             invoiceTable.showDialog(error.response.data);
                         });
                 } else {
-                    invoiceTable.showDialog("Please, select an item to add to invoice list.");
+                    invoiceTable.showWarningDialog("Please, select an item to add to invoice list.");
                 }
             },
             deleteInvoice(item_id){
@@ -287,8 +329,6 @@
                 axios.delete(this.resourceUrl+'/'+item_id)
                     .then(function(response){
                         invoiceTable.tableUtil.endEditing();
-                        //invoiceTable.showSuccessDialog();
-                        //invoiceTable.refresh();
                         invoiceTable.showWarningDialog("Selected item is removed from invoice list.")
                     })
                     .catch(function(error){
@@ -299,66 +339,10 @@
             },
             billingPrint(){
                 if (this.data.length>0) {
-                    this.billing.shipper_data = this.shippers;
-                    this.billing.item_data = this.data;
-                    let itemList = this.data;
-                    let previous_month_billing = 0;
-
-                    let today = new Date();
-                    let currentMonth = today.getMonth();
-                    for (let i = 0; i < itemList.length; i++) {
-                        let completionDate = itemList[i].item_completion_date;
-                        let completionMonth = new Date(completionDate).getMonth();
-                        if (currentMonth - completionMonth == 1) {
-                            previous_month_billing = previous_month_billing + itemList[i].item_price;
-                        }
-                    }
-                    this.billing.previous_month_billing = previous_month_billing;
-
-                    this.fetchDepositList(this.depositUrl
-                        + '?shipper_id='
-                        + this.formData.shipper_id);
-                    let deposit = 0;
-                    let depositList = this.depositList;
-                    for (let i = 0; i < depositList.length; i++) {
-                        let deposit_day = depositList[i].deposit_day;
-                        let depositMonth = new Date(deposit_day).getMonth();
-                        if (currentMonth - depositMonth == 1) {
-                            deposit = deposit + depositList[i].deposit_amount;
-                        }
-                    }
-                    this.billing.deposit = deposit;
-
-                    this.fetchPaymentList(this.paymentUrl
-                        + '?shipper_id='
-                        + this.formData.shipper_id);
-                    let same_day_sales = 0;
-                    let paymentList = this.paymentList;
-                    for (let i = 0; i < paymentList.length; i++) {
-                        let payment_day  = paymentList[i].payment_day;
-                        let paymentMonth = new Date(payment_day).getMonth();
-                        if (currentMonth - paymentMonth == 1) {
-                            same_day_sales = same_day_sales + paymentList[i].payment_amount;
-                        }
-                    }
-                    this.billing.same_day_sales = same_day_sales;
-                    this.billing.consumption_tax = previous_month_billing*0.1;
-
-
-                     // offset_discount: 0, ? don't where it comes from?
-                    this.billing.carry_over_amount = deposit - same_day_sales;
-
-                    this.billing.invoice_amount = previous_month_billing + deposit - this.billing.carry_over_amount;
-                    this.billing.tax_free = this.billing.invoice_amount - same_day_sales - this.billing.consumption_tax;
-
-                    axios.get("/invoice/billing-month-pdf",this.this.billing)
-                        .then(function(response){
-                            invoice.showSuccessDialog("Invoice generation is successful.");
-                        })
-                        .catch(function(error){
-                            invoice.showDialog(error.response.data);
-                        });
-                    window.location = '/invoice/billing-month-pdf';
+                    window.location.href = this.billingMonthUrl
+                        + '?shipper_id=' + this.formData.shipper_id
+                        + '&billing_month=' + this.billing_month
+                        + '&billing_day=' + this.billing_day;
                 }
             },
             listPrinting(){
@@ -498,6 +482,14 @@
                     type: "warning",
                     timer: 5000
                 });
+            },
+            getDate () {
+                const toTwoDigits = num => num < 10 ? '0' + num : num;
+                let today = new Date();
+                let year = today.getFullYear();
+                let month = toTwoDigits(today.getMonth() + 1);
+                let day = toTwoDigits(today.getDate());
+                return `${year}-${month}-${day}`;
             },
         },
         provide: {

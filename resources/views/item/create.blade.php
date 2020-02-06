@@ -8,9 +8,9 @@
                            vehicle-url="{{route('item.vehicles')}}"
                            unitprice-url="{{route('item.unitprice')}}"
                            resource-url="/api/item"
-                           title="Item Registration"
-                           operation="Registration"
-                           clearing="Clear"
+                           title="{{__('item.item_registration')}}"
+                           operation="{{__('item.register')}}"
+                           clearing="{{__('item.clear')}}"
                            item-id=""
         ></item-registration>
     </div>

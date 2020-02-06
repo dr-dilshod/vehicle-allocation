@@ -3,6 +3,15 @@
  */
 module.exports = {
 
+    data(){
+        return {
+            max8 : {maxLength:[(args) => {return args['value'].length <= 8;}, 'At most 8 letters']},
+            max12 : {maxLength:[(args) => {return args['value'].length <= 12;}, 'At most 12 letters']},
+            max60 : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
+            max120 : {maxLength:[(args) => {return args['value'].length <= 120;}, 'At most 120 letters']},
+        };
+    },
+
     methods : {
 
         operationSuccessDialog() {
@@ -35,7 +44,12 @@ module.exports = {
             this.$fire({
                 icon : 'error',
                 html : message,
+                type: "error",
             });
+        },
+
+        loadErrorDialog(){
+            this.$alert('Error on loading data. Please try again', null, 'warning');
         },
 
         entityName(){

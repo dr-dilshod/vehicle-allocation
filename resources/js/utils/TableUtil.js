@@ -51,6 +51,10 @@ export class TableUtil{
         this.disableRegistration();
     }
 
+    editFailure(){
+        this.grid.startEdit();
+    }
+
     hideTitle(){
         this.editTitle.style.visibility = "hidden";
     }
