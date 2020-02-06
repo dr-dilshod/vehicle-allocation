@@ -68,21 +68,29 @@
                 <e-column field='address2' headerText='Address 2' width="200" ></e-column>
                 <e-column field='phone_number' headerText='Phone number' width="200"></e-column>
                 <e-column field='fax_number' headerText='Fax number' width="200" ></e-column>
-                <e-column field='closing_date' headerText='Closing date' width="200"></e-column>
-                <e-column field='payment_date' headerText='Payment date' width="200"></e-column>
+                <e-column field='closing_date' headerText='Closing date' editType= 'numericedit' width="100"></e-column>
+                <e-column field='payment_date' headerText='Payment date' type='date' format= 'y-M-d'
+                          :editTemplate="editTemplate" width="200"></e-column>
+                <e-column headerText=' ' width="150" ></e-column>
                 <e-column field='shipper_id' headerText='Shipper id' width="50" :isPrimaryKey="true" :visible=false></e-column>
             </e-columns>
         </ejs-grid>
+
     </div>
 </template>
 <script>
     import Vue from "vue";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
     import { TableUtil } from '../utils/TableUtil.js';
+    import Datepicker from "vuejs-datepicker";
+    import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     Vue.use( GridPlugin );
 
     export default{
+        components: {
+            Datepicker
+        },
         props: {
             backUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
@@ -133,6 +141,32 @@
             this.fetchCompanies();
         },
         methods: {
+            editTemplate(){
+                return { template: Vue.component('picker',{
+                    components: {
+                        Datepicker
+                    },
+                    template : '<input type="date"  :content="`${data.payment_date}`" width="180" />',
+                    data() {
+                        return {
+                            data : {}
+                        }
+                    }
+
+                })}
+            },
+//            editTemplate(){
+//                return { template: Vue.component('picker',{
+//                    components: {
+//                        Datepicker
+//                    },
+//                    template : '<input type="date" v-model="payment_date" width="180" />',
+//                    data() {
+//                        return {data:{}}
+//                    }
+//
+//                })}
+//            },
             actionBegin(args){
                 if(args.requestType == 'save'){
                     if(!args.data.shipper_id){
@@ -211,6 +245,9 @@
                 this.fetchCompanies();
                 this.search();
             },
+            paymentTemplate(){
+                return
+            }
         },
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar]
