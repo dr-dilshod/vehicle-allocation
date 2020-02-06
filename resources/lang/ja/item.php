@@ -40,7 +40,7 @@ return [
     'none'=>'なし',
     'completed'=>'完了',
     'incomplete'=>'未完了',
-    'delete'=>'削除',
+
     'update'=>'更新',
     'wing'=>'ウィング',
     'flat'=>'平',

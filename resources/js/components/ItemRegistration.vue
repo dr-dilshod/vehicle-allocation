@@ -4,13 +4,13 @@
             <div class="row">
                 <div class="col-2">
                     <a :href="backUrl"
-                       class="btn btn-lg btn-warning btn-block">{{__('item.back')}}</a>
+                       class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
                 </div>
                 <div class="col-2">
-                    <h6 class="text-center text-danger">* {{__('item.edit')}}</h6>
+                    <h6 class="text-center text-danger">* {{__('common.edit')}}</h6>
                 </div>
                 <div class="col-4">
-                    <h2 class="text-center">{{__('item.title')}}</h2>
+                    <h2 class="text-center">{{title}}</h2>
                 </div>
                 <div class="col-1"></div>
                 <div class="col-3">

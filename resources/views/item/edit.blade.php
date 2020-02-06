@@ -10,7 +10,7 @@
                            resource-url="/api/item"
                            title="{{__('item.item_registration')}}"
                            operation="{{__('item.update')}}"
-                           clearing="{{__('item.delete')}}"
+                           clearing="{{__('common.delete')}}"
                            item-id="{{$item_id}}">
         </item-registration>
     </div>

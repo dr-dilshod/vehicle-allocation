@@ -14,10 +14,5 @@ return [
         'trailer'=>'トレーラー',
         'bulk'=>'ﾊﾞﾙｸ',
     ],
-    'back'=>'戻る',
-    'register'=>'登録',
-    'edit'=>'編集',
-    'search'=>'検索',
-    'clear'=>'クリア',
-    'editing'=>'編集中',
+
 ];

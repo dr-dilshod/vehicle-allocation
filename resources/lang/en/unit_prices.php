@@ -16,10 +16,4 @@ return [
         'trailer' => 'Trailer',
         'bulk' => 'Bulk'
     ],
-    'back'=>'Back',
-    'register'=>'Register',
-    'edit'=>'Edit',
-    'search'=>'Search',
-    'clear'=>'Clear',
-    'editing'=>'Editing',
 ];
