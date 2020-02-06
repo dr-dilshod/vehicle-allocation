@@ -11,9 +11,8 @@ return [
     'noon' => 'Noon',
     'next_product' => 'Next product',
     'add' => 'Add',
-    'back'=>'Back',
-    'register'=>'Register',
     'printing'=>'Printing',
-
+    'remarks'=>'Remarks',
+    'pl_available'=>'PL available',
 
 ];

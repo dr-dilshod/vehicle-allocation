@@ -11,7 +11,7 @@ return [
     'noon' => '昼',
     'next_product' => '翌積',
     'add' => '追加',
-    'back'=>'戻る',
-    'register'=>'登録',
     'printing'=>'印刷',
+    'remarks'=>'備考',
+    'pl_available'=>'利用できるPL',
 ];

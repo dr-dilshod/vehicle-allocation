@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('dispatch.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
@@ -11,7 +11,7 @@
             <div class="col-2">
                 <p class="text-right">
                     <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block p-1 pl-2 pr-2">
-                        {{__('dispatch.register')}}
+                        {{__('common.register')}}
                     </button>
                 </p>
             </div>
@@ -54,8 +54,8 @@
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.stack_point }} - {{ item.down_point }} <br>
-                        {{ item.weight }}t <span v-if="item.empty_pl != 1">PL available</span> <br>
-                        Remarks: {{ item.remarks }}<br>
+                        {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
+                        {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
                     </div>
                 </draggable>
             </div>
@@ -66,7 +66,7 @@
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.down_point }} - {{ item.stack_point }} <br>
-                        {{ item.weight }}t <span v-if="item.empty_pl != 1">PL available</span> <br>
+                        {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
                         Remarks: {{ item.remarks }}<br>
                     </div>
                 </draggable>
@@ -104,7 +104,7 @@
                                     {{ item.shipper_name }} <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
-                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">PL available</span> <br>
+                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
                                     Remarks: {{ item.remarks }}<br>
                                 </div>
                             </draggable>
@@ -120,7 +120,7 @@
                                     {{ item.shipper_name }} <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
-                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">PL available</span> <br>
+                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
                                     Remarks: {{ item.remarks }}<br>
                                 </div>
                             </draggable>
@@ -136,7 +136,7 @@
                                     {{ item.shipper_name }} <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
-                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">PL available</span> <br>
+                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
                                     Remarks: {{ item.remarks }}<br>
                                 </div>
                             </draggable>
