@@ -13,9 +13,6 @@ return [
     '4t_flat' => '4t平',
     'controller' => 'ﾄﾚｰﾗ',
     'bulk' => 'ﾊﾞﾙｸ',
-    'editing'=>'編集中',
-    'register'=>'登録',
-    'edit'=>'編集',
     'type'=>'車種',
     'name'=>'ドライバー名',
     'mobile_number'=>'携帯番号',
@@ -24,6 +21,6 @@ return [
     'display'=>'表示',
     'admin'=>'管理者',
     'remarks'=>'備考',
-    'password'=>'Password',
-    'back'=>'戻る',
+    'password'=>'パスワード',
+    'operation_successfully_done'=>'操作が正常に完了しました！',
 ];

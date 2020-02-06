@@ -20,10 +20,7 @@ return [
     '4t_flat' => '4t flat',
     'controller' => 'Controller',
     'bulk' => 'Bulk',
-    'editing'=>'Editing',
     'driver_list'=>'Driver list',
-    'register'=>'Register',
-    'edit'=>'Edit',
     'type'=>'Type',
     'name'=>'Name',
     'mobile_number'=>'Mobile number',
@@ -33,5 +30,6 @@ return [
     'admin'=>'Admin',
     'remarks'=>'Remarks',
     'password'=>'Password',
-    'back'=>'Back',
+    'operation_successfully_done'=>'Operation successfully done!',
+
 ];
