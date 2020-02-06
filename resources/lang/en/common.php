@@ -1,7 +1,6 @@
 <?php
 
-return  [
-    'login' => 'Login',
+return  ['login' => 'Login',
     'back' => 'Back',
     'register' => 'Register',
     'edit' => 'Edit',
@@ -12,5 +11,6 @@ return  [
     'admin' => 'Admin',
     'password' => 'Password',
     'select_input' => '--Select--',
-    'delete' => 'Delete'
+    'delete' => 'Delete',
+
 ];

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 class="text-center text-danger" ref="editTitle">{{__('common.editing')}}</h2>
