@@ -6,7 +6,7 @@
                        back-url="{{route('setting')}}"
                        company-url="{{route('vehicle.companies')}}"
                        resource-url="/api/vehicle"
-                       title="Vehicle list"
+                       title="{{__('vehicle.vehicle_list')}}"
         ></vehicle-table>
     </div>
 @endsection
