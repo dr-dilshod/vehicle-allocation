@@ -83,7 +83,7 @@
                                     <button type="submit" class="btn btn-primary">{{__('item.search')}}</button>
                                 </td>
                                 <td>
-                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clearing')}}</button>
+                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('item.clear')}}</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -92,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
+        <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true' :recordDoubleClick="()=>{}"
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar' >
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
@@ -120,7 +120,6 @@
     Vue.use( GridPlugin );
     Vue.use( VueSimpleAlert );
     Vue.use(DialogPlugin);
-    window["isDoubleClick"] = false;
 
     export default{
         name: 'ItemList',
@@ -215,6 +214,9 @@
                                 stat: '',
                             };
                         },
+                        props: {
+                            method: { type: Function },
+                        },
                         methods: {
                             toIncomplete: function (id,departure_date) {
                                 if (departure_date == this.getDate()) {
@@ -272,7 +274,7 @@
                                     type: "success",
                                     timer: 5000
                                 }).then(r => {
-                                    //this.$root.$children['item-list'].search();
+                                    this.$parent.$refs.grid.refresh();
                                 });
                             },
                             showDialog(response) {
@@ -284,7 +286,6 @@
                                 this.$alert(message);
                             },
                         },
-
                     })
                 }
             },

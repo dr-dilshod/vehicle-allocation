@@ -50,6 +50,42 @@ class ShipperController extends Controller
         return $shipper;
     }
 
+    public function filter(Request $request)
+    {
+        $bill_to = $request->get('billTo');
+        $shipper = $request->get('shipper');
+
+        if (!empty($bill_to) && !empty($shipper)) {
+            $shipper = Shipper::where([
+                    ['shipper_id', $shipper],
+                    ['shipper_company_abbreviation', $bill_to],
+                    ['delete_flg', 0]])
+                ->orderBy('shipper_no','asc')
+                ->get();
+
+        } else if (!empty($shipper) && empty($bill_to)){
+
+            $shipper = Shipper::where([
+                ['shipper_id', $shipper],
+                ['delete_flg', 0]])
+                ->orderBy('shipper_no','asc')
+                ->get();
+
+        } else if (!empty($bill_to) && empty($shipper)){
+            $shipper = Shipper::where([
+                ['shipper_company_abbreviation', $bill_to],
+                ['delete_flg', 0]])
+                ->orderBy('shipper_no','asc')
+                ->get();
+        } else {
+            $shipper = Shipper::where('delete_flg',0)
+                ->orderBy('shipper_no','asc')
+                ->get();
+        }
+
+        return $shipper;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -143,6 +179,8 @@ class ShipperController extends Controller
     {
         $distinctCompanies = Shipper::select('shipper_company_abbreviation')
             ->where('delete_flg',0)
+            ->where('shipper_company_abbreviation','<>','')
+            ->where('shipper_company_abbreviation','<>', null)
             ->distinct()
             ->orderBy('shipper_company_abbreviation', 'asc')
             ->get();
@@ -157,7 +195,7 @@ class ShipperController extends Controller
     public function getFullnames(Request $request)
     {
         $shippers = Shipper::select('shipper_id',
-            DB::raw('concat(shipper_name1,\' \', shipper_name2) as fullname'))
+            DB::raw('concat(shipper_name1, \' \', ifnull(shipper_name2,\'\')) as fullname'))
             ->where('delete_flg',0)
             ->orderBy('fullname', 'asc')
             ->get();
