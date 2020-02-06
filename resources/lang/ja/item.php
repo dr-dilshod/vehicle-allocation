@@ -35,7 +35,7 @@ return [
     'item_registration' => '案件登録',
     'required' => 'required',
     'yen' => '円',
-
+    'status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'=>'スタックと現在の日付が同じでない場合、選択のステータスは未完了に変更されます。',
     'yes'=>'はい',
     'none'=>'なし',
     'completed'=>'完了',
@@ -46,4 +46,6 @@ return [
     'flat'=>'平',
     'trailer'=>'トレーラー',
     'bulk'=>'ﾊﾞﾙｸ',
+    'status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'=>'選択のステータスが完了に変更され、今日が完了日に設定されます。',
+    'status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'=>'選択のステータスが完了に変更され、スタック日付が完了日付として設定されます。',
 ];
