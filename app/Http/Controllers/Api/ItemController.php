@@ -6,6 +6,7 @@ use App\Driver;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Invoice;
 use App\Item;
 use App\Shipper;
 use App\UnitPrice;
@@ -54,11 +55,32 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-
         $item = Item::create($request->all());
-
+        $this->createInvoice($item);
         return response()->json($item);
     }
+
+    /**
+     * Display the specified resource.
+     * @param  int  $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createInvoice(Item $item)
+    {
+        $down_invoice = $item->down_invoice;
+        if ($down_invoice) {
+            $item_id = $item->item_id;
+            $shipper_id = $item->shipper_id;
+            $vehicle_id = $item->vehicle_id;
+            $invoice = Invoice::firstOrCreate(['item_id'=>$item_id,
+                'shipper_id'=>$shipper_id,
+                'vehicle_id'=>$vehicle_id,
+                'billing_recording_date'=>date('Y-m-d')]);
+            return response()->json($invoice);
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -69,7 +91,6 @@ class ItemController extends Controller
     public function show($id)
     {
         $item = Item::findOrFail($id);
-
         return $item;
     }
 
@@ -86,7 +107,7 @@ class ItemController extends Controller
 
         $item = Item::findOrFail($id);
         $item->update($request->all());
-
+        $this->createInvoice($item);
         return response()->json($item, 200);
     }
 
