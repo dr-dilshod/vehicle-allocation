@@ -5,7 +5,7 @@
         <unit-price-table
             resource-url="api/unit-prices"
             back-url="{{route('setting')}}"
-            title="Unit price list"
+            title="{{__('unit_prices.unit_price_list')}}"
         ></unit-price-table>
     </div>
 @endsection

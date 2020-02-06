@@ -14,7 +14,6 @@ return [
     'total_payment' => 'Total payment',
     'outgoing_balance' => 'Outgoing balance',
     'yen' => 'yen',
-    'outgoing_balance'=>'Outgoing balance',
     'total_credit_amount'=>'Total credit amount',
     'back'=>'Back',
     'register'=>'Register',

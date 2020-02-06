@@ -30,6 +30,7 @@
         "@syncfusion/ej2-vue-calendars": "^17.4.43",
         "@syncfusion/ej2-vue-dropdowns": "^17.4.44",
         "@syncfusion/ej2-vue-grids": "^17.4.44",
+        "@syncfusion/ej2-vue-inputs": "^17.4.47",
         "@syncfusion/ej2-vue-popups": "^17.4.43",
         "vue-router": "^3.1.5",
         "vue-simple-alert": "^1.1.1",

@@ -3,10 +3,10 @@
         <div class="row mb-4">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('driver.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
             </div>
             <div class="col-2">
-                <h2 ref="editTitle" class="text-center text-danger">{{__('driver.editing')}}</h2>
+                <h2 ref="editTitle" class="text-center text-danger">Editing</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
@@ -20,8 +20,8 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true'>
             <e-columns>
-                <e-column field='vehicle_type' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
-                <e-column field='driver_name' :headerText= '__("driver.name")'  width="150"></e-column>
+                <e-column field='vehicle_type' :headerText= '__("driver.type")' :validationRules='vehicltTypeRules'  editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
+                <e-column field='driver_name' :headerText= '__("driver.name")' :validationRules='driverNameRules' width="150"></e-column>
                 <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
                 <e-column field='vehicle_no3' :headerText= '__("driver.vehicle_no")' width="150"></e-column>
                 <e-column field='maximum_Loading' :headerText= '__("driver.max_load")' width="100"></e-column>
@@ -52,7 +52,6 @@
         { vehicleType: __('driver.controller')},
     ];
     Vue.use(GridPlugin);
-
     export default {
         props: {
             backUrl: {type: String, required: true},
@@ -74,7 +73,7 @@
                 adminTemplate: function () {
                     return {
                         template: Vue.component('editOption', {
-                            template: '<label>{{(data.admin_flg == 1)? "Administrator":"General"}}</label>',
+                            template: '<label>{{(data.admin_flg == false)? "General":"Administrator"}}</label>',
                             data() { return { data: { data: {} } }; }
                         })
                     }
@@ -82,12 +81,14 @@
                 searchTemplate: function () {
                     return {
                         template: Vue.component('editOption', {
-                            template: '<label>{{(data.search_flg == 1)? "Show":"Hide"}}</label>',
+                            template: '<label>{{(data.search_flg == true)? "Show":"Hide"}}</label>',
                             data() { return { data: { data: {} } }; }
                         })
                     }
                 },
-
+                vehicltTypeRules: {required: true},
+                driverNameRules: {required: true, minLength: 5},
+                driverPasswordRules: {required: true, minLength: 5},
                 mode: 'normal',
             };
         },
@@ -96,10 +97,43 @@
             this.fetchData(this.resourceUrl);
         },
         methods: {
+            showDialog(response) {
+                let message = response.message + ': ';
+                let errors = response.errors;
+                $.each( errors, function( key, value ) {
+                    message += value[0]; //showing only the first error.
+                });
+                this.$fire({
+                    title: "Message",
+                    text: message,
+                    type: "error",
+//                    timer: 5000
+                });
+            },
+            showSuccessDialog() {
+                this.$fire({
+                    title: "Message",
+                    text: "Operation successfully done!",
+                    type: "success",
+//                    timer: 5000
+                });
+            },
             fetchData(url) {
                 axios.get(url)
                     .then(data => {
                         this.data = data.data.data;
+                        for (let i = 0; i <this.data.length ; i++) {
+                            if (this.data[i].search_flg==0){
+                                this.data[i].search_flg = false;
+                            } else {
+                                this.data[i].search_flg = true;
+                            }
+                            if (this.data[i].admin_flg==1){
+                                this.data[i].admin_flg = true;
+                            } else {
+                                this.data[i].admin_flg = false;
+                            }
+                        }
                     })
             },
             actionBegin(args) {
@@ -112,8 +146,6 @@
                 }
                 if (args.requestType == 'delete') {
                     if(args.data[0].driver_id !== undefined){
-                        console.log('args.data[0]==');
-                        console.log(args.data[0]);
                         this.deleteData(args.data[0].driver_id);
                     }
                 }
@@ -124,9 +156,11 @@
                     .then(function(response){
                         driverTable.tableUtil.endEditing();
                         driverTable.refresh();
+                        driverTable.deleteSuccessDialog();
                     })
                     .catch(function(error){
-                        alert(error)
+                        driverTable.errorDialog(error);
+                        return false;
                     });
             },
             insertData(driver){
@@ -134,24 +168,27 @@
                 axios.post(this.resourceUrl,driver)
                     .then(function(response){
                         driverTable.tableUtil.endEditing();
+                        driverTable.createSuccessDialog();
+                        driverTable.fetchCompanies();
                         driverTable.refresh();
                     })
                     .catch(function(error){
-                        alert(error)
+                        driverTable.errorDialog(error);
                     });
             },
             editData(driver){
                 let driverTable = this;
                 let id = driver.driver_id;
                 delete driver.driver_id;
-                console.log(driver);
                 axios.put(this.resourceUrl+'/'+id, driver)
                     .then(function(response){
                         driverTable.tableUtil.endEditing();
+                        driverTable.updateSuccessDialog();
+                        driverTable.fetchCompanies();
                         driverTable.refresh();
                     })
                     .catch(function(error){
-                        alert(error)
+                        driverTable.errorDialog(error);
                     });
             },
             refresh() {
@@ -173,10 +210,4 @@
     @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css";
     @import "../../../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap.css";
-    .below-30 {
-        background-color: orangered;
-    }
-    .below-80 {
-        background-color: yellow;
-    }
 </style>

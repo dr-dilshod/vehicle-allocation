@@ -6,12 +6,8 @@
  * Time: 17:18
  */
 return [
-    'back'=>'Back',
-    'edit'=>'Editing',
-    'title'=>'Title',
     'operation'=>'Register',
     'delete'=>'Clear',
-    'clear'=>'Clear',
     'unloading_place' => 'Unloading place',
     'stack_date' => 'Stack date',
     'down_date' => 'Down Date',
@@ -41,10 +37,8 @@ return [
     'yen' => 'yen',
      'yes'=>'Yes',
     'none'=>'None',
-    'register'=>'Register',
     'completed'=>'Completed',
     'incomplete'=>'Incomplete',
-    'search'=>'Search',
     'update'=>'Update',
     'wing'=>'Wing',
     'flat'=>'Flat',
