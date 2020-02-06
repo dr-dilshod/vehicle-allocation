@@ -3,16 +3,11 @@
 return [
 
     'deposit_registration'=>'Deposit registration',
-    'back'=>'Back',
-    'register'=>'Register',
-    'edit'=>'Edit',
     'delete'=>'Delete',
     'shipper'=>'Shipper',
     'deposit_year'=>'Deposit year',
     'deposit_month'=>'Deposit month',
     'deposit_day'=>'Deposit day',
-    'search'=>'Search',
-    'clear'=>'Clear',
     'transfer'=>'Transfer',
     'offset'=>'Offset',
     'other'=>'Other',

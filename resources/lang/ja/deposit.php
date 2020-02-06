@@ -3,16 +3,11 @@
 return [
 
     'deposit_registration'=>'入金登録',
-    'back'=>'戻る',
-    'register'=>'登録',
-    'edit'=>'編集',
     'delete'=>'削除',
     'shipper'=>'荷主',
     'deposit_year'=>'入金年',
     'deposit_month'=>'入金月',
     'deposit_day'=>'入金日',
-    'search'=>'検索',
-    'clear'=>'クリア',
     'transfer'=>'振込',
     'offset'=>'相殺',
     'other'=>'その他',
