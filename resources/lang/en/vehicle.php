@@ -17,5 +17,11 @@ return [
     'phone' => 'Phone',
     'fax' => 'Fax',
     'offset' => 'Offset',
-    'remark' => 'Remark'
+    'remark' => 'Remark',
+    'back'=>'Back',
+    'register'=>'Register',
+    'edit'=>'Edit',
+    'editing'=>'Editing',
+    'search'=>'Search',
+    'clear'=>'Clear',
 ];

@@ -199,12 +199,11 @@
 
         methods : {
             fetchShippers(){
-                let self = this;
                 axios.get(this.shipperUrl)
                     .then(response =>
-                        self.shippers = response.data
+                        this.shippers = response.data
                     ).catch (error =>
-                    alert(error)
+                        this.loadErrorDialog()
                 )
             },
             changeDays(){
@@ -213,48 +212,44 @@
                 }
             },
             search(){
-                let self = this;
                 axios.post(this.resourceUrl+'/filter',this.filter)
                     .then(response => {
-                        self.payment = response.data.payment;
-                        self.offset = response.data.offset;
-                        self.total = response.data.total;
-                        self.invoice = response.data.invoice;
-                        self.editable = response.data.unique;
-                        self.registerMode = false;
+                        this.payment = response.data.payment;
+                        this.offset = response.data.offset;
+                        this.total = response.data.total;
+                        this.invoice = response.data.invoice;
+                        this.editable = response.data.unique;
+                        this.registerMode = false;
                     }).catch (error => {
-                    alert(error);
-                    self.clear();
+                        this.loadErrorDialog();
+                        this.clear();
                 })
             },
             create(){
-                let self = this;
                 this.payment.payment_day = this.payment.payment_day.toISOString().slice(0,10);
                 axios.post(this.resourceUrl, this.payment)
                     .then(response => {
-                        alert('Payment created successfully');
-                        self.clear();
+                        this.createSuccessDialog();
+                        this.clear();
                     }).catch(error => {
-                    alert("Error while creating payment")
+                        this.errorDialog(error);
                 })
             },
             update(){
-                let self = this;
                 axios.put(this.resourceUrl+'/'+this.payment.payment_id, this.payment)
                     .then(response => {
-                        alert('Payment updated successfully');
+                        this.updateSuccessDialog()
                     }).catch(error => {
-                    alert("Error while updating payment")
+                        this.errorDialog(error);
                 })
             },
             remove(){
-                let self = this;
                 axios.delete(this.resourceUrl+'/'+this.payment.payment_id)
                     .then(response => {
-                        alert('Payment deleted successfully');
-                        self.clear();
+                        this.deleteSuccessDialog();
+                        this.clear();
                     }).catch(error => {
-                    alert('Error on deleting payment');
+                        this.errorDialog(error);
                 })
             },
             clear(){
@@ -279,9 +274,7 @@
                 };
             }
         },
-
         name : 'PaymentRegistration'
-
     }
 
 

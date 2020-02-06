@@ -48,6 +48,10 @@ module.exports = {
             });
         },
 
+        loadErrorDialog(){
+            this.$alert('Error on loading data. Please try again', null, 'warning');
+        },
+
         entityName(){
             switch (this.$options.name) {
                 case 'VehicleTable' :

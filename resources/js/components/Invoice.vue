@@ -3,10 +3,10 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">Back</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('invoice.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">Editing</h2>
+                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">{{__('invoice.editing')}}</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
@@ -15,18 +15,18 @@
                 <div class="row">
                     <div class="col-4">
                         <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode != 'editing'">
-                            Register
+                            {{__('invoice.register')}}
                         </button>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="edit">Edit</button>
+                        <button class="btn btn-lg btn-danger" @click="edit">{{__('invoice.edit')}}</button>
                     </div>
                     <div class="col-4">
                         <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
-                            Billing month
+                            {{__('invoice.billing_month')}}
                         </button>
                         <br>
-                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">List printing</button>
+                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">{{__('invoice.list_printing')}}</button>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <table class="table" border="0" style="width: 90%">
                     <tr>
                         <td align="left">
-                            <label for="shipper">Shipper</label>
+                            <label for="shipper">{{__('invoice.shipper')}}</label>
                         </td>
                         <td align="left">
                             <div class="col-md-6">
@@ -51,33 +51,33 @@
                             </div>
                         </td>
                         <td>
-                            <label>Invoice month</label>
+                            <label>{{__('invoice.invoice_month')}}</label>
                         </td>
                         <td>
                             <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'"
                                             :format="options.monthFormat"></datepicker>
                         </td>
                         <td  width="40%">
-                            <label>Invoice day</label>
+                            <label>{{__('invoice.invoice_day')}}</label>
                         </td>
                         <td  width="40%">
                             <select v-model="formData.invoice_day" class="form-control">
                                 <option value=""></option>
-                                <option value="20">20th</option>
-                                <option value="30">30th</option>
+                                <option value="20">{{__('invoice.20th')}}</option>
+                                <option value="30">{{__('invoice.30th')}}</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>Stack Date</label>
+                            <label>{{__('invoice.stack_date')}}</label>
                         </td>
                         <td align="center">
                             <datepicker v-model="formData.stack_date" :minimumView="'day'" :format="options.stack_date"
                                             :maximumView="'day'"/>
                         </td>
                         <td>
-                            <label for="vehicle_no">Vehicle No</label>
+                            <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
                         </td>
                         <td>
                             <select name="vehicle_no" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
@@ -87,12 +87,12 @@
                                 </option>
                             </select>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">{{__('invoice.search')}}</button>
                         </td>
                         <td colspan="2">
-                            <button type="reset" class="btn btn-primary" @click.prevent="clear">Clear</button>
+                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('invoice.clear')}}</button>
                             &nbsp;&nbsp;&nbsp;
-                            <button type="reset" class="btn btn-primary" @click.prevent="listPrinting">Aggregate</button>
+                            <button type="reset" class="btn btn-primary" @click.prevent="listPrinting">{{__('invoice.aggregate')}}</button>
                         </td>
                     </tr>
                 </table>
@@ -101,19 +101,19 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="270" :frozenColumns="4" :rowSelected='rowSelected'>
             <e-columns>
-                <e-column field='stack_point' headerText='Loading port' width="150" textAlign="Center"></e-column>
-                <e-column field='down_point' headerText='Drop off' width="150" textAlign="Center"></e-column>
-                <e-column field='vehicle_payment' headerText='Amount' width="150" textAlign="Right"></e-column>
-                <e-column field='down_date' headerText='Delivery Date' width="100" textAlign="Center"></e-column>
-                <e-column field='shipper_name' headerText='Shipper' width="150" textAlign="Center"></e-column>
-                <e-column field='vehicle_no3' headerText='Vehicle No' width="150" textAlign="Center"></e-column>
-                <e-column field='weight' headerText='Weight' width="150"></e-column>
-                <e-column field='item_price' headerText='Item price' textAlign="Right" editType='numericedit'
+                <e-column field='stack_point' :headerText='__("invoice.loading_port")' width="150" textAlign="Center"></e-column>
+                <e-column field='down_point' :headerText='__("invoice.drop_off")' width="150" textAlign="Center"></e-column>
+                <e-column field='vehicle_payment' :headerText='__("invoice.amount")' width="150" textAlign="Right"></e-column>
+                <e-column field='down_date' :headerText='__("invoice.delivery_date")' width="100" textAlign="Center"></e-column>
+                <e-column field='shipper_name' :headerText='__("invoice.shipper")' width="150" textAlign="Center"></e-column>
+                <e-column field='vehicle_no3' :headerText='__("invoice.vehicle_no")' width="150" textAlign="Center"></e-column>
+                <e-column field='weight' :headerText='__("invoice.weight")' width="150"></e-column>
+                <e-column field='item_price' :headerText='__("invoice.item_price")' textAlign="Right" editType='numericedit'
                           width="100"></e-column>
-                <e-column field='status' headerText='Status' width="100" textAlign="Center"></e-column>
-                <e-column field='item_vehicle' headerText='Item vehicle' width="100" textAlign="Center"></e-column>
-                <e-column field='down_time' headerText='Delivery time' width="100" textAlign="Center"></e-column>
-                <e-column field='item_completion_date' headerText='Invoice date' width="150"
+                <e-column field='status' :headerText='__("invoice.status")' width="100" textAlign="Center"></e-column>
+                <e-column field='item_vehicle' :headerText='__("invoice.item_vehicle")' width="100" textAlign="Center"></e-column>
+                <e-column field='down_time' :headerText='__("invoice.delivery_time")' width="100" textAlign="Center"></e-column>
+                <e-column field='item_completion_date' :headerText='__("invoice.invoice_date")' width="150"
                           textAlign="Center"></e-column>
                 <e-column field='item_id' :visible="false" width="0"></e-column>
                 <e-column field='shipper_id' :visible="false" width="0"></e-column>
@@ -128,7 +128,7 @@
                         <td>
                         </td>
                         <td align="right">
-                            <label for="totalSales">Sales</label>
+                            <label for="totalSales">{{__('invoice.total_sales')}}</label>
                         </td>
                         <td>
                             <div class="form-group">
@@ -140,7 +140,7 @@
                         <td>
                         </td>
                         <td align="right">
-                        <label for="totalConsumptionTax">Total Consumption Tax</label>
+                        <label for="totalConsumptionTax">{{__('invoice.total_consumption_tax')}}</label>
                         </td>
                         <td>
                             <div class="form-group">
@@ -152,7 +152,7 @@
                         <td>
                         </td>
                         <td align="right">
-                        <label for="otherTotals">Other Totals</label>
+                        <label for="otherTotals">{{__('invoice.other_totals')}}</label>
                             </td>
                             <td>
                                 <div class="form-group">
@@ -164,7 +164,7 @@
                         <td>
                         </td>
                         <td align="right">
-                            <label for="totalSalesTotal">Total Sales</label>
+                            <label for="totalSalesTotal">{{__('invoice.sales_total')}}</label>
                         </td>
                         <td>
                             <div class="form-group">
@@ -179,7 +179,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
-                        <h5 class="modal-title">Print billing date</h5>
+                        <h5 class="modal-title">{{__('invoice.print_billing_date')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -195,17 +195,17 @@
                             <div class="form-group d-flex justify-content-around">
                                 <span>
                                     <input type="radio" name="billing_day" v-model="billing_day" value="20" id="twenty"/>
-                                    <label for="twenty">20th</label>
+                                    <label for="twenty">{{__('invoice.20th')}}</label>
                                 </span>
                                 <span>
                                     <input type="radio" name="billing_day" value="30" v-model="billing_day" id="thirty"/>
-                                    <label for="thirty">30th</label>
+                                    <label for="thirty">{{__('invoice.30th')}}</label>
                                 </span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-around">
-                            <button type="button" class="btn btn-success" @click="billingPrint">Print</button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" @click="billingPrint">{{__('invoice.print')}}</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">{{__('invoice.cancel')}}</button>
                         </div>
                     </div>
                 </div>
