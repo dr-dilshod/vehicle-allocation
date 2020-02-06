@@ -30,5 +30,6 @@ return [
     'admin'=>'Admin',
     'remarks'=>'Remarks',
     'password'=>'Password',
+    'operation_successfully_done'=>'Operation successfully done!',
 
 ];

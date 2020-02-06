@@ -113,7 +113,7 @@
             showSuccessDialog() {
                 this.$fire({
                     title: "Message",
-                    text: "Operation successfully done!",
+                    text: "__('driver.operation_successfully_done')",
                     type: "success",
 //                    timer: 5000
                 });

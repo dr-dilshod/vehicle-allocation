@@ -21,5 +21,6 @@ return [
     'display'=>'表示',
     'admin'=>'管理者',
     'remarks'=>'備考',
-    'password'=>'Password',
+    'password'=>'パスワード',
+    'operation_successfully_done'=>'操作が正常に完了しました！',
 ];
