@@ -1,5 +1,6 @@
 <?php
 return [
+
     'shipper_list' => 'Shipper list',
     'shipper' => 'Shipper',
     'shipper_no' => 'Shipper No',
@@ -10,4 +11,9 @@ return [
     'postal_code' => 'Postal code',
     'address1' => 'Address 1',
     'address2' => 'Address 2',
+    'phone_number'=>'Phone number',
+    'fax_number'=>'FAX number',
+    'furigana'=>'Furigana',
+    'closing_date'=>'Closing date',
+    'payment_date'=>'Payment date',
 ];
