@@ -6,6 +6,6 @@
             back-url="{{route('top')}}"
             third-list-url="{{ route('api.dispatch.third') }}"
             pdf-url="{{ route('dispatch.pdf') }}"
-            title="{{__('Dispatch board')}}"
+            title="{{__('dispatch.dispatch_board')}}"
     ></dispatch>
 @endsection

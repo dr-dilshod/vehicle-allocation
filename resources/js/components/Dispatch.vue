@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('dispatch.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
@@ -11,7 +11,7 @@
             <div class="col-2">
                 <p class="text-right">
                     <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block p-1 pl-2 pr-2">
-                        Register
+                        {{__('dispatch.register')}}
                     </button>
                 </p>
             </div>
@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="form-group d-flex">
-                                <label for="dispatch_day">Dispatch day</label>
+                                <label for="dispatch_day">{{__('dispatch.dispatch_day')}}</label>
                                 <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
@@ -30,9 +30,9 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary" id="display" @click.prevent="display">Display</button>
-                                <button type="button" class="btn btn-primary" id="nextDay" @click.prevent="nextDay">Next day</button>
-                                <button type="button" class="btn btn-primary" id="twoDaysLater" @click.prevent="twoDaysLater">Two days later
+                                <button type="button" class="btn btn-primary" id="display" @click.prevent="display">{{__('dispatch.display')}}</button>
+                                <button type="button" class="btn btn-primary" id="nextDay" @click.prevent="nextDay">{{__('dispatch.next_day')}}</button>
+                                <button type="button" class="btn btn-primary" id="twoDaysLater" @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
                                 </button>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block p-1 pl-2 pr-2">Print
+                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block p-1 pl-2 pr-2">{{__('dispatch.printing')}}
                     </button>
                 </p>
             </div>
@@ -75,11 +75,11 @@
                 <table class="table fixed-header">
                     <thead>
                     <tr>
-                        <th width="10%" class="text-center">Car No</th>
-                        <th width="15%" class="text-center">Driver name</th>
-                        <th width="25%" class="text-center">Morning</th>
-                        <th width="25%" class="text-center">Noon</th>
-                        <th width="25%" class="text-center">Next product</th>
+                        <th width="10%" class="text-center">{{__('dispatch.car_no')}}</th>
+                        <th width="15%" class="text-center">{{__('dispatch.driver_name')}}</th>
+                        <th width="25%" class="text-center">{{__('dispatch.morning')}}</th>
+                        <th width="25%" class="text-center">{{__('dispatch.noon')}}</th>
+                        <th width="25%" class="text-center">{{__('dispatch.next_product')}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -146,7 +146,7 @@
                     <tfoot slot="footer">
                     <tr>
                         <td colspan="5">
-                            <button data-toggle="modal" data-target="#addDriverModal" class="btn btn-primary">Add
+                            <button data-toggle="modal" data-target="#addDriverModal" class="btn btn-primary">{{__('dispatch.add')}}
                             </button>
                         </td>
                     </tr>
