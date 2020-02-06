@@ -16,6 +16,19 @@ export class TableUtil{
         this.disableRegistration();
         this.addListeners();
 
+        this.init();
+
+    }
+
+    init(){
+        this.grid.setProperties({
+            toolbar: [],
+            editSettings: {
+                allowDeleting: false,
+                allowEditing: false,
+                allowAdding: false,
+            },
+        });
     }
 
     addListeners(){
@@ -25,7 +38,12 @@ export class TableUtil{
 
     beginEditing(){
         this.grid.setProperties({
-            toolbar: ['Edit','Delete','Update','Cancel'],
+            toolbarClick : (args)=>{
+                if(args.item.id === 'exit')
+                    this.endEditing()
+            },
+            toolbar: ['Edit','Delete','Update','Cancel',
+                { text: 'Exit', tooltipText: 'Exit from edit mode', prefixIcon: 'exit-btn', id: 'exit' }],
             editSettings: {
                 allowDeleting: true,
                 allowEditing: true,
@@ -35,6 +53,13 @@ export class TableUtil{
         });
         this.showTitle();
         this.enableRegistration();
+    }
+
+    toolbarClickHandler(args){
+        let self = this;
+        if (args.item.id === 'exit') {
+            self.endEditing();
+        }
     }
 
     endEditing(){

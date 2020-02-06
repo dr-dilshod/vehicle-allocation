@@ -68,11 +68,10 @@
                 <e-column field='address2' headerText='Address 2' width="200" ></e-column>
                 <e-column field='phone_number' headerText='Phone number' width="200"></e-column>
                 <e-column field='fax_number' headerText='Fax number' width="200" ></e-column>
-                <e-column field='closing_date' headerText='Closing date' editType= 'numericedit' width="100"></e-column>
+                <e-column field='closing_date' headerText='Closing date' type="number" min="0" step="1" editType= 'numericedit' :edit='numericParams' width="150"></e-column>
                 <e-column field='payment_date' headerText='Payment date' type='date' format= 'y-M-d'
-                          :editTemplate="editTemplate" width="200"></e-column>
-                <e-column headerText=' ' width="150" ></e-column>
-                <e-column field='shipper_id' headerText='Shipper id' width="50" :isPrimaryKey="true" :visible=false></e-column>
+                          editType = 'datepickeredit' :editTemplate="editTemplate" width="200" ></e-column>
+                <e-column field='shipper_id' headerText='Shipper id' :isPrimaryKey="true" :visible=false></e-column>
             </e-columns>
         </ejs-grid>
 
@@ -83,6 +82,7 @@
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
     import { TableUtil } from '../utils/TableUtil.js';
     import Datepicker from "vuejs-datepicker";
+    import { DatePickerPlugin } from "@syncfusion/ej2-vue-calendars";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     Vue.use( GridPlugin );
@@ -105,6 +105,15 @@
                     shipper : '',
                     billTo : ''
                 },
+                options: {
+                    monthFormat: "yyyy/MM",
+                    weekday: "yyyy-MM-dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
+                },
+                numericParams: { params: { decimals: 0, value: 1 } },
                 shipperNameCols : [
                     {
                         field : 'shipper_name1',
@@ -146,7 +155,7 @@
                     components: {
                         Datepicker
                     },
-                    template : '<input type="date"  :content="`${data.payment_date}`" width="180" />',
+                    template : `<input id="payment_date" class="form-control" type="date" format="y-M-d" v-model="data.payment_date" />`,
                     data() {
                         return {
                             data : {}
@@ -155,18 +164,6 @@
 
                 })}
             },
-//            editTemplate(){
-//                return { template: Vue.component('picker',{
-//                    components: {
-//                        Datepicker
-//                    },
-//                    template : '<input type="date" v-model="payment_date" width="180" />',
-//                    data() {
-//                        return {data:{}}
-//                    }
-//
-//                })}
-//            },
             actionBegin(args){
                 if(args.requestType == 'save'){
                     if(!args.data.shipper_id){
