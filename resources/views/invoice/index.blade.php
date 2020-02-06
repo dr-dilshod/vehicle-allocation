@@ -7,7 +7,7 @@
                  shippers-url="{{route('shipper.list')}}"
                  vehicles-url="{{route('api.driver.vehicle-numbers')}}"
                  resource-url="/api/invoice"
-                 title="Invoice list"
+                 title="{{__('invoice.invoice_list')}}"
                  payment-url="{{route('payment.list')}}"
                  deposit-url="{{route('deposit.list')}}"
                  billing-month-url="{{route('billing.month')}}"
