@@ -3,10 +3,10 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('invoice.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">{{__('invoice.editing')}}</h2>
+                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">{{__('common.editing')}}</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
@@ -15,11 +15,11 @@
                 <div class="row">
                     <div class="col-4">
                         <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode != 'editing'">
-                            {{__('invoice.register')}}
+                            {{__('common.register')}}
                         </button>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="edit">{{__('invoice.edit')}}</button>
+                        <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
                     </div>
                     <div class="col-4">
                         <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
@@ -87,10 +87,10 @@
                                 </option>
                             </select>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="submit" class="btn btn-primary">{{__('invoice.search')}}</button>
+                            <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
                         </td>
                         <td colspan="2">
-                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('invoice.clear')}}</button>
+                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
                             &nbsp;&nbsp;&nbsp;
                             <button type="reset" class="btn btn-primary" @click.prevent="listPrinting">{{__('invoice.aggregate')}}</button>
                         </td>
@@ -186,9 +186,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="">
-                            <p class="text-center">Select the billing date you want to print</p>
+                            <p class="text-center">{{__('invoice.select_the_billing_date_you_want_to_print')}}</p>
                             <div class="form-group text-center" style="margin: 20px calc(32.5%)">
-                                <label>Year and Month</label>
+                                <label>{{__('invoice.year_and_month')}}</label>
                                 <datepicker v-model="billing_month" :minimumView="'month'" :maximumView="'month'"
                                             :format="options.monthFormat"></datepicker>
                             </div>
@@ -315,13 +315,13 @@
                 if (this.invoiceData.item_id !== '') {
                     axios.post(this.resourceUrl, this.invoiceData)
                         .then(function (response) {
-                            invoiceTable.showSuccessDialog("Selected item is added to Invoice List.")
+                            invoiceTable.showSuccessDialog(this.__('invoice.selected_item_is_added_to_invoice_list'))
                         })
                         .catch(function (error) {
                             invoiceTable.showDialog(error.response.data);
                         });
                 } else {
-                    invoiceTable.showWarningDialog("Please, select an item to add to invoice list.");
+                    invoiceTable.showWarningDialog(this.__('invoice.please_select_an_item_to_add_to_invoice_list'));
                 }
             },
             deleteInvoice(item_id){
@@ -329,7 +329,7 @@
                 axios.delete(this.resourceUrl+'/'+item_id)
                     .then(function(response){
                         invoiceTable.tableUtil.endEditing();
-                        invoiceTable.showWarningDialog("Selected item is removed from invoice list.")
+                        invoiceTable.showWarningDialog(this.__('invoice.selected_item_is_removed_from_invoice_list'))
                     })
                     .catch(function(error){
                         invoiceTable.showDialog(error.response.data);
@@ -347,7 +347,7 @@
             },
             listPrinting(){
                 const invoiceTable = this;
-                invoiceTable.showWarningDialog("This feature is under development.");
+                invoiceTable.showWarningDialog(this.__('invoice.this_feature_is_under_development'));
             },
             fetchShippers() {
                 axios.get(this.shippersUrl)
