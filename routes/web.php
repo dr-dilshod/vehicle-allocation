@@ -49,24 +49,24 @@ Route::get('/item/setDeptDateAsCompletion', 'Api\ItemController@setDeptDateAsCom
 
 
 // Invoice
-Route::get('/invoice', 'InvoiceController@index')->name('invoice.index');
-Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->name('invoice.list');
-Route::get('/invoice/getPaymentList', 'Api\InvoiceController@getPaymentList')->name('payment.list');
-Route::get('/invoice/getDepositList', 'Api\InvoiceController@getDepositList')->name('deposit.list');
-Route::get('/invoice/getShipperList', 'Api\InvoiceController@getShipperList')->name('shipper.list');
-Route::get('/invoice/billingMonthPDF', 'Api\InvoiceController@billingMonthPDF')->name('billing.month');
+Route::get('/invoice', 'InvoiceController@index')->name('invoice.index')->middleware('admin');
+Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->name('invoice.list')->middleware('admin');
+Route::get('/invoice/getPaymentList', 'Api\InvoiceController@getPaymentList')->name('payment.list')->middleware('admin');
+Route::get('/invoice/getDepositList', 'Api\InvoiceController@getDepositList')->name('deposit.list')->middleware('admin');
+Route::get('/invoice/getShipperList', 'Api\InvoiceController@getShipperList')->name('shipper.list')->middleware('admin');
+Route::get('/invoice/billingMonthPDF', 'Api\InvoiceController@billingMonthPDF')->name('billing.month')->middleware('admin');
 
 
 // Unit price
 Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index');
 
 // Deposit
-Route::get('/deposit', 'DepositController@index')->name('deposit.index');
+Route::get('/deposit', 'DepositController@index')->name('deposit.index')->middleware('admin');
 
 // Payment
-Route::get('/payment/registration', 'PaymentController@registration')->name('payment.registration');
-Route::get('/payment/search', 'Api\PaymentController@search')->name('payment.search');
-Route::get('/payment/getShippers', 'Api\PaymentController@getShippers')->name('payment.shippers');
+Route::get('/payment/registration', 'PaymentController@registration')->name('payment.registration')->middleware('admin');
+Route::get('/payment/search', 'Api\PaymentController@search')->name('payment.search')->middleware('admin');;
+Route::get('/payment/getShippers', 'Api\PaymentController@getShippers')->name('payment.shippers')->middleware('admin');
 
 // Dispatch list
 Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');
