@@ -3,21 +3,14 @@
     <head>
         <meta charset="utf-8"/>
         <title>御請求書</title>
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet">
         <style>
             table, td, th{
                 border-collapse: collapse;
             }
-            @font-face {
-                font-family: 'Noto Sans JP';
-                font-style: normal;
-                font-weight: normal;
-                src: url(https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap) format('truetype');
-            }
             body{
-                font-family: 'Noto Sans JP', sans-serif;
+                font-family: ipaexg, sans-serif;
             }
-            td{
+            td, th{
                 text-align: center;
             }
         </style>
