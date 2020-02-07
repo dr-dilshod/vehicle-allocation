@@ -48,4 +48,5 @@ return [
     'bulk'=>'ﾊﾞﾙｸ',
     'status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'=>'選択のステータスが完了に変更され、今日が完了日に設定されます。',
     'status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'=>'選択のステータスが完了に変更され、スタック日付が完了日付として設定されます。',
+    'operation_is_successful'=>'操作が成功しました',
 ];

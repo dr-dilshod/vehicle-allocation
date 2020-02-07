@@ -522,7 +522,7 @@
             showSuccessDialog() {
                 this.$fire({
                     title: "Info Message",
-                    text: "Operation is successful",
+                    text: (this.__('item.operation_is_successful')),
                     type: "success",
                     timer: 5000
                 }).then(r => {

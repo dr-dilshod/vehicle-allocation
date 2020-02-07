@@ -47,4 +47,5 @@ return [
     'status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'=>'Status of Selection is changed to Incomplete when stack and current dates are not same.',
     'status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'=>'Status of Selection is changed to Complete and Today is set as Completion Date.',
     'status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'=>'Status of Selection is changed to Complete and Stack Date is set as Completion Date.',
+    'operation_is_successful'=>'Operation is successful',
 ];
