@@ -21,14 +21,14 @@
                   :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true'>
             <e-columns>
                 <e-column field='vehicle_type' :headerText= '__("driver.type")' :validationRules='vehicltTypeRules'  editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
-                <e-column field='driver_name' :headerText= '__("driver.name")' :validationRules='driverNameRules' width="150"></e-column>
+                <e-column field='driver_name'  :headerText= '__("driver.name")' :validationRules='driverNameRules' width="150"></e-column>
                 <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
                 <e-column field='vehicle_no3' :headerText= '__("driver.vehicle_no")' width="150"></e-column>
                 <e-column field='maximum_Loading' :headerText= '__("driver.max_load")' width="100"></e-column>
                 <e-column field='search_flg' :headerText= '__("driver.display")'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
                 <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
                 <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
-                <e-column field='driver_pass' defaultValue='parol1234' :headerText= '__("driver.password")' width="200"></e-column>
+                <e-column field='driver_pass' :template="passwordTemplate" :headerText= '__("driver.password")' width="200"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
@@ -86,9 +86,17 @@
                         })
                     }
                 },
+                passwordTemplate: function () {
+                    return {
+                        template: Vue.component('editOption', {
+                            template: '<label>{{"********"}}</label>',
+                            data() { return { data: { data: {} } }; }
+                        })
+                    }
+                },
                 vehicltTypeRules: {required: true},
                 driverNameRules: {required: true, minLength: 5},
-                driverPasswordRules: {required: true, minLength: 5},
+                driverPasswordRules: {required: true, minLength: 8},
                 mode: 'normal',
             };
         },
