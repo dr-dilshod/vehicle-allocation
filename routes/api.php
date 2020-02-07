@@ -64,7 +64,7 @@ Route::put('/item/toIncomplete', 'Api\ItemController@toIncomplete')->name('api.i
 Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names');
 Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.shipper-names');
 Route::get('/unit-prices/{shipper_id}', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
-Route::get('/unit-prices/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
+Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
 Route::post('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
 Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
@@ -72,29 +72,29 @@ Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api
 /**
  * Deposit APIs
  */
-Route::post('/deposits/filter', 'Api\DepositController@filter')->name('api.deposit.filter');
-Route::post('/deposits', 'Api\DepositController@store')->name('api.deposit.store');
-Route::put('/deposits/{id}', 'Api\DepositController@update')->name('api.deposit.update');
-Route::get('/deposits/{id}', 'Api\DepositController@show')->name('api.deposit.show');
-Route::delete('/deposits/{id}', 'Api\DepositController@destroy')->name('api.deposit.destroy');
+Route::post('/deposits/filter', 'Api\DepositController@filter')->name('api.deposit.filter')->middleware('admin');
+Route::post('/deposits', 'Api\DepositController@store')->name('api.deposit.store')->middleware('admin');
+Route::put('/deposits/{id}', 'Api\DepositController@update')->name('api.deposit.update')->middleware('admin');
+Route::get('/deposits/{id}', 'Api\DepositController@show')->name('api.deposit.show')->middleware('admin');
+Route::delete('/deposits/{id}', 'Api\DepositController@destroy')->name('api.deposit.destroy')->middleware('admin');
 
 /**
  * Payment APIs
  */
-Route::get('payment/registration', 'Api\PaymentController@index')->name('api.payment.registration');
-Route::get('payment/bk-report', 'Api\PaymentController@index')->name('api.payment.bk-report');
-Route::post('/payments/filter', 'Api\PaymentController@filter')->name('api.payment.filter');
-Route::post('/payments', 'Api\PaymentController@store')->name('api.payment.store');
-Route::put('/payments/{id}', 'Api\PaymentController@update')->name('api.payment.update');
-Route::get('/payments/{id}', 'Api\PaymentController@show')->name('api.payment.show');
-Route::delete('/payments/{id}', 'Api\PaymentController@destroy')->name('api.payment.destroy');
+Route::get('payment/registration', 'Api\PaymentController@index')->name('api.payment.registration')->middleware('admin');
+Route::get('payment/bk-report', 'Api\PaymentController@index')->name('api.payment.bk-report')->middleware('admin');
+Route::post('/payments/filter', 'Api\PaymentController@filter')->name('api.payment.filter')->middleware('admin');
+Route::post('/payments', 'Api\PaymentController@store')->name('api.payment.store')->middleware('admin');
+Route::put('/payments/{id}', 'Api\PaymentController@update')->name('api.payment.update')->middleware('admin');
+Route::get('/payments/{id}', 'Api\PaymentController@show')->name('api.payment.show')->middleware('admin');
+Route::delete('/payments/{id}', 'Api\PaymentController@destroy')->name('api.payment.destroy')->middleware('admin');
 
 /**
  * Invoice APIs
  */
-Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index');
-Route::delete('/invoice/{id}', 'Api\InvoiceController@destroy')->name('api.invoice.destroy');
-Route::post('/invoice', 'Api\InvoiceController@store')->name('api.invoice.store');
+Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index')->middleware('admin');
+Route::delete('/invoice/{id}', 'Api\InvoiceController@destroy')->name('api.invoice.destroy')->middleware('admin');
+Route::post('/invoice', 'Api\InvoiceController@store')->name('api.invoice.store')->middleware('admin');
 
 
 // Dispatch
