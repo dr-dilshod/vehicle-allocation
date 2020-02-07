@@ -244,7 +244,7 @@
                 formData: {
                     stack_date: '',
                     vehicle_id: '',
-                    invoice_deadline: '',
+                    invoice_day: '',
                     invoice_month: '',
                     shipper_id: '',
                 },
@@ -345,10 +345,10 @@
             },
             listPrinting(){
                 if (this.data.length>0) {
-                    window.location.href = this.billingMonthUrl
+                    window.location.href = this.billingListUrl
                         + '?shipper_id=' + this.formData.shipper_id
                         + '&billing_month=' + this.formData.invoice_month
-                        + '&billing_deadline=' + this.formData.invoice_day
+                        + '&billing_day=' + this.formData.invoice_day
                         + '&stack_date=' + this.formData.stack_date
                         + '&vehicle_id=' + this.formData.vehicle_id;
                 }
@@ -392,7 +392,7 @@
                 this.data = this.fetchData(this.invoiceUrl
                     + '?stack_date=' + this.formData.stack_date,
                     + '&vehicle_id=' + this.formData.vehicle_id,
-                    + '&invoice_day=' + this.formData.invoice_deadline,
+                    + '&invoice_day=' + this.formData.invoice_day,
                     + '&invoice_month=' + this.formData.invoice_month,
                     + '&shipper_id=' + this.formData.shipper_id);
 
