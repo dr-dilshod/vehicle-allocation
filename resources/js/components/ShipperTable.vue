@@ -119,13 +119,13 @@
                         field : 'shipper_name1',
                         headerText : this.__('shipper.name1'),
                         width : 100,
-                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, this.__('shipper.at_most_60_letters')]},
                     },
                     {
                         field : 'shipper_name2',
                         headerText : this.__('shipper.name2'),
                         width : 100,
-                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, this.__('shipper.at_most_60_letters')]},
                     }
                 ],
                 furiganaCols : [
@@ -133,13 +133,13 @@
                         field : 'shipper_kana_name1',
                         headerText : this.__('shipper.name1'),
                         width : 100,
-                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, this.__('shipper.at_most_60_letters')]},
                     },
                     {
                         field : 'shipper_kana_name2',
                         headerText : this.__('shipper.name2'),
                         width : 100,
-                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
+                        validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, this.__('shipper.at_most_60_letters')]},
                     }
                 ]
             }

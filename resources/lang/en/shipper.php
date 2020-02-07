@@ -16,4 +16,5 @@ return [
     'furigana'=>'Furigana',
     'closing_date'=>'Closing date',
     'payment_date'=>'Payment date',
+    'at_most_60_letters'=>'At most 60 letters',
 ];

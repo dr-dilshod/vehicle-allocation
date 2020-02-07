@@ -15,4 +15,5 @@ return [
     'furigana'=>'フリガナ',
     'closing_date'=>'締日',
     'payment_date'=>'支払日',
+    'at_most_60_letters'=>'最大60文字',
 ];

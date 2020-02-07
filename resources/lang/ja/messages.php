@@ -6,12 +6,12 @@
  * Time: 16:50
  */
 return [
-    'wrong_user' => 'Username or password wrong',
-    'complete' => 'Completed. Is it OK?',
-    'incomplete' => 'Make it incomplete. Is it OK?',
-    'register' => 'It will be registered. Is it OK?',
-    'delete' => 'It will be deleted. Is it OK?',
-    'print' => 'It will be printed. Is it OK??',
-    'Please enter {0}' => 'Please enter {0}',
-    'duplicated' => 'Data is duplicated.',
+    'wrong_user' => 'ユーザー名かパスワードが間違っています',
+    'complete' => '完了しました。 大丈夫ですか？',
+    'incomplete' => '不完全にします。 大丈夫ですか？',
+    'register' => '登録されます。 大丈夫ですか？',
+    'delete' => '削除されます。 大丈夫ですか？',
+    'print' => '印刷されます。 大丈夫ですか？',
+    'Please enter {0}' => '入ってください {0}',
+    'duplicated' => 'データが重複しています。',
 ];
