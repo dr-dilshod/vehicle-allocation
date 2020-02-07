@@ -392,7 +392,7 @@
                 this.data = this.fetchData(this.invoiceUrl
                     + '?stack_date=' + this.formData.stack_date,
                     + '&vehicle_id=' + this.formData.vehicle_id,
-                    + '&invoice_day=' + this.formData.invoice_day,
+                    + '&invoice_day=' + this.formData.invoice_deadline,
                     + '&invoice_month=' + this.formData.invoice_month,
                     + '&shipper_id=' + this.formData.shipper_id);
 
