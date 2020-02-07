@@ -6,7 +6,7 @@ return [
     'shipper' => '荷主',
     'payment_year' => '支払年',
     'payment_month' => '支払月',
-    'payment_day' => 'Payment day',
+    'payment_day' => '支払日',
     'payment_date' => '支払日',
     'transfer' => '振込',
     'offset' => '相殺',

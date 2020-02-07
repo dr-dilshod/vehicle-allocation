@@ -5,11 +5,11 @@
         <div class="row mb-4">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">Back</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
             </div>
 
             <div class="col-8">
-                <h2 class="text-center">Payment list</h2>
+                <h2 class="text-center">{{__('payment.payment_list')}}</h2>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
 
                 <form action="#" class="form-inline" @submit.prevent="search">
                     <div class="form-group ml-3">
-                        <label for="year">Payment year</label>
+                        <label for="year">{{__('payment.payment_year')}}</label>
                     </div>
                     <div class="form-group ml-1">
                         <select id="year" v-model="filter.year"
@@ -29,7 +29,7 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <label for="month">Payment month</label>
+                        <label for="month">{{__('payment.payment_month')}}</label>
                     </div>
                     <div class="form-group ml-1">
                         <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control">
@@ -39,7 +39,7 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <label for="day">Payment day</label>
+                        <label for="day">{{__('payment.payment_day')}}</label>
                     </div>
                     <div class="form-group ml-1">
                         <select id="day" v-model="filter.day" class="form-control">
@@ -49,10 +49,10 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
                     </div>
                     <div class="form-group ml-1">
-                        <button type="reset" class="btn btn-primary">Clear</button>
+                        <button type="reset" class="btn btn-primary">{{__('common.clear')}}</button>
                     </div>
                 </form>
 
@@ -63,14 +63,14 @@
         <form class="form-inline">
 
             <div class="form-group mx-auto mt-4">
-                <label for="tb">Total billed</label>
-                <input id="tb" type="text" class="form-control ml-1 mr-1" disabled /> <span>yen</span>
-                <label for="dt" class="ml-4">Deposit total</label>
-                <input id="dt" type="text" class="form-control ml-1 mr-1" disabled /> <span>yen</span>
-                <label for="to" class="ml-4">Offset</label>
-                <input id="to" type="text" class="form-control ml-1 mr-1" disabled /> <span>yen</span>
-                <label for="tc">Total commission</label>
-                <input id="tc" type="text" class="form-control ml-1 mr-1" disabled/> <span>yen</span>
+                <label for="tb">{{__('payment.total_billed')}}</label>
+                <input id="tb" type="text" class="form-control ml-1 mr-1" disabled /> <span>{{__('payment.yen')}}</span>
+                <label for="dt" class="ml-4">{{__('payment.deposit_total')}}</label>
+                <input id="dt" type="text" class="form-control ml-1 mr-1" disabled /> <span>{{__('payment.yen')}}</span>
+                <label for="to" class="ml-4">{{__('payment.offset')}}</label>
+                <input id="to" type="text" class="form-control ml-1 mr-1" disabled /> <span>{{__('payment.yen')}}</span>
+                <label for="tc">{{__('payment.total_commission')}}</label>
+                <input id="tc" type="text" class="form-control ml-1 mr-1" disabled/> <span>{{__('payment.yen')}}</span>
             </div>
         </form>
 
@@ -95,7 +95,7 @@
                     month : '',
                     day : ''
                 },
-                months : ['January', 'February','March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                months : [this.__('payment.january'), this.__('payment.february'),this.__('payment.march'),this.__('payment.april'), this.__('payment.may'), this.__('payment.june'), this.__('payment.july'), this.__('payment.august'), this.__('payment.september'), this.__('payment.october'), this.__('payment.november'), this.__('payment.december')],
                 dayCount : 0,
             }
         },
