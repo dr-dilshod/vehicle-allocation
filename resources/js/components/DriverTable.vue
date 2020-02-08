@@ -20,8 +20,8 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true'>
             <e-columns>
-                <e-column field='vehicle_type' :headerText= '__("driver.type")' :validationRules='vehicltTypeRules'  editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
-                <e-column field='driver_name'  :headerText= '__("driver.name")' :validationRules='driverNameRules' width="150"></e-column>
+                <e-column field='vehicle_type' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
+                <e-column field='driver_name'  :headerText= '__("driver.name")' width="150"></e-column>
                 <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
                 <e-column field='vehicle_no3' :headerText= '__("driver.vehicle_no")' width="150"></e-column>
                 <e-column field='maximum_Loading' :headerText= '__("driver.max_load")' width="100"></e-column>
@@ -94,9 +94,6 @@
                         })
                     }
                 },
-                vehicltTypeRules: {required: true},
-                driverNameRules: {required: true, minLength: 5},
-                driverPasswordRules: {required: true, minLength: 8},
                 mode: 'normal',
             };
         },
@@ -105,27 +102,6 @@
             this.fetchData(this.resourceUrl);
         },
         methods: {
-            showDialog(response) {
-                let message = response.message + ': ';
-                let errors = response.errors;
-                $.each( errors, function( key, value ) {
-                    message += value[0]; //showing only the first error.
-                });
-                this.$fire({
-                    title: "Message",
-                    text: message,
-                    type: "error",
-//                    timer: 5000
-                });
-            },
-            showSuccessDialog() {
-                this.$fire({
-                    title: "Message",
-                    text: (this.__('driver.operation_successfully_done')),
-                    type: "success",
-//                    timer: 5000
-                });
-            },
             fetchData(url) {
                 axios.get(url)
                     .then(data => {
@@ -146,7 +122,7 @@
             },
             actionBegin(args) {
                 if (args.requestType == 'save') {
-                    if(args.data.driver_id === undefined){
+                    if(!args.data.driver_id){
                         this.insertData(args.data);
                     }else{
                         this.editData(args.data);
@@ -159,44 +135,41 @@
                 }
             },
             deleteData(id){
-                let driverTable = this;
                 axios.delete(this.resourceUrl+'/'+id)
-                    .then(function(response){
-                        driverTable.tableUtil.endEditing();
-                        driverTable.refresh();
-                        driverTable.deleteSuccessDialog();
+                    .then(response =>{
+                        this.tableUtil.endEditing();
+                        this.refresh();
+                        this.deleteSuccessDialog();
                     })
-                    .catch(function(error){
-                        driverTable.errorDialog(error);
+                    .catch(error=>{
+                        this.errorDialog(error);
                         return false;
                     });
             },
             insertData(driver){
-                let driverTable = this;
                 axios.post(this.resourceUrl,driver)
-                    .then(function(response){
-                        driverTable.tableUtil.endEditing();
-                        driverTable.createSuccessDialog();
-                        driverTable.fetchCompanies();
-                        driverTable.refresh();
+                    .then(response=>{
+                        this.tableUtil.endEditing();
+                        this.createSuccessDialog();
+                        this.fetchCompanies();
+                        this.refresh();
                     })
-                    .catch(function(error){
-                        driverTable.errorDialog(error);
+                    .catch(error=>{
+                        this.errorDialog(error);
                     });
             },
             editData(driver){
-                let driverTable = this;
                 let id = driver.driver_id;
                 delete driver.driver_id;
                 axios.put(this.resourceUrl+'/'+id, driver)
-                    .then(function(response){
-                        driverTable.tableUtil.endEditing();
-                        driverTable.updateSuccessDialog();
-                        driverTable.fetchCompanies();
-                        driverTable.refresh();
+                    .then(response=>{
+                        this.tableUtil.endEditing();
+                        this.updateSuccessDialog();
+                        this.fetchCompanies();
+                        this.refresh();
                     })
-                    .catch(function(error){
-                        driverTable.errorDialog(error);
+                    .catch(error =>{
+                        this.errorDialog(error);
                     });
             },
             refresh() {
