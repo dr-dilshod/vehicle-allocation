@@ -75,7 +75,7 @@
                         component.tableData = data.data;
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        this.loadErrorDialog();
                     })
             },
             fetchByMonth(){
@@ -85,7 +85,7 @@
                         component.tableData = data.data;
                     })
                     .catch(error => {
-                        console.error(error);
+                        this.loadErrorDialog();
                     });
             }
         },
