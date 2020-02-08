@@ -7,6 +7,18 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Syncfusion styles. May this styles be unused
+@import "~@syncfusion/ej2-base/styles/bootstrap.css";
+@import "~@syncfusion/ej2-vue-grids/styles/bootstrap.css";
+@import "~@syncfusion/ej2-navigations/styles/bootstrap.css";
+@import "~@syncfusion/ej2-buttons/styles/bootstrap.css";
+@import "~@syncfusion/ej2-icons/styles/bootstrap.css";
+@import "~@syncfusion/ej2-popups/styles/bootstrap.css";
+@import "~@syncfusion/ej2-dropdowns/styles/bootstrap.css";
+@import '~@syncfusion/ej2-base/styles/material.css'; // from ItemList.vue
+@import '~@syncfusion/ej2-buttons/styles/material.css'; // from ItemList.vue
+@import "~@syncfusion/ej2-inputs/styles/bootstrap.css"; // from UnitPrice
+
 .very-center {
     width: 350px;
     position: absolute;

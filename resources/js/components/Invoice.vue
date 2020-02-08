@@ -234,6 +234,7 @@
             paymentUrl: {type: String, required: true},
             depositUrl: {type: String, required: true},
             billingMonthUrl: {type: String, required: true},
+            billingListUrl: {type: String, required: true},
         },
         components: {
             Datepicker
@@ -337,11 +338,15 @@
                     });
                 return true;
             },
-            billingPrint(){
+            billingPrint() {
+                if (this.formData.shipper_id === '') {
+                    this.showWarningDialog('Please, select a shipper.');
+                } else {
                     window.location.href = this.billingMonthUrl
                         + '?shipper_id=' + this.formData.shipper_id
                         + '&billing_month=' + this.billing_month
                         + '&billing_day=' + this.billing_day;
+                }
             },
             listPrinting(){
                 if (this.data.length>0) {
@@ -351,6 +356,8 @@
                         + '&billing_day=' + this.formData.invoice_day
                         + '&stack_date=' + this.formData.stack_date
                         + '&vehicle_id=' + this.formData.vehicle_id;
+                } else {
+                    this.showWarningDialog('There is no item for your selection.');
                 }
             },
             fetchShippers() {
@@ -510,9 +517,6 @@
     }
 </script>
 <style scoped>
-    @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
 
     #invoice label {
         width: 150px;

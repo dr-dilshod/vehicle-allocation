@@ -277,12 +277,4 @@
         name : 'PaymentRegistration'
     }
 
-
 </script>
-
-
-<style scoped>
-    @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
-
-</style>

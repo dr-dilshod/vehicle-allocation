@@ -12,5 +12,8 @@ return  [
     'admin' => '管理者',
     'password' => 'パスワード',
     'select_input' => '--セレクト--',
-    'delete' => 'デリート'
+    'delete' => 'デリート',
+    'username'=>'ユーザーID',
+    'password'=>'パスワード',
+
 ];

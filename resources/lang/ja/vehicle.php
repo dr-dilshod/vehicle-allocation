@@ -18,12 +18,6 @@ return [
     'fax' => 'FAX番号',
     'offset' => '相殺',
     'remark' => '備考',
-    'back'=>'戻る',
-    'register'=>'登録',
-    'edit'=>'編集',
-    'editing'=>'編集中',
-    'search'=>'検索',
-    'clear'=>'クリア',
 
 
 ];
