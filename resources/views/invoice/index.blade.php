@@ -11,6 +11,7 @@
                  payment-url="{{route('payment.list')}}"
                  deposit-url="{{route('deposit.list')}}"
                  billing-month-url="{{route('billing.month')}}"
+                 billing-list-url="{{route('billing.list')}}"
         ></invoice>
     </div>
 @endsection
