@@ -16,7 +16,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-12 ">
-
+            <br>
                 <div class="table-responsive">
                     <form action="#" class="form-inline" @submit.prevent="search">
                         <table class="table table-sm table-nowrap card-table">
@@ -92,8 +92,9 @@
                 </div>
             </div>
         </div>
-        <ejs-grid :test="search" :dataSource="data" :actionBegin="actionBegin" :allowSelection='true' :recordDoubleClick="redirect"
-                  ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar' :height="270">
+        <ejs-grid :test="search" :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
+                  ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
+                  :height="280" rowHeight=40>
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
@@ -299,9 +300,7 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-            redirect(e) {
-                window.location.href = `/item/edit?item_id=` + e.rowData['item_id'];
-            },
+
             actionBegin(args){
                 if(args.requestType === 'beginEdit'){
                     this.$refs.grid.ej2Instances.setProperties({
@@ -312,6 +311,7 @@
                             allowAdding: false,
                         },
                     });
+                    window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
                 }
             },
             fetchItem(url) {
