@@ -67,8 +67,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="down_date">{{__('item.down_date')}}</label>
                                 <span class="required"> *</span>
+                                <label for="down_date">{{__('item.down_date')}}</label>
                             </td>
                             <td>
 
@@ -78,8 +78,8 @@
                             </td>
                             <td></td>
                             <td class="text-right">
-                                <label for="down_time_hour">{{__('item.down_time')}}</label>
                                 <span class="required"> *</span>
+                                <label for="down_time_hour">{{__('item.down_time')}}</label>
                             </td>
                             <td>
                                 <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
@@ -103,8 +103,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="vehicle_model">{{__('item.vehicle_model')}}</label>
                                 <span class="required"> *</span>
+                                <label for="vehicle_model">{{__('item.vehicle_model')}}</label>
                             </td>
                             <td>
                                 <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
@@ -119,8 +119,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="shipper_id">{{__('item.shipper')}}</label>
                                 <span class="required"> *</span>
+                                <label for="shipper_id">{{__('item.shipper')}}</label>
                             </td>
                             <td>
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
@@ -134,8 +134,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="stack_point">{{__('item.stack_point')}}</label>
                                 <span class="required"> *</span>
+                                <label for="stack_point">{{__('item.stack_point')}}</label>
                             </td>
                             <td>
                                 <input type="text" placeholder="" class="form-control"
@@ -143,8 +143,8 @@
                             </td>
                             <td class="text-center">~</td>
                             <td class="text-right">
-                                <label for="down_point">{{__('item.down_point')}}</label>
                                 <span class="required"> *</span>
+                                <label for="down_point">{{__('item.down_point')}}</label>
                             </td>
                             <td colspan="3">
                                 <input id="down_point" for="down_point" type="text" placeholder=""
