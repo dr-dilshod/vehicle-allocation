@@ -35,5 +35,7 @@ return [
     'please_select_an_item_to_add_to_invoice_list'=>'Please, select an item to add to invoice list.',
     'selected_item_is_removed_from_invoice_list'=>'Selected item is removed from invoice list.',
     'this_feature_is_under_development'=>'This feature is under development.',
+    'please_select_a_shipper'=>'Please, select a shipper.',
+
 
 ];

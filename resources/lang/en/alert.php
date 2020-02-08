@@ -13,6 +13,7 @@ return [
     'operation_successfully_done'=>'Operation successfully done!',
     'successfully_updated'=>'successfully updated!',
     'successfully_deleted'=>'successfully deleted!',
+    'successfully_created'=>'successfully created!',
     'error_on_loading_data_please_try_again'=>'Error on loading data. Please try again',
-
+'ok'=>'OK',
 ];

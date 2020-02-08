@@ -5,29 +5,29 @@ module.exports = {
 
     data(){
         return {
-            max8 : {maxLength:[(args) => {return args['value'].length <= 8;}, 'At most 8 letters']},
-            max12 : {maxLength:[(args) => {return args['value'].length <= 12;}, 'At most 12 letters']},
-            max60 : {maxLength:[(args) => {return args['value'].length <= 60;}, 'At most 60 letters']},
-            max120 : {maxLength:[(args) => {return args['value'].length <= 120;}, 'At most 120 letters']},
+            max8 : {maxLength:[(args) => {return args['value'].length <= 8;}, this.__('alert.at_most_8_letters')]},
+            max12 : {maxLength:[(args) => {return args['value'].length <= 12;}, this.__('alert.at_most_12_letters')]},
+            max60 : {maxLength:[(args) => {return args['value'].length <= 60;}, this.__('alert.at_most_60_letters')]},
+            max120 : {maxLength:[(args) => {return args['value'].length <= 120;}, this.__('alert.at_most_120_letters')]},
         };
     },
 
     methods : {
 
         operationSuccessDialog() {
-            this.$alert('Operation successfully done!', null, 'success');
+            this.$alert(this.__('alert.operation_successfully_done'), null, 'success',{confirmButtonText: this.__( 'alert.ok')});
         },
 
         updateSuccessDialog(){
-            this.$alert(this.entityName()+' successfully updated!', null, 'success');
+            this.$alert(this.entityName()+ this.__('alert.successfully_updated'), null, 'success',{confirmButtonText: this.__( 'alert.ok')});
         },
 
         deleteSuccessDialog(){
-            this.$alert(this.entityName()+' successfully deleted!', null, 'success');
+            this.$alert(this.entityName()+ this.__('alert.successfully_deleted'), null, 'success',{confirmButtonText: this.__( 'alert.ok')});
         },
 
         createSuccessDialog(){
-            this.$alert(this.entityName()+' successfully created!', null, 'success');
+            this.$alert(this.entityName()+ this.__('alert.successfully_created'), null, 'success',{confirmButtonText: this.__( 'alert.ok')});
         },
 
         errorDialog(error){
@@ -49,37 +49,35 @@ module.exports = {
         },
 
         loadErrorDialog(){
-            this.$alert('Error on loading data. Please try again', null, 'warning');
+            this.$alert(this.__('alert.error_on_loading_data_please_try_again'), null, 'warning',{confirmButtonText: this.__( 'alert.ok')});
         },
 
         entityName(){
             switch (this.$options.name) {
                 case 'VehicleTable' :
-                    return "Vehicle";
+                    return this.__('validation.attributes.vehicle_list');
                 case 'DepositRegistration':
-                    return 'Deposit';
+                    return this.__('validation.attributes._registration');
                 case 'Dispatch':
-                    return 'Dispatch';
+                    return this.__('validation.attributes.dispatch_board');
                 case 'DriverTable':
-                    return 'Driver';
+                    return this.__('validation.attributes.driver_list');
                 case 'Invoice':
-                    return 'Invoice';
+                    return this.__('validation.attributes.invoice');
                 case 'ItemList':
-                    return 'Item';
+                    return this.__('validation.attributes.item_list');
                 case 'ItemRegistration':
-                    return 'Item';
+                    return this.__('validation.attributes.item_registration');
                 case 'PaymentBkReport':
-                    return 'Payment';
+                    return this.__('validation.attributes.payment_registration');
                 case 'PaymentRegistration':
-                    return 'Payment';
+                    return this.__('validation.attributes.payment_registration');
                 case 'ShipperTable':
-                    return 'Shipper';
+                    return this.__('validation.attributes.shipper');
                 case 'Top':
                     return 'Top';
                 case 'UnitPriceTable':
-                    return 'Unit price';
-                case 'VehicleTable':
-                    return 'Vehicle';
+                    return this.__('validation.attributes.unit_price');
                 default:
                     'Item'
             }

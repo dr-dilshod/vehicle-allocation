@@ -35,4 +35,7 @@ return [
     'please_select_an_item_to_add_to_invoice_list'=>'請求書リストに追加するアイテムを選択してください。',
     'selected_item_is_removed_from_invoice_list'=>'選択したアイテムが請求書リストから削除されます。',
     'this_feature_is_under_development'=>'この機能は開発中です。',
+    'there_is_no_item_for_your_selection'=>'選択するアイテムはありません。',
+    'please_select_a_shipper'=>'配送業者を選択してください。',
+
 ];

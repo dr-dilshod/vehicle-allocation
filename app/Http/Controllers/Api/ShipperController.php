@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Shipper;
 use DB;
 use Illuminate\Http\Request;
-use function MongoDB\BSON\toJSON;
+use Illuminate\Validation\Rule;
 
 class ShipperController extends Controller
 {
@@ -96,6 +96,9 @@ class ShipperController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate(Shipper::validationRules);
+        $request->validate($request, [
+            'shipper_no' => 'unique:shippers',
+        ]);
         $shipper = Shipper::create($request->all());
 
         return response()->json($shipper, 201);
@@ -127,8 +130,10 @@ class ShipperController extends Controller
     {
         $data = $request->validate(Shipper::validationRules);
         $shipper = Shipper::findOrFail($id);
+        $request->validate([
+            'shipper_no' => Rule::unique('shippers','shipper_no')->ignore($id,'shipper_id'),
+        ]);
         $shipper->update($request->all());
-
         return response()->json($shipper, 200);
     }
 
