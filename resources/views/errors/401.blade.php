@@ -4,7 +4,7 @@
     <div class="container">
         <div class="very-center">
             <h4>{!!__('errors.unauthorized')!!}</h4>
-            <a href="/" class="btn btn-warning">&laquo; {{__('driver.back')}}</a>
+            <a href="/" class="btn btn-warning">&laquo; {{__('common.back')}}</a>
         </div>
     </div>
 @endsection

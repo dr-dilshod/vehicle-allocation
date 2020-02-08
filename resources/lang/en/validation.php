@@ -151,6 +151,7 @@ return [
 
     'attributes' => [
         'vehicle_no' => 'vehicle number',
+
     ],
 
 ];
