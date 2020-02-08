@@ -14,84 +14,75 @@
                    class="btn btn-lg btn-warning btn-block">{{__('common.register')}}</a>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-12 ">
-            <br>
-                <div class="table-responsive">
-                    <form action="#" class="form-inline" @submit.prevent="search">
-                        <table class="table table-sm table-nowrap card-table">
-                            <thead>
-                            <tr></tr>
-                            </thead>
-                            <tbody class="list">
-                            <tr>
-                                <td class="orders-order text-right"><span class="c24966">{{__('item.stack_date')}}</span></td>
-                                <td>
+        <div class="row mt-4">
 
-                                    <div class="input-group">
-                                        <input type="date" placeholder="" class="form-control" for="stack_date"
-                                               id="week_day" v-model="stack_date"/>
-                                    </div>
-                                </td>
-                                <td class="text-right"><span class="c24966">{{__('item.shipper')}}</span></td>
-                                <td class="orders-order">
-                                    <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
-                                            class="form-control">
-                                        <option value=""></option>
-                                        <option v-for="shipper in shippers" :value="shipper.shipper_name">
-                                            {{ shipper.shipper_name }}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td class="text-right"><span class="c24966">{{__('item.status')}}</span></td>
-                                <td class="orders-order">
-                                    <select name="status" id="status" v-model="status"
-                                            class="form-control">
-                                        <option value=""></option>
-                                        <option value=1>{{__('item.completed')}}</option>
-                                        <option value=0>{{__('item.incomplete')}}</option>
-                                    </select>
-                                </td>
+            <form action="#" class="mx-auto" @submit.prevent="search">
+                <table class="table table-sm table-borderless">
+                    <tbody >
+                    <tr>
+                        <td class="orders-order text-right"><span class="c24966">{{__('item.stack_date')}}</span></td>
+                        <td>
+                            <datepicker v-model="stack_date" :bootstrap-styling="true"
+                                        :typeable="true" :format="options.weekday" :clear-button="true"
+                                        :language="options.language.ja">
+                            </datepicker>
+                        </td>
+                        <td class="text-right"><span class="c24966">{{__('item.shipper')}}</span></td>
+                        <td class="orders-order">
+                            <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
+                                    class="form-control">
+                                <option value=""></option>
+                                <option v-for="shipper in shippers" :value="shipper.shipper_name">
+                                    {{ shipper.shipper_name }}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="text-right"><span class="c24966">{{__('item.status')}}</span></td>
+                        <td class="orders-order">
+                            <select name="status" id="status" v-model="status"
+                                    class="form-control">
+                                <option value=""></option>
+                                <option value=1>{{__('item.completed')}}</option>
+                                <option value=0>{{__('item.incomplete')}}</option>
+                            </select>
+                        </td>
 
-                            </tr>
-                            <tr>
-                                <td class="text-right"><span class="c24966">{{__('item.stack_point')}}</span></td>
-                                <td class="orders-order">
-                                    <input type="text" placeholder="" class="form-control" for="stack_point"
-                                           v-model="stack_point"
-                                           id="stack_point"/>
-                                </td>
-                                <td class="orders-product text-right"><span
-                                        class="c25479 text-right">{{__('item.down_point')}}</span>
-                                </td>
-                                <td class="orders-date">
-                                    <input id="down_point" for="down_point" type="text" placeholder=""
-                                           class="form-control"
-                                           v-model="down_point"/>
-                                </td>
-                                <td class="text-right"><span class="c24966">{{__('item.vehicle_no')}}</span></td>
-                                <td class="orders-order">
-                                    <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
-                                            class="form-control">
-                                        <option value=""></option>
-                                        <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
-                                            {{ vehicle.vehicle_no3 }}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
-                                </td>
-                                <td>
-                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
-            </div>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="c24966">{{__('item.stack_point')}}</span></td>
+                        <td class="orders-order">
+                            <input type="text" placeholder="" class="form-control" for="stack_point"
+                                   v-model="stack_point"
+                                   id="stack_point"/>
+                        </td>
+                        <td class="orders-product text-right"><span class="c25479 text-right">{{__('item.down_point')}}</span> </td>
+                        <td class="orders-date">
+                            <input id="down_point" for="down_point" type="text" placeholder=""
+                                   class="form-control"
+                                   v-model="down_point"/>
+                        </td>
+                        <td class="text-right"><span class="c24966">{{__('item.vehicle_no')}}</span></td>
+                        <td class="orders-order">
+                            <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
+                                    class="form-control">
+                                <option value=""></option>
+                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
+                                    {{ vehicle.vehicle_no3 }}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
+                        </td>
+                        <td>
+                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </form>
         </div>
+
         <ejs-grid :test="search" :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
                   :height="280" rowHeight=40>
@@ -117,6 +108,8 @@
     import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
     import { DialogPlugin } from '@syncfusion/ej2-vue-popups';
     import {TableUtil} from "../utils/TableUtil";
+    import Datepicker from "vuejs-datepicker";
+    import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     Vue.use(ButtonPlugin);
     Vue.use( GridPlugin );
@@ -125,6 +118,9 @@
 
     export default{
         name: 'ItemList',
+        components: {
+            Datepicker
+        },
         props: {
             itemUrl: {type: String, required: true},
             backUrl: {type: String, required: true},
@@ -150,6 +146,14 @@
                 selected: {},
                 editSettings: { allowEditing: true, allowAdding: false, allowDeleting: false},
                 toolbar: ['Edit'],
+                options: {
+                    monthFormat: "yyyy/MM",
+                    weekday: "yyyy/MM/dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
+                },
                 actionTemplate:function () {
                 return {
                     template: Vue.component('editOption', {
@@ -300,7 +304,9 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-
+            redirect(e) {
+                window.location.href = `/item/edit?item_id=` + e.rowData['item_id'];
+            },
             actionBegin(args){
                 if(args.requestType === 'beginEdit'){
                     this.$refs.grid.ej2Instances.setProperties({
@@ -311,7 +317,6 @@
                             allowAdding: false,
                         },
                     });
-                    window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
                 }
             },
             fetchItem(url) {
