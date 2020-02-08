@@ -357,7 +357,7 @@
                         + '&stack_date=' + this.formData.stack_date
                         + '&vehicle_id=' + this.formData.vehicle_id;
                 } else {
-                    this.showWarningDialog(this.__('invoice.there_is_no_item_for_your_selection'));
+                    this.showWarningDialog(this.__('invoice.there_is_no_item_for_your_selection'), {warningTitle:"safdas"});
                 }
             },
             fetchShippers() {
@@ -480,7 +480,7 @@
             },
             showSuccessDialog(text) {
                 this.$fire({
-                    title: "Info Message",
+                    title: this.__('messages.info_message'),
                     text: text,
                     type: "success",
                     timer: 5000
@@ -488,7 +488,7 @@
             },
             showWarningDialog(text) {
                 this.$fire({
-                    title: "Warning",
+                    title: this.__('messages.warning'),
                     text: text,
                     type: "warning",
                     timer: 5000

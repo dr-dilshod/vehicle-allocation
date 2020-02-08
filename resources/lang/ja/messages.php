@@ -14,4 +14,6 @@ return [
     'print' => '印刷されます。 大丈夫ですか？',
     'Please enter {0}' => '入ってください {0}',
     'duplicated' => 'データが重複しています。',
+    'warning'=>'警告',
+    'info_message'=>'情報メッセージ',
 ];

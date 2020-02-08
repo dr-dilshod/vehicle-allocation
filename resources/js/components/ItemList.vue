@@ -277,7 +277,7 @@
                             },
                             showSuccessDialog(text) {
                                 this.$fire({
-                                    title: "Info Message",
+                                    title: this.__('messages.info_message'),
                                     text: text,
                                     type: "success",
                                     timer: 5000
