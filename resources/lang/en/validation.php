@@ -134,6 +134,10 @@ return [
         ],
     ],
 
+    'exception' => [
+        'message' => 'The given data is invalid! Error list :',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Attributes
