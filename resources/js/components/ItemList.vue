@@ -181,7 +181,7 @@
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
-                                                    <input type="text" v-model="this.data" v-bind="data" hidden>
+
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="">
@@ -227,36 +227,39 @@
                         methods: {
                             toIncomplete: function (id,departure_date) {
                                 if (departure_date == this.getDate()) {
-                                    const itemTable = this;
                                     axios.get('/item/toIncomplete?id='+id)
-                                        .then(function(response){
-                                            itemTable.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'));
+                                        .then(response => {
+                                            this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'));
+                                            this.data.status = 0;
+                                            this.data.item_completion_date = null;
                                         })
-                                        .catch(function(error){
-                                            itemTable.showDialog(error.response.data);
+                                        .catch(error=>{
+                                            this.showDialog(error);
                                         });
                                 }
                             },
                             setTodayAsCompletion: function (id) {
-                                const itemTable = this;
                                 axios.get('/item/setTodayAsCompletion?id='+id)
-                                    .then(function(response){
-                                        itemTable.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
+                                    .then(response=>{
+                                        this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
+                                        this.data.status = 1;
+                                        this.data.item_completion_date = this.getDate();
                                     })
-                                    .catch(function(error){
-                                        itemTable.showDialog(error.response.data);
+                                    .catch(error=>{
+                                        this.errorDialog(error);
                                     });
                             },
                             setDeptDateAsCompletion: function (id) {
-                                const itemTable = this;
                                 axios.get('/item/setDeptDateAsCompletion?id='+id)
-                                    .then(function(response){
-                                        itemTable.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'));
+                                    .then(response => {
+                                        this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
+                                        this.data.status = 1;
+                                        this.data.item_completion_date = this.data.stack_date;
                                     })
-                                    .catch(function(error){
-                                        itemTable.showDialog(error.response.data);
+                                    .catch(error=>{
+                                        this.errorDialog(error);
                                     });
                             },
                             checkStatus: function (id) {
@@ -281,9 +284,7 @@
                                     text: text,
                                     type: "success",
                                     timer: 5000
-                                }).then(r => {
-                                    this.$parent.$refs.grid.refresh();
-                                });
+                                })
                             },
                             showDialog(response) {
                                 let message = response.message + ': ';
