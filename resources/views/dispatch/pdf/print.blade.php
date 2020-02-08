@@ -43,7 +43,9 @@
                 {{$item->empty_pl ? 'Yes' : 'None' }}
             </td>
             <td>
+                @if(!empty($dispatch['next_day_items']))
 
+                @endif
             </td>
             <td>
                 {{$item->item_remark}}

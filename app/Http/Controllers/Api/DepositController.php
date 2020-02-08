@@ -12,6 +12,10 @@ use Illuminate\Http\Request;
 class DepositController extends Controller
 {
 
+    public function index(){
+
+    }
+
     public function filter(Request $request)
     {
         $shipper = $request->get('shipper');

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <payment-registration
-            resource-url="/api/payments"
+            resource-url="{{route('api.payment.index')}}"
             shipper-url="{{route('api.shipper.fullname')}}"
             back-url="{{route('top')}}"
         ></payment-registration>

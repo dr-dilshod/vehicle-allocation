@@ -66,6 +66,7 @@ Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleType
 Route::get('/unit-prices/{shipper_id}', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
 Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
+Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.resource');
 Route::post('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
 Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
 
@@ -74,6 +75,7 @@ Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api
  */
 Route::post('/deposits/filter', 'Api\DepositController@filter')->name('api.deposit.filter')->middleware('admin');
 Route::post('/deposits', 'Api\DepositController@store')->name('api.deposit.store')->middleware('admin');
+Route::get('/deposits', 'Api\DepositController@index')->name('api.deposit.index')->middleware('admin');
 Route::put('/deposits/{id}', 'Api\DepositController@update')->name('api.deposit.update')->middleware('admin');
 Route::get('/deposits/{id}', 'Api\DepositController@show')->name('api.deposit.show')->middleware('admin');
 Route::delete('/deposits/{id}', 'Api\DepositController@destroy')->name('api.deposit.destroy')->middleware('admin');
@@ -84,6 +86,7 @@ Route::delete('/deposits/{id}', 'Api\DepositController@destroy')->name('api.depo
 Route::get('payment/registration', 'Api\PaymentController@index')->name('api.payment.registration')->middleware('admin');
 Route::get('payment/bk-report', 'Api\PaymentController@index')->name('api.payment.bk-report')->middleware('admin');
 Route::post('/payments/filter', 'Api\PaymentController@filter')->name('api.payment.filter')->middleware('admin');
+Route::get('/payments', 'Api\PaymentController@index')->name('api.payment.index')->middleware('admin');
 Route::post('/payments', 'Api\PaymentController@store')->name('api.payment.store')->middleware('admin');
 Route::put('/payments/{id}', 'Api\PaymentController@update')->name('api.payment.update')->middleware('admin');
 Route::get('/payments/{id}', 'Api\PaymentController@show')->name('api.payment.show')->middleware('admin');

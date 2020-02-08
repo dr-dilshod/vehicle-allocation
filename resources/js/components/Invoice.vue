@@ -338,16 +338,20 @@
                 return true;
             },
             billingPrint(){
-                if (this.data.length>0) {
                     window.location.href = this.billingMonthUrl
                         + '?shipper_id=' + this.formData.shipper_id
                         + '&billing_month=' + this.billing_month
                         + '&billing_day=' + this.billing_day;
-                }
             },
             listPrinting(){
-                const invoiceTable = this;
-                invoiceTable.showWarningDialog(this.__('invoice.this_feature_is_under_development'));
+                if (this.data.length>0) {
+                    window.location.href = this.billingListUrl
+                        + '?shipper_id=' + this.formData.shipper_id
+                        + '&billing_month=' + this.formData.invoice_month
+                        + '&billing_day=' + this.formData.invoice_day
+                        + '&stack_date=' + this.formData.stack_date
+                        + '&vehicle_id=' + this.formData.vehicle_id;
+                }
             },
             fetchShippers() {
                 axios.get(this.shippersUrl)

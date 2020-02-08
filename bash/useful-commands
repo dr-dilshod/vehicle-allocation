@@ -1,2 +1,0 @@
-# Create shipper resource command
-php artisan crud:generate shipper --fields="shipper_no#string; shipper_name1#string; shipper_name2#string; shipper_kana_name1#string; shipper_kana_name2#string; shipper_company_obbrevation#string; postal_code#string; address1#string; address2#string; phone#string; fax#string; closing_date#string"
