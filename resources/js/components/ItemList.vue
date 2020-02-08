@@ -93,7 +93,7 @@
             </div>
         </div>
         <ejs-grid :test="search" :dataSource="data" :actionBegin="actionBegin" :allowSelection='true' :recordDoubleClick="redirect"
-                  ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar' >
+                  ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar' :height="270">
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
