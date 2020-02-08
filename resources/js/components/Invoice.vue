@@ -338,11 +338,15 @@
                     });
                 return true;
             },
-            billingPrint(){
+            billingPrint() {
+                if (this.formData.shipper_id === '') {
+                    this.showWarningDialog('Please, select a shipper.');
+                } else {
                     window.location.href = this.billingMonthUrl
                         + '?shipper_id=' + this.formData.shipper_id
                         + '&billing_month=' + this.billing_month
                         + '&billing_day=' + this.billing_day;
+                }
             },
             listPrinting(){
                 if (this.data.length>0) {
@@ -352,6 +356,8 @@
                         + '&billing_day=' + this.formData.invoice_day
                         + '&stack_date=' + this.formData.stack_date
                         + '&vehicle_id=' + this.formData.vehicle_id;
+                } else {
+                    this.showWarningDialog('There is no item for your selection.');
                 }
             },
             fetchShippers() {
