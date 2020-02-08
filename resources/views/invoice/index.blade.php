@@ -6,7 +6,7 @@
                  back-url="{{route('top')}}"
                  shippers-url="{{route('shipper.list')}}"
                  vehicles-url="{{route('api.driver.vehicle-numbers')}}"
-                 resource-url="/api/invoice"
+                 resource-url="{{route('api.invoice.index')}}"
                  title="{{__('invoice.invoice_list')}}"
                  payment-url="{{route('payment.list')}}"
                  deposit-url="{{route('deposit.list')}}"
