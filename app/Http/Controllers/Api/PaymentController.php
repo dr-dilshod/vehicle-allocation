@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Invoice;
 use App\Item;
 use App\Payment;
 use App\Shipper;
@@ -94,6 +95,11 @@ class PaymentController extends Controller
             $data['fee'] = 0;
         }
         $payment = Payment::create($data);
+        $invoice = Invoice::where('shipper_id', $payment->shipper_id)->first();
+        if ($invoice){
+            $invoice->payment_record_date = $payment->payment_day;
+            $invoice->save();
+        }
         return response()->json($payment, 201);
     }
 
@@ -106,9 +112,16 @@ class PaymentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = $request->validate(Payment::validationRules);
+        $request->validate(Payment::validationRules);
+        $data = $request->all();
+        if (empty($data['other'])){
+            $data['other'] = 0;
+        }
+        if (empty($data['fee'])){
+            $data['fee'] = 0;
+        }
         $payment = Payment::findOrFail($id);
-        $payment->update($request->all());
+        $payment->update($data);
 
         return response()->json($payment, 200);
     }
