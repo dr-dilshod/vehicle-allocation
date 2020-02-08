@@ -12,5 +12,7 @@ return  ['login' => 'Login',
     'password' => 'Password',
     'select_input' => '--Select--',
     'delete' => 'Delete',
+    'username'=>'Username',
+    'password'=>'Password',
 
 ];
