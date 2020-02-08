@@ -234,6 +234,7 @@
             paymentUrl: {type: String, required: true},
             depositUrl: {type: String, required: true},
             billingMonthUrl: {type: String, required: true},
+            billingListUrl: {type: String, required: true},
         },
         components: {
             Datepicker
