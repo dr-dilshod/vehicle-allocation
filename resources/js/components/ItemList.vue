@@ -22,14 +22,10 @@
                     <tr>
                         <td class="orders-order text-right"><span class="c24966">{{__('item.stack_date')}}</span></td>
                         <td>
-
-                            <div class="input-group">
-                                <datepicker v-model="stack_date" :bootstrap-styling="true"
-                                            :typeable="true" :format="options.weekday" :clear-button="true"
-                                            :language="options.language.ja">
-                                </datepicker>
-
-                            </div>
+                            <datepicker v-model="stack_date" :bootstrap-styling="true"
+                                        :typeable="true" :format="options.weekday" :clear-button="true"
+                                        :language="options.language.ja">
+                            </datepicker>
                         </td>
                         <td class="text-right"><span class="c24966">{{__('item.shipper')}}</span></td>
                         <td class="orders-order">
@@ -51,45 +47,42 @@
                             </select>
                         </td>
 
-                            </tr>
-                            <tr>
-                                <td class="text-right"><span class="c24966">{{__('item.stack_point')}}</span></td>
-                                <td class="orders-order">
-                                    <input type="text" placeholder="" class="form-control" for="stack_point"
-                                           v-model="stack_point"
-                                           id="stack_point"/>
-                                </td>
-                                <td class="orders-product text-right"><span
-                                        class="c25479 text-right">{{__('item.down_point')}}</span>
-                                </td>
-                                <td class="orders-date">
-                                    <input id="down_point" for="down_point" type="text" placeholder=""
-                                           class="form-control"
-                                           v-model="down_point"/>
-                                </td>
-                                <td class="text-right"><span class="c24966">{{__('item.vehicle_no')}}</span></td>
-                                <td class="orders-order">
-                                    <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
-                                            class="form-control">
-                                        <option value=""></option>
-                                        <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
-                                            {{ vehicle.vehicle_no3 }}
-                                        </option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
-                                </td>
-                                <td>
-                                    <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
-            </div>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="c24966">{{__('item.stack_point')}}</span></td>
+                        <td class="orders-order">
+                            <input type="text" placeholder="" class="form-control" for="stack_point"
+                                   v-model="stack_point"
+                                   id="stack_point"/>
+                        </td>
+                        <td class="orders-product text-right"><span class="c25479 text-right">{{__('item.down_point')}}</span> </td>
+                        <td class="orders-date">
+                            <input id="down_point" for="down_point" type="text" placeholder=""
+                                   class="form-control"
+                                   v-model="down_point"/>
+                        </td>
+                        <td class="text-right"><span class="c24966">{{__('item.vehicle_no')}}</span></td>
+                        <td class="orders-order">
+                            <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
+                                    class="form-control">
+                                <option value=""></option>
+                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
+                                    {{ vehicle.vehicle_no3 }}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
+                        </td>
+                        <td>
+                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </form>
         </div>
+
         <ejs-grid :test="search" :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
                   :height="280" rowHeight=40>
@@ -153,6 +146,14 @@
                 selected: {},
                 editSettings: { allowEditing: true, allowAdding: false, allowDeleting: false},
                 toolbar: ['Edit'],
+                options: {
+                    monthFormat: "yyyy/MM",
+                    weekday: "yyyy/MM/dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
+                },
                 actionTemplate:function () {
                 return {
                     template: Vue.component('editOption', {
