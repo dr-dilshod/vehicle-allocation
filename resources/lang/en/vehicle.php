@@ -18,10 +18,5 @@ return [
     'fax' => 'Fax',
     'offset' => 'Offset',
     'remark' => 'Remark',
-    'back'=>'Back',
-    'register'=>'Register',
-    'edit'=>'Edit',
-    'editing'=>'Editing',
-    'search'=>'Search',
-    'clear'=>'Clear',
+
 ];
