@@ -340,7 +340,7 @@
             },
             billingPrint() {
                 if (this.formData.shipper_id === '') {
-                    this.showWarningDialog('Please, select a shipper.');
+                    this.showWarningDialog(this.__('invoice.please_select_a_shipper'));
                 } else {
                     window.location.href = this.billingMonthUrl
                         + '?shipper_id=' + this.formData.shipper_id
@@ -357,7 +357,7 @@
                         + '&stack_date=' + this.formData.stack_date
                         + '&vehicle_id=' + this.formData.vehicle_id;
                 } else {
-                    this.showWarningDialog('There is no item for your selection.');
+                    this.showWarningDialog(this.__('invoice.there_is_no_item_for_your_selection'));
                 }
             },
             fetchShippers() {
