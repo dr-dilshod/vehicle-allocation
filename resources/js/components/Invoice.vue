@@ -517,9 +517,6 @@
     }
 </script>
 <style scoped>
-    @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
 
     #invoice label {
         width: 150px;

@@ -367,11 +367,5 @@
     }
 </script>
 <style scoped>
-    @import "../../../node_modules/@syncfusion/ej2-vue-grids/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap.css";
-    @import '../../../node_modules/@syncfusion/ej2-base/styles/material.css';
-    @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
 
 </style>

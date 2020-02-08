@@ -274,9 +274,3 @@
         },
     }
 </script>
-
-<style scoped>
-    @import "../../../node_modules/@syncfusion/ej2-base/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap.css";
-    @import "../../../node_modules/@syncfusion/ej2-inputs/styles/bootstrap.css";
-</style>
