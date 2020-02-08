@@ -6,8 +6,6 @@
  * Time: 17:18
  */
 return [
-    'operation'=>'Register',
-    'delete'=>'Clear',
     'unloading_place' => 'Unloading place',
     'stack_date' => 'Stack date',
     'down_date' => 'Down Date',
