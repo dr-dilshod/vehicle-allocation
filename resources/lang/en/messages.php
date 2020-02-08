@@ -14,4 +14,6 @@ return [
     'print' => 'It will be printed. Is it OK??',
     'Please enter {0}' => 'Please enter {0}',
     'duplicated' => 'Data is duplicated.',
+    'warning'=>'Warning',
+    'info_message'=>'Info Message',
 ];
