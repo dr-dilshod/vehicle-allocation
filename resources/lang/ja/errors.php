@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'not_found' => 'Requested page not found.',
-    'unauthorized' => 'You are not logged in.',
-    'forbidden' => 'Access to this page is forbidden.',
-    'expired' => 'Your session has expired.<br/> Please refresh and try again.',
-    'too_many_requests' => 'Too many requests.',
-    'server_error' => 'The server encountered an error.',
-    'service_unavailable' => 'Service unavailable.'
+    'not_found' => '要求されたページが見つかりません。',
+    'unauthorized' => 'ログインしていません。',
+    'forbidden' => 'このページへのアクセスは禁止されています。',
+    'expired' => 'セッションの有効期限が切れました。<br/> 更新してもう一度お試しください。',
+    'too_many_requests' => 'リクエストが多すぎます。',
+    'server_error' => 'サーバーでエラーが発生しました。',
+    'service_unavailable' => 'サービスは利用できません。'
 ];

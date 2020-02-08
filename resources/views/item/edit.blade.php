@@ -7,7 +7,7 @@
                            driver-url="{{route('item.drivers')}}"
                            vehicle-url="{{route('item.vehicles')}}"
                            unitprice-url="{{route('item.unitprice')}}"
-                           resource-url="/api/item"
+                           resource-url="{{route('api.item.index')}}"
                            title="{{__('item.item_registration')}}"
                            operation="{{__('item.update')}}"
                            clearing="{{__('common.delete')}}"

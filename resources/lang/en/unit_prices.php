@@ -16,4 +16,5 @@ return [
         'trailer' => 'Trailer',
         'bulk' => 'Bulk'
     ],
+
 ];

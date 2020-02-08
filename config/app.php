@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Vehicle Allocation Request Management System',
+    'name' => 'Shouei Transportation',
 
     /*
     |--------------------------------------------------------------------------

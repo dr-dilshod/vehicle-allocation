@@ -145,12 +145,12 @@
                     }
                 },
                 rules: {
-                    car_type: {required: true},
-                    shipper_id: {required: true},
-                    stack_point: {required: true},
-                    down_point: {required: true},
-                    type: {required: true, number: true},
-                    price: {required: true, number: true},
+                    car_type: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.car_type')})]},
+                    shipper_id: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.shipper')})]},
+                    stack_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.loading_port')})]},
+                    down_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.drop_off')})]},
+                    type: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.type')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.type')})]},
+                    price: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.unit_price')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.price')})]},
                 }
             }
         },
