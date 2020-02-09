@@ -257,6 +257,7 @@ class ItemController extends Controller
     {
         $drivers = Driver::select(['driver_id', 'driver_name', 'vehicle_no3'])
             ->where('delete_flg',0)
+            ->where('search_flg',1)
             ->distinct()
             ->get();
         return response()->json($drivers);
