@@ -66,7 +66,7 @@ Route::get('/unit-price', 'UnitPriceController@index')->name('unit-price.index')
 Route::get('/deposit', 'DepositController@index')->name('deposit.index')->middleware('admin');
 
 // Payment
-Route::get('/payment/registration', 'PaymentController@registration')->name('payment.registration')->middleware('admin');
+Route::get('/payment', 'PaymentController@registration')->name('payment.registration')->middleware('admin');
 Route::get('/payment/search', 'Api\PaymentController@search')->name('payment.search')->middleware('admin');;
 Route::get('/payment/getShippers', 'Api\PaymentController@getShippers')->name('payment.shippers')->middleware('admin');
 

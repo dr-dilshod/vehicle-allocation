@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Invoice;
 use App\Item;
 use App\Payment;
 use App\Shipper;
+use DB;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -62,6 +64,7 @@ class PaymentController extends Controller
             $payments[0]->payment_day = date('Y-m-d', strtotime($payments[0]->payment_day));
             $payment = $payments[0];
         }
+        var_dump($payments);
         $nextDate = date('Y-m-d', strtotime($year.'-'.$month.'-'.$day.' +1 day'));
 
         $total = Payment::where('shipper_id', $shipper)
@@ -74,12 +77,20 @@ class PaymentController extends Controller
             ->whereDate('item_completion_date', '< ', $nextDate)
             ->sum('item_price');
 
+        $totalAll = Payment::where('shipper_id', $shipper)
+            ->where('delete_flg', 0)
+            ->sum(DB::raw('IFNULL(payment_amount,0)+IFNULL(other,0)+IFNULL(fee,0)'));
+
+        $billingAll = Item::where('shipper_id', $shipper)
+            ->where('delete_flg',0)
+            ->sum('item_price');
+
         return [
             'unique' => count($payments) == 1,
             'payment' => $payment,
             'total' => $total,
             'invoice' => $invoice - $total,
-            'offset' => 0,
+            'offset' => $billingAll - $totalAll,
         ];
     }
 
@@ -94,6 +105,11 @@ class PaymentController extends Controller
             $data['fee'] = 0;
         }
         $payment = Payment::create($data);
+        $invoice = Invoice::where('shipper_id', $payment->shipper_id)->first();
+        if ($invoice){
+            $invoice->payment_record_date = $payment->payment_day;
+            $invoice->save();
+        }
         return response()->json($payment, 201);
     }
 
@@ -106,9 +122,16 @@ class PaymentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = $request->validate(Payment::validationRules);
+        $request->validate(Payment::validationRules);
+        $data = $request->all();
+        if (empty($data['other'])){
+            $data['other'] = 0;
+        }
+        if (empty($data['fee'])){
+            $data['fee'] = 0;
+        }
         $payment = Payment::findOrFail($id);
-        $payment->update($request->all());
+        $payment->update($data);
 
         return response()->json($payment, 200);
     }

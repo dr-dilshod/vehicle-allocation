@@ -49,17 +49,25 @@ class DepositController extends Controller
             ->where('delete_flg', 0)
             ->sum('deposit_amount');
 
-        $invoice = Item::where('shipper_id', $shipper)
+        $billing = Item::where('shipper_id', $shipper)
             ->where('delete_flg',0)
             ->whereDate('item_completion_date', '< ', $nextDate)
+            ->sum('item_price');
+
+        $totalAll = Deposit::where('shipper_id', $shipper)
+            ->where('delete_flg', 0)
+            ->sum(DB::raw('IFNULL(deposit_amount,0)+IFNULL(other,0)+IFNULL(fee,0)'));
+
+        $billingAll = Item::where('shipper_id', $shipper)
+            ->where('delete_flg',0)
             ->sum('item_price');
 
         return [
             'unique' => count($deposits) == 1,
             'deposit' => $deposit,
             'total' => $total,
-            'invoice' => $invoice - $total,
-            'offset' => 0,
+            'invoice' => $billing - $total,
+            'offset' => $billingAll - $totalAll,
         ];
     }
 
