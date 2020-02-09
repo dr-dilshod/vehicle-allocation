@@ -275,7 +275,8 @@
             title: {type: String, required: true},
             operation: {type: String, required: true},
             clearing: {type: String, required: true},
-            item_id: {type: String},
+            itemId: {type: String},
+            mode: {type: String},
         },
         data() {
             return {
@@ -333,23 +334,22 @@
             this.fetchShippers(this.shipperUrl);
             this.fetchDrivers(this.driverUrl);
             this.fetchVehicles(this.vehicleUrl);
-            this.isEdit(new URL(location.href).searchParams.get('item_id'));
+            if (this.itemId !== undefined)
+                this.fetchEditData();
         },
 
         methods: {
-            isEdit(item_id){
-                if (item_id != "") {
-                    axios.get(this.resourceUrl + "/" + item_id)
-                        .then(response => {
-                            this.itemData = response.data;
-                            let stack_time = response.data.stack_time.split(":");
-                            let down_time = response.data.down_time.split(":");
-                            this.stack_time_hour = stack_time[0];
-                            this.stack_time_min = stack_time[1];
-                            this.down_time_hour = down_time[0];
-                            this.down_time_min = down_time[1];
-                        });
-                }
+            fetchEditData(){
+                axios.get(this.resourceUrl + "/" + this.itemId)
+                    .then(response => {
+                        this.itemData = response.data;
+                        let stack_time = response.data.stack_time.split(":");
+                        let down_time = response.data.down_time.split(":");
+                        this.stack_time_hour = stack_time[0];
+                        this.stack_time_min = stack_time[1];
+                        this.down_time_hour = down_time[0];
+                        this.down_time_min = down_time[1];
+                    });
             },
             setDriverName() {
                 for (let i = 0; i < this.drivers.length; i++) {
@@ -422,7 +422,7 @@
                     + ':00';
             },
             clear(){
-                if (new URL(location.href).searchParams.get('item_id') !== '') {
+                if (this.itemId !== undefined) {
                     this.deleteItem(this.itemData.item_id);
                 } else {
                     for (let i in this.itemData) {
@@ -457,13 +457,12 @@
             },
             register(){
                 const itemReg = this;
-                this.itemData.stack_date = this.itemData.stack_date.toISOString().slice(0,10);
-                this.itemData.down_date = this.itemData.down_date.toISOString().slice(0,10);
+                if(typeof this.itemData.stack_date == "object" && this.itemData.stack_date !== '')
+                    this.itemData.stack_date = this.itemData.stack_date.toISOString().slice(0,10);
+                if(typeof this.itemData.down_date == "object" && this.itemData.down_date !== '')
+                    this.itemData.down_date = this.itemData.down_date.toISOString().slice(0,10);
                 // check whether it is update or create operation
-                if (new URL(location.href).searchParams.get('item_id') !== '') {
-                    // update that item if it is update operation
-                    this.updateItem(this.itemData);
-                } else {
+                if (this.itemId === undefined) {
                     // create a new item if it is create operation
                     axios.post(this.resourceUrl, this.itemData)
                         .then(function (response) {
@@ -474,6 +473,10 @@
                             return false;
                         });
                     return true;
+                } else {
+                    // update that item if it is update operation
+                    this.updateItem(this.itemData);
+
                 }
             },
             updateItem(item){
@@ -508,16 +511,14 @@
                 this.$alert(message);
             },
             getEnumerationHours(){
-                let hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
+                return ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
                     , '15', '16', '17', '18', '19', '20', '21', '22', '23'];
-                return hours;
             },
             getEnumerationMins(){
-                let mins = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
+                return ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
                     , '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
                     , '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', '48', '49',
                     '50', '51', '52', '53', '54', '55', '56', '57', '58', '59'];
-                return mins;
             },
             showSuccessDialog() {
                 this.$fire({

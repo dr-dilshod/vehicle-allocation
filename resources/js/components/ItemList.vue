@@ -350,7 +350,6 @@
             },
             search(){
                 let stack_date = this.stack_date;
-                console.log(typeof stack_date);
                 let string_stack_date = "";
                 if(typeof stack_date === "object" && stack_date !== null)
                     string_stack_date = stack_date.getFullYear()+'/'+(stack_date.getMonth()+1)+'/'+stack_date.getDate();
