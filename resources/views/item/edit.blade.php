@@ -11,7 +11,7 @@
                            title="{{__('item.item_registration')}}"
                            operation="{{__('item.update')}}"
                            clearing="{{__('common.delete')}}"
-                           item-id="{{$item_id}}">
-        </item-registration>
+                           item-id="{{$item_id}}"
+        ></item-registration>
     </div>
 @endsection
