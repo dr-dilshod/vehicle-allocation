@@ -179,17 +179,12 @@ class ItemController extends Controller
      */
     public function getItemList(Request $request)
     {
-        //$shipper_id = $request->query('shipper_id') ?: '';
-        //$items = $this->item->where([
-        //    'shipper_id'=>$shipper_id,
-        //    'delete_flg'=>0
-        //])->get();
-
-        $shipper_name = $request->query('shipper_name') ?: '';
-        $vehicle_no3 = $request->query('vehicle_no3') ?: '';
-        $status = $request->query('status') ?: '';
         $stack_date = $request->query('stack_date') ?: '';
+        $shipper_name = $request->query('shipper_name') ?: '';
+        $status = $request->query('status');
         $stack_point = $request->query('stack_point') ?: '';
+        $down_point = $request->query('down_point') ?: '';
+        $vehicle_no3 = $request->query('vehicle_no3') ?: '';
         $itemTable = Item::select()->where('delete_flg', 0);
         if (!empty($shipper_name))
             $itemTable -> where('shipper_name', $shipper_name);
@@ -197,7 +192,7 @@ class ItemController extends Controller
         if (!empty($vehicle_no3))
             $itemTable -> where('vehicle_no3', $vehicle_no3);
 
-        if (!empty($status))
+        if ($status !== null)
             $itemTable -> where('status', $status);
 
         if (!empty($stack_date))
@@ -205,6 +200,9 @@ class ItemController extends Controller
 
         if (!empty($stack_point))
             $itemTable -> where('stack_point', $stack_point);
+
+        if (!empty($down_point))
+            $itemTable -> where('down_point', $down_point);
 
         return response()->json($itemTable->get());
     }

@@ -16,8 +16,9 @@ class UnitPriceController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function index($shipper_id)
+    public function index(Request $request)
     {
+        $shipper_id = $request->get('shipper_id');
         $unitPrices = UnitPrice::with('shipper')
             ->where('shipper_id', '=', $shipper_id);
         return $unitPrices->where('delete_flg', 0)->get();

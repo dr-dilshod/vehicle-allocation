@@ -82,16 +82,13 @@ class InvoiceController extends Controller
     public function getInvoiceList(Request $request)
     {
         $stack_date = $request->query('stack_date') ?: '';
-        $vehicle_no = $request->query('vehicle_no') ?: '';
+        $vehicle_id = $request->query('vehicle_id') ?: '';
         $invoice_day = $request->query('invoice_day') ?: '';
         $invoice_month = $request->query('invoice_month') ?: '';
         $shipper_id = $request->query('shipper_id') ?: '';
         $matchThese = ['delete_flg' => 0];
-//        if (!empty($stack_date)) {
-//            $matchThese = array_add($matchThese, 'stack_date', $stack_date);
-//        }
-        if (!empty($vehicle_no)) {
-            $vehicle = Vehicle::query()->where('vehicle_no', '=', $vehicle_no)->first();
+        if (!empty($vehicle_id)) {
+            $vehicle = Vehicle::query()->where('vehicle_id', '=', $vehicle_id)->first();
             if (!is_null($vehicle)) {
                 $matchThese = array_add($matchThese, 'vehicle_id', $vehicle->vehicle_id);
             }
@@ -114,8 +111,8 @@ class InvoiceController extends Controller
             });
 
         $invoiceTable = Item::query()->whereIn('item_id', $invoices)
+            ->where('stack_date', '=', $stack_date)
             ->where('down_date', '>=', date("Y-m-d"))
-            ->select()
             ->get();
         return response()->json($invoiceTable);
     }
@@ -153,10 +150,24 @@ class InvoiceController extends Controller
      */
     public function getShipperList(Request $request)
     {
-        $shippers = Shipper::select()
-            ->where('delete_flg',0)
-            ->get();
+        $shipperIDs = Item::query()->select('shipper_id')->distinct()->get(function($e) {
+           return $e->shipper_id;
+        });
+        $shippers = Shipper::query()->whereIn('shipper_id', $shipperIDs)->get();
         return response()->json($shippers);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getVehicleList()
+    {
+        $vehicleIDs = Item::query()->select('vehicle_id')->distinct()->get(function($e) {
+            return $e->vehicle_id;
+        });
+
+        $vehicles = Vehicle::query()->select(['vehicle_id', 'vehicle_no'])->whereIn('vehicle_id', $vehicleIDs)->get();
+        return response()->json($vehicles);
     }
 
     /**
@@ -194,7 +205,7 @@ class InvoiceController extends Controller
             $dep_day = Carbon::parse($dep->deposit_day);
             $diff = $today->diffInMonths($dep_day);
             if ($diff == 1) {
-                $deposit = $deposit + $dep->deposit_day;
+                $deposit = $deposit + $dep->deposit_amount;
             }
         }
 
@@ -269,29 +280,50 @@ class InvoiceController extends Controller
 
         $shipper_data = $this->getShipperDataForPrinting($shipper_id);
 
+        $matchThese = ['delete_flg' => 0];
+        if (!empty($vehicle_id)) {
+            $vehicle = Vehicle::query()->where('vehicle_id', '=', $vehicle_id)->first();
+            if (!is_null($vehicle)) {
+                $matchThese = array_add($matchThese, 'vehicle_id', $vehicle->vehicle_id);
+            }
+        }
+        if (!empty($billing_day) && !empty($billing_month)) {
+            $billing_month .= '-'.$billing_day;
+            $matchThese = array_add($matchThese, 'billing_deadline_date', $billing_month);
+        } else if (!empty($billing_day) && empty($billing_month)) {
+            $billing_month = date('Y-m') . '-' . $billing_day;
+            $matchThese = array_add($matchThese, 'billing_deadline_date', $billing_month);
+        }
 
-        $items = Item::where('shipper_id', $shipper_id)
-            ->where('stack_date', $stack_date)
-            ->where('vehicle_id', $vehicle_id)
-            ->where('delete_flg', 0)
+        if (!empty($shipper_id)) {
+            $matchThese = array_add($matchThese, 'shipper_id', $shipper_id);
+        }
+
+        $invoices = Invoice::query()->select('item_id')
+            ->where($matchThese)->get()->map(function ($e) {
+                return $e->item_id;
+            });
+
+        $item_list = Item::query()->whereIn('item_id', $invoices)
+            ->where('stack_date', '=', $stack_date)
+            ->where('down_date', '>=', date("Y-m-d"))
             ->get();
 
-        $item_list = [];
-
         $previous_month_billing = 0;
-        $today = Carbon::today();
-        foreach ($items as $item) {
+        foreach ($item_list as $item) {
             $previous_month_billing = $previous_month_billing + $item->item_price;
-            array_push($item_list, $item);
         }
+
 
         $deposits = Deposit::where('shipper_id', $shipper_id)
             ->where('delete_flg', 0)
             ->get();
         $deposit = 0;
+        $today = $billing_month.'-'.$billing_day;
         foreach ($deposits as $dep) {
             $dep_day = Carbon::parse($dep->deposit_day);
-            $diff = $today->diffInMonths($dep_day);
+            $to = Carbon::parse($today);
+            $diff = $to->diffInMonths($dep_day);
             if ($diff == 1) {
                 $deposit = $deposit + $dep->deposit_day;
             }
@@ -304,7 +336,8 @@ class InvoiceController extends Controller
         $same_day_sales = 0;
         foreach ($payments as $payment) {
             $pay_day = Carbon::parse($payment->payment_day);
-            $diff = $today->diffInMonths($pay_day);
+            $to = Carbon::parse($today);
+            $diff = $to->diffInMonths($pay_day);
             if ($diff == 1) {
                 $same_day_sales = $same_day_sales + $payment->payment_amount;
             }
@@ -334,5 +367,67 @@ class InvoiceController extends Controller
             'item_data' => $item_list,
             'billing' => $billing_date_array]);
         return $pdf->download('billingList.pdf');
+    }
+
+    public function getAggregate()
+    {
+        $lastMonthBegin = Carbon::today()->setMonths(Carbon::today()->month-1)->setDays(1);
+        $lastMonthEnd = Carbon::today()->setMonths(Carbon::today()->month-1)->setDays($lastMonthBegin->daysInMonth)->format('Y-m-d');
+        $lastMonthBegin = $lastMonthBegin->format('Y-m-d');
+
+        $lastMonthPayments = Payment::query()
+            ->whereDate('payment_day', '<=', $lastMonthEnd)
+            ->whereDate('payment_day', '>=', $lastMonthBegin)->get()->all();
+
+        $lastMonthSales = 0;
+        $lastMonthDeposits = 0;
+        $salesCompilationDate = $lastMonthBegin;
+        $sameDaySales = 0;
+
+        foreach ($lastMonthPayments as $payment) {
+            $lastMonthSales += doubleval($payment->payment_amount);
+            if ($salesCompilationDate < $payment->payment_day) {
+                $salesCompilationDate = $payment->payment_day;
+            }
+            $deposits = Deposit::query()->whereDate('deposit_day', '>=', $lastMonthBegin)
+                ->whereDate('deposit_day', '<=', $lastMonthEnd)
+                ->where('shipper_id', '=', $payment->shipper_id)->get();
+            foreach ($deposits as $deposit) {
+                $lastMonthDeposits += doubleval($deposit->deposit_amount);
+            }
+        }
+
+        $lastMonthTotal = $lastMonthSales + $lastMonthDeposits;
+        $consumptionTax = $lastMonthSales * 0.1;
+
+        $thisMonthBegin = Carbon::today()->setDay(1);
+        $thisMonthEnd = Carbon::today()->setDay($thisMonthBegin->daysInMonth)->format('Y-m-d');
+        $thisMonthBegin = $thisMonthBegin->format('Y-m-d');
+
+        $thisMonthPayments = Payment::query()->whereDate('payment_day', '>=', $thisMonthBegin)
+            ->whereDate('payment_day', '<=', $thisMonthEnd)->get()->all();
+        $thisMonthSales = 0;
+        $thisMonthDeposits = 0;
+        foreach ($thisMonthPayments as $payment) {
+            $thisMonthSales += doubleval($payment->payment_amount);
+            $deposits = Deposit::query()->whereDate('deposit_day', '>=', $thisMonthBegin)
+                ->whereDate('deposit_day', '<=', $thisMonthEnd)
+                ->where('shipper_id', '=', $payment->shipper_id)->get();
+            foreach ($deposits as $deposit) {
+                $thisMonthDeposits += doubleval($deposit->deposit_amount);
+            }
+        }
+
+        return response()->json([
+            'lastMonthSales' => number_format($lastMonthSales, 2),
+            'lastMonthDeposits' => number_format($lastMonthDeposits, 2),
+            'carryover' => number_format($lastMonthDeposits - $lastMonthSales, 2),
+            'salesCompilationDate' => date('Y/m/d', strtotime($salesCompilationDate)),
+            'consumptionTax' => number_format($consumptionTax, 2),
+            'taxFee' => number_format($lastMonthSales - $sameDaySales - $consumptionTax, 2),
+            'totalLastMonth' => number_format($lastMonthTotal, 2),
+            'totalThisMonth' => number_format($thisMonthSales + $thisMonthDeposits, 2),
+            'total' => number_format($thisMonthDeposits + $thisMonthSales + $lastMonthSales + $lastMonthDeposits, 2)
+        ]);
     }
 }

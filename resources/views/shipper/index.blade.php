@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <shipper-table
-                resource-url="{{route('api.shipper.index')}}"
+                resource-url="{{URL::to('/api/shippers')}}"
                 back-url="{{route('setting')}}">
 
         </shipper-table>

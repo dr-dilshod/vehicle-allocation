@@ -51,11 +51,13 @@ Route::delete('/shippers/{id}', 'Api\ShipperController@destroy')->name('api.ship
  * Item CRUD
  */
 Route::get('/item', 'Api\ItemController@index')->name('api.item.index');
+Route::get('/item/toIncomplete', 'Api\ItemController@toIncomplete');
+Route::get('/item/setTodayAsCompletion', 'Api\ItemController@setTodayAsCompletion');
+Route::get('/item/setDeptDateAsCompletion', 'Api\ItemController@setDeptDateAsCompletion');
 Route::get('/item/{id}', 'Api\ItemController@show')->name('api.item.show');
 Route::post('/item', 'Api\ItemController@store')->name('api.item.store');
 Route::put('/item/{id}', 'Api\ItemController@update')->name('api.item.update');
 Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destroy');
-Route::put('/item/toIncomplete', 'Api\ItemController@toIncomplete')->name('api.item.toIncomplete');
 
 
 /**
@@ -63,10 +65,9 @@ Route::put('/item/toIncomplete', 'Api\ItemController@toIncomplete')->name('api.i
  */
 Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names');
 Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.vehicle-types');
-Route::get('/unit-prices/{shipper_id}', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
+Route::get('/unit-prices', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
 Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
-Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.resource');
 Route::post('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
 Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
 

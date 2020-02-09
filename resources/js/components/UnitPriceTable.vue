@@ -150,7 +150,7 @@
                     stack_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.loading_port')})]},
                     down_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.drop_off')})]},
                     type: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.type')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.type')})]},
-                    price: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.unit_price')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.price')})]},
+                    price: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.unit_price')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.unit_price')})]},
                 }
             }
         },
@@ -164,7 +164,7 @@
         methods: {
             search() {
                 let id = this.$refs.shipperSelect.value;
-                axios.get(`${this.resourceUrl}/${id}`)
+                axios.get(`${this.resourceUrl}/?shipper_id=${id}`)
                     .then(response => {
                         if (response.data && response.data.length > 0) {
                             this.data = response.data.map(e => {

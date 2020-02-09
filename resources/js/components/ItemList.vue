@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="item-list">
 
         <div class="row">
             <div class="col-2">
@@ -11,24 +11,23 @@
             </div>
             <div class="col-2">
                 <a :href="registrationUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.register')}}</a>
+                   class="btn btn-lg btn-danger btn-block">{{__('common.register')}}</a>
             </div>
         </div>
-        <div class="row mt-4">
-
-            <form action="#" class="mx-auto" @submit.prevent="search">
+        <div class="row mt-2">
+            <form @submit.prevent="search" role="form" class="ml-2">
                 <table class="table table-sm table-borderless">
                     <tbody >
                     <tr>
-                        <td class="orders-order text-right"><span class="c24966">{{__('item.stack_date')}}</span></td>
+                        <td class="text-right">{{__('item.stack_date')}}</td>
                         <td>
-                            <datepicker v-model="stack_date" :bootstrap-styling="true"
+                            <datepicker v-model="stack_date" :bootstrap-styling="true" id="stack_date" name="stack_date"
                                         :typeable="true" :format="options.weekday" :clear-button="true"
                                         :language="options.language.ja">
                             </datepicker>
                         </td>
                         <td class="text-right"><span class="c24966">{{__('item.shipper')}}</span></td>
-                        <td class="orders-order">
+                        <td>
                             <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
                                     class="form-control">
                                 <option value=""></option>
@@ -38,31 +37,31 @@
                             </select>
                         </td>
                         <td class="text-right"><span class="c24966">{{__('item.status')}}</span></td>
-                        <td class="orders-order">
+                        <td>
                             <select name="status" id="status" v-model="status"
                                     class="form-control">
                                 <option value=""></option>
-                                <option value=1>{{__('item.completed')}}</option>
-                                <option value=0>{{__('item.incomplete')}}</option>
+                                <option value="1">{{__('item.completed')}}</option>
+                                <option value="0">{{__('item.incomplete')}}</option>
                             </select>
                         </td>
 
                     </tr>
                     <tr>
-                        <td class="text-right"><span class="c24966">{{__('item.stack_point')}}</span></td>
-                        <td class="orders-order">
-                            <input type="text" placeholder="" class="form-control" for="stack_point"
+                        <td class="text-right"><label for="stack_point">{{__('item.stack_point')}}</label></td>
+                        <td>
+                            <input type="text" class="form-control"
                                    v-model="stack_point"
                                    id="stack_point"/>
                         </td>
-                        <td class="orders-product text-right"><span class="c25479 text-right">{{__('item.down_point')}}</span> </td>
-                        <td class="orders-date">
-                            <input id="down_point" for="down_point" type="text" placeholder=""
+                        <td class="text-right"><span class="c25479 text-right">{{__('item.down_point')}}</span> </td>
+                        <td>
+                            <input id="down_point" type="text" placeholder=""
                                    class="form-control"
                                    v-model="down_point"/>
                         </td>
-                        <td class="text-right"><span class="c24966">{{__('item.vehicle_no')}}</span></td>
-                        <td class="orders-order">
+                        <td class="text-right">{{__('item.vehicle_no')}}</td>
+                        <td>
                             <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
                                     class="form-control">
                                 <option value=""></option>
@@ -76,6 +75,8 @@
                         </td>
                         <td>
                             <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
+                            <input type="text" id="resourceUrl"
+                                   :value="resourceUrl" hidden/>
                         </td>
                     </tr>
                 </tbody>
@@ -85,7 +86,7 @@
 
         <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
-                  :height="280" rowHeight=40>
+                  :height="280" rowHeight=35>
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
@@ -129,6 +130,7 @@
             registrationUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
+            itemEditUrl: {type: String, required: true},
         },
         data() {
             return {
@@ -160,23 +162,23 @@
                         template:
                         `
                             <div v-if="data.status === 1">
-                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>Complete
+                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>{{__('item.complete')}}
                                 </ejs-button>
                             </div>
                             <div v-else>
                                 <div v-if="data.stack_date == getDate()">
-                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>Incomplete
+                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>{{__('item.incomplete')}}
                                     </ejs-button>
                                 </div>
                                 <div v-else>
                                     <ejs-button cssClass='e-primary' data-toggle="modal" data-target="#updateStatusModal">
-                                        Incomplete
+                                        {{__('item.incomplete')}}
                                     </ejs-button>
                                     <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header bg-primary">
-                                                    <h5 class="modal-title">Update the status of item transportation</h5>
+                                                    <h5 class="modal-title">{{__('item.update_the_status_of_item_transportation')}}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -184,25 +186,23 @@
 
                                                 </div>
                                                 <div class="modal-body">
-                                                    <div class="">
+                                                    <div >
                                                         <br class="form-group text-center d-flex justify-content-around">
-                                                        <h3>What is your choice?</h3>
+                                                        <h3>{{__('item.what_is_your_choice')}}</h3>
                                                         <div id="radio-group" class="col-md-4">
                                                             <form>
-                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> Set the date of
-                                                                departure as the date of completion of transportation<br>
-                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> Set today as the
-                                                                transportation completion date
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}}<br>
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> {{__('item.set_today_as_the_transportation_completion_date')}}
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-around mt-2">
                                                     <button type="button" class="btn btn-danger" @click="checkStatus(data.item_id)">
-                                                        Register
+                                                        {{__('common.register')}}
                                                     </button>
                                                     <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                                        Cancel
+                                                        {{__('common.cancel')}}
                                                     </button>
                                                 </div>
                                                  <div class="d-flex justify-content-around mt-2">
@@ -217,6 +217,7 @@
                             return {
                                 data:{},
                                 stat: '',
+                                resourceUrl: document.getElementById('resourceUrl').value,
                             };
                         },
                         props: {
@@ -227,7 +228,7 @@
                         methods: {
                             toIncomplete: function (id,departure_date) {
                                 if (departure_date == this.getDate()) {
-                                    axios.get('/item/toIncomplete?id='+id)
+                                    axios.get(this.resourceUrl + '/toIncomplete?id='+id)
                                         .then(response => {
                                             this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'));
                                             this.data.status = 0;
@@ -239,7 +240,7 @@
                                 }
                             },
                             setTodayAsCompletion: function (id) {
-                                axios.get('/item/setTodayAsCompletion?id='+id)
+                                axios.get(this.resourceUrl + '/setTodayAsCompletion?id='+id)
                                     .then(response=>{
                                         this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
@@ -251,7 +252,7 @@
                                     });
                             },
                             setDeptDateAsCompletion: function (id) {
-                                axios.get('/item/setDeptDateAsCompletion?id='+id)
+                                axios.get(this.resourceUrl + '/setDeptDateAsCompletion?id='+id)
                                     .then(response => {
                                         this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
@@ -315,7 +316,7 @@
                             allowAdding: false,
                         },
                     });
-                    window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
+                    window.location.href = this.itemEditUrl + `?item_id=` + args.rowData['item_id'];
                 }
             },
             fetchItem(url) {
@@ -346,12 +347,17 @@
                     });
             },
             search(){
+                let stack_date = this.stack_date;
+                let string_stack_date = "";
+                if(typeof stack_date === "object" && stack_date !== null)
+                    string_stack_date = stack_date.getFullYear()+'/'+(stack_date.getMonth()+1)+'/'+stack_date.getDate();
                 return this.fetchItem(this.itemUrl
                     +'?shipper_name=' + this.shipper_name
                     + '&vehicle_no3=' + this.vehicle_no3
                     + '&status=' + this.status
-                    + '&stack_date=' + this.stack_date
-                    + '&stack_point=' + this.stack_point)
+                    + '&stack_date=' + string_stack_date
+                    + '&stack_point=' + this.stack_point
+                    + '&down_point=' + this.down_point);
             },
             clear(){
                 this.stack_date = '';
@@ -367,7 +373,6 @@
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar],
         },
-        name: 'ItemTable'
     }
 </script>
 <style scoped>

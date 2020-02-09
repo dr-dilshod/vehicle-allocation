@@ -150,7 +150,7 @@ return [
     */
 
     'attributes' => [
-        'vehicle_no' => 'vehicle number',
+        'vehicle_no' => '車両番号',
         'shipper_no'=> '荷主No ',
         'shipper'=>'荷主 ',
         'shipper_name1'=>'名 1 ',
@@ -195,7 +195,7 @@ return [
         'add_driver'=>'ドライバーを追加',
         'check'=>'小切手',
         'cancel'=>'キャンセル',
-        'driver_list' => 'ドライバー一覧',
+        'driver_list' => 'ドライバー一覧 ',
         '10tw' => '10tW',
         '10t_flat' => '10t平',
         '4tw' => '4tW',
@@ -229,7 +229,7 @@ return [
         '20th'=>'20日',
         '30th'=>'30日',
         'stack_date'=>'積日',
-        'unloading_place' => 'Unloading place',
+        'unloading_place' => '荷降ろし場所',
         'down_date' => '降日',
         'stack_time' => '積時間',
         'down_time' => '降時間',
@@ -253,7 +253,7 @@ return [
         'none'=>'なし',
         'completed'=>'完了',
         'incomplete'=>'未完了',
-
+        'vehicle_type'=>'車種',
         'update'=>'更新',
         'wing'=>'ウィング',
         'flat'=>'平',
@@ -281,7 +281,7 @@ return [
         'phone' => '電話番号',
         'fax' => 'FAX番号',
         'remark' => '備考',
-
+        'driver_pass'=>'ドライバーのパスワード ',
     ],
 
 ];

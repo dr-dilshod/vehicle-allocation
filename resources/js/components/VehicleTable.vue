@@ -53,7 +53,7 @@
                 <e-column field='vehicle_address2' :headerText='__("vehicle.address1")' width="200"></e-column>
                 <e-column field='vehicle_phone_number' :headerText='__("vehicle.phone")' width="200"></e-column>
                 <e-column field='vehicle_fax_number' :headerText='__("vehicle.fax")' width="200"></e-column>
-                <e-column field='offset' :headerText='__("vehicle.offset")' textAlign="Center"  editType= 'numericedit' width="100"></e-column>
+                <e-column field='offset' :headerText='__("vehicle.offset")' textAlign="Center" editType='booleanedit' width="100"></e-column>
                 <e-column field='vehicle_remark' :headerText='__("vehicle.remark")' width="250"></e-column>
             </e-columns>
         </ejs-grid>
@@ -93,6 +93,7 @@
             actionBegin(args){
                 if(args.requestType == 'save'){
                     args.cancel = true;
+                    args.data['offset'] = $('#gridoffset:checked').length;
                     if(args.data.vehicle_id === undefined){
                         this.insertVehicle(args.data);
                     }else{
@@ -112,7 +113,6 @@
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
                         vehicleTable.createSuccessDialog();
-                        vehicleTable.fetchCompanies();
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
@@ -140,7 +140,6 @@
                     .then(function(response){
                         vehicleTable.tableUtil.endEditing();
                         vehicleTable.updateSuccessDialog();
-                        vehicleTable.fetchCompanies();
                         vehicleTable.refresh();
                     })
                     .catch(function(error){
@@ -176,7 +175,7 @@
                 this.search();
             },
             refresh(){
-                this.fetchCompanies(this.companyUrl);
+                this.fetchCompanies();
                 this.search();
             },
         },

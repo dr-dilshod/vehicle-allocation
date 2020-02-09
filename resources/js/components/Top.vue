@@ -1,7 +1,7 @@
 <template>
     <div id="top">
         <div class="row p-4">
-            <sdiv class="col-4">
+            <div class="col-4">
                 <form action="#" role="form">
                     <div class="form-group row">
                         <label for="year" class="col-2 offset-2">{{__('top.Year')}}</label>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </form>
-            </sdiv>
+            </div>
             <div class="col-6">
                 <table class="table fixed-header">
                     <thead>
