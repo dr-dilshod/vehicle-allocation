@@ -38,5 +38,13 @@ return [
     'this_feature_is_under_development'=>'この機能は開発中です。',
     'there_is_no_item_for_your_selection'=>'選択するアイテムはありません。',
     'please_select_a_shipper'=>'配送業者を選択してください。',
-
+    'previous_month_sales'=>'前月の売上',
+    'payment_last_month'=>'先月のお支払い',
+    'carryover'=>'持ち越す',
+    'sales_completion_date'=>'販売完了日',
+    'consumption_tax'=>'消費税',
+    'tax_fee'=>'無税',
+    'total_up_to_last_month'=>'先月までの合計',
+    'total_for_this_month'=>'今月の合計',
+    'total'=>'合計',
 ];
