@@ -82,16 +82,13 @@ class InvoiceController extends Controller
     public function getInvoiceList(Request $request)
     {
         $stack_date = $request->query('stack_date') ?: '';
-        $vehicle_no = $request->query('vehicle_no') ?: '';
+        $vehicle_id = $request->query('vehicle_id') ?: '';
         $invoice_day = $request->query('invoice_day') ?: '';
         $invoice_month = $request->query('invoice_month') ?: '';
         $shipper_id = $request->query('shipper_id') ?: '';
         $matchThese = ['delete_flg' => 0];
-//        if (!empty($stack_date)) {
-//            $matchThese = array_add($matchThese, 'stack_date', $stack_date);
-//        }
-        if (!empty($vehicle_no)) {
-            $vehicle = Vehicle::query()->where('vehicle_no', '=', $vehicle_no)->first();
+        if (!empty($vehicle_id)) {
+            $vehicle = Vehicle::query()->where('vehicle_id', '=', $vehicle_id)->first();
             if (!is_null($vehicle)) {
                 $matchThese = array_add($matchThese, 'vehicle_id', $vehicle->vehicle_id);
             }
@@ -114,8 +111,8 @@ class InvoiceController extends Controller
             });
 
         $invoiceTable = Item::query()->whereIn('item_id', $invoices)
+            ->where('stack_date', '=', $stack_date)
             ->where('down_date', '>=', date("Y-m-d"))
-            ->select()
             ->get();
         return response()->json($invoiceTable);
     }
@@ -153,10 +150,24 @@ class InvoiceController extends Controller
      */
     public function getShipperList(Request $request)
     {
-        $shippers = Shipper::select()
-            ->where('delete_flg',0)
-            ->get();
+        $shipperIDs = Item::query()->select('shipper_id')->distinct()->get(function($e) {
+           return $e->shipper_id;
+        });
+        $shippers = Shipper::query()->whereIn('shipper_id', $shipperIDs)->get();
         return response()->json($shippers);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getVehicleList()
+    {
+        $vehicleIDs = Item::query()->select('vehicle_id')->distinct()->get(function($e) {
+            return $e->vehicle_id;
+        });
+
+        $vehicles = Vehicle::query()->select(['vehicle_id', 'vehicle_no'])->whereIn('vehicle_id', $vehicleIDs)->get();
+        return response()->json($vehicles);
     }
 
     /**
@@ -334,5 +345,47 @@ class InvoiceController extends Controller
             'item_data' => $item_list,
             'billing' => $billing_date_array]);
         return $pdf->download('billingList.pdf');
+    }
+
+    public function getAggregate()
+    {
+        $lastMonthBegin = Carbon::today()->setMonths(Carbon::today()->month-1)->setDays(1);
+        $lastMonthEnd = Carbon::today()->setMonths(Carbon::today()->month-1)->setDays($lastMonthBegin->daysInMonth)->format('Y-m-d');
+        $lastMonthBegin = $lastMonthBegin->format('Y-m-d');
+        $lastMonthPayments = Payment::query()
+            ->whereDate('payment_day', '<=', $lastMonthEnd)
+            ->whereDate('payment_day', '>=', $lastMonthBegin)->get()->all();
+
+        $lastMonthSales = 0;
+        $lastMonthDeposits = 0;
+        $salesCompilationDate = $lastMonthBegin;
+        $sameDaySales = 0;
+        $totalForThisMonth = 0;
+        $total = 0;
+        foreach ($lastMonthPayments as $payment) {
+            $lastMonthSales += doubleval($payment->payment_amount);
+            if ($salesCompilationDate < $payment->payment_day) {
+                $salesCompilationDate = $payment->payment_day;
+            }
+            $deposits = Deposit::query()->whereDate('deposit_day', '>=', $lastMonthBegin)
+                ->whereDate('deposit_day', '<=', $lastMonthEnd)
+                ->where('shipper_id', '=', $payment->shipper_id)->get();
+            foreach ($deposits as $deposit) {
+                $lastMonthDeposits += doubleval($deposit->deposit_amount);
+            }
+        }
+
+        $lastMonthTotal = $lastMonthSales + $lastMonthDeposits;
+        $consumptionTax = ($lastMonthSales+$lastMonthDeposits) * 0.1;
+        return response()->json([
+            'lastMonthSales' => $lastMonthSales,
+            'lastMonthDeposits' => $lastMonthDeposits,
+            'carryover' => $lastMonthDeposits - $lastMonthSales,
+            'salesCompilationDate' => date('Y-m-d', strtotime($salesCompilationDate)),
+            'consumptionTax' => $consumptionTax,
+            'taxFee' => $lastMonthSales - $sameDaySales - $consumptionTax,
+            'totalLastMonth' => $lastMonthTotal,
+
+        ]);
     }
 }

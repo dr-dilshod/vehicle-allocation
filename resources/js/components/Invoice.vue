@@ -80,10 +80,10 @@
                             <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
                         </td>
                         <td>
-                            <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
+                            <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_id" class="form-control">
                                 <option value=""></option>
-                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
-                                    {{ vehicle.vehicle_no3 }}
+                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
+                                    {{ vehicle.vehicle_no }}
                                 </option>
                             </select>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -92,7 +92,8 @@
                         <td colspan="2">
                             <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
                             &nbsp;&nbsp;&nbsp;
-                            <button type="reset" class="btn btn-primary" @click.prevent="listPrinting">{{__('invoice.aggregate')}}</button>
+
+                            <button type="button" data-toggle="modal" data-target="#aggr" class="btn btn-primary">{{__('invoice.aggregate')}}</button>
                         </td>
                     </tr>
                 </table>
@@ -211,6 +212,67 @@
                 </div>
             </div>
         </div>
+        <div class="modal" id="aggr" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title">{{__('invoice.print_billing_date')}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <th>
+                                    Previous month sales
+                                </th>
+                                <th>
+                                    Payment last month
+                                </th>
+                                <th>
+                                    Carryover
+                                </th>
+                                <th>
+                                    Sales completion date
+                                </th>
+                                <th>
+                                    Consumption tax
+                                </th>
+                                <th>
+                                    Tax-free
+                                </th>
+                                <th>
+                                    Total up to last month
+                                </th>
+                                <th>
+                                    Total for this month
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>100,000</td>
+                                    <td>200,000</td>
+                                    <td>100,000</td>
+                                    <td>2019/12/07</td>
+                                    <td>10,000</td>
+                                    <td>5,000</td>
+                                    <td>10,000</td>
+                                    <td>10,000</td>
+                                    <td>10,000</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 <script>
@@ -244,7 +306,7 @@
                 data: [],
                 formData: {
                     stack_date: '',
-                    vehicle_no: '',
+                    vehicle_id: '',
                     invoice_day: '',
                     invoice_month: '',
                     shipper_id: '',
@@ -297,7 +359,7 @@
         },
         methods: {
             actionBegin(args){
-                if(args.requestType == 'delete'){
+                if(args.requestType  == 'delete'){
                     args.cancel = true;
                     if(args.data[0].item_id !== undefined){
                         this.deleteInvoice(args.data[0].item_id);
@@ -349,7 +411,6 @@
                 }
             },
             listPrinting(){
-                // TODO: bu yerda vehicle_id o'rnida vehicle_no keladi
                 if (this.data.length>0) {
                     window.location.href = this.billingListUrl
                         + '?shipper_id=' + this.formData.shipper_id
@@ -420,7 +481,7 @@
                 console.log(this.formData);
                 this.data = this.fetchData(this.invoiceUrl
                     + '?stack_date=' + this.formData.stack_date
-                    + '&vehicle_no=' + this.formData.vehicle_no
+                    + '&vehicle_id=' + this.formData.vehicle_id
                     + '&invoice_day=' + this.formData.invoice_day
                     + '&invoice_month=' + this.formData.invoice_month
                     + '&shipper_id=' + this.formData.shipper_id);
