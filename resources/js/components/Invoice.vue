@@ -250,15 +250,15 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>Previous month sales</th>
-                                    <th>Payment last month</th>
-                                    <th>Carryover</th>
-                                    <th>Sales completion date</th>
-                                    <th>Consumption tax</th>
-                                    <th>Tax-free</th>
-                                    <th>Total up to last month</th>
-                                    <th>Total for this month</th>
-                                    <th>Total</th>
+                                    <th>{{__('invoice.previous_month_sales')}}</th>
+                                    <th>{{__('invoice.payment_last_month')}}</th>
+                                    <th>{{__('invoice.carryover')}}</th>
+                                    <th>{{__('invoice.sales_completion_date')}}</th>
+                                    <th>{{__('invoice.consumption_tax')}}</th>
+                                    <th>{{__('invoice.tax_fee')}}</th>
+                                    <th>{{__('invoice.total_up_to_last_month')}}</th>
+                                    <th>{{__('invoice.total_for_this_month')}}</th>
+                                    <th>{{__('invoice.total')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>

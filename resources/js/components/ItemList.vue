@@ -162,17 +162,17 @@
                         template:
                         `
                             <div v-if="data.status === 1">
-                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>Complete
+                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>{{__('item.complete')}}
                                 </ejs-button>
                             </div>
                             <div v-else>
                                 <div v-if="data.stack_date == getDate()">
-                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>Incomplete
+                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>{{__('item.incomplete')}}
                                     </ejs-button>
                                 </div>
                                 <div v-else>
                                     <ejs-button cssClass='e-primary' data-toggle="modal" data-target="#updateStatusModal">
-                                        Incomplete
+                                        {{__('item.incomplete')}}
                                     </ejs-button>
                                     <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
                                         <div class="modal-dialog" role="document">

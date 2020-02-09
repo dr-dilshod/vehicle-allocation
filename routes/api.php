@@ -65,10 +65,9 @@ Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destro
  */
 Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names');
 Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.vehicle-types');
-Route::get('/unit-prices/{shipper_id}', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
+Route::get('/unit-prices', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
 Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
-Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.resource');
 Route::post('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
 Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
 

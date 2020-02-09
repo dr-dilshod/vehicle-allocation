@@ -164,7 +164,7 @@
         methods: {
             search() {
                 let id = this.$refs.shipperSelect.value;
-                axios.get(`${this.resourceUrl}/${id}`)
+                axios.get(`${this.resourceUrl}/?shipper_id=${id}`)
                     .then(response => {
                         if (response.data && response.data.length > 0) {
                             this.data = response.data.map(e => {
