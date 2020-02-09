@@ -76,6 +76,8 @@
                         </td>
                         <td>
                             <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
+                            <input type="text" id="resourceUrl"
+                                   :value="resourceUrl" hidden/>
                         </td>
                     </tr>
                 </tbody>
@@ -99,6 +101,7 @@
                 <e-column field='item_remark' :allowEditing= 'false' :headerText='__("item.remarks")' width="200"></e-column>
             </e-columns>
         </ejs-grid>
+
     </div>
 </template>
 <script>
@@ -129,6 +132,7 @@
             registrationUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
+            itemEditUrl: {type: String, required: true},
         },
         data() {
             return {
@@ -217,6 +221,7 @@
                             return {
                                 data:{},
                                 stat: '',
+                                resourceUrl: document.getElementById('resourceUrl').value,
                             };
                         },
                         props: {
@@ -227,7 +232,7 @@
                         methods: {
                             toIncomplete: function (id,departure_date) {
                                 if (departure_date == this.getDate()) {
-                                    axios.get('/item/toIncomplete?id='+id)
+                                    axios.get(this.resourceUrl + '/toIncomplete?id='+id)
                                         .then(response => {
                                             this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'));
                                             this.data.status = 0;
@@ -239,7 +244,7 @@
                                 }
                             },
                             setTodayAsCompletion: function (id) {
-                                axios.get('/item/setTodayAsCompletion?id='+id)
+                                axios.get(this.resourceUrl + '/setTodayAsCompletion?id='+id)
                                     .then(response=>{
                                         this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
@@ -251,7 +256,7 @@
                                     });
                             },
                             setDeptDateAsCompletion: function (id) {
-                                axios.get('/item/setDeptDateAsCompletion?id='+id)
+                                axios.get(this.resourceUrl + '/setDeptDateAsCompletion?id='+id)
                                     .then(response => {
                                         this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
@@ -315,7 +320,7 @@
                             allowAdding: false,
                         },
                     });
-                    window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
+                    window.location.href = this.itemEditUrl + `?item_id=` + args.rowData['item_id'];
                 }
             },
             fetchItem(url) {
