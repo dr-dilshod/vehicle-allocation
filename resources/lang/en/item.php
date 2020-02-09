@@ -50,4 +50,5 @@ return [
     'update_the_status_of_item_transportation'=>'Update the status of item transportation',
     'set_the_date_of_departure_as_the_date_of_completion_of_transportation'=>'Set the date of departure as the date of completion of transportation',
     'set_today_as_the_transportation_completion_date'=>'Set today as the transportation completion date',
+    'complete'=>'Complete',
 ];
