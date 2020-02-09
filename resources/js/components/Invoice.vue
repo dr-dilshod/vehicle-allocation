@@ -26,7 +26,9 @@
                             {{__('invoice.billing_month')}}
                         </button>
                         <br>
-                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">{{__('invoice.list_printing')}}</button>
+                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
+                            {{__('invoice.list_printing')}}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -41,7 +43,8 @@
                         <td align="left">
                             <div class="col-md-6">
                                 <div class="md-form form-group w-25">
-                                    <select name="shipper" id="shipper" v-model="formData.shipper_id"  style="width:230px">
+                                    <select name="shipper" id="shipper" v-model="formData.shipper_id"
+                                            style="width:230px">
                                         <option value=""></option>
                                         <option v-for="shipper in shippers" :value="shipper.shipper_id">
                                             {{ shipper. shipper_name1 + " " + shipper. shipper_name2 }}
@@ -55,12 +58,12 @@
                         </td>
                         <td>
                             <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'"
-                                            :format="options.monthFormat"></datepicker>
+                                        :format="options.monthFormat"></datepicker>
                         </td>
-                        <td  width="40%">
+                        <td width="40%">
                             <label>{{__('invoice.invoice_day')}}</label>
                         </td>
-                        <td  width="40%">
+                        <td width="40%">
                             <select v-model="formData.invoice_day" class="form-control">
                                 <option value=""></option>
                                 <option value="20">{{__('invoice.20th')}}</option>
@@ -74,25 +77,31 @@
                         </td>
                         <td align="center">
                             <datepicker v-model="formData.stack_date" :minimumView="'day'" :format="options.stack_date"
-                                            :maximumView="'day'"/>
+                                        :maximumView="'day'"/>
                         </td>
                         <td>
                             <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
                         </td>
-                        <td>
-                            <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
+                        <td class="srch">
+                            <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_id"
+                                    class="form-control">
                                 <option value=""></option>
-                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
-                                    {{ vehicle.vehicle_no3 }}
+                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
+                                    {{ vehicle.vehicle_no }}
                                 </option>
                             </select>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
                         </td>
                         <td colspan="2">
-                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}</button>
+                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}
+                            </button>
                             &nbsp;&nbsp;&nbsp;
-                            <button type="reset" class="btn btn-primary" @click.prevent="listPrinting">{{__('invoice.aggregate')}}</button>
+
+                            <button type="button" @click="getAggregate" data-toggle="modal" data-target="#aggr"
+                                    class="btn btn-primary">
+                                {{__('invoice.aggregate')}}
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -101,18 +110,27 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="270" :frozenColumns="4" :rowSelected='rowSelected'>
             <e-columns>
-                <e-column field='stack_point' :headerText='__("invoice.loading_port")' width="150" textAlign="Center"></e-column>
-                <e-column field='down_point' :headerText='__("invoice.drop_off")' width="150" textAlign="Center"></e-column>
-                <e-column field='vehicle_payment' :headerText='__("invoice.amount")' width="150" textAlign="Right"></e-column>
-                <e-column field='down_date' :headerText='__("invoice.delivery_date")' width="100" textAlign="Center"></e-column>
-                <e-column field='shipper_name' :headerText='__("invoice.shipper")' width="150" textAlign="Center"></e-column>
-                <e-column field='vehicle_no3' :headerText='__("invoice.vehicle_no")' width="150" textAlign="Center"></e-column>
+                <e-column field='stack_point' :headerText='__("invoice.loading_port")' width="150"
+                          textAlign="Center"></e-column>
+                <e-column field='down_point' :headerText='__("invoice.drop_off")' width="150"
+                          textAlign="Center"></e-column>
+                <e-column field='vehicle_payment' :headerText='__("invoice.amount")' width="150"
+                          textAlign="Right"></e-column>
+                <e-column field='down_date' :headerText='__("invoice.delivery_date")' width="100"
+                          textAlign="Center"></e-column>
+                <e-column field='shipper_name' :headerText='__("invoice.shipper")' width="150"
+                          textAlign="Center"></e-column>
+                <e-column field='vehicle_no3' :headerText='__("invoice.vehicle_no")' width="150"
+                          textAlign="Center"></e-column>
                 <e-column field='weight' :headerText='__("invoice.weight")' width="150"></e-column>
-                <e-column field='item_price' :headerText='__("invoice.item_price")' textAlign="Right" editType='numericedit'
+                <e-column field='item_price' :headerText='__("invoice.item_price")' textAlign="Right"
+                          editType='numericedit'
                           width="100"></e-column>
                 <e-column field='status' :headerText='__("invoice.status")' width="100" textAlign="Center"></e-column>
-                <e-column field='item_vehicle' :headerText='__("invoice.item_vehicle")' width="100" textAlign="Center"></e-column>
-                <e-column field='down_time' :headerText='__("invoice.delivery_time")' width="100" textAlign="Center"></e-column>
+                <e-column field='item_vehicle' :headerText='__("invoice.item_vehicle")' width="100"
+                          textAlign="Center"></e-column>
+                <e-column field='down_time' :headerText='__("invoice.delivery_time")' width="100"
+                          textAlign="Center"></e-column>
                 <e-column field='item_completion_date' :headerText='__("invoice.invoice_date")' width="150"
                           textAlign="Center"></e-column>
                 <e-column field='item_id' :visible="false" width="0"></e-column>
@@ -132,32 +150,33 @@
                         </td>
                         <td>
                             <div class="form-group">
-                            <input type="text" disabled="disabled" id="totalSales" v-model="sales">
-                        </div>
+                                <input type="text" disabled="disabled" id="totalSales" v-model="sales">
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                         </td>
                         <td align="right">
-                        <label for="totalConsumptionTax">{{__('invoice.total_consumption_tax')}}</label>
+                            <label for="totalConsumptionTax">{{__('invoice.total_consumption_tax')}}</label>
                         </td>
                         <td>
                             <div class="form-group">
-                        <input type="text" id="totalConsumptionTax" disabled="disabled" v-model="totalConsumptionTax">
-                    </div>
+                                <input type="text" id="totalConsumptionTax" disabled="disabled"
+                                       v-model="totalConsumptionTax">
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                         </td>
                         <td align="right">
-                        <label for="otherTotals">{{__('invoice.other_totals')}}</label>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                        <input type="text" id="otherTotals" disabled="disabled" v-model="otherTotals">
-                    </div>
+                            <label for="otherTotals">{{__('invoice.other_totals')}}</label>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="otherTotals" disabled="disabled" v-model="otherTotals">
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -168,8 +187,8 @@
                         </td>
                         <td>
                             <div class="form-group">
-                            <input type="text" id="totalSalesTotal" disabled="disabled" v-model="totalSales">
-                        </div>
+                                <input type="text" id="totalSalesTotal" disabled="disabled" v-model="totalSales">
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -194,23 +213,74 @@
                             </div>
                             <div class="form-group d-flex justify-content-around">
                                 <span>
-                                    <input type="radio" name="billing_day" v-model="billing_day" value="20" id="twenty"/>
+                                    <input type="radio" name="billing_day" v-model="billing_day" value="20"
+                                           id="twenty"/>
                                     <label for="twenty">{{__('invoice.20th')}}</label>
                                 </span>
                                 <span>
-                                    <input type="radio" name="billing_day" value="30" v-model="billing_day" id="thirty"/>
+                                    <input type="radio" name="billing_day" value="30" v-model="billing_day"
+                                           id="thirty"/>
                                     <label for="thirty">{{__('invoice.30th')}}</label>
                                 </span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-around">
-                            <button type="button" class="btn btn-success" @click="billingPrint">{{__('invoice.print')}}</button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">{{__('invoice.cancel')}}</button>
+                            <button type="button" class="btn btn-success" @click="billingPrint">
+                                {{__('invoice.print')}}
+                            </button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                {{__('invoice.cancel')}}
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="modal" id="aggr" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title">{{__('invoice.aggregate')}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>{{__('invoice.previous_month_sales')}}</th>
+                                    <th>{{__('invoice.payment_last_month')}}</th>
+                                    <th>{{__('invoice.carryover')}}</th>
+                                    <th>{{__('invoice.sales_completion_date')}}</th>
+                                    <th>{{__('invoice.consumption_tax')}}</th>
+                                    <th>{{__('invoice.tax_fee')}}</th>
+                                    <th>{{__('invoice.total_up_to_last_month')}}</th>
+                                    <th>{{__('invoice.total_for_this_month')}}</th>
+                                    <th>{{__('invoice.total')}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{aggregate.lastMonthSales}}</td>
+                                    <td>{{aggregate.lastMonthDeposits}}</td>
+                                    <td>{{aggregate.carryover}}</td>
+                                    <td>{{aggregate.salesCompilationDate}}</td>
+                                    <td>{{aggregate.consumptionTax}}</td>
+                                    <td>{{aggregate.taxFee}}</td>
+                                    <td>{{aggregate.totalLastMonth}}</td>
+                                    <td>{{aggregate.totalThisMonth}}</td>
+                                    <td>{{aggregate.total}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 <script>
@@ -223,9 +293,10 @@
     Vue.use(VueSimpleAlert);
     Vue.use(Datepicker);
 
-    export default{
+    export default {
         props: {
             invoiceUrl: {type: String, required: true},
+            aggrUrl: {type: String, required: true},
             backUrl: {type: String, required: true},
             shippersUrl: {type: String, required: true},
             vehiclesUrl: {type: String, required: true},
@@ -239,12 +310,12 @@
         components: {
             Datepicker
         },
-        data(){
+        data() {
             return {
                 data: [],
                 formData: {
                     stack_date: '',
-                    vehicle_no: '',
+                    vehicle_id: '',
                     invoice_day: '',
                     invoice_month: '',
                     shipper_id: '',
@@ -284,34 +355,43 @@
                     payment_record_date: '',
                     invoice_remark: '',
                 },
-                billingListData: {
-
-                },
+                billingListData: {},
                 paymentList: [],
                 depositList: [],
+                aggregate: {
+                    lastMonthSales: 0,
+                    lastMonthDeposits: 0,
+                    carryover: 0,
+                    salesCompilationDate: 0,
+                    consumptionTax: 0,
+                    taxFee: 0,
+                    totalLastMonth: 0,
+                    totalThisMonth: 0,
+                    total: 0
+                }
             }
         },
-        created(){
+        created() {
             this.fetchShippers();
             this.fetchVehicles();
         },
         methods: {
-            actionBegin(args){
-                if(args.requestType == 'delete'){
+            actionBegin(args) {
+                if (args.requestType == 'delete') {
                     args.cancel = true;
-                    if(args.data[0].item_id !== undefined){
+                    if (args.data[0].item_id !== undefined) {
                         this.deleteInvoice(args.data[0].item_id);
                     }
                 }
             },
-            rowSelected: function(args) {
+            rowSelected: function (args) {
                 this.invoiceData.item_id = args.data.item_id;
                 this.invoiceData.shipper_id = args.data.shipper_id;
                 this.invoiceData.vehicle_id = args.data.vehicle_id;
                 this.invoiceData.billing_recording_date = this.getDate();
                 this.invoiceData.billing_deadline_date = args.data.item_completion_date;
             },
-            register(){
+            register() {
                 const invoiceTable = this;
                 if (this.invoiceData.item_id !== '') {
                     axios.post(this.resourceUrl, this.invoiceData)
@@ -325,14 +405,14 @@
                     invoiceTable.showWarningDialog(this.__('invoice.please_select_an_item_to_add_to_invoice_list'));
                 }
             },
-            deleteInvoice(item_id){
+            deleteInvoice(item_id) {
                 const invoiceTable = this;
-                axios.delete(this.resourceUrl+'/'+item_id)
-                    .then(function(response){
+                axios.delete(this.resourceUrl + '/' + item_id)
+                    .then(function (response) {
                         invoiceTable.tableUtil.endEditing();
                         invoiceTable.showWarningDialog(this.__('invoice.selected_item_is_removed_from_invoice_list'))
                     })
-                    .catch(function(error){
+                    .catch(function (error) {
                         invoiceTable.showDialog(error.response.data);
                         return false;
                     });
@@ -348,9 +428,8 @@
                         + '&billing_day=' + this.billing_day;
                 }
             },
-            listPrinting(){
-                // TODO: bu yerda vehicle_id o'rnida vehicle_no keladi
-                if (this.data.length>0) {
+            listPrinting() {
+                if (this.data.length > 0) {
                     window.location.href = this.billingListUrl
                         + '?shipper_id=' + this.formData.shipper_id
                         + '&billing_month=' + this.formData.invoice_month
@@ -358,7 +437,7 @@
                         + '&stack_date=' + this.formData.stack_date
                         + '&vehicle_id=' + this.formData.vehicle_id;
                 } else {
-                    this.showWarningDialog(this.__('invoice.there_is_no_item_for_your_selection'), {warningTitle:"safdas"});
+                    this.showWarningDialog(this.__('invoice.there_is_no_item_for_your_selection'), {warningTitle: "safdas"});
                 }
             },
             fetchShippers() {
@@ -373,7 +452,7 @@
                         this.vehicles = vehicles.data
                     });
             },
-            edit(){
+            edit() {
                 this.setEditMode('editing');
                 this.$refs.grid.refresh();
 
@@ -414,13 +493,13 @@
                     return yyyy + '-' + mm;
                 }
             },
-            search: function(){
+            search: function () {
                 this.formData.stack_date = this.getNormalDate(this.formData.stack_date);
                 this.formData.invoice_month = this.getNormalDate(this.formData.stack_date, true);
                 console.log(this.formData);
                 this.data = this.fetchData(this.invoiceUrl
                     + '?stack_date=' + this.formData.stack_date
-                    + '&vehicle_no=' + this.formData.vehicle_no
+                    + '&vehicle_id=' + this.formData.vehicle_id
                     + '&invoice_day=' + this.formData.invoice_day
                     + '&invoice_month=' + this.formData.invoice_month
                     + '&shipper_id=' + this.formData.shipper_id);
@@ -428,11 +507,17 @@
                 this.fetchPaymentList(this.paymentUrl
                     + '?shipper_id='
                     + this.formData.shipper_id);
-                if (this.paymentList.length>0){
+                if (this.paymentList.length > 0) {
                     this.calculateTotals();
                 }
             },
-            calculateTotals: function() {
+            getAggregate() {
+                axios.get(this.aggrUrl)
+                    .then(resp => {
+                        this.aggregate = resp.data;
+                    });
+            },
+            calculateTotals: function () {
                 /**
                  * calculate total sales
                  */
@@ -452,21 +537,21 @@
                     totalSales = totalSales + pl[i].payment_amount;
                 }
                 this.sales = sales;
-                this.totalConsumptionTax = sales*0.1;
+                this.totalConsumptionTax = sales * 0.1;
                 this.otherTotals = other;
                 this.totalSales = totalSales;
             },
-            clear(){
+            clear() {
                 this.formData.stack_date = '';
                 this.formData.invoice_day = '';
                 this.formData.invoice_month = '';
                 this.formData.vehicle_no = '';
                 this.formData.shipper_id = '';
             },
-            refresh(){
+            refresh() {
                 this.search();
             },
-            setEditMode(editMode){
+            setEditMode(editMode) {
                 if (editMode === 'normal') {
                     this.$refs.grid.ej2Instances.setProperties({
                         toolbar: null,
@@ -516,7 +601,7 @@
                     timer: 5000
                 });
             },
-            getDate () {
+            getDate() {
                 const toTwoDigits = num => num < 10 ? '0' + num : num;
                 let today = new Date();
                 let year = today.getFullYear();
@@ -544,6 +629,7 @@
         width: 150px;
         float: right;
     }
+
     #invoice .btn {
         width: 100px;
         padding: 10px 5px;
@@ -552,7 +638,12 @@
         -moz-border-radius: 0;
         border-radius: 0;
     }
-    .vdp-datepicker input{
+
+    .vdp-datepicker input {
         padding: 5px !important;
+    }
+
+    .srch > button {
+        width: 80px !important;
     }
 </style>

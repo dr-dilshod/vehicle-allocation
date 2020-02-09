@@ -54,9 +54,10 @@ Route::get('/invoice/getInvoiceList', 'Api\InvoiceController@getInvoiceList')->n
 Route::get('/invoice/getPaymentList', 'Api\InvoiceController@getPaymentList')->name('payment.list')->middleware('admin');
 Route::get('/invoice/getDepositList', 'Api\InvoiceController@getDepositList')->name('deposit.list')->middleware('admin');
 Route::get('/invoice/getShipperList', 'Api\InvoiceController@getShipperList')->name('shipper.list')->middleware('admin');
+Route::get('/invoice/getVehicleList', 'Api\InvoiceController@getVehicleList')->name('vehicle.list')->middleware('admin');
 Route::get('/invoice/billingMonthPDF', 'Api\InvoiceController@billingMonthPDF')->name('billing.month')->middleware('admin');
 Route::get('/invoice/billingListPDF', 'Api\InvoiceController@billingListPDF')->name('billing.list')->middleware('admin');
-
+Route::get('/invoice/aggregate', 'Api\InvoiceController@getAggregate')->name('api.invoice.aggregate')->middleware('admin');
 
 
 // Unit price

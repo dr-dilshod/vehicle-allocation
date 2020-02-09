@@ -36,6 +36,15 @@ return [
     'selected_item_is_removed_from_invoice_list'=>'Selected item is removed from invoice list.',
     'this_feature_is_under_development'=>'This feature is under development.',
     'please_select_a_shipper'=>'Please, select a shipper.',
+    'previous_month_sales'=>'Previous month sales',
+    'payment_last_month'=>'Payment last month',
+    'carryover'=>'Carryover',
+    'sales_completion_date'=>'Sales completion date',
+    'consumption_tax'=>'Consumption tax',
+    'tax_fee'=>'Tax-free',
+    'total_up_to_last_month'=>'Total up to last month',
+    'total_for_this_month'=>'Total for this month',
+    'total'=>'Total',
 
 
 ];

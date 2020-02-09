@@ -162,23 +162,23 @@
                         template:
                         `
                             <div v-if="data.status === 1">
-                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>Complete
+                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>{{__('item.complete')}}
                                 </ejs-button>
                             </div>
                             <div v-else>
                                 <div v-if="data.stack_date == getDate()">
-                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>Incomplete
+                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>{{__('item.incomplete')}}
                                     </ejs-button>
                                 </div>
                                 <div v-else>
                                     <ejs-button cssClass='e-primary' data-toggle="modal" data-target="#updateStatusModal">
-                                        Incomplete
+                                        {{__('item.incomplete')}}
                                     </ejs-button>
                                     <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header bg-primary">
-                                                    <h5 class="modal-title">Update the status of item transportation</h5>
+                                                    <h5 class="modal-title">{{__('item.update_the_status_of_item_transportation')}}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -188,23 +188,21 @@
                                                 <div class="modal-body">
                                                     <div >
                                                         <br class="form-group text-center d-flex justify-content-around">
-                                                        <h3>What is your choice?</h3>
+                                                        <h3>{{__('item.what_is_your_choice')}}</h3>
                                                         <div id="radio-group" class="col-md-4">
                                                             <form>
-                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> Set the date of
-                                                                departure as the date of completion of transportation<br>
-                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> Set today as the
-                                                                transportation completion date
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}}<br>
+                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> {{__('item.set_today_as_the_transportation_completion_date')}}
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-around mt-2">
                                                     <button type="button" class="btn btn-danger" @click="checkStatus(data.item_id)">
-                                                        Register
+                                                        {{__('common.register')}}
                                                     </button>
                                                     <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                                        Cancel
+                                                        {{__('common.cancel')}}
                                                     </button>
                                                 </div>
                                                  <div class="d-flex justify-content-around mt-2">

@@ -3,9 +3,10 @@
 @section('content')
     <div class="container">
         <invoice invoice-url="{{route('invoice.list')}}"
+                 aggr-url="{{route('api.invoice.aggregate')}}"
                  back-url="{{route('top')}}"
                  shippers-url="{{route('shipper.list')}}"
-                 vehicles-url="{{route('api.driver.vehicle-numbers')}}"
+                 vehicles-url="{{route('vehicle.list')}}"
                  resource-url="{{route('api.invoice.index')}}"
                  title="{{__('invoice.invoice_list')}}"
                  payment-url="{{route('payment.list')}}"
