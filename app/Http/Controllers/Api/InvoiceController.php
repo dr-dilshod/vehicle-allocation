@@ -352,6 +352,7 @@ class InvoiceController extends Controller
         $lastMonthBegin = Carbon::today()->setMonths(Carbon::today()->month-1)->setDays(1);
         $lastMonthEnd = Carbon::today()->setMonths(Carbon::today()->month-1)->setDays($lastMonthBegin->daysInMonth)->format('Y-m-d');
         $lastMonthBegin = $lastMonthBegin->format('Y-m-d');
+
         $lastMonthPayments = Payment::query()
             ->whereDate('payment_day', '<=', $lastMonthEnd)
             ->whereDate('payment_day', '>=', $lastMonthBegin)->get()->all();
@@ -360,8 +361,7 @@ class InvoiceController extends Controller
         $lastMonthDeposits = 0;
         $salesCompilationDate = $lastMonthBegin;
         $sameDaySales = 0;
-        $totalForThisMonth = 0;
-        $total = 0;
+
         foreach ($lastMonthPayments as $payment) {
             $lastMonthSales += doubleval($payment->payment_amount);
             if ($salesCompilationDate < $payment->payment_day) {
@@ -376,16 +376,36 @@ class InvoiceController extends Controller
         }
 
         $lastMonthTotal = $lastMonthSales + $lastMonthDeposits;
-        $consumptionTax = ($lastMonthSales+$lastMonthDeposits) * 0.1;
-        return response()->json([
-            'lastMonthSales' => $lastMonthSales,
-            'lastMonthDeposits' => $lastMonthDeposits,
-            'carryover' => $lastMonthDeposits - $lastMonthSales,
-            'salesCompilationDate' => date('Y-m-d', strtotime($salesCompilationDate)),
-            'consumptionTax' => $consumptionTax,
-            'taxFee' => $lastMonthSales - $sameDaySales - $consumptionTax,
-            'totalLastMonth' => $lastMonthTotal,
+        $consumptionTax = $lastMonthSales * 0.1;
 
+        $thisMonthBegin = Carbon::today()->setDay(1);
+        $thisMonthEnd = Carbon::today()->setDay($thisMonthBegin->daysInMonth)->format('Y-m-d');
+        $thisMonthBegin = $thisMonthBegin->format('Y-m-d');
+
+        $thisMonthPayments = Payment::query()->whereDate('payment_day', '>=', $thisMonthBegin)
+            ->whereDate('payment_day', '<=', $thisMonthEnd)->get()->all();
+        $thisMonthSales = 0;
+        $thisMonthDeposits = 0;
+        foreach ($thisMonthPayments as $payment) {
+            $thisMonthSales += doubleval($payment->payment_amount);
+            $deposits = Deposit::query()->whereDate('deposit_day', '>=', $thisMonthBegin)
+                ->whereDate('deposit_day', '<=', $thisMonthEnd)
+                ->where('shipper_id', '=', $payment->shipper_id)->get();
+            foreach ($deposits as $deposit) {
+                $thisMonthDeposits += doubleval($deposit->deposit_amount);
+            }
+        }
+
+        return response()->json([
+            'lastMonthSales' => number_format($lastMonthSales, 2),
+            'lastMonthDeposits' => number_format($lastMonthDeposits, 2),
+            'carryover' => number_format($lastMonthDeposits - $lastMonthSales, 2),
+            'salesCompilationDate' => date('Y/m/d', strtotime($salesCompilationDate)),
+            'consumptionTax' => number_format($consumptionTax, 2),
+            'taxFee' => number_format($lastMonthSales - $sameDaySales - $consumptionTax, 2),
+            'totalLastMonth' => number_format($lastMonthTotal, 2),
+            'totalThisMonth' => number_format($thisMonthSales + $thisMonthDeposits, 2),
+            'total' => number_format($thisMonthDeposits + $thisMonthSales + $lastMonthSales + $lastMonthDeposits, 2)
         ]);
     }
 }

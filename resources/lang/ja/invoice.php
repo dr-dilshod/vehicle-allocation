@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'print_billing_date' => '請求日を印刷する',
     'invoice_list' => '請求一覧',
     'billing_month' => '請求日印刷',
     'list_printing' => '一覧印刷',
