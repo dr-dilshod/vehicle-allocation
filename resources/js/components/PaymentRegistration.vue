@@ -5,16 +5,16 @@
         <div class="row mt-4 mb-4">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('payment.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
             </div>
 
             <div class="col-6">
                 <h2 class="text-center">{{__('payment.payment_registration')}}</h2>
             </div>
             <div class="col-4 text-right">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">{{__('payment.register')}}</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "update" :disabled="!editable">{{__('payment.edit')}}</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "remove" :disabled="!editable">{{__('payment.delete')}}</button>
+                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">{{__('common.register')}}</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "update" :disabled="!editable">{{__('common.edit')}}</button>
+                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "remove" :disabled="!editable">{{__('common.delete')}}</button>
             </div>
         </div>
 
@@ -68,10 +68,10 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="submit" class="btn btn-primary">{{__('payment.search')}}</button>
+                        <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
                     </div>
                     <div class="form-group ml-1">
-                        <button type="reset" @click='clear' class="btn btn-primary">{{__('payment.clear')}}</button>
+                        <button type="reset" @click='clear' class="btn btn-primary">{{__('common.clear')}}</button>
                     </div>
                 </form>
 

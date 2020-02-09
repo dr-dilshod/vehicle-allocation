@@ -195,7 +195,7 @@ return [
         'add_driver'=>'ドライバーを追加',
         'check'=>'小切手',
         'cancel'=>'キャンセル',
-        'driver_list' => 'ドライバー一覧',
+        'driver_list' => 'ドライバー一覧 ',
         '10tw' => '10tW',
         '10t_flat' => '10t平',
         '4tw' => '4tW',
@@ -253,7 +253,7 @@ return [
         'none'=>'なし',
         'completed'=>'完了',
         'incomplete'=>'未完了',
-
+        'vehicle_type'=>'車種',
         'update'=>'更新',
         'wing'=>'ウィング',
         'flat'=>'平',
@@ -281,7 +281,7 @@ return [
         'phone' => '電話番号',
         'fax' => 'FAX番号',
         'remark' => '備考',
-
+        'driver_pass'=>'ドライバーのパスワード ',
     ],
 
 ];
