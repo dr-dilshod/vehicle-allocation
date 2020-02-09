@@ -150,7 +150,7 @@
                     stack_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.loading_port')})]},
                     down_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.drop_off')})]},
                     type: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.type')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.type')})]},
-                    price: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.unit_price')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.price')})]},
+                    price: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.unit_price')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.unit_price')})]},
                 }
             }
         },
