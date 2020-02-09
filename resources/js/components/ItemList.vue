@@ -356,7 +356,8 @@
                     + '&vehicle_no3=' + this.vehicle_no3
                     + '&status=' + this.status
                     + '&stack_date=' + string_stack_date
-                    + '&stack_point=' + this.stack_point)
+                    + '&stack_point=' + this.stack_point
+                    + '&down_point=' + this.down_point);
             },
             clear(){
                 this.stack_date = '';
