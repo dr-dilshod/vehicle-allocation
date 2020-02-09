@@ -42,7 +42,11 @@ export class TableUtil{
                 if(args.item.id === 'exit')
                     this.endEditing()
             },
-            toolbar: [window.__('common.edit'),window.__('common.delete'),window.__('common.update'),window.__('common.cancel'),
+            toolbar: [
+                {text:window.__('common.cancel'),tooltipText:window.__('common.cancel_mode'), prefixIcon: 'cancel-btn', id: 'cancel'},
+                {text:window.__('common.update'),tooltipText:window.__('common.update_mode'), prefixIcon: 'update-btn', id: 'update'},
+                {text:window.__('common.delete'),tooltipText:window.__('common.delete_mode'), prefixIcon: 'delete-btn', id: 'delete'},
+                {text:window.__('common.edit'),tooltipText:window.__('common.edit_mode'), prefixIcon: 'edit-btn', id: 'edit'},
                 { text: window.__('common.exit'), tooltipText: window.__('common.exit_from_edit_mode'), prefixIcon: 'exit-btn', id: 'exit' }],
             editSettings: {
                 allowDeleting: true,
