@@ -30,6 +30,7 @@ class DispatchController extends Controller
             ])
             ->get();
         $result['dispatch_drivers'] = $dispatch_drivers;
+        $result['dispatches'] = [];
         foreach($dispatch_drivers as $driver){
             $day_items = \DB::table('dispatches')
                 ->leftJoin('items','dispatches.item_id','=','items.item_id')
