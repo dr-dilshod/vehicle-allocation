@@ -9,20 +9,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class InvoiceTest extends DuskTestCase
 {
     /**
-     * A Dusk test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
-        });
-    }
-    /**
-* test if the registration button is disabled in non-editing mode
-*/
+    * test if the registration button is disabled in non-editing mode
+    */
     public function testDisabledRegistrationButton() {
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
@@ -37,7 +25,7 @@ class InvoiceTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/driver')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
     /**
@@ -60,7 +48,7 @@ class InvoiceTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/driver')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 }

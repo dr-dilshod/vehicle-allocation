@@ -26,7 +26,7 @@ class VehicleTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/vehicle')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
 
@@ -50,7 +50,7 @@ class VehicleTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/vehicle')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 }

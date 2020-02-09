@@ -26,7 +26,7 @@ class DriverTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/driver')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
 
@@ -50,7 +50,7 @@ class DriverTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/driver')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 

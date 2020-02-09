@@ -26,7 +26,7 @@ class PriceTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/unit-price')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
 
@@ -50,7 +50,7 @@ class PriceTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/unit-price')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 }

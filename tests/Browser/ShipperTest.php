@@ -26,7 +26,7 @@ class ShipperTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/shipper')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
 
@@ -50,7 +50,7 @@ class ShipperTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/shipper')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 }
