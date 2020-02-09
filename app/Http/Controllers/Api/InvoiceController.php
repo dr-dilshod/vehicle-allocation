@@ -7,6 +7,7 @@ use App\Invoice;
 use App\Item;
 use App\Shipper;
 use App\Payment;
+use App\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -81,22 +82,38 @@ class InvoiceController extends Controller
     public function getInvoiceList(Request $request)
     {
         $stack_date = $request->query('stack_date') ?: '';
-        $vehicle_id = $request->query('vehicle_id') ?: '';
+        $vehicle_no = $request->query('vehicle_no') ?: '';
         $invoice_day = $request->query('invoice_day') ?: '';
         $invoice_month = $request->query('invoice_month') ?: '';
-        $complete_date = "*-".$invoice_month."-".$invoice_day;
         $shipper_id = $request->query('shipper_id') ?: '';
         $matchThese = ['delete_flg' => 0];
-        if (!empty($weekday)) {
-            $matchThese = array_add($matchThese, 'stack_date', $stack_date);
-        } else if (!empty($vehicle_id)) {
-            $matchThese = array_add($matchThese, 'vehicle_id', $vehicle_id);
-        } else if (!empty($invoice_day)) {
-            $matchThese = array_add($matchThese, 'item_completion_date', $complete_date);
-        } else if (!empty($shipper_id)) {
+//        if (!empty($stack_date)) {
+//            $matchThese = array_add($matchThese, 'stack_date', $stack_date);
+//        }
+        if (!empty($vehicle_no)) {
+            $vehicle = Vehicle::query()->where('vehicle_no', '=', $vehicle_no)->first();
+            if (!is_null($vehicle)) {
+                $matchThese = array_add($matchThese, 'vehicle_id', $vehicle->vehicle_id);
+            }
+        }
+        if (!empty($invoice_day) && !empty($invoice_month)) {
+            $invoice_month .= '-'.$invoice_day;
+            $matchThese = array_add($matchThese, 'billing_deadline_date', $invoice_month);
+        } else if (!empty($invoice_day) && empty($invoice_month)) {
+            $invoice_month = date('Y-m') . '-' . $invoice_day;
+            $matchThese = array_add($matchThese, 'billing_deadline_date', $invoice_month);
+        }
+
+        if (!empty($shipper_id)) {
             $matchThese = array_add($matchThese, 'shipper_id', $shipper_id);
         }
-        $invoiceTable = Item::where($matchThese)
+
+        $invoices = Invoice::query()->select('item_id')
+            ->where($matchThese)->get()->map(function ($e) {
+                return $e->item_id;
+            });
+
+        $invoiceTable = Item::query()->whereIn('item_id', $invoices)
             ->where('down_date', '>=', date("Y-m-d"))
             ->select()
             ->get();

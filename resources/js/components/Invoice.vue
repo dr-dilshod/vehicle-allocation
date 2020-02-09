@@ -6,7 +6,7 @@
                    class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" v-if="this.mode == 'editing'">{{__('common.editing')}}</h2>
+                <h2 class="text-center text-danger" v-if="this.mode === 'editing'">{{__('common.editing')}}</h2>
             </div>
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
@@ -14,7 +14,7 @@
             <div class="col-4">
                 <div class="row">
                     <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode != 'editing'">
+                        <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
                             {{__('common.register')}}
                         </button>
                     </div>
@@ -80,9 +80,9 @@
                             <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
                         </td>
                         <td>
-                            <select name="vehicle_no" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
+                            <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_no" class="form-control">
                                 <option value=""></option>
-                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
+                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_no3">
                                     {{ vehicle.vehicle_no3 }}
                                 </option>
                             </select>
@@ -244,7 +244,7 @@
                 data: [],
                 formData: {
                     stack_date: '',
-                    vehicle_id: '',
+                    vehicle_no: '',
                     invoice_day: '',
                     invoice_month: '',
                     shipper_id: '',
@@ -349,6 +349,7 @@
                 }
             },
             listPrinting(){
+                // TODO: bu yerda vehicle_id o'rnida vehicle_no keladi
                 if (this.data.length>0) {
                     window.location.href = this.billingListUrl
                         + '?shipper_id=' + this.formData.shipper_id
@@ -357,7 +358,7 @@
                         + '&stack_date=' + this.formData.stack_date
                         + '&vehicle_id=' + this.formData.vehicle_id;
                 } else {
-                    this.showWarningDialog(this.__('invoice.there_is_no_item_for_your_selection'));
+                    this.showWarningDialog(this.__('invoice.there_is_no_item_for_your_selection'), {warningTitle:"safdas"});
                 }
             },
             fetchShippers() {
@@ -395,12 +396,33 @@
                         this.depositList = response.data;
                     })
             },
+            getNormalDate(date, onlyMonth = false) {
+                let normalDate = new Date(date);
+                let dd = normalDate.getDate();
+                let mm = normalDate.getMonth() + 1;
+
+                let yyyy = normalDate.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                }
+                if (!onlyMonth) {
+                    return yyyy + '-' + mm + '-' + dd;
+                } else {
+                    return yyyy + '-' + mm;
+                }
+            },
             search: function(){
+                this.formData.stack_date = this.getNormalDate(this.formData.stack_date);
+                this.formData.invoice_month = this.getNormalDate(this.formData.stack_date, true);
+                console.log(this.formData);
                 this.data = this.fetchData(this.invoiceUrl
-                    + '?stack_date=' + this.formData.stack_date,
-                    + '&vehicle_id=' + this.formData.vehicle_id,
-                    + '&invoice_day=' + this.formData.invoice_day,
-                    + '&invoice_month=' + this.formData.invoice_month,
+                    + '?stack_date=' + this.formData.stack_date
+                    + '&vehicle_no=' + this.formData.vehicle_no
+                    + '&invoice_day=' + this.formData.invoice_day
+                    + '&invoice_month=' + this.formData.invoice_month
                     + '&shipper_id=' + this.formData.shipper_id);
 
                 this.fetchPaymentList(this.paymentUrl
@@ -423,7 +445,7 @@
                 for (let i = 0; i < pl.length; i++) {
                     let paymentDate = pl[i].payment_day;
                     let paymentMonth = new Date(paymentDate).getMonth();
-                    if (currentMonth - paymentMonth == 1) {
+                    if (currentMonth - paymentMonth === 1) {
                         sales = sales + pl[i].payment_amount;
                         other = other + pl[i].other;
                     }
@@ -438,7 +460,7 @@
                 this.formData.stack_date = '';
                 this.formData.invoice_day = '';
                 this.formData.invoice_month = '';
-                this.formData.vehicle_id = '';
+                this.formData.vehicle_no = '';
                 this.formData.shipper_id = '';
             },
             refresh(){
@@ -480,7 +502,7 @@
             },
             showSuccessDialog(text) {
                 this.$fire({
-                    title: "Info Message",
+                    title: this.__('messages.info_message'),
                     text: text,
                     type: "success",
                     timer: 5000
@@ -488,7 +510,7 @@
             },
             showWarningDialog(text) {
                 this.$fire({
-                    title: "Warning",
+                    title: this.__('messages.warning'),
                     text: text,
                     type: "warning",
                     timer: 5000

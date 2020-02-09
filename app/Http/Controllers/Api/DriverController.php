@@ -92,6 +92,7 @@ class DriverController extends Controller
     public function getVehicleNumbers(){
         $vehicles = Driver::select(['vehicle_no3'])
             ->where('delete_flg',0)
+            ->where('vehicle_no3', '!=', null)
             ->distinct()
             ->orderBy('vehicle_no3')
             ->get();

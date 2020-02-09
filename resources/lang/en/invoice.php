@@ -37,4 +37,5 @@ return [
     'this_feature_is_under_development'=>'This feature is under development.',
     'please_select_a_shipper'=>'Please, select a shipper.',
 
+
 ];
