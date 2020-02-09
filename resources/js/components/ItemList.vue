@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="item-list">
 
         <div class="row">
             <div class="col-2">
@@ -11,24 +11,23 @@
             </div>
             <div class="col-2">
                 <a :href="registrationUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.register')}}</a>
+                   class="btn btn-lg btn-danger btn-block">{{__('common.register')}}</a>
             </div>
         </div>
-        <div class="row mt-4">
-
-            <form action="#" class="mx-auto" @submit.prevent="search">
+        <div class="row mt-2">
+            <form @submit.prevent="search" role="form" class="ml-2">
                 <table class="table table-sm table-borderless">
                     <tbody >
                     <tr>
-                        <td class="orders-order text-right"><span class="c24966">{{__('item.stack_date')}}</span></td>
+                        <td class="text-right">{{__('item.stack_date')}}</td>
                         <td>
-                            <datepicker v-model="stack_date" :bootstrap-styling="true"
+                            <datepicker v-model="stack_date" :bootstrap-styling="true" id="stack_date" name="stack_date"
                                         :typeable="true" :format="options.weekday" :clear-button="true"
                                         :language="options.language.ja">
                             </datepicker>
                         </td>
                         <td class="text-right"><span class="c24966">{{__('item.shipper')}}</span></td>
-                        <td class="orders-order">
+                        <td>
                             <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
                                     class="form-control">
                                 <option value=""></option>
@@ -38,31 +37,31 @@
                             </select>
                         </td>
                         <td class="text-right"><span class="c24966">{{__('item.status')}}</span></td>
-                        <td class="orders-order">
+                        <td>
                             <select name="status" id="status" v-model="status"
                                     class="form-control">
                                 <option value=""></option>
-                                <option value=1>{{__('item.completed')}}</option>
-                                <option value=0>{{__('item.incomplete')}}</option>
+                                <option value="1">{{__('item.completed')}}</option>
+                                <option value="0">{{__('item.incomplete')}}</option>
                             </select>
                         </td>
 
                     </tr>
                     <tr>
-                        <td class="text-right"><span class="c24966">{{__('item.stack_point')}}</span></td>
-                        <td class="orders-order">
-                            <input type="text" placeholder="" class="form-control" for="stack_point"
+                        <td class="text-right"><label for="stack_point">{{__('item.stack_point')}}</label></td>
+                        <td>
+                            <input type="text" class="form-control"
                                    v-model="stack_point"
                                    id="stack_point"/>
                         </td>
-                        <td class="orders-product text-right"><span class="c25479 text-right">{{__('item.down_point')}}</span> </td>
-                        <td class="orders-date">
-                            <input id="down_point" for="down_point" type="text" placeholder=""
+                        <td class="text-right"><span class="c25479 text-right">{{__('item.down_point')}}</span> </td>
+                        <td>
+                            <input id="down_point" type="text" placeholder=""
                                    class="form-control"
                                    v-model="down_point"/>
                         </td>
-                        <td class="text-right"><span class="c24966">{{__('item.vehicle_no')}}</span></td>
-                        <td class="orders-order">
+                        <td class="text-right">{{__('item.vehicle_no')}}</td>
+                        <td>
                             <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
                                     class="form-control">
                                 <option value=""></option>
@@ -85,7 +84,7 @@
 
         <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
-                  :height="280" rowHeight=40>
+                  :height="280">
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
@@ -184,7 +183,7 @@
 
                                                 </div>
                                                 <div class="modal-body">
-                                                    <div class="">
+                                                    <div >
                                                         <br class="form-group text-center d-flex justify-content-around">
                                                         <h3>What is your choice?</h3>
                                                         <div id="radio-group" class="col-md-4">
@@ -346,11 +345,16 @@
                     });
             },
             search(){
+                let stack_date = this.stack_date;
+                console.log(typeof stack_date);
+                let string_stack_date = "";
+                if(typeof stack_date === "object" && stack_date !== null)
+                    string_stack_date = stack_date.getFullYear()+'/'+(stack_date.getMonth()+1)+'/'+stack_date.getDate();
                 return this.fetchItem(this.itemUrl
                     +'?shipper_name=' + this.shipper_name
                     + '&vehicle_no3=' + this.vehicle_no3
                     + '&status=' + this.status
-                    + '&stack_date=' + this.stack_date
+                    + '&stack_date=' + string_stack_date
                     + '&stack_point=' + this.stack_point)
             },
             clear(){
@@ -367,7 +371,6 @@
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar],
         },
-        name: 'ItemTable'
     }
 </script>
 <style scoped>

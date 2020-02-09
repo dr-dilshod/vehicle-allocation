@@ -2,13 +2,13 @@
 
 @section('content')
     <div class="container">
-        <item-list item-url="{{route('item.list')}}"
-                   back-url="{{route('top')}}"
-                   shipper-url="{{route('item.shippers.dropdown')}}"
-                   vehicle-url="{{route('item.vehicleNumbers')}}"
-                   registration-url="{{route('item.create')}}"
-                   resource-url="{{route('api.item.index')}}"
-               title="{{__('item.item_list')}}"
-        ></item-list>
+        <item-list
+                item-url="{{route('item.list')}}"
+                back-url="{{route('top')}}"
+                shipper-url="{{route('item.shippers.dropdown')}}"
+                vehicle-url="{{route('item.vehicleNumbers')}}"
+                registration-url="{{route('item.create')}}"
+                resource-url="{{route('api.item.index')}}"
+                title="{{__('item.item_list')}}"></item-list>
     </div>
 @endsection
