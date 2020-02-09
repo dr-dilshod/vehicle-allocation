@@ -18,7 +18,7 @@
             </div>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true'>
+                  :allowSorting="true" :height="300" :frozenColumns="2"  :enableHover='false' :allowSelection='true' rowHeight=35>
             <e-columns>
                 <e-column field='vehicle_type' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
                 <e-column field='driver_name'  :headerText= '__("driver.name")' width="150"></e-column>
