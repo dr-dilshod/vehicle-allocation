@@ -15,5 +15,9 @@ return  [
     'delete' => 'デリート',
     'username'=>'ユーザーID',
     'password'=>'パスワード',
+    'exit'=>'出口',
+    'exit_from_edit_mode'=>'編集モードを終了します',
+    'cancel'=>'キャンセル',
+    'update'=>'更新',
 
 ];

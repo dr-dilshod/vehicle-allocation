@@ -42,8 +42,8 @@ export class TableUtil{
                 if(args.item.id === 'exit')
                     this.endEditing()
             },
-            toolbar: ['Edit','Delete','Update','Cancel',
-                { text: 'Exit', tooltipText: 'Exit from edit mode', prefixIcon: 'exit-btn', id: 'exit' }],
+            toolbar: [window.__('common.edit'),window.__('common.delete'),window.__('common.update'),window.__('common.cancel'),
+                { text: window.__('common.exit'), tooltipText: window.__('common.exit_from_edit_mode'), prefixIcon: 'exit-btn', id: 'exit' }],
             editSettings: {
                 allowDeleting: true,
                 allowEditing: true,

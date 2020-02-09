@@ -14,5 +14,9 @@ return  ['login' => 'Login',
     'delete' => 'Delete',
     'username'=>'Username',
     'password'=>'Password',
+    'exit'=>'Exit',
+    'exit_from_edit_mode'=>'Exit from edit mode',
+    'cancel'=>'Cancel',
+    'update'=>'Update',
 
 ];
