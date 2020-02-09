@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 /**
  * @property integer $driver_id
@@ -36,6 +37,17 @@ class Driver extends Authenticatable
     const SEARCH_FLAG_WORKING = 0;
     const SEARCH_FLAG_QUIT = 1;
 
+    use BlameableTrait;
+    const validationRules = [
+        'vehicle_type' => 'required',
+        'driver_name' => 'required|max:60',
+        'driver_pass' => 'required|max:60',
+        'driver_mobile_number' => 'max:60',
+        'maximum_Loading' => 'max:60',
+        'vehicle_no3' => 'max:15',
+        'driver_remark' => 'max:255',
+    ];
+
     /**
      * The primary key for the model.
      *
@@ -53,7 +65,7 @@ class Driver extends Authenticatable
     /**
      * @var array
      */
-    protected $fillable = ['create_id', 'update_id', 'driver_pass', 'driver_name', 'driver_mobile_number', 'maximum_Loading', 'search_flg', 'admin_flg', 'vehicle_no1', 'vehicle_no2', 'vehicle_no3', 'vehicle_type', 'driver_remark', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = ['driver_pass', 'driver_name', 'driver_mobile_number', 'maximum_Loading', 'search_flg', 'admin_flg', 'vehicle_no1', 'vehicle_no2', 'vehicle_no3', 'vehicle_type', 'driver_remark', 'delete_flg', 'created_at', 'updated_at', 'create_id', 'update_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

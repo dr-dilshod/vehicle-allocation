@@ -28,7 +28,7 @@
                 <e-column field='search_flg' :headerText= '__("driver.display")'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
                 <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
                 <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
-                <e-column field='driver_pass' :template="passwordTemplate" :headerText= '__("driver.password")' width="200"></e-column>
+                <e-column field='driver_pass' :headerText= '__("driver.password")' width="200"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
@@ -86,14 +86,6 @@
                         })
                     }
                 },
-                passwordTemplate: function () {
-                    return {
-                        template: Vue.component('editOption', {
-                            template: '<label>{{"********"}}</label>',
-                            data() { return { data: { data: {} } }; }
-                        })
-                    }
-                },
                 mode: 'normal',
             };
         },
@@ -147,6 +139,8 @@
                     });
             },
             insertData(driver){
+                console.log('insert driver = ');
+                console.log(driver);
                 axios.post(this.resourceUrl,driver)
                     .then(response=>{
                         this.tableUtil.endEditing();
@@ -161,6 +155,8 @@
             editData(driver){
                 let id = driver.driver_id;
                 delete driver.driver_id;
+                console.log('edit driver = ');
+                console.log(driver);
                 axios.put(this.resourceUrl+'/'+id, driver)
                     .then(response=>{
                         this.tableUtil.endEditing();

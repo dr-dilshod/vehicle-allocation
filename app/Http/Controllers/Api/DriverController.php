@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Driver;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 class DriverController extends Controller
 {
     /**
@@ -32,12 +32,14 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-
-        $all = $request->all();
-        $all['driver_pass'] = \Hash::make($all['driver_pass']);
-        $driver = Driver::create($all);
-
+        $data = $request->validate(Driver::validationRules);
+//        $request->validate($request, [
+//            'driver_name' => 'unique:driver_name',
+//        ]);
+        $request['driver_pass'] = Hash::make($request['driver_pass']);
+        $driver = Driver::create($request->all());
         return response()->json($driver, 201);
+
     }
 
     /**
@@ -50,7 +52,6 @@ class DriverController extends Controller
     public function show($id)
     {
         $driver = Driver::findOrFail($id);
-
         return $driver;
     }
 
@@ -64,10 +65,12 @@ class DriverController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        $data = $request->validate(Driver::validationRules);
         $driver = Driver::findOrFail($id);
-        $driver->update($request->all()
-        );
+        $request->validate([
+            'driver_name' => Rule::unique('drivers','Driver_name')->ignore($id,'driver_id'),
+        ]);
+        $driver->update($request->all());
         return response()->json($driver, 200);
     }
 
