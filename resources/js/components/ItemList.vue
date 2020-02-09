@@ -86,7 +86,7 @@
 
         <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
-                  :height="280">
+                  :height="280" rowHeight=35>
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
