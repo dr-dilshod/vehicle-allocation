@@ -7,6 +7,7 @@
 require('./bootstrap');
 require('./utils/Translation');
 window.Vue = require('vue');
+require('./utils/syncfusion-local');
 
 /**
  * The following block of code may be used to automatically register your
