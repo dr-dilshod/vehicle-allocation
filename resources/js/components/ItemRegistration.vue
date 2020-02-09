@@ -394,7 +394,7 @@
                 let component = this;
                 if ((this.vehicle_model!=='') && (this.itemData.shipper_id!=='')
                 && (this.itemData.stack_point!=='') && (this.itemData.down_point!=='')) {
-                    axios.get('/item/getUnitPrice?vehicle_model=' + this.vehicle_model
+                    axios.get(this.unitPriceUrl + '?vehicle_model=' + this.vehicle_model
                         + '&shipper_id=' + this.itemData.shipper_id
                         + '&stack_point=' + this.itemData.stack_point
                         + '&down_point=' + this.itemData.down_point)
@@ -422,7 +422,7 @@
                     + ':00';
             },
             clear(){
-                if (this.clearing === 'Delete') {
+                if (new URL(location.href).searchParams.get('item_id') !== '') {
                     this.deleteItem(this.itemData.item_id);
                 } else {
                     for (let i in this.itemData) {
@@ -460,7 +460,7 @@
                 this.itemData.stack_date = this.itemData.stack_date.toISOString().slice(0,10);
                 this.itemData.down_date = this.itemData.down_date.toISOString().slice(0,10);
                 // check whether it is update or create operation
-                if (this.operation === 'Update') {
+                if (new URL(location.href).searchParams.get('item_id') !== '') {
                     // update that item if it is update operation
                     this.updateItem(this.itemData);
                 } else {

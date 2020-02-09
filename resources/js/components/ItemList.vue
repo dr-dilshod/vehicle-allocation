@@ -83,7 +83,7 @@
             </form>
         </div>
 
-        <ejs-grid :test="search" :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
+        <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
                   :height="280" rowHeight=40>
             <e-columns>
@@ -305,9 +305,6 @@
             this.fetchVehicles(this.vehicleUrl);
         },
         methods: {
-            redirect(e) {
-                window.location.href = `/item/edit?item_id=` + e.rowData['item_id'];
-            },
             actionBegin(args){
                 if(args.requestType === 'beginEdit'){
                     this.$refs.grid.ej2Instances.setProperties({
@@ -318,6 +315,7 @@
                             allowAdding: false,
                         },
                     });
+                    window.location.href = `/item/edit?item_id=` + args.rowData['item_id'];
                 }
             },
             fetchItem(url) {

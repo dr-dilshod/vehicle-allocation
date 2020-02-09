@@ -21,7 +21,7 @@
             <table align="center" width="100%" style="width:100%">
                 <tr>
                     <td>{{$shipper_data['shipper_no']}}</td>
-                    <td>{{$shipper_data['closing_date']}} </td>
+                    <td>{{$billing['billing_date']}} </td>
                     <td><strong>{{$shipper_data['shipper_name1']}}</strong></td>
                 </tr>
                 <tr>

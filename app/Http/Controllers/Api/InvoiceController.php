@@ -167,9 +167,9 @@ class InvoiceController extends Controller
         $shipper_id = $request->query('shipper_id') ?: '';
         $billing_month = $request->query('billing_month') ?: '';
         $billing_day = $request->query('billing_day') ?: '';
+        $billing_date_array = ['billing_date' => $billing_month." ".$billing_day];
 
         $shipper_data = $this->getShipperDataForPrinting($shipper_id);
-
         $items = Item::where('shipper_id', $shipper_id)
             ->get();
 
@@ -231,7 +231,8 @@ class InvoiceController extends Controller
         $pdf = \PDF::loadView('invoice.pdf.billing_month', [
             'calculations' => $calculations,
             'shipper_data' => $shipper_data,
-            'item_data' => $item_list]);
+            'item_data' => $item_list,
+            'billing' => $billing_date_array]);
         return $pdf->download('billingMonth.pdf');
     }
 
@@ -326,10 +327,12 @@ class InvoiceController extends Controller
             'tax_free' => $tax_free,
         ];
 
+        $billing_date_array = ['billing_date' => ''];
         $pdf = \PDF::loadView('invoice.pdf.billing_month', [
             'calculations' => $calculations,
             'shipper_data' => $shipper_data,
-            'item_data' => $item_list]);
+            'item_data' => $item_list,
+            'billing' => $billing_date_array]);
         return $pdf->download('billingList.pdf');
     }
 }
