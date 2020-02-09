@@ -150,7 +150,7 @@ return [
     */
 
     'attributes' => [
-        'vehicle_no' => 'vehicle number',
+        'vehicle_no' => '車両番号',
         'shipper_no'=> '荷主No ',
         'shipper'=>'荷主 ',
         'shipper_name1'=>'名 1 ',
@@ -229,7 +229,7 @@ return [
         '20th'=>'20日',
         '30th'=>'30日',
         'stack_date'=>'積日',
-        'unloading_place' => 'Unloading place',
+        'unloading_place' => '荷降ろし場所',
         'down_date' => '降日',
         'stack_time' => '積時間',
         'down_time' => '降時間',
