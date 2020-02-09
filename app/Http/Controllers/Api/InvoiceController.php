@@ -205,7 +205,7 @@ class InvoiceController extends Controller
             $dep_day = Carbon::parse($dep->deposit_day);
             $diff = $today->diffInMonths($dep_day);
             if ($diff == 1) {
-                $deposit = $deposit + $dep->deposit_day;
+                $deposit = $deposit + $dep->deposit_amount;
             }
         }
 
@@ -280,29 +280,50 @@ class InvoiceController extends Controller
 
         $shipper_data = $this->getShipperDataForPrinting($shipper_id);
 
+        $matchThese = ['delete_flg' => 0];
+        if (!empty($vehicle_id)) {
+            $vehicle = Vehicle::query()->where('vehicle_id', '=', $vehicle_id)->first();
+            if (!is_null($vehicle)) {
+                $matchThese = array_add($matchThese, 'vehicle_id', $vehicle->vehicle_id);
+            }
+        }
+        if (!empty($billing_day) && !empty($billing_month)) {
+            $billing_month .= '-'.$billing_day;
+            $matchThese = array_add($matchThese, 'billing_deadline_date', $billing_month);
+        } else if (!empty($billing_day) && empty($billing_month)) {
+            $billing_month = date('Y-m') . '-' . $billing_day;
+            $matchThese = array_add($matchThese, 'billing_deadline_date', $billing_month);
+        }
 
-        $items = Item::where('shipper_id', $shipper_id)
-            ->where('stack_date', $stack_date)
-            ->where('vehicle_id', $vehicle_id)
-            ->where('delete_flg', 0)
+        if (!empty($shipper_id)) {
+            $matchThese = array_add($matchThese, 'shipper_id', $shipper_id);
+        }
+
+        $invoices = Invoice::query()->select('item_id')
+            ->where($matchThese)->get()->map(function ($e) {
+                return $e->item_id;
+            });
+
+        $item_list = Item::query()->whereIn('item_id', $invoices)
+            ->where('stack_date', '=', $stack_date)
+            ->where('down_date', '>=', date("Y-m-d"))
             ->get();
 
-        $item_list = [];
-
         $previous_month_billing = 0;
-        $today = Carbon::today();
-        foreach ($items as $item) {
+        foreach ($item_list as $item) {
             $previous_month_billing = $previous_month_billing + $item->item_price;
-            array_push($item_list, $item);
         }
+
 
         $deposits = Deposit::where('shipper_id', $shipper_id)
             ->where('delete_flg', 0)
             ->get();
         $deposit = 0;
+        $today = $billing_month.'-'.$billing_day;
         foreach ($deposits as $dep) {
             $dep_day = Carbon::parse($dep->deposit_day);
-            $diff = $today->diffInMonths($dep_day);
+            $to = Carbon::parse($today);
+            $diff = $to->diffInMonths($dep_day);
             if ($diff == 1) {
                 $deposit = $deposit + $dep->deposit_day;
             }
@@ -315,7 +336,8 @@ class InvoiceController extends Controller
         $same_day_sales = 0;
         foreach ($payments as $payment) {
             $pay_day = Carbon::parse($payment->payment_day);
-            $diff = $today->diffInMonths($pay_day);
+            $to = Carbon::parse($today);
+            $diff = $to->diffInMonths($pay_day);
             if ($diff == 1) {
                 $same_day_sales = $same_day_sales + $payment->payment_amount;
             }
