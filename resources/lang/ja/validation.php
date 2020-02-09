@@ -153,6 +153,7 @@ return [
         'vehicle_no' => '車両番号',
         'shipper_no'=> '荷主No ',
         'shipper'=>'荷主 ',
+        'shipper_id'=>'荷主 ',
         'shipper_name1'=>'名 1 ',
         'shipper_name2'=>'名 2 ',
         'shipper.abbreviation'=>'略称 ',

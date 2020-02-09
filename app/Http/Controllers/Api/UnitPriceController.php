@@ -39,29 +39,8 @@ class UnitPriceController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = validator()->make($request->json()->all(), UnitPrice::$createValidationRules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $validator->errors()->first()
-            ]);
-        }
+        $data = $request->validate(UnitPrice::$createValidationRules);
         $all = $request->all();
-
-        $unique = UnitPrice::query()->where('shipper_id', $all['shipper_id'])
-            ->where('car_type', $all['car_type'])
-            ->where('stack_point', $all['stack_point'])
-            ->where('down_point', $all['down_point'])
-            ->where('type', $all['type'])
-            ->where('price', $all['price'])
-            ->count();
-        if ($unique >= 1) {
-            return response()->json([
-                'status' => 'error',
-                'message' => __('validation.unique', ['attribute' => 'Unit price'])
-            ]);
-        }
-
         $shipper = Shipper::find($request->input('shipper_id'));
         $all = array_merge($all, ['shipper_no' => $shipper->shipper_no]);
         $unit_price = UnitPrice::create($all);
@@ -71,14 +50,8 @@ class UnitPriceController extends Controller
     public function update(Request $request, $id)
     {
         $unit_price = UnitPrice::findOrFail($id);
+        $data = $request->validate(UnitPrice::$updateValidationRules);
         $all = $request->json()->all();
-        $validator = validator()->make($all, UnitPrice::$updateValidationRules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $validator->errors()->first()
-            ]);
-        }
         $all = array_merge($all, ['update_id' => \Auth::id()]);
         $unit_price->update($all);
         return response()->json($unit_price);
