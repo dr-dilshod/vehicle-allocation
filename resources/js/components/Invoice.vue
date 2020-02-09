@@ -643,7 +643,10 @@
         padding: 5px !important;
     }
 
+    .srch select {
+        width: 80px;
+    }
     .srch > button {
-        width: 80px !important;
+        width: 55px !important;
     }
 </style>
