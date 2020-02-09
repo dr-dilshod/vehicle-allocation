@@ -100,7 +100,6 @@
                 <e-column field='item_remark' :allowEditing= 'false' :headerText='__("item.remarks")' width="200"></e-column>
             </e-columns>
         </ejs-grid>
-
     </div>
 </template>
 <script>
