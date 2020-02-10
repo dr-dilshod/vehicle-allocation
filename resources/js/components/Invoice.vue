@@ -206,8 +206,9 @@
                             <p class="text-center">{{__('invoice.select_the_billing_date_you_want_to_print')}}</p>
                             <div class="form-group text-center" style="margin: 20px calc(32.5%)">
                                 <label>{{__('invoice.year_and_month')}}</label>
-                                <datepicker v-model="billing_month" :minimumView="'month'" :maximumView="'month'"
-                                            :format="options.monthFormat"></datepicker>
+                                <datepicker v-model="billing_month" :minimumView="'month'" :maximumView="'month'" :bootstrap-styling="true"
+                                            :typeable="true" :format="options.monthFormat" :clear-button="true" :language="options.language.ja"
+                                ></datepicker>
                             </div>
                             <div class="form-group d-flex justify-content-around">
                                 <span>
@@ -477,32 +478,25 @@
                     })
             },
             getNormalDate(date, onlyMonth = false) {
+                if(date === '') return '';
                 let normalDate = new Date(date);
-                let dd = normalDate.getDate();
-                let mm = normalDate.getMonth() + 1;
-
-                let yyyy = normalDate.getFullYear();
-                if (dd < 10) {
-                    dd = '0' + dd;
+                if(typeof normalDate === 'object'){
+                    if (!onlyMonth) {
+                        return normalDate.toISOString().slice(0,10);
+                    } else {
+                        return normalDate.toISOString().slice(0,7);
+                    }
                 }
-                if (mm < 10) {
-                    mm = '0' + mm;
-                }
-                if (!onlyMonth) {
-                    return yyyy + '-' + mm + '-' + dd;
-                } else {
-                    return yyyy + '-' + mm;
-                }
+                return '';
             },
-            search: function () {
-                this.formData.stack_date = this.getNormalDate(this.formData.stack_date);
-                this.formData.invoice_month = this.getNormalDate(this.formData.stack_date, true);
-                console.log(this.formData);
+            search() {
+                let stack_date = this.getNormalDate(this.formData.stack_date);
+                let invoice_month = this.getNormalDate(this.formData.invoice_month, true);
                 this.data = this.fetchData(this.invoiceUrl
-                    + '?stack_date=' + this.formData.stack_date
+                    + '?stack_date=' + stack_date
                     + '&vehicle_id=' + this.formData.vehicle_id
                     + '&invoice_day=' + this.formData.invoice_day
-                    + '&invoice_month=' + this.formData.invoice_month
+                    + '&invoice_month=' + invoice_month
                     + '&shipper_id=' + this.formData.shipper_id);
 
                 this.fetchPaymentList(this.paymentUrl
