@@ -2,13 +2,12 @@
 
     <div id="app">
 
-        <div class="row mt-4 mb-4">
+        <div class="row mb-4">
             <div class="col-2">
                 <a :href="backUrl"
                    class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
-
-            <div class="col-6">
+            <div class="col-4 offset-2">
                 <h2 class="text-center">{{__('payment.payment_registration')}}</h2>
             </div>
             <div class="col-4 text-right">
