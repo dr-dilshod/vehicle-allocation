@@ -4,21 +4,31 @@ namespace Tests\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\ItemController;
 use App\Item;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class ItemApiTest extends \PHPUnit_Framework_TestCase
+
+class ItemApiTest extends TestCase
 {
 
     use WithoutMiddleware;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware();
+    }
+
     public function testItemRegistrationPage()
     {
+        $this->withoutMiddleware();
         $response = $this->json('GET', 'api/item');
         $response
             ->assertStatus(200)
             ->assertJson([])
             ->assertJsonStructure([
                 'data' => [
-                    ['shipper_id', 'driver_id', 'vehicle_no', 'status',
+                    ['shipper_id', 'driver_id', 'vehicle_id', 'status',
                         'stack_date', 'stack_time', 'down_date', 'down_time', 'down_invoice',
                         'stack_point', 'down_point', 'weight', 'empty_pl', 'item_price',
                         'item_driver_name', 'vehicle_no3', 'shipper_name', 'item_vehicle', 'vehicle_payment',
@@ -32,14 +42,14 @@ class ItemApiTest extends \PHPUnit_Framework_TestCase
 
         $item = factory(Item::class)->make();
         $response = $this->json('POST', 'api/item', $item->toArray());
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 
     public function testGetItem(){
         $item = factory(Item::class)->create();
         $response = $this->json('GET', route('api.item.show', [$item->item_id]));
         $response->assertStatus(200)
-            ->assertJsonStructure(['shipper_id', 'driver_id', 'vehicle_no', 'status',
+            ->assertJsonStructure(['shipper_id', 'driver_id', 'vehicle_id', 'status',
                 'stack_date', 'stack_time', 'down_date', 'down_time', 'down_invoice',
                 'stack_point', 'down_point', 'weight', 'empty_pl', 'item_price',
                 'item_driver_name', 'vehicle_no3', 'shipper_name', 'item_vehicle', 'vehicle_payment',
