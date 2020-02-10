@@ -3,14 +3,14 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block p-1 pl-2 pr-2">
+                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block">
                         {{__('common.register')}}
                     </button>
                 </p>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block p-1 pl-2 pr-2">{{__('dispatch.printing')}}
+                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block">{{__('dispatch.printing')}}
                     </button>
                 </p>
             </div>

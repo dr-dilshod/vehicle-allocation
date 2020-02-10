@@ -5,16 +5,16 @@
         <div class="row mt-4 mb-4">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
 
             <div class="col-6">
                 <h2 class="text-center">{{__('payment.payment_registration')}}</h2>
             </div>
             <div class="col-4 text-right">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" @click = "create" :disabled="!registerMode">{{__('common.register')}}</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "update" :disabled="!editable">{{__('common.edit')}}</button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" @click = "remove" :disabled="!editable">{{__('common.delete')}}</button>
+                <button class="btn btn-lg btn-danger" @click = "create" :disabled="!registerMode">{{__('common.register')}}</button>
+                <button class="btn btn-lg btn-danger" @click = "update" :disabled="!editable">{{__('common.edit')}}</button>
+                <button class="btn btn-lg btn-danger" @click = "remove" :disabled="!editable">{{__('common.delete')}}</button>
             </div>
         </div>
 

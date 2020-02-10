@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 ref= "editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
@@ -14,8 +14,8 @@
             <div class="col-2"></div>
             <div class="col-2">
                 <p class="text-right">
-                    <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2" >{{__('common.register')}}</button>
-                    <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3" >{{__('common.edit')}}</button>
+                    <button ref="registerBtn" class="btn btn-lg btn-danger" >{{__('common.register')}}</button>
+                    <button ref="editBtn" class="btn btn-lg btn-danger" >{{__('common.edit')}}</button>
                 </p>
             </div>
         </div>
