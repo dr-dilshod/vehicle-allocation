@@ -253,7 +253,7 @@
 
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             add(evt){
@@ -271,7 +271,7 @@
 
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             addNextProduct: function (evt) {
@@ -286,7 +286,7 @@
 
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             noAdd(evt){
@@ -308,7 +308,7 @@
                         return true;
                     })
                     .catch(function(error){
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
                 $('#addDriverModal').modal('toggle');
             },
@@ -336,12 +336,12 @@
             },
             removeElem(id){
                 let componentInstance = this;
-                axios.delete('/api/dispatch/'+id)
+                axios.delete(this.fetchUrl+'/'+id)
                     .then(response => {
                         componentInstance.fetchLists(componentInstance.dispatch_day);
                     })
                     .catch(function(error){
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             fetchLists(date){
@@ -356,7 +356,7 @@
                         this.tableDriverList = result.data.tableDriverList;
                     })
                     .catch(function (error) {
-//                        componentInstance.$alert(error.response.message);
+                        componentInstance.errorDialog(error);
                     });
                 ;
             },
@@ -367,7 +367,7 @@
                         componentInstance.thirdList = data.data;
                     })
                     .catch(function (error) {
-//                        componentInstance.$alert(error.response.message);
+                        componentInstance.errorDialog(error);
                     });
             },
             getNextWorkday(d,days=1){
