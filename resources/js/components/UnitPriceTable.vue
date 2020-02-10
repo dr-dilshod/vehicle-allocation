@@ -13,9 +13,11 @@
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" ref="registerBtn">{{__('common.register')}}
-                </button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" ref="editBtn">{{__('common.edit')}}</button>
+                <p class="text-right">
+                    <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" ref="registerBtn">{{__('common.register')}}
+                    </button>
+                    <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" ref="editBtn">{{__('common.edit')}}</button>
+                </p>
             </div>
         </div>
         <div class="row align-items-center mt-4">

@@ -13,8 +13,10 @@
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">{{__('common.register')}}</button>
-                <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">{{__('common.edit')}}</button>
+                <p class="text-right">
+                    <button ref="registerBtn" class="btn btn-lg btn-danger p-1 pl-2 pr-2">{{__('common.register')}}</button>
+                    <button ref="editBtn" class="btn btn-lg btn-danger p-1 pl-3 pr-3">{{__('common.edit')}}</button>
+                </p>
             </div>
         </div>
         <div class="row mt-4 mb-4">
