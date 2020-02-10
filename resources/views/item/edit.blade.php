@@ -8,6 +8,7 @@
                            vehicle-url="{{route('item.vehicles')}}"
                            unit-price-url="{{route('item.unit_price')}}"
                            resource-url="{{route('api.item.index')}}"
+                           redirect-url="{{URL::to('/item')}}"
                            title="{{__('item.item_registration')}}"
                            operation="{{__('item.update')}}"
                            clearing="{{__('common.delete')}}"

@@ -272,6 +272,7 @@
             vehicleUrl: {type: String, required: true},
             unitPriceUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
+            redirectUrl: {type: String, required: true},
             title: {type: String, required: true},
             operation: {type: String, required: true},
             clearing: {type: String, required: true},
@@ -527,7 +528,7 @@
                     type: "success",
                     timer: 5000
                 }).then(r => {
-                    window.location.href = '/item';
+                    window.location.href = this.redirectUrl;
                 });
             },
         },
