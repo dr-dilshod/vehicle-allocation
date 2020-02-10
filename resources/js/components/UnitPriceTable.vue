@@ -188,6 +188,7 @@
                             },
                             onChange(event) {
                                 document.getElementById('selectedShipperId').value = event.target.value;
+                                this.selected = document.getElementById('selectedShipperId').value;
                             }
                         },
                         mounted() {
@@ -241,6 +242,7 @@
                 document.getElementById('selectedShipperId').value = args.data.shipperId;
             },
             insertData(unitPrice) {
+                unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
                 axios.post(this.resourceUrl, unitPrice)
                     .then(response => {
                         document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
@@ -250,11 +252,12 @@
                     })
                     .catch(error => {
                         this.tableUtil.editFailure();
+                        document.getElementById('selectedShipperId').value = unitPrice.shipper_id;
                         this.errorDialog(error);
                     });
             },
             updateData(unitPrice) {
-                unitPrice = unitPrice.data;
+                    unitPrice = unitPrice.data;
                     unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
                 axios.post(this.resourceUrl + '/' + unitPrice.price_id, unitPrice)
                     .then(response => {
@@ -279,7 +282,6 @@
             },
             actionBegin(args) {
                 if (args.requestType === 'save') {
-                    console.log(args.data);
                     if (args.hasOwnProperty('data') && args.data.hasOwnProperty('price_id') && args.data.price_id === undefined) {
                         this.insertData(args.data);
                     } else {
