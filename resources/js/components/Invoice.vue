@@ -540,7 +540,7 @@
                 this.formData.stack_date = '';
                 this.formData.invoice_day = '';
                 this.formData.invoice_month = '';
-                this.formData.vehicle_no = '';
+                this.formData.vehicle_id = '';
                 this.formData.shipper_id = '';
             },
             refresh() {
