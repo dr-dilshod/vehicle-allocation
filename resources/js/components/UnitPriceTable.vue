@@ -162,7 +162,7 @@
             shipperEditTemplate() {
                 return {
                     template: Vue.component('shipperSelectBox', {
-                      template: `<select class="form-control" name="shippers" @change="onChange($event)">
+                      template: `<select class="form-control" name="shipper_id" @change="onChange($event)">
                                     <option value="0"></option>
                                     <option v-for="shipper in shippers" :value="shipper.id" :selected="Number(shipper.id) === Number(selected)">{{shipper.shipper}}</option>
                                  </select>`,
@@ -279,6 +279,7 @@
             },
             actionBegin(args) {
                 if (args.requestType === 'save') {
+                    console.log(args.data);
                     if (args.hasOwnProperty('data') && args.data.hasOwnProperty('price_id') && args.data.price_id === undefined) {
                         this.insertData(args.data);
                     } else {
