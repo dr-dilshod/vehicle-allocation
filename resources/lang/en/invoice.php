@@ -45,6 +45,6 @@ return [
     'total_up_to_last_month'=>'Total up to last month',
     'total_for_this_month'=>'Total for this month',
     'total'=>'Total',
-
+    'rental_car_vehicle_no'=>'Car rental vehicle No',
 
 ];
