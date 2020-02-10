@@ -47,9 +47,7 @@ class DispatchController extends Controller
         ];
         $drivers = Driver::select(['driver_id','driver_name','vehicle_no3'])
             ->where([
-//                'admin_flg'=>0,
                 'delete_flg'=>0,
-                'search_flg'=>0
             ])
             ->get();
         $dispatch_drivers = \DB::table('dispatches')

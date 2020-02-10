@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 class="text-center text-danger" ref="editTitle">{{__('common.editing')}}</h2>
@@ -13,9 +13,11 @@
             </div>
             <div class="col-2"></div>
             <div class="col-2">
-                <button class="btn btn-lg btn-danger p-1 pl-2 pr-2" ref="registerBtn">{{__('common.register')}}
-                </button>
-                <button class="btn btn-lg btn-danger p-1 pl-3 pr-3" ref="editBtn">{{__('common.edit')}}</button>
+                <p class="text-right">
+                    <button class="btn btn-lg btn-danger" ref="registerBtn">{{__('common.register')}}
+                    </button>
+                    <button class="btn btn-lg btn-danger" ref="editBtn">{{__('common.edit')}}</button>
+                </p>
             </div>
         </div>
         <div class="row align-items-center mt-4">
@@ -52,24 +54,22 @@
                 </div>
             </div>
         </div>
-
-        <ejs-grid ref="grid" id="Grid" :dataSource="data"
+        <input type="hidden" id="resourceUrl" :value="resourceUrl">
+        <input type="hidden" id="selectedShipperId" :value="0">
+        <ejs-grid ref="grid" id="Grid" :dataSource="data" :rowSelected="rowSelected"
                   :allowSorting="true" :editSettings="editSettings" :height="270"
                   :actionBegin="actionBegin" :toolbar="toolbarBtns">
             <e-columns>
                 <e-column field='car_type' :headerText="__('unit_prices.car_type')"
                           editType='dropdownedit'
                           :edit="params.vehicleTypesParams"
-                          :validationRules="rules.car_type"
                           width="200"></e-column>
-                <e-column field='shipper_id' :headerText="__('unit_prices.shipper')" editType='dropdownedit'
-                          :edit="params.shippersParams"
-                          :validationRules="rules.shipper_id"
+                <e-column field='shipper_id' :headerText="__('unit_prices.shipper')" :editTemplate='shipperEditTemplate'
                           width="200"></e-column>
-                <e-column field='stack_point' :validationRules="rules.stack_point" :headerText="__('unit_prices.loading_port')" width="200"></e-column>
-                <e-column field='down_point' :validationRules="rules.down_point" :headerText="__('unit_prices.drop_off')" width="200"></e-column>
-                <e-column field='type' :validationRules="rules.type" :headerText="__('unit_prices.type')" width="100"></e-column>
-                <e-column field='price' :validationRules="rules.price"  :headerText="__('unit_prices.unit_price')" width="100"></e-column>
+                <e-column field='stack_point' :headerText="__('unit_prices.loading_port')" width="200"></e-column>
+                <e-column field='down_point' :headerText="__('unit_prices.drop_off')" width="200"></e-column>
+                <e-column field='type' :headerText="__('unit_prices.type')" width="100"></e-column>
+                <e-column field='price' :headerText="__('unit_prices.unit_price')" width="100"></e-column>
                 <e-column field='price_id' :headerText="__('unit_prices.unit_price_id')" width="5" :isPrimaryKey="true"
                           :visible=false></e-column>
                 <e-column field='shipperId' :headerText="__('unit_prices.shipper_id')" width="5"
@@ -125,15 +125,6 @@
                 ],
                 data: [],
                 params: {
-                    shippersParams: {
-                        params: {
-                            allowFiltering: true,
-                            index: -1,
-                            dataSource: this.shippers,
-                            fields: {text: "shipper", value: "id"},
-                            query: new Query()
-                        }
-                    },
                     vehicleTypesParams: {
                         params: {
                             index: -1,
@@ -145,12 +136,18 @@
                     }
                 },
                 rules: {
-                    car_type: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.car_type')})]},
-                    shipper_id: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.shipper')})]},
-                    stack_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.loading_port')})]},
-                    down_point: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.drop_off')})]},
-                    type: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.type')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.type')})]},
-                    price: {required: [true,this.__('validation.required',{attribute: this.__('unit_prices.unit_price')})], number: [true,this.__('validation.numeric',{attribute: this.__('unit_prices.unit_price')})]},
+                    car_type: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.car_type')})]},
+                    shipper_id: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.shipper')})]},
+                    stack_point: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.loading_port')})]},
+                    down_point: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.drop_off')})]},
+                    type: {
+                        required: [true, this.__('validation.required', {attribute: this.__('unit_prices.type')})],
+                        number: [true, this.__('validation.numeric', {attribute: this.__('unit_prices.type')})]
+                    },
+                    price: {
+                        required: [true, this.__('validation.required', {attribute: this.__('unit_prices.unit_price')})],
+                        number: [true, this.__('validation.numeric', {attribute: this.__('unit_prices.unit_price')})]
+                    },
                 }
             }
         },
@@ -162,6 +159,44 @@
             this.$refs.grid.hideSpinner();
         },
         methods: {
+            shipperEditTemplate() {
+                return {
+                    template: Vue.component('shipperSelectBox', {
+                      template: `<select class="form-control" name="shipper_id" @change="onChange($event)">
+                                    <option value="0"></option>
+                                    <option v-for="shipper in shippers" :value="shipper.id" :selected="Number(shipper.id) === Number(selected)">{{shipper.shipper}}</option>
+                                 </select>`,
+                        data() {
+                          return {
+                              data: {},
+                              shippers: [],
+                              selected: 0,
+                              resourceUrl: document.getElementById('resourceUrl').value
+                          }
+                        },
+                        methods: {
+                            fetchShipperName(url) {
+                                axios.get(url)
+                                    .then(response => {
+                                        if (response.data.length > 0) {
+                                            this.shippers = response.data.map(e => {
+                                                return {shipper: e.shipper_name1 + ' ' + e.shipper_name2, id: e.shipper_id};
+                                            });
+                                            this.selected = document.getElementById('selectedShipperId').value;
+                                        }
+                                    });
+                            },
+                            onChange(event) {
+                                document.getElementById('selectedShipperId').value = event.target.value;
+                                this.selected = document.getElementById('selectedShipperId').value;
+                            }
+                        },
+                        mounted() {
+                              this.fetchShipperName(`${this.resourceUrl}/shipper-names`);
+                        }
+                    })
+                };
+            },
             search() {
                 let id = this.$refs.shipperSelect.value;
                 axios.get(`${this.resourceUrl}/?shipper_id=${id}`)
@@ -183,9 +218,6 @@
                         } else {
                             this.data = [];
                         }
-                    })
-                    .catch(err => {
-                        alert(err);
                     });
             },
             clear() {
@@ -196,12 +228,6 @@
             register() {
                 this.$refs.grid.addRecord();
             },
-            edit() {
-                this.toolbarBtns = ['Edit', 'Delete', 'Update', 'Cancel'];
-                this.mode = 'editing';
-                this.editSettings.allowEditing = true;
-                this.editSettings.allowDeleting = true;
-            },
             fetchShipperNames(url) {
                 axios.get(url)
                     .then(response => {
@@ -210,42 +236,49 @@
                                 return {shipper: e.shipper_name1 + ' ' + e.shipper_name2, id: e.shipper_id};
                             });
                         }
-                    })
-                    .catch(err => {
-                        alert(err);
                     });
             },
+            rowSelected: function(args) {
+                document.getElementById('selectedShipperId').value = args.data.shipperId;
+            },
             insertData(unitPrice) {
+                unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
                 axios.post(this.resourceUrl, unitPrice)
                     .then(response => {
                         document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
                         this.search();
                         this.tableUtil.endEditing();
+                        this.createSuccessDialog();
                     })
-                    .catch(function (error) {
-                        alert(error)
+                    .catch(error => {
+                        this.tableUtil.editFailure();
+                        document.getElementById('selectedShipperId').value = unitPrice.shipper_id;
+                        this.errorDialog(error);
                     });
             },
             updateData(unitPrice) {
-                unitPrice = unitPrice.data;
-                unitPrice.shipper_id = unitPrice.shipperId;
+                    unitPrice = unitPrice.data;
+                    unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
                 axios.post(this.resourceUrl + '/' + unitPrice.price_id, unitPrice)
                     .then(response => {
                         document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
                         this.search();
-                        this.tableUtil.endEditing();
+                        this.updateSuccessDialog();
                     })
-                    .catch(function (error) {
-                        alert(error)
+                    .catch(error => {
+                        this.tableUtil.editFailure();
+                        this.errorDialog(error);
                     });
             },
             deleteData(id) {
                 axios.delete(this.resourceUrl + '/' + id)
                     .then(response => {
                         this.tableUtil.endEditing();
+                        this.deleteSuccessDialog();
                     }).catch(err => {
-                    alert(err);
-                })
+                    this.tableUtil.editFailure();
+                        this.errorDialog(err);
+                    });
             },
             actionBegin(args) {
                 if (args.requestType === 'save') {
@@ -259,10 +292,8 @@
                         this.deleteData(args.data[0].price_id);
                     }
                 } else if (args.requestType === 'beginEdit') {
-                    this.$refs.grid.getColumnByField('shipper_id').edit.params.dataSource = this.shippers;
                     this.$refs.grid.getColumnByField('car_type').edit.params.dataSource = this.vehicle_types;
                 } else if (args.requestType === 'add') {
-                    this.$refs.grid.getColumnByField('shipper_id').edit.params.dataSource = this.shippers;
                     this.$refs.grid.getColumnByField('car_type').edit.params.dataSource = this.vehicle_types;
 
                 }

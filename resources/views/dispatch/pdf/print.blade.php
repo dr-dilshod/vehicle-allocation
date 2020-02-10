@@ -44,7 +44,9 @@
             </td>
             <td>
                 @if(!empty($dispatch['next_day_items']))
-
+                    @foreach($dispatch['next_day_items'] as $next_item)
+                        {{$next_item->stack_point}} ~ {{$next_item->down_point}},
+                    @endforeach
                 @endif
             </td>
             <td>

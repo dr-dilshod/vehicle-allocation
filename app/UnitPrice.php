@@ -70,7 +70,7 @@ class UnitPrice extends Model
         'stack_point' => 'required|string|max:60',
         'down_point' => 'required|string|max:60',
         'car_type' => 'required|string|max:10',
-        'type' => 'bail|required|numeric',
+        'type' => 'bail|required|numeric|max:127',
         'price' => 'bail|required|numeric',
     ];
 
@@ -84,7 +84,7 @@ class UnitPrice extends Model
         'stack_point' => 'required|string|max:60',
         'down_point' => 'required|string|max:60',
         'car_type' => 'required|string|max:10',
-        'type' => 'bail|required|numeric',
+        'type' => 'bail|required|numeric|max:127',
         'price' => 'bail|required|numeric',
     ];
 

@@ -5,107 +5,105 @@
                 <a :href="backUrl"
                    class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
-            <div class="col-2">
+            <div class="col-1">
                 <h2 class="text-center text-danger" v-if="this.mode === 'editing'">{{__('common.editing')}}</h2>
             </div>
             <div class="col-4">
-                <h2 class="text-center">{{title}}</h2>
-            </div>
-            <div class="col-4">
                 <div class="row">
-                    <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
-                            {{__('common.register')}}
-                        </button>
-                    </div>
-                    <div class="col-4">
-                        <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
-                    </div>
-                    <div class="col-4">
-                        <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
-                            {{__('invoice.billing_month')}}
-                        </button>
-                        <br>
-                        <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
-                            {{__('invoice.list_printing')}}
-                        </button>
-                    </div>
+                    <div class="col-7"></div>
+                    <div class="col-5"><h2 class="text-center">{{title}}</h2></div>
                 </div>
+            </div>
+            <div class="col-5">
+                <p class="text-right rbtns">
+                    <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
+                        {{__('common.register')}}
+                    </button>
+                    <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
+                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
+                        {{__('invoice.billing_month')}}
+                    </button>
+                    <br>
+                    <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
+                        {{__('invoice.list_printing')}}
+                    </button>
+                </p>
             </div>
         </div>
         <div class="row mt-4 mb-4">
-            <form action="#" class="form-inline" method="post" @submit.prevent="search">
-                <table class="table" border="0" style="width: 90%">
-                    <tr>
-                        <td align="left">
-                            <label for="shipper">{{__('invoice.shipper')}}</label>
-                        </td>
-                        <td align="left">
-                            <div class="col-md-6">
-                                <div class="md-form form-group w-25">
-                                    <select name="shipper" id="shipper" v-model="formData.shipper_id"
-                                            style="width:230px">
+            <div class="col-9">
+                <form action="#" class="form-inline" method="post" @submit.prevent="search">
+                    <table class="table" border="0">
+                        <tr>
+                            <td>
+                                <label for="shipper">{{__('invoice.shipper')}}</label>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <select name="shipper" id="shipper" v-model="formData.shipper_id" class="form-control">
                                         <option value=""></option>
                                         <option v-for="shipper in shippers" :value="shipper.shipper_id">
                                             {{ shipper. shipper_name1 + " " + shipper. shipper_name2 }}
                                         </option>
                                     </select>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            <label>{{__('invoice.invoice_month')}}</label>
-                        </td>
-                        <td>
-                            <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'"
-                                        :format="options.monthFormat"></datepicker>
-                        </td>
-                        <td width="40%">
-                            <label>{{__('invoice.invoice_day')}}</label>
-                        </td>
-                        <td width="40%">
-                            <select v-model="formData.invoice_day" class="form-control">
-                                <option value=""></option>
-                                <option value="20">{{__('invoice.20th')}}</option>
-                                <option value="30">{{__('invoice.30th')}}</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>{{__('invoice.stack_date')}}</label>
-                        </td>
-                        <td align="center">
-                            <datepicker v-model="formData.stack_date" :minimumView="'day'" :format="options.stack_date"
-                                        :maximumView="'day'"/>
-                        </td>
-                        <td>
-                            <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
-                        </td>
-                        <td class="srch">
-                            <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_id"
-                                    class="form-control">
-                                <option value=""></option>
-                                <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
-                                    {{ vehicle.vehicle_no }}
-                                </option>
-                            </select>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
-                        </td>
-                        <td colspan="2">
-                            <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}
-                            </button>
-                            &nbsp;&nbsp;&nbsp;
+                            </td>
+                            <td>
+                                <label>{{__('invoice.invoice_month')}}</label>
+                            </td>
+                            <td>
+                                <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'" :bootstrap-styling="true"
+                                            :typeable="true" :format="options.monthFormat" :clear-button="true" :language="options.language.ja"
+                                ></datepicker>
+                            </td>
+                            <td>
+                                <label>{{__('invoice.invoice_day')}}</label>
+                            </td>
+                            <td>
+                                <select v-model="formData.invoice_day" class="form-control">
+                                    <option value=""></option>
+                                    <option value="20">{{__('invoice.20th')}}</option>
+                                    <option value="30">{{__('invoice.30th')}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>{{__('invoice.stack_date')}}</label>
+                            </td>
+                            <td align="center">
+                                <datepicker v-model="formData.stack_date" :bootstrap-styling="true"
+                                        :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                ></datepicker>
+                            </td>
+                            <td>
+                                <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
+                            </td>
+                            <td class="srch">
+                                <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_id"
+                                        class="form-control">
+                                    <option value=""></option>
+                                    <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
+                                        {{ vehicle.vehicle_no }}
+                                    </option>
+                                </select>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </td>
+                            <td colspan="2">
+                                <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
 
-                            <button type="button" @click="getAggregate" data-toggle="modal" data-target="#aggr"
-                                    class="btn btn-primary">
-                                {{__('invoice.aggregate')}}
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+                                <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}
+                                </button>
+
+                                <button type="button" @click="getAggregate" data-toggle="modal" data-target="#aggr"
+                                        class="btn btn-primary">
+                                    {{__('invoice.aggregate')}}
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
         </div>
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="270" :frozenColumns="4" :rowSelected='rowSelected'>
@@ -208,8 +206,9 @@
                             <p class="text-center">{{__('invoice.select_the_billing_date_you_want_to_print')}}</p>
                             <div class="form-group text-center" style="margin: 20px calc(32.5%)">
                                 <label>{{__('invoice.year_and_month')}}</label>
-                                <datepicker v-model="billing_month" :minimumView="'month'" :maximumView="'month'"
-                                            :format="options.monthFormat"></datepicker>
+                                <datepicker v-model="billing_month" :minimumView="'month'" :maximumView="'month'" :bootstrap-styling="true"
+                                            :typeable="true" :format="options.monthFormat" :clear-button="true" :language="options.language.ja"
+                                ></datepicker>
                             </div>
                             <div class="form-group d-flex justify-content-around">
                                 <span>
@@ -287,7 +286,7 @@
     import {VueSimpleAlert} from "vue-simple-alert";
     import {GridPlugin, Sort, Freeze, Toolbar, Edit} from '@syncfusion/ej2-vue-grids';
     import Datepicker from "vuejs-datepicker";
-    import * as lang from "vuejs-datepicker/src/locale";
+    import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     Vue.use(GridPlugin);
     Vue.use(VueSimpleAlert);
@@ -331,8 +330,11 @@
                 totalSales: 0,
                 options: {
                     monthFormat: "yyyy/MM",
-                    stack_date: "yyyy/MM/dd",
-                    language: "ja",
+                    weekday: "yyyy/MM/dd",
+                    language: {
+                        en: en,
+                        ja: ja
+                    },
                 },
                 billing: {
                     shipper_data: {},
@@ -476,32 +478,25 @@
                     })
             },
             getNormalDate(date, onlyMonth = false) {
+                if(date === '') return '';
                 let normalDate = new Date(date);
-                let dd = normalDate.getDate();
-                let mm = normalDate.getMonth() + 1;
-
-                let yyyy = normalDate.getFullYear();
-                if (dd < 10) {
-                    dd = '0' + dd;
+                if(typeof normalDate === 'object'){
+                    if (!onlyMonth) {
+                        return normalDate.toISOString().slice(0,10);
+                    } else {
+                        return normalDate.toISOString().slice(0,7);
+                    }
                 }
-                if (mm < 10) {
-                    mm = '0' + mm;
-                }
-                if (!onlyMonth) {
-                    return yyyy + '-' + mm + '-' + dd;
-                } else {
-                    return yyyy + '-' + mm;
-                }
+                return '';
             },
-            search: function () {
-                this.formData.stack_date = this.getNormalDate(this.formData.stack_date);
-                this.formData.invoice_month = this.getNormalDate(this.formData.stack_date, true);
-                console.log(this.formData);
+            search() {
+                let stack_date = this.getNormalDate(this.formData.stack_date);
+                let invoice_month = this.getNormalDate(this.formData.invoice_month, true);
                 this.data = this.fetchData(this.invoiceUrl
-                    + '?stack_date=' + this.formData.stack_date
+                    + '?stack_date=' + stack_date
                     + '&vehicle_id=' + this.formData.vehicle_id
                     + '&invoice_day=' + this.formData.invoice_day
-                    + '&invoice_month=' + this.formData.invoice_month
+                    + '&invoice_month=' + invoice_month
                     + '&shipper_id=' + this.formData.shipper_id);
 
                 this.fetchPaymentList(this.paymentUrl
@@ -545,7 +540,7 @@
                 this.formData.stack_date = '';
                 this.formData.invoice_day = '';
                 this.formData.invoice_month = '';
-                this.formData.vehicle_no = '';
+                this.formData.vehicle_id = '';
                 this.formData.shipper_id = '';
             },
             refresh() {
@@ -613,39 +608,20 @@
         provide: {
             grid: [Sort, Freeze, Edit, Toolbar]
         },
-        /**computed: {
-            calculateTotals(){
-                this.totalSales = 10;
-                this.totalConsumptionTax = 10;
-                this.otherTotals = 20;
-                this.totalSalesTotal = 40;
-            }
-        }*/
+
     }
 </script>
 <style scoped>
 
     #invoice label {
-        width: 150px;
+        width: 100px;
         float: right;
     }
 
-    #invoice .btn {
-        width: 100px;
-        padding: 10px 5px;
-        font-size: 12px;
-        -webkit-border-radius: 0;
-        -moz-border-radius: 0;
-        border-radius: 0;
+    .rbtns button{
+        width: 130px;
     }
 
-    .vdp-datepicker input {
-        padding: 5px !important;
-    }
-
-    .srch select {
-        width: 80px;
-    }
     .srch > button {
         width: 55px !important;
     }

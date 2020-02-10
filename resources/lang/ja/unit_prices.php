@@ -3,6 +3,7 @@
 return [
     'unit_price_list' => '単価一覧',
     'shipper' => '荷主',
+    'shipper_id' => '荷主',
     'car_type' => '車種',
     'loading_port' => '積地',
     'drop_off' => '降地',

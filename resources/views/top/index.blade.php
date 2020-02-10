@@ -7,7 +7,7 @@
                 {{ session('status') }}
             </div>
         @endif
-        <div class="row p-2">
+        <div class="row pr-2 pl-2">
             <div class="col-4 p-2">
                 <a href="{{route('item.create')}}" class="btn btn-lg btn-warning btn-block p-4">{{__('top.item_reg')}}</a>
             </div>

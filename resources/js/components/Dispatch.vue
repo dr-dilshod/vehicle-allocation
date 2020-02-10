@@ -3,14 +3,14 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block p-1">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block p-1 pl-2 pr-2">
+                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block">
                         {{__('common.register')}}
                     </button>
                 </p>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block p-1 pl-2 pr-2">{{__('dispatch.printing')}}
+                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block">{{__('dispatch.printing')}}
                     </button>
                 </p>
             </div>
@@ -253,7 +253,7 @@
 
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             add(evt){
@@ -271,7 +271,7 @@
 
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             addNextProduct: function (evt) {
@@ -286,7 +286,7 @@
 
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             noAdd(evt){
@@ -308,7 +308,7 @@
                         return true;
                     })
                     .catch(function(error){
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
                 $('#addDriverModal').modal('toggle');
             },
@@ -336,12 +336,12 @@
             },
             removeElem(id){
                 let componentInstance = this;
-                axios.delete('/api/dispatch/'+id)
+                axios.delete(this.fetchUrl+'/'+id)
                     .then(response => {
                         componentInstance.fetchLists(componentInstance.dispatch_day);
                     })
                     .catch(function(error){
-                        console.error(error);
+                        componentInstance.errorDialog(error);
                     });
             },
             fetchLists(date){
@@ -356,7 +356,7 @@
                         this.tableDriverList = result.data.tableDriverList;
                     })
                     .catch(function (error) {
-//                        componentInstance.$alert(error.response.message);
+                        componentInstance.errorDialog(error);
                     });
                 ;
             },
@@ -367,7 +367,7 @@
                         componentInstance.thirdList = data.data;
                     })
                     .catch(function (error) {
-//                        componentInstance.$alert(error.response.message);
+                        componentInstance.errorDialog(error);
                     });
             },
             getNextWorkday(d,days=1){
