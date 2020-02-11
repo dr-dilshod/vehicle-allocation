@@ -2,12 +2,23 @@
 
 namespace Tests\Browser;
 
+use App\Driver;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class InvoiceTest extends DuskTestCase
 {
+    private $user;
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = Driver::select(['driver_name', 'driver_pass'])
+            ->where('delete_flg', 0)
+            ->where('search_flg', 1)
+            ->where('admin_flg', 1)
+            ->get();
+    }
     /**
     * test if the registration button is disabled in non-editing mode
     */
