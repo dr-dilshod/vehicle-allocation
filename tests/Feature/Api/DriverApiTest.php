@@ -29,7 +29,10 @@ class DriverApiTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
-                    'create_id', 'update_id', 'driver_pass', 'driver_name', 'driver_mobile_number', 'maximum_Loading', 'search_flg', 'admin_flg', 'vehicle_no1', 'vehicle_no2', 'vehicle_no3', 'vehicle_type', 'driver_remark', 'delete_flg', 'created_at', 'updated_at']
+                    'create_id', 'update_id', 'driver_pass', 'driver_name', 'driver_mobile_number',
+                    'maximum_Loading', 'search_flg', 'admin_flg', 'vehicle_no1', 'vehicle_no2',
+                    'vehicle_no3', 'vehicle_type', 'driver_remark', 'delete_flg',
+                    'created_at', 'updated_at']
             ]);
     }
     /**

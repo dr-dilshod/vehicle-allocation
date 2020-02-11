@@ -22,19 +22,23 @@ class VehicleApiTest extends TestCase
 
     use WithFaker;
     use WithoutMiddleware;
-    private $user;
+    private $vehicle;
 
     public function setUp(): void
     {
         parent::setUp();
-        $test_data = [
-            'vehicle_no' => '0000',
-            'company_name' => 'TestCompanyName',
-            'driver_name' => 'TestDriverName',
-            'offset' => 0,
-            'delete_flg'=> 0
-        ];
-        Vehicle::create($test_data);
+        $this->vehicle = [
+            'vehicle_no' => '4444',
+            'company_name' => 'TestCompanyName1',
+            'company_kana_name' => 'TestCompanyName1',
+            'vehicle_company_abbreviation' => 'TestCompanyName1',
+            'vehicle_postal_code' => 'TestCompanyName1',
+            'vehicle_address1' => 'Address1',
+            'vehicle_address2' => 'Address2',
+            'offset' => '0',
+            'vehicle_phone_number' => '5555555',
+            'vehicle_fax_number' => '5555555',
+            'delete_flg' => '0'];
     }
 
     /**
@@ -44,12 +48,11 @@ class VehicleApiTest extends TestCase
     {
         $response = $this->json('GET', route('api.vehicle.index', [1]));
         $response
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                    'vehicle_id', 'vehicle_no', 'company_name', 'company_kana_name', 'vehicle_company_abbreviation',
+            ->assertJsonStructure(['*'=>
+                    ['vehicle_id', 'vehicle_no', 'company_name', 'company_kana_name', 'vehicle_company_abbreviation',
                     'vehicle_postal_code', 'vehicle_address1', 'vehicle_address2', 'vehicle_phone_number',
                     'vehicle_fax_number', 'offset', 'vehicle_remark', 'delete_flg', 'create_id',
-                    'update_id', 'created_at', 'updated_at']
+                    'update_id', 'created_at', 'updated_at']]
             );
     }
 
@@ -57,11 +60,25 @@ class VehicleApiTest extends TestCase
      * Testing vehicle creation
      */
     public function testCreateVehicle(){
-        $vehicle = factory(Vehicle::class)->make([
-            'company_name' => 'TestCompanyName1']);
-        $response = $this->json('POST', route('api.vehicle.store'), $vehicle->toArray());
+        $response = $this->json('POST', route('api.vehicle.store'), $this->vehicle);
         $response->assertStatus(201);
+        $this->assertDatabaseHas('vehicles', [
+            'vehicle_no' => '4444',
+            'company_name' => 'TestCompanyName1',
+            'company_kana_name' => 'TestCompanyName1',
+            'vehicle_company_abbreviation' => 'TestCompanyName1',
+            'vehicle_postal_code' => 'TestCompanyName1',
+            'vehicle_address1' => 'Address1',
+            'vehicle_address2' => 'Address2',
+            'offset' => '0',
+            'vehicle_phone_number' => '5555555',
+            'vehicle_fax_number' => '5555555',
+            'delete_flg' => '0'
+        ]);
+        Vehicle::where('vehicle_no', '4444')->delete();
     }
+
+
 
     /**
      * Testing structure of one record
@@ -78,9 +95,13 @@ class VehicleApiTest extends TestCase
     }
 
     public function testUpdateVehicle(){
-        $id = factory(Vehicle::class)->create()->vehicle_id;
-        $vehicle = factory(Vehicle::class)->make();
-        $response = $this->json('PUT', route('api.vehicle.update',[$id]), $vehicle->toArray());
+        $update_data = ['vehicle_no' => '8888',
+            'company_name' => 'SecondTestCompanyName1',
+            'company_kana_name' => 'TestCompanyName1'];
+        $new_vehicle = factory(Vehicle::class)->create($this->vehicle);
+        $response = $this->json('PUT', route('api.vehicle.update',[$new_vehicle->vehicle_id]),
+            $update_data);
+        Vehicle::where('vehicle_no', '8888')->delete();
         $response->assertStatus(200);
     }
 
@@ -115,10 +136,14 @@ class VehicleApiTest extends TestCase
      */
     public function testSearchCondition()
     {
-        $response = Vehicle::where('company_name', 'TestCompanyName')
-            ->get()
-            ->count();
-        self::assertEquals(1, $response);
+        $new_vehicle = factory(Vehicle::class)->create($this->vehicle);
+        $response = $this->json('GET', route('api.vehicle.show', [$new_vehicle->vehicle_id]));
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'delete_flg' => 0,
+        ]);
+        Vehicle::where('vehicle_no', '4444')->delete();
+
     }
 
     /**
