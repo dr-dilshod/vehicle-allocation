@@ -62,19 +62,7 @@ class VehicleApiTest extends TestCase
     public function testCreateVehicle(){
         $response = $this->json('POST', route('api.vehicle.store'), $this->vehicle);
         $response->assertStatus(201);
-        $this->assertDatabaseHas('vehicles', [
-            'vehicle_no' => '4444',
-            'company_name' => 'TestCompanyName1',
-            'company_kana_name' => 'TestCompanyName1',
-            'vehicle_company_abbreviation' => 'TestCompanyName1',
-            'vehicle_postal_code' => 'TestCompanyName1',
-            'vehicle_address1' => 'Address1',
-            'vehicle_address2' => 'Address2',
-            'offset' => '0',
-            'vehicle_phone_number' => '5555555',
-            'vehicle_fax_number' => '5555555',
-            'delete_flg' => '0'
-        ]);
+        $this->assertDatabaseHas('vehicles', $this->vehicle);
         Vehicle::where('vehicle_no', '4444')->delete();
     }
 
@@ -94,6 +82,9 @@ class VehicleApiTest extends TestCase
                 'update_id', 'created_at', 'updated_at']);
     }
 
+    /**
+     * Testing the update end point of API
+     */
     public function testUpdateVehicle(){
         $update_data = ['vehicle_no' => '8888',
             'company_name' => 'SecondTestCompanyName1',
@@ -105,6 +96,9 @@ class VehicleApiTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Testing the delete end point of API
+     */
     public function testDeleteVehicle(){
         $vehicle = factory(Vehicle::class)->create([
             'company_name' => 'TestCompanyName']);
@@ -166,31 +160,9 @@ class VehicleApiTest extends TestCase
      * Acquisition data: Rental vehicle master.FAX number
      */
     public function testDataAcquisition() {
-        $vehicle = factory(Vehicle::class)->create([
-            'vehicle_no' => '0000',
-            'company_name' => 'TestCompanyName',
-            'company_kana_name' => 'TestCompanyKanaName',
-            'vehicle_company_abbreviation' => 'vehicle_company_abbreviation',
-            'vehicle_postal_code' => '220100',
-            'vehicle_address1' => '',
-            'vehicle_address2' => '',
-            'vehicle_phone_number' => '+9986333333',
-            'vehicle_fax_number' => '9986333333',
-            'vehicle_remark' => 'test remark',
-        ]);
+        $vehicle = factory(Vehicle::class)->create($this->vehicle);
         $response = $this->json('GET', route('api.vehicle.show', [$vehicle->vehicle_id]));
         $response->assertStatus(200)
-            ->assertJsonFragment([
-                'vehicle_no' => '0000',
-                'company_name' => 'TestCompanyName',
-                'company_kana_name' => 'TestCompanyKanaName',
-                'vehicle_company_abbreviation' => 'vehicle_company_abbreviation',
-                'vehicle_postal_code' => '220100',
-                'vehicle_address1' => '',
-                'vehicle_address2' => '',
-                'vehicle_phone_number' => '+9986333333',
-                'vehicle_fax_number' => '9986333333',
-                'vehicle_remark' => 'test remark',
-            ]);
+            ->assertJsonFragment($this->vehicle);
     }
 }
