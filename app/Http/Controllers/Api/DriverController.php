@@ -19,7 +19,7 @@ class DriverController extends Controller
     {
         $drivers = Driver::where([
             'delete_flg'=>0
-        ])->orderBy('driver_name')->paginate(25);
+        ])->orderBy('driver_name')->get();
         return response()->json($drivers,200);
     }
 
