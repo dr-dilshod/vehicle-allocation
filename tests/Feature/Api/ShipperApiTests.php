@@ -33,11 +33,10 @@ class ShipperApiTests extends TestCase
             'phone_number'=> '000000000',
             'fax_number'=> '000000000',
             'closing_date'=> 1,
+            'payment_date'=>'2020-01-01 00:00:00',
             'delete_flg'=>0,
-            'create_id' =>1,
-            'created_at' =>'2020-01-01',
-            'update_id'=>1,
-            'updated_at'=>'2020-01-01',
+            'created_at' =>'2020-01-01 00:00:00',
+            'updated_at'=>'2020-01-01 00:00:00',
         ];
     }
 
@@ -46,6 +45,7 @@ class ShipperApiTests extends TestCase
      */
     public function testShipperSchema()
     {
+        $shipper = factory(Shipper::class)->create($this->shipper);
         $response = $this->json('GET', route('api.shipper.index', [1]));
         $response
             ->assertStatus(200)
@@ -54,9 +54,10 @@ class ShipperApiTests extends TestCase
                     ['shipper_id', 'shipper_no', 'shipper_name1', 'shipper_name2',
                         'shipper_kana_name1', 'shipper_kana_name2', 'shipper_company_abbreviation',
                         'postal_code', 'address1', 'address2', 'phone_number', 'fax_number',
-                        'closing_date', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at']
+                        'closing_date', 'payment_date', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at']
                 ]
             ]);
+        Shipper::where('shipper_no', '4444')->delete();
     }
 
     /**
@@ -106,7 +107,6 @@ class ShipperApiTests extends TestCase
         $shipper = factory(Shipper::class)->create($this->shipper);
         $response = $this->json('DELETE',route('api.shipper.destroy',[$shipper->shipper_id]));
         $response->assertStatus(204);
-        $this->assertDatabaseMissing('shippers', $this->shipper);
     }
 
     /**

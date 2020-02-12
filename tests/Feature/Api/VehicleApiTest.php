@@ -160,9 +160,31 @@ class VehicleApiTest extends TestCase
      * Acquisition data: Rental vehicle master.FAX number
      */
     public function testDataAcquisition() {
-        $vehicle = factory(Vehicle::class)->create($this->vehicle);
+        $vehicle = factory(Vehicle::class)->create([
+            'vehicle_no' => '0000',
+            'company_name' => 'TestCompanyName',
+            'company_kana_name' => 'TestCompanyKanaName',
+            'vehicle_company_abbreviation' => 'vehicle_company_abbreviation',
+            'vehicle_postal_code' => '220100',
+            'vehicle_address1' => '',
+            'vehicle_address2' => '',
+            'vehicle_phone_number' => '+9986333333',
+            'vehicle_fax_number' => '9986333333',
+            'vehicle_remark' => 'test remark',
+        ]);
         $response = $this->json('GET', route('api.vehicle.show', [$vehicle->vehicle_id]));
         $response->assertStatus(200)
-            ->assertJsonFragment($this->vehicle);
+            ->assertJsonFragment([
+                'vehicle_no' => '0000',
+                'company_name' => 'TestCompanyName',
+                'company_kana_name' => 'TestCompanyKanaName',
+                'vehicle_company_abbreviation' => 'vehicle_company_abbreviation',
+                'vehicle_postal_code' => '220100',
+                'vehicle_address1' => '',
+                'vehicle_address2' => '',
+                'vehicle_phone_number' => '+9986333333',
+                'vehicle_fax_number' => '9986333333',
+                'vehicle_remark' => 'test remark',
+            ]);
     }
 }
