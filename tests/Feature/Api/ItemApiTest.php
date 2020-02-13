@@ -73,7 +73,7 @@ class ItemApiTest extends TestCase
      */
     public function testCreateItem(){
         $itemObject = factory(Item::class)->make($this->item);
-        $response = $this->json('POST', route('api.item.store'), $itemObject);
+        $response = $this->json('POST', route('api.item.store'), $this->item);
         $response->assertStatus(201);
         $this->assertDatabaseHas('items', $itemObject);
         Item::where('item_id', $itemObject->item_id);
