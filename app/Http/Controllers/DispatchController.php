@@ -28,6 +28,7 @@ class DispatchController extends Controller
                 'dispatches.delete_flg'=>0,
                 'drivers.delete_flg'=>0
             ])
+            ->orderBy('vehicle_type')
             ->get();
         $result['dispatch_drivers'] = $dispatch_drivers;
         $result['dispatches'] = [];
