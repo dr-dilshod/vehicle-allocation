@@ -7,7 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Driver::class, function (Faker $faker) {
     return [
-        'driver_id'=>$faker->numberBetween(1,100),
         'driver_pass' => $faker->password(10),
         'driver_name' => $faker->text(10),
         'driver_mobile_number' => $faker->phoneNumber,
