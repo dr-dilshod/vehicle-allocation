@@ -2,18 +2,33 @@
 
 namespace Tests\Browser;
 
+use App\Driver;
 use Tests\DuskTestCase;
+use Laravel\Dusk\Chrome;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class DriverTest extends DuskTestCase
 {
+    use DatabaseMigrations;
+
+    private $user;
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = Driver::select(['driver_name', 'driver_pass'])
+            ->where('delete_flg', 0)
+            ->where('search_flg', 1)
+            ->where('admin_flg', 1)
+            ->get();
+    }
+
     /**
      * test if the registration button is disabled in non-editing mode
      */
     public function testDisabledRegistrationButton() {
         $user = $this->user;
-        $this->browse(function ($browser) use ($user) {
+        $this->browse(function (Browser $browser) use ($user) {
             $browser->visit('/driver')
                 ->assertButtonDisabled('registerBtn');
         });

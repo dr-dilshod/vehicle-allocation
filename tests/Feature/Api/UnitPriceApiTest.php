@@ -1,9 +1,18 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Bekmurod
+ * Date: 13.02.2020
+ * Time: 18:56
+ */
 
-namespace Tests\Feature\Feature\Api;
 
-use App\Driver;
-use App\Vehicle;
+namespace Tests\Feature\Api;
+
+
+
+
+use App\UnitPrice;
 use Illuminate\Auth\Access\Gate;
 use mysql_xdevapi\Table;
 use Tests\TestCase;
@@ -12,58 +21,53 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 
-/**
- * Class VehicleApiTest
- * @package Tests\Feature\Feature\Api
- * @author Dilshod K
- */
-class VehicleApiTest extends TestCase
+
+class UnitPriceApiTest extends TestCase
 {
 
     use WithFaker;
     use WithoutMiddleware;
-    private $vehicle;
+    private $UnitPrice;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->vehicle = [
-            'vehicle_no' => '4444',
-            'company_name' => 'TestCompanyName1',
-            'company_kana_name' => 'TestCompanyName1',
-            'vehicle_company_abbreviation' => 'TestCompanyName1',
-            'vehicle_postal_code' => 'TestCompanyName1',
-            'vehicle_address1' => 'Address1',
-            'vehicle_address2' => 'Address2',
-            'offset' => '0',
-            'vehicle_phone_number' => '5555555',
-            'vehicle_fax_number' => '5555555',
+        $this->UnitPrice= [
+            'shipper_id' => '2',
+            'item_id' => '2',
+            'driver_id' => '2',
+            'type' => 'Blank',
+            'price' => '555',
+            'car_type' => 'trailer',
+            'shipper_no' => '555',
+            'stack_point' => 'Tokio',
+            'down_point' => 'Gifu',
             'delete_flg' => '0'];
     }
 
     /**
-     * Test the schema of vehicle table
+     * Test the schema of unit price table
      */
-    public function testVehicleSchema()
+    public function testUnitPriceSchema()
     {
-        $response = $this->json('GET', route('api.vehicle.index', [1]));
+        $response = $this->json('GET', route('api.unit-prices.index', [1]));
         $response
             ->assertJsonStructure(['*'=>
-                    ['vehicle_id', 'vehicle_no', 'company_name', 'company_kana_name', 'vehicle_company_abbreviation',
-                    'vehicle_postal_code', 'vehicle_address1', 'vehicle_address2', 'vehicle_phone_number',
-                    'vehicle_fax_number', 'offset', 'vehicle_remark', 'delete_flg', 'create_id',
-                    'update_id', 'created_at', 'updated_at']]
+                    ['shipper_id', 'item_id', 'driver_id', 'type', 'price',
+                        'car_type', 'shipper_no', 'stack_point', 'down_point',
+                        'delete_flg', 'delete_flg', 'create_id',
+                        'update_id', 'created_at', 'updated_at']]
             );
     }
 
     /**
-     * Testing vehicle creation
+     * Testing Unit prices creation
      */
-    public function testCreateVehicle(){
-        $response = $this->json('POST', route('api.vehicle.store'), $this->vehicle);
+    public function testCreateUnitPrices(){
+        $response = $this->json('POST', route('api.unit-prices.store'), $this->UnitPrice);
         $response->assertStatus(201);
-        $this->assertDatabaseHas('vehicles', $this->vehicle);
-        Vehicle::where('vehicle_no', '4444')->delete();
+        $this->assertDatabaseHas('unit_prices', $this->UnitPrice);
+        UnitPrice::orderBy('driver_id', 'DESC')->first()->delete();
     }
 
 
@@ -106,7 +110,7 @@ class VehicleApiTest extends TestCase
         $response->assertStatus(204);
     }
 
-     /**
+    /**
      * Data Structure: Car rental master.Car rental company (DISTINCT)
      */
     public function testCarCompanyStructure()
@@ -135,14 +139,14 @@ class VehicleApiTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonFragment([
                 'delete_flg' => 0,
-        ]);
+            ]);
         Vehicle::where('vehicle_no', '4444')->delete();
 
     }
 
     /**
-    * Acquisition data: Rental vehicle master Rental vehicle No.
-    */
+     * Acquisition data: Rental vehicle master Rental vehicle No.
+     */
     public function testRentalVehicleNo()
     {
         $response = $this->json('GET', route('vehicle.companies'));

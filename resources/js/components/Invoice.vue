@@ -125,7 +125,7 @@
                           editType='numericedit'
                           width="100"></e-column>
                 <e-column field='status' :headerText='__("invoice.status")' width="100" textAlign="Center"></e-column>
-                <e-column field='item_vehicle' :headerText='__("invoice.item_vehicle")' width="100"
+                <e-column field='item_vehicle' :headerText='__("invoice.rental_car_vehicle_no")' width="100"
                           textAlign="Center"></e-column>
                 <e-column field='down_time' :headerText='__("invoice.delivery_time")' width="100"
                           textAlign="Center"></e-column>

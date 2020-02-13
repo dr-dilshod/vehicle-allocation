@@ -12,11 +12,12 @@ class SettingTest extends DuskTestCase
     private $user;
     public function setUp(): void
     {
-        $user = factory(Driver::class)->create([
-            'driver_name' => 'admin',
-            'driver_pass' => 'admin'
-        ]);
-        $this->user = $user;
+        parent::setUp();
+        $this->user = Driver::select(['driver_name', 'driver_pass'])
+            ->where('delete_flg', 0)
+            ->where('search_flg', 1)
+            ->where('admin_flg', 1)
+            ->get();
     }
 
     public function testSettingPage() {
