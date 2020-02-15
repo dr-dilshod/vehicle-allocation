@@ -19,7 +19,7 @@
 <h1 align="center" style="font-family: ipaexg, sans-serif">{{$params['date']}}の毎日のディスパッチ出力</h1>
 <div>
     <br>
-    <table width="100%" style="width:100%" border="1">
+    <table width="900" style="width:100%" border="1">
         <tr>
             <th>車輌No</th>
             <th>降～当日</th>
