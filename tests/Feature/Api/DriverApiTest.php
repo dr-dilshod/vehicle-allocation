@@ -44,9 +44,7 @@ class DriverApiTest extends TestCase
     public function testDriverSchema()
     {
         $response = $this->json('GET', route('api.driver.index', [1]));
-        echo $response->getContent();
         $response
-
             ->assertJsonStructure(['*'=>[
                 'driver_id', 'driver_pass', 'driver_name',
                 'driver_mobile_number', 'maximum_Loading', 'search_flg',

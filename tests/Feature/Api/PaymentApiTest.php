@@ -43,7 +43,7 @@ class PaymentApiTest extends TestCase
         $payment = factory(\App\Payment::class)->create($this->payment);
         $paymentInDB = Payment::where('payment_day', '2000-01-01 01:01:01')
             ->get()->first();
-        $response = $this->json('GET', route('payment.search', [$paymentInDB->payment_id]));
+        $response = $this->json('GET', route('payment.search', [1]));
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
