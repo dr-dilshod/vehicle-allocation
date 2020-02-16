@@ -12,7 +12,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  * @property integer $driver_id
  * @property integer $create_id
  * @property integer $update_id
- * @property boolean $type
+ * @property string $type
  * @property integer $price
  * @property string $car_type
  * @property string $shipper_no
@@ -70,7 +70,7 @@ class UnitPrice extends Model
         'stack_point' => 'required|string|max:60',
         'down_point' => 'required|string|max:60',
         'car_type' => 'required|string|max:10',
-        'type' => 'bail|required|numeric|max:127',
+        'type' => 'bail|required|max:191',
         'price' => 'bail|required|numeric',
     ];
 
@@ -84,7 +84,7 @@ class UnitPrice extends Model
         'stack_point' => 'required|string|max:60',
         'down_point' => 'required|string|max:60',
         'car_type' => 'required|string|max:10',
-        'type' => 'bail|required|numeric|max:127',
+        'type' => 'bail|required|max:191',
         'price' => 'bail|required|numeric',
     ];
 
