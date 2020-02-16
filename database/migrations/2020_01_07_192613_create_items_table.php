@@ -20,8 +20,8 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('item_id');
             $table->unsignedBigInteger('shipper_id')->default(0);
-            $table->unsignedBigInteger('driver_id')->default(0);
-            $table->unsignedBigInteger('vehicle_id')->default(0);
+            $table->unsignedBigInteger('driver_id')->default(0)->nullable();
+            $table->unsignedBigInteger('vehicle_id')->default(0)->nullable();
             $table->tinyInteger('status')->default(0);
             $table->date('stack_date');
             $table->time('stack_time');
