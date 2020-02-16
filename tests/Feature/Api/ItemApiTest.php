@@ -49,7 +49,7 @@ class ItemApiTest extends TestCase
      */
     public function testItemSchema()
     {
-        $payment = factory(\App\Item::class)->create($this->item);
+        $item = factory(\App\Item::class)->create($this->item);
         $itemInDB = Item::where('item_remark', 'ThisIsTestRemark')
             ->get()->first();
         $response = $this->json('GET', route('api.item.index', [$itemInDB->item_id]));
