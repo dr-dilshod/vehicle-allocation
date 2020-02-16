@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-               <h3 class="text-center">{{ __('common.login') }}</h3>
+               <h3 class="offset-md-6 pl-3">{{ __('common.login') }}</h3>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -14,9 +14,9 @@
                             <label for="driver_name" class="col-md-4 col-form-label text-md-right">{{ __('common.username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="driver_name" type="text" class="form-control @error('driver_name') is-invalid @enderror" name="driver_name" value="{{  old('driver_name') }}" required autocomplete="driver_name" autofocus>
+                                <input id="driver_name" type="text" class="form-control @error('driver_id') is-invalid @enderror" name="driver_id" value="{{  old('driver_id') }}" required autocomplete="driver_id" autofocus>
 
-                                @error('driver_name')
+                                @error('driver_id')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
