@@ -52,3 +52,27 @@
 .exit-btn:before {
     content: '\eb3a';
 }
+.navbar{
+    background-color: $navbar-bg;
+    border:1px solid dimgray;
+}
+.btn{
+    border-color: dimgray;
+}
+.btn-warning{
+    color: #fff;
+    background-color: $orange;
+    border-color: dimgray;
+}
+.btn-warning:hover, .btn-warning:focus, .btn-warning:active{
+    color: #fff;
+    background-color: $orange-hv;
+    border-color: dimgray;
+}
+.btn-warning:not(:disabled):not(.disabled):active,
+.btn-warning:not(:disabled):not(.disabled).active,
+.show > .btn-warning.dropdown-toggle {
+    color: #fff;
+    background-color: $orange;
+    border-color: dimgray;
+}
