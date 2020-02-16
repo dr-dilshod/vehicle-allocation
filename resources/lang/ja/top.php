@@ -13,7 +13,7 @@ return [
     'dispatch_board' => '配車板',
     'billing_management' => '請求管理',
     'payment_reg' => '支払登録',
-    'deposit_list' => '入金一覧',
+    'deposit_list' => '入金登録',
     'settings' => '設定',
     'display'=>'表示',
     'january'=>'一月',
