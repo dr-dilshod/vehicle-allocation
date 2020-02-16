@@ -259,7 +259,7 @@
             updateData(unitPrice) {
                     unitPrice = unitPrice.data;
                     unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
-                axios.post(this.resourceUrl + '/' + unitPrice.price_id, unitPrice)
+                axios.put(this.resourceUrl + '/' + unitPrice.price_id, unitPrice)
                     .then(response => {
                         document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
                         this.search();
