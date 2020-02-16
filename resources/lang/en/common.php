@@ -1,6 +1,7 @@
 <?php
 
-return  ['login' => 'Login',
+return  [
+    'login' => 'Login',
     'back' => 'Back',
     'register' => 'Register',
     'edit' => 'Edit',
@@ -13,7 +14,6 @@ return  ['login' => 'Login',
     'select_input' => '--Select--',
     'delete' => 'Delete',
     'username'=>'Username',
-    'password'=>'Password',
     'exit'=>'Exit',
     'exit_from_edit_mode'=>'Exit from edit mode',
     'cancel'=>'Cancel',
@@ -32,5 +32,5 @@ return  ['login' => 'Login',
     'edit_operation_alert'=>'select the line to edit',
     'cancel_edit'=>'Do you want to cancel editing?',
     'no_result'=>'No result',
-
+    'sys_name' => 'Vehicle allocation system'
 ];

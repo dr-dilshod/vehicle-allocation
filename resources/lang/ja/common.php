@@ -14,7 +14,6 @@ return  [
     'select_input' => '--セレクト--',
     'delete' => 'デリート',
     'username'=>'ユーザーID',
-    'password'=>'パスワード',
     'exit'=>'出口',
     'exit_from_edit_mode'=>'編集モードを終了します',
     'cancel'=>'キャンセル',
@@ -33,5 +32,6 @@ return  [
     'edit_operation_alert'=>'編集する行を選択します',
     'cancel_edit'=>'編集をキャンセルしますか？',
     'no_result'=>'検索結果はありません',
+    'sys_name' => '配車請求管理システム'
 
 ];
