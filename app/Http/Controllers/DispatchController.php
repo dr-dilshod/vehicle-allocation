@@ -18,7 +18,7 @@ class DispatchController extends Controller
         $params = $request->all();
         $firstDate = $params['date'];
         $dispatch_drivers = \DB::table('dispatches')
-            ->select(['dispatches.driver_id','drivers.vehicle_no3','drivers.driver_name'])
+            ->select(['dispatches.driver_id','drivers.vehicle_no3','drivers.driver_name','drivers.vehicle_type'])
             ->distinct()
             ->leftJoin('items','dispatches.item_id','=','items.item_id')
             ->leftJoin('drivers','dispatches.driver_id','=','drivers.driver_id')
@@ -28,7 +28,7 @@ class DispatchController extends Controller
                 'dispatches.delete_flg'=>0,
                 'drivers.delete_flg'=>0
             ])
-            ->orderBy('vehicle_type')
+            ->orderBy('drivers.vehicle_type')
             ->get();
         $result['dispatch_drivers'] = $dispatch_drivers;
         $result['dispatches'] = [];
