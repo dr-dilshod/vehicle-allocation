@@ -284,6 +284,9 @@ return [
         'fax' => 'FAX番号',
         'remark' => '備考',
         'driver_pass'=>'ドライバーのパスワード ',
+        'payment_amount'=>'支払金額 ',
+        'deposit_amount'=>'入金額 ',
+
     ],
 
 ];

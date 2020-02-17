@@ -283,8 +283,8 @@ return [
         'remark' => 'Remark ',
         'driver_pass'=>'Driver password ',
         'vehicle_type'=>'vehicle type',
-
-
+        'payment_amount'=>'Payment amount',
+        'deposit_amount'=>'Deposit amount',
         ],
 
 ];
