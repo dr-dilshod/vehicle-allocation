@@ -10,7 +10,7 @@ return [
     'Month' => '月',
     'item_reg' => '案件登録',
     'item_list' => '案件一覧',
-    'dispatch_board' => '配車板',
+    'dispatch_board' => '配車管理',
     'billing_management' => '請求管理',
     'payment_reg' => '支払登録',
     'deposit_list' => '入金登録',

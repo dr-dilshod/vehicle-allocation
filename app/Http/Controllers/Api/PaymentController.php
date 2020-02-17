@@ -64,7 +64,6 @@ class PaymentController extends Controller
             $payments[0]->payment_day = date('Y-m-d', strtotime($payments[0]->payment_day));
             $payment = $payments[0];
         }
-        var_dump($payments);
         $nextDate = date('Y-m-d', strtotime($year.'-'.$month.'-'.$day.' +1 day'));
 
         $total = Payment::where('shipper_id', $shipper)

@@ -183,7 +183,7 @@
                 dayCount : 0,
                 options: {
                     monthFormat: "yyyy/MM",
-                    weekday: "yyyy-MM-dd",
+                    weekday: "dd/MM/yyyy",
                     language: {
                         en: en,
                         ja: ja

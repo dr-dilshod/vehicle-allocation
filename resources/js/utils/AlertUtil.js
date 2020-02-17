@@ -57,7 +57,7 @@ module.exports = {
                 case 'VehicleTable' :
                     return this.__('validation.attributes.vehicle_list');
                 case 'DepositRegistration':
-                    return this.__('validation.attributes._registration');
+                    return this.__('validation.attributes.deposit_registration');
                 case 'Dispatch':
                     return this.__('validation.attributes.dispatch_board');
                 case 'DriverTable':

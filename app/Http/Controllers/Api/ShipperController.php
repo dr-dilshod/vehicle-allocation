@@ -95,11 +95,11 @@ class ShipperController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate(Shipper::validationRules);
-//        $request->validate($request, [
-//            'shipper_no' => 'unique:shippers',
-//        ]);
-        $shipper = Shipper::create($data);
+        $request->validate(Shipper::validationRules);
+        $request->validate([
+            'shipper_no' => 'unique:shippers',
+        ]);
+        $shipper = Shipper::create($request->all());
 
         return response()->json($shipper, 201);
     }
