@@ -107,7 +107,7 @@
                                 <label for="vehicle_model">{{__('item.vehicle_model')}}</label>
                             </td>
                             <td>
-                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
+                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model" @change="calcUnitPrice"
                                         class="form-control" required>
                                     <option value=""></option>
                                     <option>{{__('item.wing')}}</option>
@@ -138,7 +138,7 @@
                                 <label for="stack_point">{{__('item.stack_point')}}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="" class="form-control"
+                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice"
                                        v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
                             <td class="text-center">~</td>
@@ -177,13 +177,13 @@
                             <td class="text-right"><label for="per_ton">{{__('item.per_ton')}}</label></td>
                             <td>
                                 <input id="per_ton" type="text" placeholder="" class="form-control"
-                                       v-on:input="perTonChange" v-model="per_ton"/>
+                                       v-on:change="perTonChange" v-model="per_ton"/>
                             </td>
                             <td class="text-center">{{__('item.yen')}}</td>
                             <td><span class="text-center">x</span></td>
                             <td colspan="3">
                                 <input type="text" placeholder="" class="form-control" id="ton"
-                                       v-on:input="perTonChange" v-model="ton" value=""/>
+                                       v-on:change="perTonChange" v-model="ton" value=""/>
                             </td>
                             <td><span class="text-right">t</span></td>
                         </tr>
@@ -384,7 +384,7 @@
                     document.getElementById('per_vehicle').disabled = true;
                     if (this.ton == '') {
                         this.ton = 1;
-                        this.itemData.item_price = this.per_ton;
+                        this.itemData.item_price = this.per_ton * this.ton;
                     } else {
                         this.itemData.item_price = this.per_ton * this.ton;
                     }
@@ -400,6 +400,7 @@
                         + '&down_point=' + this.itemData.down_point)
                             .then(response => {
                                 component.per_ton = response.data.price;
+                                component.perTonChange();
                             });
                     }
             },
