@@ -61,8 +61,8 @@
                             </td>
                             <td width="10%" class="text-right"><label for="billing">{{__('item.invoice')}}</label></td>
                             <td width="7%" class="text-center">
-                                <input type="checkbox" name="down_invoice" id="billing"
-                                       v-model="itemData.down_invoice">
+                                <input type="checkbox" name="down_invoice" id="billing" v-on:click="setMandatory"
+                                       v-model="itemData.down_invoice" ref="invoice">
                             </td>
                         </tr>
                         <tr>
@@ -222,10 +222,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="chartered_vehicle">{{__('item.chartered_vehicle')}}</label></td>
+                            <td class="text-right">
+                                <span ref= "editMandatory" class="required"> *</span>
+                                <label for="chartered_vehicle">{{__('item.chartered_vehicle')}}</label>
+                            </td>
                             <td>
                                 <select name="chartered_vehicle" id="chartered_vehicle" v-on:change="setVehicleName"
-                                        v-model="itemData.vehicle_id" class="form-control">
+                                        v-model="itemData.vehicle_id" class="form-control" ref="chartered_vehicle">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                         {{ vehicle.company_name }}
@@ -335,6 +338,7 @@
             this.fetchShippers(this.shipperUrl);
             this.fetchDrivers(this.driverUrl);
             this.fetchVehicles(this.vehicleUrl);
+            this.hideMandatory();
             if (this.itemId !== undefined)
                 this.fetchEditData();
         },
@@ -516,6 +520,23 @@
                     , '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
                     , '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', '48', '49',
                     '50', '51', '52', '53', '54', '55', '56', '57', '58', '59'];
+            },
+            setMandatory() {
+                if(this.$refs.invoice.checked == true) {
+                    this.showMandatory();
+                }
+                 else {
+                    this.hideMandatory();
+                }
+            },
+            hideMandatory(){
+                this.$refs.editMandatory.style.visibility = "hidden";
+                this.$refs.chartered_vehicle.required = false;
+            },
+
+            showMandatory(){
+                this.$refs.editMandatory.style.visibility = "visible";
+                this.$refs.chartered_vehicle.required = true;
             },
             showSuccessDialog() {
                 this.$fire({
