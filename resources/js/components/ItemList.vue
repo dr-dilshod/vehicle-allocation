@@ -189,9 +189,12 @@
                                                     <div >
                                                         <br class="form-group text-center d-flex justify-content-around">
                                                         <h3>{{__('item.what_is_your_choice')}}</h3>
+                                                        <br class="d-flex justify-content-around mt-3">
                                                         <div id="radio-group" class="col-md-4">
                                                             <form>
                                                                 <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}}<br>
+                                                                <div class="d-flex justify-content-around mt-3">
+                                                                </div>
                                                                 <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> {{__('item.set_today_as_the_transportation_completion_date')}}
                                                             </form>
                                                         </div>
