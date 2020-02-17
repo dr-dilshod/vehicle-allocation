@@ -177,13 +177,13 @@
                             <td class="text-right"><label for="per_ton">{{__('item.per_ton')}}</label></td>
                             <td>
                                 <input id="per_ton" type="text" placeholder="" class="form-control"
-                                       v-on:change="perTonChange" v-model="per_ton"/>
+                                       v-model="per_ton"/>
                             </td>
                             <td class="text-center">{{__('item.yen')}}</td>
                             <td><span class="text-center">x</span></td>
                             <td colspan="3">
                                 <input type="text" placeholder="" class="form-control" id="ton"
-                                       v-on:change="perTonChange" v-model="ton" value=""/>
+                                       v-model="ton" value=""/>
                             </td>
                             <td><span class="text-right">t</span></td>
                         </tr>
@@ -384,10 +384,8 @@
                     document.getElementById('per_vehicle').disabled = true;
                     if (this.ton == '') {
                         this.ton = 1;
-                        this.itemData.item_price = this.per_ton * this.ton;
-                    } else {
-                        this.itemData.item_price = this.per_ton * this.ton;
                     }
+                    this.itemData.item_price = this.per_ton * this.ton;
                 }
             },
             calcUnitPrice() {
@@ -530,6 +528,14 @@
                 }).then(r => {
                     window.location.href = this.redirectUrl;
                 });
+            },
+        },
+        watch: {
+            per_ton: function () {
+                this.perTonChange();
+            },
+            ton: function () {
+                this.perTonChange();
             },
         },
         name : 'ItemRegistration'
