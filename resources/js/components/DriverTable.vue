@@ -98,8 +98,8 @@
         methods: {
             fetchData(url) {
                 axios.get(url)
-                    .then(data => {
-                        this.data = data.data.data;
+                    .then(response => {
+                        this.data = response.data;
                         for (let i = 0; i <this.data.length ; i++) {
                             if (this.data[i].search_flg==0){
                                 this.data[i].search_flg = false;
@@ -116,6 +116,7 @@
             },
             actionBegin(args) {
                 if (args.requestType == 'save') {
+                    args.cancel = true;
                     if(!args.data.driver_id){
                         this.insertData(args.data);
                     }else{
@@ -123,6 +124,7 @@
                     }
                 }
                 if (args.requestType == 'delete') {
+                    args.cancel = true;
                     if(args.data[0].driver_id !== undefined){
                         this.deleteData(args.data[0].driver_id);
                     }
@@ -147,7 +149,6 @@
                     .then(response=>{
                         this.tableUtil.endEditing();
                         this.createSuccessDialog();
-                        this.fetchCompanies();
                         this.refresh();
                     })
                     .catch(error=>{
@@ -163,7 +164,6 @@
                     .then(response=>{
                         this.tableUtil.endEditing();
                         this.updateSuccessDialog();
-                        this.fetchCompanies();
                         this.refresh();
                     })
                     .catch(error =>{
