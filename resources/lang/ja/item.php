@@ -54,4 +54,5 @@ return [
     'set_the_date_of_departure_as_the_date_of_completion_of_transportation'=>'出発日を輸送の完了日として設定する',
     'set_today_as_the_transportation_completion_date'=>'今日を輸送完了日として設定',
     'complete'=>'コンプリート',
+    'cannot_create_invoice' => '請求書を作成できません'
 ];

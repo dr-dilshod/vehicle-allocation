@@ -49,7 +49,10 @@ class Vehicle extends Model
     /**
      * @var array
      */
-    protected $fillable = ['create_id', 'update_id', 'vehicle_no', 'company_name', 'company_kana_name', 'vehicle_company_abbreviation', 'vehicle_postal_code', 'vehicle_address1', 'vehicle_address2', 'vehicle_phone_number', 'vehicle_fax_number', 'offset', 'vehicle_remark', 'delete_flg', 'created_at', 'updated_at'];
+    protected $fillable = ['create_id', 'update_id', 'vehicle_no', 'company_name',
+        'company_kana_name', 'vehicle_company_abbreviation', 'vehicle_postal_code',
+        'vehicle_address1', 'vehicle_address2', 'vehicle_phone_number', 'vehicle_fax_number',
+        'offset', 'vehicle_remark', 'delete_flg', 'created_at', 'updated_at'];
 
     /**
      * @var array
@@ -65,7 +68,6 @@ class Vehicle extends Model
         'offset' => 'max:1|min:0',
         'vehicle_phone_number' => 'max:15',
         'vehicle_fax_number' => 'max:15',
-        'vehicle_offset' => 'min:0|max:1',
         'delete_flg' => 'min:0|max:1',
     ];
 
@@ -83,7 +85,6 @@ class Vehicle extends Model
         'offset' => 'max:1|min:0',
         'vehicle_phone_number' => 'max:15',
         'vehicle_fax_number' => 'max:15',
-        'vehicle_offset' => 'min:0|max:1',
         'delete_flg' => 'min:0|max:1',
     ];
 

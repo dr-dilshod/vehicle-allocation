@@ -107,13 +107,13 @@
                                 <label for="vehicle_model">{{__('item.vehicle_model')}}</label>
                             </td>
                             <td>
-                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
+                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model" @change="calcUnitPrice"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option value="Wing">{{__('item.wing')}}</option>
-                                    <option value="Flat">{{__('item.flat')}}</option>
-                                    <option value="Trailer">{{__('item.trailer')}}</option>
-                                    <option value="Bulk">{{__('item.bulk')}}</option>
+                                    <option>{{__('item.wing')}}</option>
+                                    <option>{{__('item.flat')}}</option>
+                                    <option>{{__('item.trailer')}}</option>
+                                    <option>{{__('item.bulk')}}</option>
                                 </select>
                             </td>
                         </tr>
@@ -138,7 +138,7 @@
                                 <label for="stack_point">{{__('item.stack_point')}}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="" class="form-control"
+                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice"
                                        v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
                             <td class="text-center">~</td>
@@ -177,13 +177,13 @@
                             <td class="text-right"><label for="per_ton">{{__('item.per_ton')}}</label></td>
                             <td>
                                 <input id="per_ton" type="text" placeholder="" class="form-control"
-                                       v-on:input="perTonChange" v-model="per_ton"/>
+                                       v-model="per_ton"/>
                             </td>
                             <td class="text-center">{{__('item.yen')}}</td>
                             <td><span class="text-center">x</span></td>
                             <td colspan="3">
                                 <input type="text" placeholder="" class="form-control" id="ton"
-                                       v-on:input="perTonChange" v-model="ton" value=""/>
+                                       v-model="ton" value=""/>
                             </td>
                             <td><span class="text-right">t</span></td>
                         </tr>
@@ -272,6 +272,7 @@
             vehicleUrl: {type: String, required: true},
             unitPriceUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
+            redirectUrl: {type: String, required: true},
             title: {type: String, required: true},
             operation: {type: String, required: true},
             clearing: {type: String, required: true},
@@ -377,17 +378,14 @@
                 this.ton = this.itemData.weight;
             },
             perTonChange() {
-                if ((this.per_ton == '')
-                    && (this.ton == '')) {
+                if ((this.per_ton == '') && (this.ton == '')) {
                     document.getElementById('per_vehicle').disabled = false;
                 } else {
                     document.getElementById('per_vehicle').disabled = true;
                     if (this.ton == '') {
                         this.ton = 1;
-                        this.itemData.item_price = this.per_ton;
-                    } else {
-                        this.itemData.item_price = this.per_ton * this.ton;
                     }
+                    this.itemData.item_price = this.per_ton * this.ton;
                 }
             },
             calcUnitPrice() {
@@ -400,6 +398,7 @@
                         + '&down_point=' + this.itemData.down_point)
                             .then(response => {
                                 component.per_ton = response.data.price;
+                                component.perTonChange();
                             });
                     }
             },
@@ -527,8 +526,16 @@
                     type: "success",
                     timer: 5000
                 }).then(r => {
-                    window.location.href = '/item';
+                    window.location.href = this.redirectUrl;
                 });
+            },
+        },
+        watch: {
+            per_ton: function () {
+                this.perTonChange();
+            },
+            ton: function () {
+                this.perTonChange();
             },
         },
         name : 'ItemRegistration'

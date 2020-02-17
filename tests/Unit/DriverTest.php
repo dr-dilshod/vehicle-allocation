@@ -105,7 +105,7 @@ class DriverTest extends TestCase
     {
         // first, insert a record into the database
         DB::table('drivers')->insert(
-            ['id' => 100,
+            ['driver_id' => 100,
                 'driver_name' => 'testDeletion', 'driver_pass' => 'testDeletion']
         );
         $test_data = [

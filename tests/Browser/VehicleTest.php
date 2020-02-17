@@ -2,31 +2,49 @@
 
 namespace Tests\Browser;
 
+use App\Driver;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class VehicleTest extends DuskTestCase
 {
+    private $user;
+    public function setUp(): void
+    {
+        parent::setUp();
+    }
+    /**
+     * test successful login into top
+     */
+
+    public function testLoginIntoTop() {
+        $this->browse(function ($browser) {
+            $browser->visit('/')
+                ->type('driver_name', 'admin')
+                ->type('password', 'admin')
+                ->press('login')
+                ->assertPathIs('/');
+        });
+
+    }
     /**
      * test if the registration button is disabled in non-editing mode
      */
-    public function testDisabledRegistrationButton() {
-        $user = $this->user;
-        $this->browse(function ($browser) use ($user) {
+    public function testDisabledRegisterButton() {
+        $this->browse(function ($browser) {
             $browser->visit('/vehicle')
                 ->assertButtonDisabled('registerBtn');
         });
     }
 
     /**
-     * test if the editing text is not visible in non-editing mode
+     * test if the registration button is disabled in non-editing mode
      */
     public function testInvisibleEditingText() {
-        $user = $this->user;
-        $this->browse(function ($browser) use ($user) {
+        $this->browse(function ($browser) {
             $browser->visit('/vehicle')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
 
@@ -34,8 +52,7 @@ class VehicleTest extends DuskTestCase
      * test if the registration button is enabled in editing mode
      */
     public function testEnabledRegistrationButton() {
-        $user = $this->user;
-        $this->browse(function ($browser) use ($user) {
+        $this->browse(function ($browser) {
             $browser->visit('/vehicle')
                 ->press('editBtn')
                 ->assertButtonEnabled('registerBtn');
@@ -46,11 +63,10 @@ class VehicleTest extends DuskTestCase
      * test if the editing text is visible in editing mode
      */
     public function testVisibleEditingText() {
-        $user = $this->user;
-        $this->browse(function ($browser) use ($user) {
+        $this->browse(function ($browser) {
             $browser->visit('/vehicle')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 }

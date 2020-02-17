@@ -12,11 +12,12 @@ class TopTest extends DuskTestCase
     private $user;
     public function setUp(): void
     {
-        $user = factory(Driver::class)->create([
-            'driver_name' => 'admin',
-            'driver_pass' => 'admin'
-        ]);
-        $this->user = $user;
+        parent::setUp();
+        $this->user = Driver::select(['driver_name', 'driver_pass'])
+            ->where('delete_flg', 0)
+            ->where('search_flg', 1)
+            ->where('admin_flg', 1)
+            ->get();
     }
 
     /** 1. Initial display
@@ -28,7 +29,7 @@ class TopTest extends DuskTestCase
             $browser->visit('/login')
                 ->type('driver_name', $user->driver_name)
                 ->type('password', $user->driver_pass)
-                ->press('Login')
+                ->press('ログイン')
                 ->assertPathIs('/top');
         });
     }
@@ -63,7 +64,7 @@ class TopTest extends DuskTestCase
                 ->within(new DatePicker, function ($browser) {
                     $browser->selectDate(2020, 1, 30);
                 })
-                ->assertSee('January');
+                ->assertSee('一月');
         });
     }
 
@@ -109,7 +110,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/top')
                 ->clickLink('top.item_reg')
-                ->assertSee("Item Registration")
+                ->assertSee("案件登録")
                 ->assertPathIs('/item/create');
         });
     }
@@ -123,7 +124,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/top')
                 ->clickLink('top.item_list')
-                ->assertSee("Item List")
+                ->assertSee("案件一覧")
                 ->assertPathIs('/item/create');
         });
     }
@@ -137,7 +138,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/top')
                 ->clickLink('top.dispatch_board')
-                ->assertSee("Dispatch board")
+                ->assertSee("配車板")
                 ->assertPathIs('/dispatch');
         });
     }
@@ -152,7 +153,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/top')
                 ->clickLink('top.billing_management')
-                ->assertSee("Invoice list")
+                ->assertSee("請求管理")
                 ->assertPathIs('/invoice');
         });
     }
@@ -166,7 +167,7 @@ class TopTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) {
             $browser->visit('/payment')
-                ->assertSee("Payment List")
+                ->assertSee("支払一覧")
                 ->assertPathIs('/payment');
         });
     }
@@ -181,7 +182,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/top')
                 ->clickLink('top.payment_list')
-                ->assertSee("Payment list")
+                ->assertSee("支払一覧")
                 ->assertPathIs('/payment');
         });
     }
@@ -190,7 +191,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/top')
                 ->clickLink('top.deposit_list')
-                ->assertSee("Deposit list")
+                ->assertSee("入金一覧")
                 ->assertPathIs('/deposit');
         });
     }
@@ -201,7 +202,7 @@ class TopTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/top')
                 ->press('setting')
-                ->assertSee("Setting")
+                ->assertSee("設定")
                 ->assertPathIs('/setting');
         });
     }

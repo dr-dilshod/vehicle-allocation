@@ -12,11 +12,12 @@ class SettingTest extends DuskTestCase
     private $user;
     public function setUp(): void
     {
-        $user = factory(Driver::class)->create([
-            'driver_name' => 'admin',
-            'driver_pass' => 'admin'
-        ]);
-        $this->user = $user;
+        parent::setUp();
+        $this->user = Driver::select(['driver_name', 'driver_pass'])
+            ->where('delete_flg', 0)
+            ->where('search_flg', 1)
+            ->where('admin_flg', 1)
+            ->get();
     }
 
     public function testSettingPage() {
@@ -24,18 +25,8 @@ class SettingTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/top')
                 ->clickLink('setting')
-                ->assertSee("Setting")
+                ->assertSee("設定")
                 ->assertPathIs('/setting');
-        });
-    }
-
-    public function testSettingBackPage() {
-        $user = $this->user;
-        $this->browse(function ($browser) {
-            $browser->visit('/setting')
-                ->clickLink('setting.back')
-                ->assertSee("Top")
-                ->assertPathIs('/top');
         });
     }
 
@@ -44,7 +35,7 @@ class SettingTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/setting')
                 ->clickLink('setting.driver_list')
-                ->assertSee("Driver list")
+                ->assertSee("ドライバー一覧")
                 ->assertPathIs('/driver');
         });
     }
@@ -54,7 +45,7 @@ class SettingTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/setting')
                 ->clickLink('setting.shipper_list')
-                ->assertSee("Shipper list")
+                ->assertSee("荷主一覧")
                 ->assertPathIs('/shipper');
         });
     }
@@ -64,7 +55,7 @@ class SettingTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/setting')
                 ->clickLink('setting.car_list')
-                ->assertSee("Vehicle list")
+                ->assertSee("傭車一覧")
                 ->assertPathIs('/vehicle');
         });
     }
@@ -74,7 +65,7 @@ class SettingTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit('/setting')
                 ->clickLink('setting.list_of_unit_prices')
-                ->assertSee("Unit price list")
+                ->assertSee("単価一覧")
                 ->assertPathIs('/unit-price');
         });
     }

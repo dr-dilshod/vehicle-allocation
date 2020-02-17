@@ -47,9 +47,7 @@ class DispatchController extends Controller
         ];
         $drivers = Driver::select(['driver_id','driver_name','vehicle_no3'])
             ->where([
-//                'admin_flg'=>0,
                 'delete_flg'=>0,
-                'search_flg'=>0
             ])
             ->get();
         $dispatch_drivers = \DB::table('dispatches')
@@ -181,29 +179,6 @@ class DispatchController extends Controller
             $stmt = \DB::update('UPDATE items SET dispatch_status=? WHERE item_id=?',[Item::DISPATCH_STATUS_IN_DISPATCH,$dispatch->item_id]);
         }
         return response()->json($dispatch, 201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**

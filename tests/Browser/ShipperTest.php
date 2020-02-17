@@ -2,12 +2,23 @@
 
 namespace Tests\Browser;
 
+use App\Driver;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ShipperTest extends DuskTestCase
 {
+    private $user;
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = Driver::select(['driver_name', 'driver_pass'])
+            ->where('delete_flg', 0)
+            ->where('search_flg', 1)
+            ->where('admin_flg', 1)
+            ->get();
+    }
     /**
      * test if the registration button is disabled in non-editing mode
      */
@@ -26,7 +37,7 @@ class ShipperTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/shipper')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
 
@@ -50,7 +61,7 @@ class ShipperTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/shipper')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 }

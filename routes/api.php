@@ -68,7 +68,7 @@ Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleType
 Route::get('/unit-prices', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
 Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
-Route::post('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
+Route::put('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
 Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
 
 /**

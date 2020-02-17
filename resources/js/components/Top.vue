@@ -12,18 +12,18 @@
                     <div class="form-group row">
                         <label for="month" class="col-2 offset-2">{{__('top.Month')}}</label>
                         <select class="form-control col-7" name="month" id="month" v-model="selectedMonth">
-                            <option value="01">{{__('top.january')}}</option>
-                            <option value="02">{{__('top.february')}}</option>
-                            <option value="03">{{__('top.march')}}</option>
-                            <option value="04">{{__('top.april')}}</option>
-                            <option value="05">{{__('top.may')}}</option>
-                            <option value="06">{{__('top.june')}}</option>
-                            <option value="07">{{__('top.july')}}</option>
-                            <option value="08">{{__('top.august')}}</option>
-                            <option value="09">{{__('top.september')}}</option>
-                            <option value="10">{{__('top.october')}}</option>
-                            <option value="11">{{__('top.november')}}</option>
-                            <option value="12">{{__('top.december')}}</option>
+                            <option value="01">1</option>
+                            <option value="02">2</option>
+                            <option value="03">3</option>
+                            <option value="04">4</option>
+                            <option value="05">5</option>
+                            <option value="06">6</option>
+                            <option value="07">7</option>
+                            <option value="08">8</option>
+                            <option value="09">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
                         </select>
                     </div>
                     <div class="form-group row">

@@ -13,7 +13,11 @@
 
 Route::get('/', 'TopController@index')->name('home');
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset' => false,
+    'verify' => false,
+]);
 
 Route::get('/top', 'TopController@index')->name('top');
 Route::get('/setting', 'SettingController@index')->name('setting');

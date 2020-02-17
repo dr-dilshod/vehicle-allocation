@@ -14,7 +14,6 @@ return  [
     'select_input' => '--セレクト--',
     'delete' => 'デリート',
     'username'=>'ユーザーID',
-    'password'=>'パスワード',
     'exit'=>'出口',
     'exit_from_edit_mode'=>'編集モードを終了します',
     'cancel'=>'キャンセル',
@@ -23,5 +22,16 @@ return  [
     'cancel_mode'=>'キャンセルモード',
     'update_mode'=>'更新モード',
     'delete_mode'=>'削除モード',
+    'save'=>'セーブ',
+    'ok'=>'オーケー',
+    'add'=>'追加',
+    'done'=>'やった',
+    'empty_record'=>'空のレコード',
+    'confirm_delete'=>'消去してもよろしいですか？',
+    'delete_operation_alert'=>'行を選択して削除します',
+    'edit_operation_alert'=>'編集する行を選択します',
+    'cancel_edit'=>'編集をキャンセルしますか？',
+    'no_result'=>'検索結果はありません',
+    'sys_name' => '配車請求管理システム'
 
 ];

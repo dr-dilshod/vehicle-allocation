@@ -19,7 +19,7 @@ class DriverController extends Controller
     {
         $drivers = Driver::where([
             'delete_flg'=>0
-        ])->orderBy('driver_name')->paginate(25);
+        ])->orderBy('driver_name')->get();
         return response()->json($drivers,200);
     }
 
@@ -65,12 +65,15 @@ class DriverController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->validate(Driver::validationRules);
-        $driver = Driver::findOrFail($id);
         $request->validate([
             'driver_name' => Rule::unique('drivers','Driver_name')->ignore($id,'driver_id'),
         ]);
-        $driver->update($request->all());
+        $data = $request->validate(Driver::validationRules);
+        $driver = Driver::findOrFail($id);
+        if($data['driver_pass'] !== $driver->driver_pass){
+            $data['driver_pass'] = Hash::make($data['driver_pass']);
+        }
+        $driver->update($data);
         return response()->json($driver, 200);
     }
 

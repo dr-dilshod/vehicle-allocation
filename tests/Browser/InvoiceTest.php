@@ -2,27 +2,26 @@
 
 namespace Tests\Browser;
 
+use App\Driver;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class InvoiceTest extends DuskTestCase
 {
-    /**
-     * A Dusk test example.
-     *
-     * @return void
-     */
-    public function testExample()
+    private $user;
+    public function setUp(): void
     {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Laravel');
-        });
+        parent::setUp();
+        $this->user = Driver::select(['driver_name', 'driver_pass'])
+            ->where('delete_flg', 0)
+            ->where('search_flg', 1)
+            ->where('admin_flg', 1)
+            ->get();
     }
     /**
-* test if the registration button is disabled in non-editing mode
-*/
+    * test if the registration button is disabled in non-editing mode
+    */
     public function testDisabledRegistrationButton() {
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
@@ -37,7 +36,7 @@ class InvoiceTest extends DuskTestCase
         $user = $this->user;
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/driver')
-                ->assertDontSee('Editing');
+                ->assertDontSee('編集中');
         });
     }
     /**
@@ -60,7 +59,7 @@ class InvoiceTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/driver')
                 ->press('editBtn')
-                ->assertSee('Editing');
+                ->assertSee('編集中');
         });
     }
 }

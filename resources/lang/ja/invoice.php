@@ -47,4 +47,5 @@ return [
     'total_up_to_last_month'=>'先月までの合計',
     'total_for_this_month'=>'今月の合計',
     'total'=>'合計',
+    'rental_car_vehicle_no'=>'傭車先車輌No',
 ];

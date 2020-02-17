@@ -223,11 +223,12 @@ class InvoiceController extends Controller
         }
 
         $consumption_tax = $previous_month_billing * 0.1;
-        $offset_discount = 0; // ? don't where it comes from?
         $carry_over_amount = $deposit - $same_day_sales;
 
         $invoice_amount = $previous_month_billing + $deposit - $carry_over_amount;
         $tax_free = $invoice_amount - $same_day_sales - $consumption_tax;
+        $offset_discount =$invoice_amount - $deposit - $consumption_tax;
+
         $calculations = [
             'previous_month_billing' => $previous_month_billing,
             'deposit' => $deposit,
@@ -344,11 +345,11 @@ class InvoiceController extends Controller
         }
 
         $consumption_tax = $previous_month_billing * 0.1;
-        $offset_discount = 0; // ? don't where it comes from?
         $carry_over_amount = $deposit - $same_day_sales;
 
         $invoice_amount = $previous_month_billing + $deposit - $carry_over_amount;
         $tax_free = $invoice_amount - $same_day_sales - $consumption_tax;
+        $offset_discount =$invoice_amount - $deposit - $consumption_tax;
         $calculations = [
             'previous_month_billing' => $previous_month_billing,
             'deposit' => $deposit,
