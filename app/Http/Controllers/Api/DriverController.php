@@ -66,7 +66,7 @@ class DriverController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'driver_name' => Rule::unique('drivers','Driver_name')->ignore($id,'driver_id'),
+            'driver_name' => Rule::unique('drivers','driver_name')->ignore($id,'driver_id'),
         ]);
         $data = $request->validate(Driver::validationRules);
         $driver = Driver::findOrFail($id);
