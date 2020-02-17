@@ -414,11 +414,9 @@
             },
             timeFormatter() {
                 this.itemData.stack_time = document.getElementById('stack_time_hour').value
-                    + ':' + document.getElementById('stack_time_min').value
-                    + ':00';
+                    + ':' + document.getElementById('stack_time_min').value;
                 this.itemData.down_time = document.getElementById('down_time_hour').value
-                    + ':' + document.getElementById('down_time_min').value
-                    + ':00';
+                    + ':' + document.getElementById('down_time_min').value;
             },
             clear(){
                 if (this.itemId !== undefined) {

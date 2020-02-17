@@ -91,12 +91,12 @@
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
                           :template="actionTemplate"></e-column>
-                <e-column field='stack_date' :allowEditing= 'false' :headerText='__("item.stack_date")' width="150"></e-column>
-                <e-column field='stack_time' :allowEditing= 'false' :headerText='__("item.stack_time")' width="150"></e-column>
-                <e-column field='shipper_name' :allowEditing= 'false' :headerText='__("item.shipper_name")'  width="150"></e-column>
+                <e-column field='stack_date' :allowEditing= 'false' :headerText='__("item.stack_date")' width="130"></e-column>
+                <e-column field='stack_time' :allowEditing= 'false' :headerText='__("item.stack_time")' width="100"></e-column>
+                <e-column field='shipper_name' :allowEditing= 'false' :headerText='__("item.shipper_name")'  width="160"></e-column>
                 <e-column field='stack_point' :allowEditing= 'false' textAlign="Stack point" :headerText='__("item.stack_point")' width="150"></e-column>
                 <e-column field='down_point' :allowEditing= 'false' :headerText='__("item.down_point")' width="200"></e-column>
-                <e-column field='item_price' :allowEditing= 'false' :headerText='__("item.item_price")' width="200"></e-column>
+                <e-column field='vehicle_payment' :allowEditing= 'false' :headerText='__("item.item_price")' width="120"></e-column>
                 <e-column field='item_remark' :allowEditing= 'false' :headerText='__("item.remarks")' width="200"></e-column>
             </e-columns>
         </ejs-grid>
@@ -162,7 +162,7 @@
                         template:
                         `
                             <div v-if="data.status === 1">
-                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info'>{{__('item.complete')}}
+                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info' style="background-color: #54a3e2">{{__('item.complete')}}
                                 </ejs-button>
                             </div>
                             <div v-else>
@@ -326,7 +326,7 @@
                         this.data = response.data;
                         if(this.data.length > 0)
                             grid.setProperties({
-                                frozenColumns: 4
+                                frozenColumns: 5
                             });
                         else
                             grid.setProperties({
