@@ -22,10 +22,10 @@
     <table border="1">
         <tr>
             <th width="70">車輌No</th>
-            <th width="140">降～当日</th>
+            <th width="130">降～当日</th>
             <th width="70">荷主</th>
             <th width="30">空PL</th>
-            <th width="140">翌積</th>
+            <th width="130">翌積</th>
             <th width="70">備考</th>
         </tr>
         @foreach($dispatches as $dispatch)
@@ -40,7 +40,7 @@
                 {{$item->shipper_name}}
             </td>
             <td>
-                {{$item->empty_pl ? 'Yes' : 'None' }}
+                {{$item->empty_pl ? 'はい' : 'なし' }}
             </td>
             <td>
                 @if(!empty($dispatch['next_day_items']))
