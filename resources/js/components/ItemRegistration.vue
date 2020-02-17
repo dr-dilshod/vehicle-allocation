@@ -531,6 +531,7 @@
             },
             hideMandatory(){
                 this.$refs.editMandatory.style.visibility = "hidden";
+                this.$refs.chartered_vehicle.required = false;
             },
 
             showMandatory(){
