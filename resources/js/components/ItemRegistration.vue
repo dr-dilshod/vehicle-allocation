@@ -110,10 +110,10 @@
                                 <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option value="Wing">{{__('item.wing')}}</option>
-                                    <option value="Flat">{{__('item.flat')}}</option>
-                                    <option value="Trailer">{{__('item.trailer')}}</option>
-                                    <option value="Bulk">{{__('item.bulk')}}</option>
+                                    <option>{{__('item.wing')}}</option>
+                                    <option>{{__('item.flat')}}</option>
+                                    <option>{{__('item.trailer')}}</option>
+                                    <option>{{__('item.bulk')}}</option>
                                 </select>
                             </td>
                         </tr>
@@ -378,8 +378,7 @@
                 this.ton = this.itemData.weight;
             },
             perTonChange() {
-                if ((this.per_ton == '')
-                    && (this.ton == '')) {
+                if ((this.per_ton == '') && (this.ton == '')) {
                     document.getElementById('per_vehicle').disabled = false;
                 } else {
                     document.getElementById('per_vehicle').disabled = true;

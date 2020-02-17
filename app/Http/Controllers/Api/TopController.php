@@ -18,8 +18,9 @@ class TopController extends Controller
         $drivers = \DB::table('drivers')
             ->distinct()
             ->select(\DB::raw('drivers.driver_name, SUM(items.item_price) as amount'))
-            ->leftJoin('items','drivers.driver_id','=','items.driver_id')
-            ->where(['drivers.delete_flg'=>0,'items.delete_flg'=>0,'items.stack_date'=>$today])
+            ->leftJoin('dispatches','drivers.driver_id','=','dispatches.driver_id')
+            ->leftJoin('items','dispatches.item_id','=','items.item_id')
+            ->where(['drivers.delete_flg'=>0,'items.delete_flg'=>0,'dispatches.delete_flg'=>0,'items.stack_date'=>$today])
             ->groupBy('drivers.driver_name')
             ->get();
         return response()->json($drivers);
@@ -32,8 +33,9 @@ class TopController extends Controller
         $drivers = \DB::table('drivers')
             ->distinct()
             ->select(\DB::raw('drivers.driver_name, SUM(items.item_price) as amount'))
-            ->leftJoin('items','drivers.driver_id','=','items.driver_id')
-            ->where(['drivers.delete_flg'=>0,'items.delete_flg'=>0])
+            ->leftJoin('dispatches','drivers.driver_id','=','dispatches.driver_id')
+            ->leftJoin('items','dispatches.item_id','=','items.item_id')
+            ->where(['drivers.delete_flg'=>0,'dispatches.delete_flg'=>0,'items.delete_flg'=>0])
             ->whereRaw("YEAR(items.stack_date)=? AND MONTH(items.stack_date)=?",[$year,$month])
             ->groupBy('drivers.driver_name')
             ->get();
