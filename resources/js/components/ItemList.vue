@@ -91,7 +91,7 @@
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
                 <e-column field='status' :allowEditing= 'false'  :headerText='__("item.status")' width="120" textAlign="Center"
                           :template="actionTemplate"></e-column>
-                <e-column field='stack_date' :allowEditing= 'false' :headerText='__("item.stack_date")' width="130"></e-column>
+                <e-column field='stack_date' :allowEditing= 'false' :format='formatOptions' type='date' :headerText='__("item.stack_date")' width="130"></e-column>
                 <e-column field='stack_time' :allowEditing= 'false' :headerText='__("item.stack_time")' width="100"></e-column>
                 <e-column field='shipper_name' :allowEditing= 'false' :headerText='__("item.shipper_name")'  width="160"></e-column>
                 <e-column field='stack_point' :allowEditing= 'false' textAlign="Stack point" :headerText='__("item.stack_point")' width="150"></e-column>
@@ -148,6 +148,7 @@
                 selected: {},
                 editSettings: { allowEditing: true, allowAdding: false, allowDeleting: false},
                 toolbar: ['Edit'],
+                formatOptions: {type:'date', format:'dd/MM/yyyy'},
                 options: {
                     monthFormat: "yyyy/MM",
                     weekday: "yyyy/MM/dd",
@@ -162,16 +163,16 @@
                         template:
                         `
                             <div v-if="data.status === 1">
-                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info' style="background-color: #54a3e2">{{__('item.complete')}}
+                                <ejs-button v-on:click.native='toIncomplete(data.item_id,data.stack_date)' cssClass='e-info' style="width: 70px; background-color: #54a3e2">{{__('item.completed')}}
                                 </ejs-button>
                             </div>
                             <div v-else>
                                 <div v-if="data.stack_date == getDate()">
-                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary'>{{__('item.incomplete')}}
+                                    <ejs-button v-on:click.native='setTodayAsCompletion(data.item_id)' cssClass='e-primary' style="width: 70px;">{{__('item.incomplete')}}
                                     </ejs-button>
                                 </div>
                                 <div v-else>
-                                    <ejs-button cssClass='e-primary' data-toggle="modal" data-target="#updateStatusModal">
+                                    <ejs-button cssClass='e-primary' style="width: 70px;" data-toggle="modal" data-target="#updateStatusModal">
                                         {{__('item.incomplete')}}
                                     </ejs-button>
                                     <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
