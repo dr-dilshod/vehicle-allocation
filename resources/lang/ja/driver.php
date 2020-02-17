@@ -23,4 +23,5 @@ return [
     'remarks'=>'備考',
     'password'=>'パスワード',
     'operation_successfully_done'=>'操作が正常に完了しました！',
+    'driver_id'=>'ドライバーID',
 ];

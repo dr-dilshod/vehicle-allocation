@@ -23,5 +23,5 @@ return [
     'admin'=>'Admin',
     'password'=>'Password',
     'operation_successfully_done'=>'Operation successfully done!',
-
+    'driver_id'=>'driver id',
 ];
