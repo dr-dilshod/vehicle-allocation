@@ -42,7 +42,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in tableData">
+                    <tr v-for="item in tableData" v-if="item.amount != null">
                         <td class="text-center">{{ item.driver_name }}</td>
                         <td class="text-center">{{ item.amount }}</td>
                     </tr>

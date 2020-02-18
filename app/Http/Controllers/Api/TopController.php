@@ -36,7 +36,7 @@ class TopController extends Controller
             ->leftJoin('dispatches','drivers.driver_id','=','dispatches.driver_id')
             ->leftJoin('items','dispatches.item_id','=','items.item_id')
             ->where(['drivers.delete_flg'=>0,'dispatches.delete_flg'=>0,'items.delete_flg'=>0])
-            ->whereRaw("YEAR(items.stack_date)=? AND MONTH(items.stack_date)=? AND amount>0",[$year,$month])
+            ->whereRaw("YEAR(items.stack_date)=? AND MONTH(items.stack_date)=?",[$year,$month])
             ->groupBy('drivers.driver_name')
             ->get();
         return response()->json($drivers);
