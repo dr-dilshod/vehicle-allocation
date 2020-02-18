@@ -71,7 +71,6 @@
                                 <label for="down_date">{{__('item.down_date')}}</label>
                             </td>
                             <td>
-
                                 <datepicker v-model="itemData.down_date" id="down_date" name="down_date" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
@@ -368,8 +367,10 @@
                 for (let i = 0; i < this.shippers.length; i++) {
                     if (this.itemData.shipper_id === this.shippers[i].shipper_id) {
                         this.itemData.shipper_name = this.shippers[i].shipper_name1 + " " + this.shippers[i].shipper_name2;
+                        break;
                     }
                 }
+                this.calcUnitPrice();
             },
             setVehicleName() {
                 for (let i = 0; i < this.vehicles.length; i++) {
@@ -382,15 +383,20 @@
                 this.ton = this.itemData.weight;
             },
             perTonChange() {
-                if ((this.per_ton == '') && (this.ton == '')) {
+                if(this.per_ton === '' && this.ton === '') {
                     document.getElementById('per_vehicle').disabled = false;
                 } else {
                     document.getElementById('per_vehicle').disabled = true;
-                    if (this.ton == '') {
-                        this.ton = 1;
-                    }
-                    this.itemData.item_price = this.per_ton * this.ton;
                 }
+                this.calcItemPrice();
+            },
+            calcItemPrice(){
+                if(this.per_ton !== '' && this.ton !== ''){
+                    this.itemData.item_price = this.per_ton * this.ton;
+                } else
+                    if(this.per_vehicle !== ''){
+                        this.itemData.item_price = this.per_vehicle;
+                    }
             },
             calcUnitPrice() {
                 let component = this;
@@ -401,8 +407,12 @@
                         + '&stack_point=' + this.itemData.stack_point
                         + '&down_point=' + this.itemData.down_point)
                             .then(response => {
-                                component.per_ton = response.data.price;
-                                component.perTonChange();
+                                if(response.data.price !== undefined){
+                                    component.per_ton = response.data.price;
+                                }else{
+                                    component.per_ton = '';
+                                }
+                                component.calcItemPrice();
                             });
                     }
             },
