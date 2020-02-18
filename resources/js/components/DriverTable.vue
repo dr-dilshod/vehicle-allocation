@@ -22,7 +22,7 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="300" :frozenColumns="3"  :enableHover='false' :allowSelection='true' rowHeight=35>
             <e-columns>
-                <e-column field='driver_id' :headerText='__("driver.driver_id")' :isPrimaryKey="true" width="120"></e-column>
+                <e-column field='driver_id' :headerText='__("driver.driver_id")' :isPrimaryKey="true" :allowEditing='false' width="120"></e-column>
                 <e-column field='vehicle_type' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
                 <e-column field='driver_name'  :headerText= '__("driver.name")' width="150"></e-column>
                 <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
@@ -75,7 +75,7 @@
                 adminTemplate: function () {
                     return {
                         template: Vue.component('editOption', {
-                            template: '<label>{{(data.admin_flg == false)? "General":"Administrator"}}</label>',
+                            template: '<label>{{(data.admin_flg == false)? this.__("driver.user"):this.__("driver.administrator")}}</label>',
                             data() { return { data: { data: {} } }; }
                         })
                     }
@@ -83,7 +83,7 @@
                 searchTemplate: function () {
                     return {
                         template: Vue.component('editOption', {
-                            template: '<label>{{(data.search_flg == true)? "Show":"Hide"}}</label>',
+                            template: '<label>{{(data.search_flg == true)? this.__("driver.show"):this.__("driver.hide")}}</label>',
                             data() { return { data: { data: {} } }; }
                         })
                     }
@@ -143,8 +143,6 @@
                     });
             },
             insertData(driver){
-                console.log('insert driver = ');
-                console.log(driver);
                 axios.post(this.resourceUrl,driver)
                     .then(response=>{
                         this.tableUtil.endEditing();
@@ -158,8 +156,6 @@
             editData(driver){
                 let id = driver.driver_id;
                 delete driver.driver_id;
-                console.log('edit driver = ');
-                console.log(driver);
                 axios.put(this.resourceUrl+'/'+id, driver)
                     .then(response=>{
                         this.tableUtil.endEditing();

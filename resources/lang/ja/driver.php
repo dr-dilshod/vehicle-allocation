@@ -24,4 +24,8 @@ return [
     'password'=>'パスワード',
     'operation_successfully_done'=>'操作が正常に完了しました！',
     'driver_id'=>'ドライバーID',
+    'administrator'=>'管理者',
+    'user'=>'ユーザー',
+    'show'=>'公演',
+    'hide'=>'隠す',
 ];
