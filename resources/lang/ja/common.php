@@ -32,6 +32,6 @@ return  [
     'edit_operation_alert'=>'編集する行を選択します',
     'cancel_edit'=>'編集をキャンセルしますか？',
     'no_result'=>'検索結果はありません',
-    'sys_name' => '配車請求管理システム'
-
+    'sys_name' => '配車請求管理システム',
+    'cant_be_undone' => 'これを元に戻すことはできません！',
 ];

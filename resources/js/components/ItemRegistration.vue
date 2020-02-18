@@ -434,18 +434,31 @@
             },
             clear(){
                 if (this.itemId !== undefined) {
-                    this.deleteItem(this.itemData.item_id);
+                this.$fire({
+                        title: this.__('common.confirm_delete'),
+                        text: this.__('common.cant_be_undone'),
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: this.__('common.ok'),
+                        cancelButtonText: this.__('common.cancel')
+                    }).then((result) => {
+                        if (result.value) {
+                            this.deleteItem(this.itemData.item_id);
+                        }
+                    });
                 } else {
                     for (let i in this.itemData) {
                         this.itemData[i] = "";
                     }
-                    this.per_ton = "",
-                        this.per_vehicle = "",
-                        this.ton = "",
-                        this.stack_time_hour = "",
-                        this.stack_time_min = "",
-                        this.down_time_hour = "",
-                        this.down_time_min = ""
+                    this.per_ton = "";
+                    this.per_vehicle = "";
+                    this.ton = "";
+                    this.stack_time_hour = "";
+                    this.stack_time_min = "";
+                    this.down_time_hour = "";
+                    this.down_time_min = "";
                 }
             },
             fetchShippers(url) {
