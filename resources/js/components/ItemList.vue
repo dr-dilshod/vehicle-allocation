@@ -178,39 +178,38 @@
                                     <div class="modal" id="updateStatusModal" tabindex="-1" role="dialog">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header bg-primary">
-                                                    <h5 class="modal-title">{{__('item.update_the_status_of_item_transportation')}}</h5>
+                                                <div class="modal-header bg-blue">
+                                                    <h5 class="modal-title">{{__('item.verification')}}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
-
                                                 </div>
                                                 <div class="modal-body">
-                                                    <div >
-                                                        <br class="form-group text-center d-flex justify-content-around">
-                                                        <h3>{{__('item.what_is_your_choice')}}</h3>
-                                                        <br class="d-flex justify-content-around mt-3">
-                                                        <div id="radio-group" class="col-md-4">
-                                                            <form>
-                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="data.stack_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}}<br>
-                                                                <div class="d-flex justify-content-around mt-3">
-                                                                </div>
-                                                                <input type="radio" v-model="stat" name="stat" v-bind:value="getDate()"> {{__('item.set_today_as_the_transportation_completion_date')}}
-                                                            </form>
-                                                        </div>
+                                                    <div class="mt-3 mb-3 text-left">
+                                                        <p>{{__('item.what_is_your_choice1')}}</p>
+                                                        <p>{{__('item.what_is_your_choice2')}}</p>
+                                                    </div>
+                                                    <div id="radio-group" class="text-left mt-5">
+                                                        <form class="mt-3 ml-5">
+                                                            <input type="radio" v-model="stat" name="stat" id="dep_date" v-bind:value="data.stack_date">
+                                                            <label for="dep_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}} </label><br>
+                                                            <div class="mt-3">
+                                                            </div>
+                                                            <input type="radio" v-model="stat" name="stat" id="today_date" v-bind:value="getDate()">
+                                                            <label for="today_date">{{__('item.set_today_as_the_transportation_completion_date')}}</label>
+                                                        </form>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex justify-content-around mt-2">
-                                                    <button type="button" class="btn btn-danger" @click="checkStatus(data.item_id)">
+                                                <div class="d-flex justify-content-center mt-4 mb-2">
+                                                    <button type="button" class="btn btn-modal btn-danger" @click="checkStatus(data.item_id)">
                                                         {{__('common.register')}}
                                                     </button>
-                                                    <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                                    <button type="button" class="btn btn-modal btn-warning ml-3" data-dismiss="modal">
                                                         {{__('common.cancel')}}
                                                     </button>
                                                 </div>
-                                                 <div class="d-flex justify-content-around mt-2">
-                                                </div>
+                                                <div class="mt-2"></div>
                                             </div>
                                         </div>
                                     </div>

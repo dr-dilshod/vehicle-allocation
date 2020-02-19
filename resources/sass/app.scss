@@ -15,8 +15,8 @@
 @import "~@syncfusion/ej2-icons/styles/bootstrap.css";
 @import "~@syncfusion/ej2-popups/styles/bootstrap.css";
 @import "~@syncfusion/ej2-dropdowns/styles/bootstrap.css";
-@import '~@syncfusion/ej2-base/styles/material.css'; // from ItemList.vue
-@import '~@syncfusion/ej2-buttons/styles/material.css'; // from ItemList.vue
+//@import '~@syncfusion/ej2-base/styles/material.css'; // from ItemList.vue
+//@import '~@syncfusion/ej2-buttons/styles/material.css'; // from ItemList.vue
 @import "~@syncfusion/ej2-inputs/styles/bootstrap.css"; // from UnitPrice
 
 .very-center {
@@ -52,7 +52,7 @@
 .exit-btn:before {
     content: '\eb3a';
 }
-.navbar{
+.navbar, .bg-blue{
     background-color: $navbar-bg;
     border:1px solid dimgray;
 }
@@ -82,4 +82,7 @@
 .r-danger{
     color: #FFFFFF;
     background-color: #f1013a !important;
+}
+.btn-modal{
+    width: 100px;
 }
