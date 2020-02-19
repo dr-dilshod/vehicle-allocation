@@ -172,15 +172,15 @@
                                 <button class="btn btn-primary">{{__('common.search')}}</button>
                             </div>
                             <div class="driver-list">
-                                <div class="row">
+                                <div class="row label-row mt-2 mr-2 ml-2 mb-0 pb-2">
                                     <div class="col-2"><strong>{{__('dispatch.check')}}</strong></div>
                                     <div class="col-4"><strong>{{__('dispatch.car_no')}}</strong></div>
                                     <div class="col-6"><strong>{{__('dispatch.driver_name')}}</strong></div>
                                 </div>
                                 <div class="driver-data">
-                                    <label class="row p-1" v-for="driver in filteredDrivers">
-                                        <div class="col-2">
-                                            <input type="checkbox" v-model="tableDriverList" :value="driver.driver_id" id="driver">
+                                    <label class="row m-2 label-row" v-for="driver in filteredDrivers">
+                                        <div class="col-2 text-center">
+                                            <input type="checkbox" v-model="tableDriverList" :value="driver.driver_id">
                                         </div>
                                         <div class="col-4">
                                             {{ driver.vehicle_no3 }}
@@ -193,8 +193,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-2">
-                            <button type="button" class="btn btn-danger" @click="registerDriver">{{__('common.register')}}</button>
-                            <button type="button" class="btn btn-warning ml-3" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
+                            <button type="button" class="btn btn-modal btn-danger" @click="registerDriver">{{__('common.register')}}</button>
+                            <button type="button" class="btn btn-modal btn-warning ml-3" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
                         </div>
                     </div>
                 </div>
@@ -439,5 +439,8 @@
         background: #fff;
         height: 450px;
         overflow-y: scroll;
+    }
+    .label-row{
+        border-bottom: 1px solid #ced4da;
     }
 </style>
