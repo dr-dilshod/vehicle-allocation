@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block" style="width: 124px; height: 38px; font-size: 1rem; text-align: center">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 ref="editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
@@ -11,11 +11,11 @@
             <div class="col-4">
                 <h2 class="text-center">{{__('shipper.shipper_list')}}</h2>
             </div>
-            <div class="col-2"></div>
-            <div class="col-2">
+            <div class="col-1"></div>
+            <div class="col-3">
                 <p class="text-right">
-                    <button ref="registerBtn" class="btn btn-lg btn-danger">{{__('common.register')}}</button>
-                    <button ref="editBtn" class="btn btn-lg btn-danger">{{__('common.edit')}}</button>
+                    <button ref="registerBtn" class="btn btn-lg btn-danger" style="width: 124px; height: 38px; font-size: 1rem; text-align: center">{{__('common.register')}}</button>
+                    <button ref="editBtn" class="btn btn-lg btn-danger" style="width: 124px; height: 38px; font-size: 1rem; text-align: center">{{__('common.edit')}}</button>
                 </p>
             </div>
         </div>
@@ -27,7 +27,7 @@
                         <label for="selectedShipper">{{__('shipper.shipper')}}</label>
                     </div>
                     <div class="form-group ml-3">
-                        <select id="selectedShipper" v-model="filter.shipper" class="form-control">
+                        <select id="selectedShipper" v-model="filter.shipper" class="form-control" style="width: 280px; height: 37px">
                             <option value=""></option>
                             <option v-for="shipper in shippers" :value="shipper.shipper_id">
                                 {{ shipper.fullname }}
@@ -38,7 +38,7 @@
                         <label for="selectedCompany">{{__('shipper.bill_to')}}</label>
                     </div>
                     <div class="form-group ml-3">
-                        <select name="selectedCompany" id="selectedCompany" v-model="filter.billTo" class="form-control">
+                        <select name="selectedCompany" id="selectedCompany" v-model="filter.billTo" class="form-control" style="width: 280px; height: 37px">
                             <option value=""></option>
                             <option v-for="company in companies" :value="company">
                                 {{ company }}
@@ -46,10 +46,10 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
+                        <button type="submit" class="btn btn-primary" style="width: 124px; height: 38px; font-size: 1rem; text-align: center">{{__('common.search')}}</button>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="reset" @click = "clear" class="btn btn-primary">{{__('common.clear')}}</button>
+                        <button type="reset" @click = "clear" class="btn btn-primary" style="width: 124px; height: 38px; font-size: 1rem; text-align: center">{{__('common.clear')}}</button>
                     </div>
                 </form>
 
