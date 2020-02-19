@@ -51,7 +51,7 @@
                                 <datepicker v-model="formData.invoice_month" :minimumView="'month'"
                                             :maximumView="'month'" :bootstrap-styling="true"
                                             :typeable="true" :format="options.monthFormat" :clear-button="true"
-                                            :language="options.language.ja" class=""
+                                            :language="options.language.ja" class="col-8"
                                 ></datepicker>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                 <label class="col-4 text-right">{{__('invoice.stack_date')}}</label>
                                 <datepicker v-model="formData.stack_date" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true"
-                                            :language="options.language.ja"
+                                            :language="options.language.ja" class="col-8"
                                 ></datepicker>
                             </div>
                         </div>
@@ -611,17 +611,14 @@
     }
 </script>
 <style scoped>
-
     #invoice label {
         width: 100px;
         float: right;
     }
-
     .rbtns button{
         width: 130px;
     }
-
-    .srch > button {
-        width: 55px !important;
+    .vdp-datepicker{
+        padding: 0;
     }
 </style>
