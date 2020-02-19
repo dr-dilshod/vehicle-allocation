@@ -29,7 +29,6 @@ class DriverApiTest extends TestCase
             'vehicle_type' => 'Blank',
             'driver_remark' =>'Remarks for driver list',
             'delete_flg' => 0,
-
             ];
     }
 

@@ -70,10 +70,10 @@ class DriverController extends Controller
         ]);
         $data = $request->validate(Driver::validationRules);
         $driver = Driver::findOrFail($id);
-        if($data['driver_pass'] !== $driver->driver_pass){
-            $data['driver_pass'] = Hash::make($data['driver_pass']);
+        if(strcmp($driver['driver_pass'], $request['driver_pass']) !== 0){
+            $request['driver_pass'] = Hash::make($request['driver_pass']);
         }
-        $driver->update($data);
+        $driver->update($request->all());
         return response()->json($driver, 200);
     }
 
