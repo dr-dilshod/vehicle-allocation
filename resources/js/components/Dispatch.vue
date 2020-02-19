@@ -75,17 +75,17 @@
                 <table class="table fixed-header">
                     <thead>
                     <tr>
-                        <th width="10%" class="text-center">{{__('dispatch.car_no')}}</th>
-                        <th width="15%" class="text-center">{{__('dispatch.driver_name')}}</th>
-                        <th width="25%" class="text-center">{{__('dispatch.morning')}}</th>
-                        <th width="25%" class="text-center">{{__('dispatch.noon')}}</th>
-                        <th width="25%" class="text-center">{{__('dispatch.next_product')}}</th>
+                        <th style="width: 100px" class="text-center">{{__('dispatch.car_no')}}</th>
+                        <th style="width: 150px" class="text-center">{{__('dispatch.driver_name')}}</th>
+                        <th style="width: 250px" class="text-center">{{__('dispatch.morning')}}</th>
+                        <th style="width: 250px" class="text-center">{{__('dispatch.noon')}}</th>
+                        <th style="width: 250px" class="text-center">{{__('dispatch.next_product')}}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(elem, idx) in thirdList" :key="elem.vehicle_no" :data-driver-id="elem.driver_id">
-                        <td width="10%">{{elem.vehicle_no}}</td>
-                        <td width="15%">
+                        <td style="width: 100px">{{elem.vehicle_no}}</td>
+                        <td style="width: 150px">
                             <div class="driver">
                                 <button type="button" class="close" @click="removeRow(idx, elem)" aria-label="Close">
                                     <span aria-hidden="true" class="text-danger">&times;</span>
@@ -93,7 +93,7 @@
                                 {{elem.driver_name}}
                             </div>
                         </td>
-                        <td width="25%">
+                        <td style="width: 250px">
                             <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" @add="add" ghost-class="new"
                                        style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
@@ -109,7 +109,7 @@
                                 </div>
                             </draggable>
                         </td>
-                        <td width="25%">
+                        <td style="width: 250px">
                             <draggable :list="elem.noon" group="elems" @change="addNoon" handle=".none" ghost-class="new"
                                        style="display: block; min-height: 50px" class="noon" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.noon" :data-item_id="item.item_id">
@@ -125,7 +125,7 @@
                                 </div>
                             </draggable>
                         </td>
-                        <td width="25%">
+                        <td style="width: 250px">
                             <draggable :list="elem.nextProduct" group="elems" @change="addNextProduct" handle=".none" ghost-class="new"
                                        style="display: block; min-height: 50px" class="next-product" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.nextProduct" :data-item_id="item.item_id">
