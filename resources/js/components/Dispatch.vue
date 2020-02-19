@@ -157,7 +157,7 @@
         <div class="modal" id="addDriverModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary">
+                    <div class="modal-header bg-blue">
                         <h5 class="modal-title">{{__('dispatch.add_driver')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -178,9 +178,9 @@
                                     <div class="col-6"><strong>{{__('dispatch.driver_name')}}</strong></div>
                                 </div>
                                 <div class="driver-data">
-                                    <div class="row p-1" v-for="driver in filteredDrivers">
+                                    <label class="row p-1" v-for="driver in filteredDrivers">
                                         <div class="col-2">
-                                            <input type="checkbox" v-model="tableDriverList" :value="driver.driver_id">
+                                            <input type="checkbox" v-model="tableDriverList" :value="driver.driver_id" id="driver">
                                         </div>
                                         <div class="col-4">
                                             {{ driver.vehicle_no3 }}
@@ -188,13 +188,13 @@
                                         <div class="col-6">
                                             {{ driver.driver_name }}
                                         </div>
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-around mt-2">
+                        <div class="d-flex justify-content-center mt-2">
                             <button type="button" class="btn btn-danger" @click="registerDriver">{{__('common.register')}}</button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
+                            <button type="button" class="btn btn-warning ml-3" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
                         </div>
                     </div>
                 </div>
