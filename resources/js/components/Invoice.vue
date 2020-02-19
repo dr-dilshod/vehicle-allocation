@@ -5,32 +5,31 @@
                 <a :href="backUrl"
                    class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
-            <div class="col-1">
-                <h2 class="text-center text-danger" v-if="this.mode === 'editing'">{{__('common.editing')}}</h2>
-            </div>
-            <div class="col-4">
+            <div class="col-10">
                 <div class="row">
-                    <div class="col-7"></div>
-                    <div class="col-5"><h2 class="text-center">{{title}}</h2></div>
+                    <div class="col-2">
+                        <h2 class="text-center text-danger mt-1" v-if="this.mode === 'editing'">{{__('common.editing')}}</h2>
+                    </div>
+                    <div class="col-4"><h2 class="text-center mt-1">{{title}}</h2></div>
+                    <div class="col-6">
+                        <p class="text-right rbtns">
+                            <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
+                                {{__('common.register')}}
+                            </button>
+                            <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
+                            <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
+                                {{__('invoice.billing_month')}}
+                            </button>
+                            <br>
+                            <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
+                                {{__('invoice.list_printing')}}
+                            </button>
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="col-5">
-                <p class="text-right rbtns">
-                    <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
-                        {{__('common.register')}}
-                    </button>
-                    <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
-                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
-                        {{__('invoice.billing_month')}}
-                    </button>
-                    <br>
-                    <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
-                        {{__('invoice.list_printing')}}
-                    </button>
-                </p>
-            </div>
         </div>
-        <div class="row mt-4 mb-4">
+        <div class="row" style="margin-top: -30px">
             <div class="col-12">
                 <form @submit.prevent="search">
                     <div class="row">
