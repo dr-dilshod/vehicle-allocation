@@ -452,6 +452,7 @@
                     for (let i in this.itemData) {
                         this.itemData[i] = "";
                     }
+                    this.vehicle_model = "";
                     this.per_ton = "";
                     this.per_vehicle = "";
                     this.ton = "";
