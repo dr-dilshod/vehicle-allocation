@@ -5,15 +5,15 @@
         <div class="row mb-4">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
-            <div class="col-4 offset-2">
+            <div class="col-4 offset-1">
                 <h2 class="text-center">{{__('deposit.deposit_registration')}}</h2>
             </div>
-            <div class="col-4 text-right">
-                <button class="btn btn-lg btn-danger" @click = "create" :disabled="!registerMode">{{__('common.register')}}</button>
-                <button class="btn btn-lg btn-danger" @click = "update" :disabled="!editable">{{__('common.edit')}}</button>
-                <button class="btn btn-lg btn-danger" @click = "remove" :disabled="!editable">{{__('deposit.delete')}}</button>
+            <div class="col-5 text-right">
+                <button class="btn btn-lg btn-danger btn-fixed-width" @click = "create" :disabled="!registerMode">{{__('common.register')}}</button>
+                <button class="btn btn-lg btn-danger btn-fixed-width" @click = "update" :disabled="!editable">{{__('common.edit')}}</button>
+                <button class="btn btn-lg btn-danger btn-fixed-width" @click = "remove" :disabled="!editable">{{__('deposit.delete')}}</button>
             </div>
         </div>
 
@@ -59,7 +59,7 @@
                         <label for="day">{{__('deposit.deposit_day')}}</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="day" v-model="filter.day" class="form-control" required>
+                        <select id="day" v-model="filter.day" class="form-control" style="width: 60px;" required>
                             <option value=""></option>
                             <option v-for="day in dayCount" :value="day">
                                 {{ day }}
@@ -67,10 +67,10 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
+                        <button type="submit" class="btn btn-primary btn-fixed-width">{{__('common.search')}}</button>
                     </div>
                     <div class="form-group ml-1">
-                        <button type="reset" @click='clear' class="btn btn-primary">{{__('common.clear')}}</button>
+                        <button type="reset" @click='clear' class="btn btn-primary btn-fixed-width">{{__('common.clear')}}</button>
                     </div>
                 </form>
 

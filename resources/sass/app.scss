@@ -59,6 +59,11 @@
 .btn{
     border-color: dimgray;
 }
+.btn-fixed-width{
+    width: 130px;
+    text-align: center;
+    font-size: 1rem;
+}
 .btn-warning{
     color: #fff;
     background-color: $orange;

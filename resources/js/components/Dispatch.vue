@@ -3,26 +3,26 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block">
+                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block btn-fixed-width">
                         {{__('common.register')}}
                     </button>
                 </p>
             </div>
         </div>
         <div class="row mt-2 mb-2">
-            <div class="col-8 offset-2">
+            <div class="col-9 offset-1">
                 <form action="#" @submit.prevent="display">
                     <div class="row">
                         <div class="col-5">
                             <div class="form-group d-flex">
-                                <label for="dispatch_day">{{__('dispatch.dispatch_day')}}</label>
+                                <label for="dispatch_day">{{__('dispatch.dispatch_day')}}</label>&nbsp;&nbsp;
                                 <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
@@ -30,9 +30,9 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary" id="display" @click.prevent="display">{{__('dispatch.display')}}</button>
-                                <button type="button" class="btn btn-primary" id="nextDay" @click.prevent="nextDay">{{__('dispatch.next_day')}}</button>
-                                <button type="button" class="btn btn-primary" id="twoDaysLater" @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="display" @click.prevent="display">{{__('dispatch.display')}}</button>
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="nextDay" @click.prevent="nextDay">{{__('dispatch.next_day')}}</button>
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="twoDaysLater" @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
                                 </button>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block">{{__('dispatch.printing')}}
+                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block btn-fixed-width">{{__('dispatch.printing')}}
                     </button>
                 </p>
             </div>
