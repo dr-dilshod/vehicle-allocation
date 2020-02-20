@@ -32,6 +32,11 @@ module.exports = {
 
         errorDialog(error){
             let status = error.response.status;
+            if (status === 419 || status === 401) {
+                location.reload();
+                return;
+            }
+
             let message = error.response.data.message;
             let errors = error.response.data.errors;
 

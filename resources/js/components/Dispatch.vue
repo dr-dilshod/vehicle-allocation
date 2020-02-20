@@ -3,26 +3,26 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block btn-fixed-width">
+                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block">
                         {{__('common.register')}}
                     </button>
                 </p>
             </div>
         </div>
         <div class="row mt-2 mb-2">
-            <div class="col-9 offset-1">
+            <div class="col-8 offset-2">
                 <form action="#" @submit.prevent="display">
                     <div class="row">
                         <div class="col-5">
                             <div class="form-group d-flex">
-                                <label for="dispatch_day">{{__('dispatch.dispatch_day')}}</label>&nbsp;&nbsp;
+                                <label for="dispatch_day">{{__('dispatch.dispatch_day')}}</label>
                                 <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
@@ -30,9 +30,9 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary btn-fixed-width" id="display" @click.prevent="display">{{__('dispatch.display')}}</button>
-                                <button type="button" class="btn btn-primary btn-fixed-width" id="nextDay" @click.prevent="nextDay">{{__('dispatch.next_day')}}</button>
-                                <button type="button" class="btn btn-primary btn-fixed-width" id="twoDaysLater" @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
+                                <button type="button" class="btn btn-primary" id="display" @click.prevent="display">{{__('dispatch.display')}}</button>
+                                <button type="button" class="btn btn-primary" id="nextDay" @click.prevent="nextDay">{{__('dispatch.next_day')}}</button>
+                                <button type="button" class="btn btn-primary" id="twoDaysLater" @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
                                 </button>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block btn-fixed-width">{{__('dispatch.printing')}}
+                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block">{{__('dispatch.printing')}}
                     </button>
                 </p>
             </div>
@@ -75,17 +75,17 @@
                 <table class="table fixed-header">
                     <thead>
                     <tr>
-                        <th width="10%" class="text-center">{{__('dispatch.car_no')}}</th>
-                        <th width="15%" class="text-center">{{__('dispatch.driver_name')}}</th>
-                        <th width="25%" class="text-center">{{__('dispatch.morning')}}</th>
-                        <th width="25%" class="text-center">{{__('dispatch.noon')}}</th>
-                        <th width="25%" class="text-center">{{__('dispatch.next_product')}}</th>
+                        <th style="width: 100px" class="text-center">{{__('dispatch.car_no')}}</th>
+                        <th style="width: 150px" class="text-center">{{__('dispatch.driver_name')}}</th>
+                        <th style="width: 250px" class="text-center">{{__('dispatch.morning')}}</th>
+                        <th style="width: 250px" class="text-center">{{__('dispatch.noon')}}</th>
+                        <th style="width: 250px" class="text-center">{{__('dispatch.next_product')}}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(elem, idx) in thirdList" :key="elem.vehicle_no" :data-driver-id="elem.driver_id">
-                        <td width="10%">{{elem.vehicle_no}}</td>
-                        <td width="15%">
+                        <td style="width: 100px">{{elem.vehicle_no}}</td>
+                        <td style="width: 150px">
                             <div class="driver">
                                 <button type="button" class="close" @click="removeRow(idx, elem)" aria-label="Close">
                                     <span aria-hidden="true" class="text-danger">&times;</span>
@@ -93,7 +93,7 @@
                                 {{elem.driver_name}}
                             </div>
                         </td>
-                        <td width="25%">
+                        <td style="width: 250px">
                             <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" @add="add" ghost-class="new"
                                        style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
@@ -109,7 +109,7 @@
                                 </div>
                             </draggable>
                         </td>
-                        <td width="25%">
+                        <td style="width: 250px">
                             <draggable :list="elem.noon" group="elems" @change="addNoon" handle=".none" ghost-class="new"
                                        style="display: block; min-height: 50px" class="noon" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.noon" :data-item_id="item.item_id">
@@ -125,7 +125,7 @@
                                 </div>
                             </draggable>
                         </td>
-                        <td width="25%">
+                        <td style="width: 250px">
                             <draggable :list="elem.nextProduct" group="elems" @change="addNextProduct" handle=".none" ghost-class="new"
                                        style="display: block; min-height: 50px" class="next-product" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.nextProduct" :data-item_id="item.item_id">
@@ -157,7 +157,7 @@
         <div class="modal" id="addDriverModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary">
+                    <div class="modal-header bg-blue">
                         <h5 class="modal-title">{{__('dispatch.add_driver')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -172,14 +172,14 @@
                                 <button class="btn btn-primary">{{__('common.search')}}</button>
                             </div>
                             <div class="driver-list">
-                                <div class="row">
+                                <div class="row label-row mt-2 mr-2 ml-2 mb-0 pb-2">
                                     <div class="col-2"><strong>{{__('dispatch.check')}}</strong></div>
                                     <div class="col-4"><strong>{{__('dispatch.car_no')}}</strong></div>
                                     <div class="col-6"><strong>{{__('dispatch.driver_name')}}</strong></div>
                                 </div>
                                 <div class="driver-data">
-                                    <div class="row p-1" v-for="driver in filteredDrivers">
-                                        <div class="col-2">
+                                    <label class="row m-2 label-row" v-for="driver in filteredDrivers">
+                                        <div class="col-2 text-center">
                                             <input type="checkbox" v-model="tableDriverList" :value="driver.driver_id">
                                         </div>
                                         <div class="col-4">
@@ -188,13 +188,13 @@
                                         <div class="col-6">
                                             {{ driver.driver_name }}
                                         </div>
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-around mt-2">
-                            <button type="button" class="btn btn-danger" @click="registerDriver">{{__('common.register')}}</button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
+                        <div class="d-flex justify-content-center mt-2">
+                            <button type="button" class="btn btn-modal btn-danger" @click="registerDriver">{{__('common.register')}}</button>
+                            <button type="button" class="btn btn-modal btn-warning ml-3" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
                         </div>
                     </div>
                 </div>
@@ -439,5 +439,8 @@
         background: #fff;
         height: 450px;
         overflow-y: scroll;
+    }
+    .label-row{
+        border-bottom: 1px solid #ced4da;
     }
 </style>

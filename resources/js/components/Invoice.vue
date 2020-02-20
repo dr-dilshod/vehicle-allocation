@@ -5,103 +5,102 @@
                 <a :href="backUrl"
                    class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
             </div>
-            <div class="col-1">
-                <h2 class="text-center text-danger" v-if="this.mode === 'editing'">{{__('common.editing')}}</h2>
-            </div>
-            <div class="col-4">
+            <div class="col-10">
                 <div class="row">
-                    <div class="col-7"></div>
-                    <div class="col-5"><h2 class="text-center">{{title}}</h2></div>
+                    <div class="col-2">
+                        <h2 class="text-center text-danger mt-1" v-if="this.mode === 'editing'">{{__('common.editing')}}</h2>
+                    </div>
+                    <div class="col-4"><h2 class="text-center mt-1">{{title}}</h2></div>
+                    <div class="col-6">
+                        <p class="text-right rbtns">
+                            <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
+                                {{__('common.register')}}
+                            </button>
+                            <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
+                            <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
+                                {{__('invoice.billing_month')}}
+                            </button>
+                            <br>
+                            <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
+                                {{__('invoice.list_printing')}}
+                            </button>
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="col-5">
-                <p class="text-right rbtns">
-                    <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
-                        {{__('common.register')}}
-                    </button>
-                    <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
-                    <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
-                        {{__('invoice.billing_month')}}
-                    </button>
-                    <br>
-                    <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
-                        {{__('invoice.list_printing')}}
-                    </button>
-                </p>
-            </div>
         </div>
-        <div class="row mt-4 mb-4">
-            <div class="col-9">
-                <form action="#" class="form-inline" method="post" @submit.prevent="search">
-                    <table class="table" border="0">
-                        <tr>
-                            <td>
-                                <label for="shipper">{{__('invoice.shipper')}}</label>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <select name="shipper" id="shipper" v-model="formData.shipper_id" class="form-control">
-                                        <option value=""></option>
-                                        <option v-for="shipper in shippers" :value="shipper.shipper_id">
-                                            {{ shipper. shipper_name1 + " " + shipper. shipper_name2 }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <label>{{__('invoice.invoice_month')}}</label>
-                            </td>
-                            <td>
-                                <datepicker v-model="formData.invoice_month" :minimumView="'month'" :maximumView="'month'" :bootstrap-styling="true"
-                                            :typeable="true" :format="options.monthFormat" :clear-button="true" :language="options.language.ja"
+        <div class="row" style="margin-top: -30px">
+            <div class="col-12">
+                <form @submit.prevent="search">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group row">
+                                <label for="shipper" class="col-4 text-right">{{__('invoice.shipper')}}</label>
+                                <select name="shipper" id="shipper" v-model="formData.shipper_id"
+                                        class="form-control col-8">
+                                    <option value=""></option>
+                                    <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                        {{ shipper.shipper_name1 + " " + shipper.shipper_name2 }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group row">
+                                <label class="col-4 text-right">{{__('invoice.invoice_month')}}</label>
+                                <datepicker v-model="formData.invoice_month" :minimumView="'month'"
+                                            :maximumView="'month'" :bootstrap-styling="true"
+                                            :typeable="true" :format="options.monthFormat" :clear-button="true"
+                                            :language="options.language.ja" class="col-8"
                                 ></datepicker>
-                            </td>
-                            <td>
-                                <label>{{__('invoice.invoice_day')}}</label>
-                            </td>
-                            <td>
-                                <select v-model="formData.invoice_day" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group row">
+                                <label class="col-4 text-right">{{__('invoice.invoice_day')}}</label>
+                                <select v-model="formData.invoice_day" class="form-control col-8">
                                     <option value=""></option>
                                     <option value="20">{{__('invoice.20th')}}</option>
                                     <option value="30">{{__('invoice.30th')}}</option>
                                 </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>{{__('invoice.stack_date')}}</label>
-                            </td>
-                            <td align="center">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group row">
+                                <label class="col-4 text-right">{{__('invoice.stack_date')}}</label>
                                 <datepicker v-model="formData.stack_date" :bootstrap-styling="true"
-                                        :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                            :typeable="true" :format="options.weekday" :clear-button="true"
+                                            :language="options.language.ja" class="col-8"
                                 ></datepicker>
-                            </td>
-                            <td>
-                                <label for="vehicle_no">{{__('invoice.vehicle_no')}}</label>
-                            </td>
-                            <td class="srch">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group row">
+                                <label for="vehicle_no" class="col-4 text-right">{{__('invoice.vehicle_no')}}</label>
                                 <select name="vehicle_id" id="vehicle_no" v-model="formData.vehicle_id"
-                                        class="form-control">
+                                        class="form-control col-8">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
                                         {{ vehicle.vehicle_no }}
                                     </option>
                                 </select>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </td>
-                            <td colspan="2">
-                                <button type="submit" class="btn btn-primary">{{__('common.search')}}</button>
-
-                                <button type="reset" class="btn btn-primary" @click.prevent="clear">{{__('common.clear')}}
-                                </button>
-
-                                <button type="button" @click="getAggregate" data-toggle="modal" data-target="#aggr"
-                                        class="btn btn-primary">
-                                    {{__('invoice.aggregate')}}
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <button type="submit" class="btn btn-fixed-width btn-primary">{{__('common.search')}}
+                            </button>
+                            <button type="reset" class="btn btn-fixed-width btn-primary" @click.prevent="clear">
+                                {{__('common.clear')}}
+                            </button>
+                            <button type="button" @click="getAggregate" data-toggle="modal" data-target="#aggr"
+                                    class="btn btn-fixed-width btn-primary">
+                                {{__('invoice.aggregate')}}
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -612,17 +611,14 @@
     }
 </script>
 <style scoped>
-
     #invoice label {
         width: 100px;
         float: right;
     }
-
     .rbtns button{
         width: 130px;
     }
-
-    .srch > button {
-        width: 55px !important;
+    .vdp-datepicker{
+        padding: 0;
     }
 </style>
