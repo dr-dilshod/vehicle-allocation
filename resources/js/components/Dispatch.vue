@@ -3,26 +3,26 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block">
+                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block btn-fixed-width">
                         {{__('common.register')}}
                     </button>
                 </p>
             </div>
         </div>
         <div class="row mt-2 mb-2">
-            <div class="col-8 offset-2">
+            <div class="col-9 offset-1">
                 <form action="#" @submit.prevent="display">
                     <div class="row">
                         <div class="col-5">
                             <div class="form-group d-flex">
-                                <label for="dispatch_day">{{__('dispatch.dispatch_day')}}</label>
+                                <label for="dispatch_day" class="mt-2">{{__('dispatch.dispatch_day')}}</label>&nbsp;&nbsp;&nbsp;
                                 <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
@@ -30,9 +30,9 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <button type="button" class="btn btn-primary" id="display" @click.prevent="display">{{__('dispatch.display')}}</button>
-                                <button type="button" class="btn btn-primary" id="nextDay" @click.prevent="nextDay">{{__('dispatch.next_day')}}</button>
-                                <button type="button" class="btn btn-primary" id="twoDaysLater" @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="display" @click.prevent="display">{{__('dispatch.display')}}</button>
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="nextDay" @click.prevent="nextDay">{{__('dispatch.next_day')}}</button>
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="twoDaysLater" @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
                                 </button>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block">{{__('dispatch.printing')}}
+                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block btn-fixed-width">{{__('dispatch.printing')}}
                     </button>
                 </p>
             </div>
@@ -49,9 +49,9 @@
         <div class="row">
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ firstList.date }}</h5>
-                <draggable v-model="firstList.data" group="elems" @add="noAdd" class="elem-list">
+                <draggable v-model="firstList.data" group="elems" class="elem-list">
                     <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
-                        {{ item.shipper_name }} <br>
+                        <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.stack_point }} - {{ item.down_point }} <br>
                         {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -61,9 +61,9 @@
             </div>
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ secondList.date }}</h5>
-                <draggable v-model="secondList.data" group="elems" @add="noAdd" class="elem-list">
+                <draggable v-model="secondList.data" group="elems" class="elem-list">
                     <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
-                        {{ item.shipper_name }} <br>
+                        <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.down_point }} - {{ item.stack_point }} <br>
                         {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -101,7 +101,7 @@
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
                                     </button>
-                                    {{ item.shipper_name }} <br>
+                                    <strong>{{ item.shipper_name }}</strong> <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -117,7 +117,7 @@
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
                                     </button>
-                                    {{ item.shipper_name }} <br>
+                                    <strong>{{ item.shipper_name }}</strong> <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -133,7 +133,7 @@
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
                                     </button>
-                                    {{ item.shipper_name }} <br>
+                                    <strong>{{ item.shipper_name }}</strong> <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -146,7 +146,7 @@
                     <tfoot slot="footer">
                     <tr>
                         <td colspan="5">
-                            <button data-toggle="modal" data-target="#addDriverModal" class="btn btn-primary">{{__('dispatch.add')}}
+                            <button data-toggle="modal" data-target="#addDriverModal" class="btn btn-primary btn-fixed-width">{{__('dispatch.add')}}
                             </button>
                         </td>
                     </tr>
@@ -193,8 +193,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-2">
-                            <button type="button" class="btn btn-modal btn-danger" @click="registerDriver">{{__('common.register')}}</button>
-                            <button type="button" class="btn btn-modal btn-warning ml-3" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
+                            <button type="button" class="btn btn-modal btn-danger btn-fixed-width" @click="registerDriver">{{__('common.register')}}</button>
+                            <button type="button" class="btn btn-modal btn-warning ml-3 btn-fixed-width" data-dismiss="modal">{{__('dispatch.cancel')}}</button>
                         </div>
                     </div>
                 </div>
@@ -230,6 +230,7 @@
                 secondList: [],
                 thirdList: [],
                 dispatch_day: '',
+                registerPostData: [],
                 options: {
                     monthFormat: "yyyy/MM",
                     weekday: "yyyy/MM/dd",
@@ -248,16 +249,8 @@
                     item_id: evt.added.element.item_id,
                     driver_id: driver_id,
                 };
-                axios.post(this.fetchUrl,postData)
-                    .then(response => {
-
-                    })
-                    .catch(function (error) {
-                        componentInstance.errorDialog(error);
-                    });
-            },
-            add(evt){
-                evt.item.classList += ' new';
+                this.registerPostData.push(postData);
+                $('div[data-item_id='+postData.item_id+']').addClass('new');
             },
             addNoon: function (evt) {
                 let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
@@ -266,13 +259,8 @@
                     item_id: evt.added.element.item_id,
                     driver_id: driver_id,
                 };
-                axios.post(this.fetchUrl,postData)
-                    .then(response => {
-
-                    })
-                    .catch(function (error) {
-                        componentInstance.errorDialog(error);
-                    });
+                this.registerPostData.push(postData);
+                $('div[data-item_id='+postData.item_id+']').addClass('new');
             },
             addNextProduct: function (evt) {
                 let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
@@ -281,20 +269,23 @@
                     item_id: evt.added.element.item_id,
                     driver_id: driver_id,
                 };
-                axios.post(this.fetchUrl,postData)
+                this.registerPostData.push(postData);
+                $('div[data-item_id='+postData.item_id+']').addClass('new');
+            },
+            register(){
+                let componentInstance = this;
+                if(this.registerPostData.length > 0){
+                    axios.post(this.fetchUrl,this.registerPostData)
                     .then(response => {
-
+                        componentInstance.registerPostData = [];
+                        componentInstance.createSuccessDialog();
+                        componentInstance.display();
+                        componentInstance.clearNewClass();
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
                     });
-            },
-            noAdd(evt){
-                evt.preventDefault();
-                return false;
-            },
-            register(){
-//                alert('register');
+                }
             },
             registerDriver(){
                 let componentInstance = this;
@@ -312,13 +303,20 @@
                     });
                 $('#addDriverModal').modal('toggle');
             },
+            clearNewClass(){
+                $('.fixed-header .elem').removeClass('new');
+            },
             print(){
                 let date = this.dispatch_day;
                 window.location.href = this.pdfUrl + '?date=' + date;
             },
             display(){
                 let date = this.dispatch_day;
-                let dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+                let dateString = '';
+                if(typeof date === 'object')
+                    dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+                else
+                    dateString = date;
                 this.fetchLists(dateString);
             },
             nextDay(){
@@ -348,12 +346,12 @@
                 let componentInstance = this;
                 axios.get(this.fetchUrl+'?date='+date)
                     .then(result => {
-                        this.dispatch_day = result.data.first_list.date;
-                        this.firstList = result.data.first_list;
-                        this.secondList = result.data.second_list;
-                        this.drivers = result.data.drivers;
-                        this.thirdList = result.data.dispatches;
-                        this.tableDriverList = result.data.tableDriverList;
+                        componentInstance.dispatch_day = result.data.first_list.date;
+                        componentInstance.firstList = result.data.first_list;
+                        componentInstance.secondList = result.data.second_list;
+                        componentInstance.drivers = result.data.drivers;
+                        componentInstance.thirdList = result.data.dispatches;
+                        componentInstance.tableDriverList = result.data.tableDriverList;
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
@@ -386,9 +384,6 @@
                     return driver.driver_name.match(this.driver_search);
                 });
             }
-        },
-        watch: {
-
         }
     }
 </script>
@@ -425,12 +420,14 @@
         display: inline;
     }
     .elem {
-        background: #9fdee6;
-        border-radius: 5px;
+        background: #dae3f3;
+        border-radius: 10px;
         margin: 4px;
+        padding: 7px;
+        font-size: 12px;
     }
     .new {
-        background: #c0eebd;
+        background: #e2f0d9;
     }
     .vdp-datepicker{
         display: inline-block;

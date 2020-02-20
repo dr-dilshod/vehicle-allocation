@@ -45,7 +45,7 @@ class LoginController extends Controller
      */
     public function username()
     {
-        return 'driver_id';
+        return 'driver_no';
     }
 
     protected function sendFailedLoginResponse(Request $request)

@@ -14,7 +14,7 @@ class SetDriverNameUniqueOnDriversTable extends Migration
     public function up()
     {
         Schema::table('drivers', function (Blueprint $table) {
-            $table->unique(['driver_name','delete_flg']);
+            $table->unique(['driver_no','delete_flg']);
         });
     }
 

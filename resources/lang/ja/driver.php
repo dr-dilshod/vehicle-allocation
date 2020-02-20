@@ -15,6 +15,7 @@ return [
     'bulk' => 'ﾊﾞﾙｸ',
     'type'=>'車種',
     'name'=>'ドライバー名',
+    'no'=>'ドライバーNo',
     'mobile_number'=>'携帯番号',
     'vehicle_no'=>'車輌No',
     'max_load'=>'最大積載量',

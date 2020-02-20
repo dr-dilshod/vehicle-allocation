@@ -16,10 +16,10 @@
 
                         <div class="col-md-6">
                             <input id="driver_name" type="text"
-                                   class="form-control @error('driver_id') is-invalid @enderror" name="driver_id"
-                                   value="{{  old('driver_id') }}" required autocomplete="driver_id" autofocus>
+                                   class="form-control @error('driver_no') is-invalid @enderror" name="driver_no"
+                                   value="{{  old('driver_no') }}" required autocomplete="driver_no" autofocus>
 
-                            @error('driver_id')
+                            @error('driver_no')
                             <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
