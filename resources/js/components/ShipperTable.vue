@@ -59,11 +59,11 @@
 
         <ejs-grid ref="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="270"
-                  :frozenColumns="6"  >
+                  :frozenColumns="4"  >
             <e-columns>
                 <e-column field='shipper_no' :headerText='__("shipper.shipper_no")' width="100"></e-column>
-                <e-column :headerText='__("shipper.shipper")' width="200" :columns="shipperNameCols"></e-column>
-                <e-column :headerText='__("shipper.furigana")' width="200" :columns="furiganaCols"></e-column>
+                <e-column :headerText='__("shipper.shipper")' width="150" :template="nameTemplate" :editTemplate="nameEditTemplate"></e-column>
+                <e-column :headerText='__("shipper.furigana")' width="150" :template="furiganaTemplate" :editTemplate="furiganaEditTemplate"></e-column>
                 <e-column field='shipper_company_abbreviation' :headerText='__("shipper.abbreviation")' width="150" ></e-column>
                 <e-column field='postal_code' :headerText='__("shipper.postal_code")' width="150" ></e-column>
                 <e-column field='address1' :headerText='__("shipper.address1")' width="200" ></e-column>
@@ -71,7 +71,7 @@
                 <e-column field='phone_number' :headerText='__("shipper.phone_number")' width="200"></e-column>
                 <e-column field='fax_number' :headerText='__("shipper.fax_number")' width="200" ></e-column>
                 <e-column field='closing_date' :headerText='__("shipper.closing_date")' type="number" min="0" step="1" editType= 'numericedit' :edit='numericParams' width="150"></e-column>
-                <e-column field='payment_date' :headerText='__("shipper.payment_date")' type='date' format= 'y-M-d'
+                <e-column field='payment_date' :headerText='__("shipper.payment_date")' type='date' format= 'dd/MM/yyyy'
                           editType = 'datepickeredit' :editTemplate="editTemplate" width="200" ></e-column>
                 <e-column field='shipper_id' :headerText='__("shipper.shipper_id")' :isPrimaryKey="true" :visible=false></e-column>
             </e-columns>
@@ -89,6 +89,8 @@
 
     Vue.use( GridPlugin );
 
+    Vue.prototype.$eventHub = new Vue();
+
     export default{
         components: {
             Datepicker
@@ -102,6 +104,7 @@
                 data: [],
                 companies: [],
                 shippers: [],
+                updatedShipper : {},
                 tableUtil : undefined,
                 filter : {
                     shipper : '',
@@ -157,7 +160,7 @@
                     components: {
                         Datepicker
                     },
-                    template : `<input id="payment_date" class="form-control" type="date" format="y-M-d" v-model="data.payment_date" />`,
+                    template : `<input id="payment_date" class="form-control" type="date" format="dd/MM/yyyy" v-model="data.payment_date" />`,
                     data() {
                         return {
                             data : {}
@@ -166,8 +169,109 @@
 
                 })}
             },
+            nameTemplate(){
+                return { template: Vue.component('shipperName',{
+                    template : `<span>{{data.shipper_name1}}&nbsp;<br/>{{data.shipper_name2}}&nbsp;</span>`,
+                    data() {
+                        return {
+                            data : {}
+                        }
+                    }
+                })}
+            },
+            nameEditTemplate(){
+                return { template: Vue.component('shipperNameEdit',{
+                    template : `<span class="e-control-wrapper">
+                                <input class="e-field e-input" @change='nameUpdate' type="text" v-model="data.shipper_name1" />
+                                <br/><input class="e-field e-input" @change='nameUpdate' type="text" v-model="data.shipper_name2" /></span>`,
+                    data() {
+                        return {
+                            data : {}
+                        }
+                    },
+                    mounted(){
+                        this.nameUpdate();
+                    },
+                    methods : {
+                        nameUpdate(args){
+                            this.$eventHub.$emit("nameUpdate", this.data);
+                        }
+                    }
+
+                })}
+            },
+            furiganaTemplate(){
+                return { template: Vue.component('furiganaName',{
+                    template : `<span>{{data.shipper_kana_name1}}<br/>{{data.shipper_kana_name2}}</span>`,
+                    data() {
+                        return {
+                            data : {}
+                        }
+                    }
+                })}
+            },
+            furiganaEditTemplate(){
+                return { template: Vue.component('furiganaNameEdit',{
+                    template : `<span class="e-control-wrapper">
+                                <input class="e-field e-input" @change='furiganaUpdate' type="text" v-model="data.shipper_kana_name1" />
+                                <br/><input class="e-field e-input" @change='furiganaUpdate' type="text" v-model="data.shipper_kana_name2" /></span>`,
+                    data() {
+                        return {
+                            data : {}
+                        }
+                    },
+                    mounted(){
+                        this.furiganaUpdate();
+                    },
+                    methods : {
+                        furiganaUpdate(args){
+                            this.$eventHub.$emit("furiganaUpdate", this.data);
+                        }
+                    }
+
+                })}
+            },
+
+
+            shipperNameUpdate(updatedShipper){
+                if(!updatedShipper.shipper_id){
+                    this.updatedShipper.shipper_name1 = updatedShipper.shipper_name1;
+                    this.updatedShipper.shipper_name2 = updatedShipper.shipper_name2;
+                    return;
+                }
+                for (let i=0; i<this.data.length; i++){
+                    if (this.data[i].shipper_id == updatedShipper.shipper_id){
+                        this.data[i].shipper_name1 = updatedShipper.shipper_name1;
+                        this.data[i].shipper_name2 = updatedShipper.shipper_name2;
+                        this.updatedShipper = this.data[i];
+                    }
+                }
+            },
+            shipperFuriganaUpdate(updatedShipper){
+                if (!updatedShipper.shipper_id){
+                    this.updatedShipper.shipper_kana_name1 = updatedShipper.shipper_kana_name1;
+                    this.updatedShipper.shipper_kana_name2 = updatedShipper.shipper_kana_name2;
+                    return;
+                }
+                for (let i=0; i<this.data.length; i++){
+                    if (this.data[i].shipper_id == updatedShipper.shipper_id){
+                        this.data[i].shipper_kana_name1 = updatedShipper.shipper_kana_name1;
+                        this.data[i].shipper_kana_name2 = updatedShipper.shipper_kana_name2;
+                        this.updatedShipper = this.data[i];
+                    }
+                }
+            },
+
             actionBegin(args){
+                if (args.requestType === "beginEdit") {
+                    this.$eventHub.$on("nameUpdate", this.shipperNameUpdate);
+                    this.$eventHub.$on("furiganaUpdate", this.shipperFuriganaUpdate);
+                }
                 if(args.requestType == 'save'){
+                    args.data.shipper_name1 = this.updatedShipper.shipper_name1;
+                    args.data.shipper_name2 = this.updatedShipper.shipper_name2;
+                    args.data.shipper_kana_name1 = this.updatedShipper.shipper_kana_name1;
+                    args.data.shipper_kana_name2 = this.updatedShipper.shipper_kana_name2;
                     if(!args.data.shipper_id){
                         this.insertData(args.data);
                     }else{
