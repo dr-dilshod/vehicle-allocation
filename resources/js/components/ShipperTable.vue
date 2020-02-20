@@ -152,6 +152,7 @@
             this.tableUtil = new TableUtil(this);
             this.fetchShipperNames();
             this.fetchCompanies();
+            this.search();
         },
         methods: {
             editTemplate(){
@@ -181,8 +182,8 @@
             nameEditTemplate(){
                 return { template: Vue.component('shipperNameEdit',{
                     template : `<span class="e-control-wrapper">
-                                <input class="e-field e-input" @change='nameUpdate' type="text" v-model="data.shipper_name1" />
-                                <br/><input class="e-field e-input" @change='nameUpdate' type="text" v-model="data.shipper_name2" /></span>`,
+                                <input class="e-field e-input" @change='nameUpdate' v-on:keyup="nameUpdate" type="text" v-model="data.shipper_name1" />
+                           <br/><input class="e-field e-input" @change='nameUpdate' v-on:keyup="nameUpdate" type="text" v-model="data.shipper_name2" /></span>`,
                     data() {
                         return {
                             data : {}
@@ -212,8 +213,8 @@
             furiganaEditTemplate(){
                 return { template: Vue.component('furiganaNameEdit',{
                     template : `<span class="e-control-wrapper">
-                                <input class="e-field e-input" @change='furiganaUpdate' type="text" v-model="data.shipper_kana_name1" />
-                                <br/><input class="e-field e-input" @change='furiganaUpdate' type="text" v-model="data.shipper_kana_name2" /></span>`,
+                                <input class="e-field e-input" @change='furiganaUpdate' v-on:keyup="furiganaUpdate" type="text" v-model="data.shipper_kana_name1" />
+                           <br/><input class="e-field e-input" @change='furiganaUpdate' v-on:keyup="furiganaUpdate" type="text" v-model="data.shipper_kana_name2" /></span>`,
                     data() {
                         return {
                             data : {}
@@ -223,7 +224,7 @@
                         this.furiganaUpdate();
                     },
                     methods : {
-                        furiganaUpdate(args){
+                        furiganaUpdate(){
                             this.$eventHub.$emit("furiganaUpdate", this.data);
                         }
                     }
