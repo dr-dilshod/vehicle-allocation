@@ -14,6 +14,7 @@ class CreateDriversTable extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->bigIncrements('driver_id');
+            $table->string('driver_no')->nullable();
             $table->string('driver_pass')->nullable();
             $table->string('driver_name')->nullable();
             $table->string('driver_mobile_number')->nullable();
@@ -36,6 +37,7 @@ class CreateDriversTable extends Migration
         });
 
         $driver = new \App\Driver();
+        $driver->driver_no = '1';
         $driver->driver_name = 'admin';
         $driver->driver_pass = Hash::make('admin');
         $driver->admin_flg = 1;

@@ -10,6 +10,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
  * @property integer $driver_id
  * @property integer $create_id
  * @property integer $update_id
+ * @property string $driver_no
  * @property string $driver_pass
  * @property string $driver_name
  * @property string $driver_mobile_number
@@ -40,6 +41,7 @@ class Driver extends Authenticatable
     use BlameableTrait;
     const validationRules = [
         'vehicle_type' => 'required',
+        'driver_no' => 'required|max:4',
         'driver_name' => 'required|max:60',
         'driver_pass' => 'required|max:60',
         'driver_mobile_number' => 'max:60',
@@ -65,7 +67,7 @@ class Driver extends Authenticatable
     /**
      * @var array
      */
-    protected $fillable = ['driver_pass', 'driver_name', 'driver_mobile_number', 'maximum_Loading', 'search_flg', 'admin_flg', 'vehicle_no1', 'vehicle_no2', 'vehicle_no3', 'vehicle_type', 'driver_remark', 'delete_flg', 'created_at', 'updated_at', 'create_id', 'update_id'];
+    protected $fillable = ['driver_no', 'driver_pass', 'driver_name', 'driver_mobile_number', 'maximum_Loading', 'search_flg', 'admin_flg', 'vehicle_no1', 'vehicle_no2', 'vehicle_no3', 'vehicle_type', 'driver_remark', 'delete_flg', 'created_at', 'updated_at', 'create_id', 'update_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

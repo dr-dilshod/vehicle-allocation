@@ -21,7 +21,7 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="300" :frozenColumns="3"  :enableHover='false' :allowSelection='true' rowHeight=35>
             <e-columns>
-                <e-column field='driver_id' :headerText='__("driver.driver_id")' :isPrimaryKey="true" :allowEditing='false' width="120"></e-column>
+                <e-column field='driver_no'  :headerText= '__("driver.no")' width="150"></e-column>
                 <e-column field='vehicle_type' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
                 <e-column field='driver_name'  :headerText= '__("driver.name")' width="150"></e-column>
                 <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
@@ -31,6 +31,7 @@
                 <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
                 <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
                 <e-column field='driver_pass' :headerText= '__("driver.password")' width="200"></e-column>
+                <e-column field='driver_id' :headerText='__("driver.driver_id")' :visible="false" :isPrimaryKey="true" :allowEditing='false' width="120"></e-column>
             </e-columns>
         </ejs-grid>
     </div>
