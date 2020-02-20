@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 class="text-center text-danger" ref="editTitle">{{__('common.editing')}}</h2>
@@ -11,12 +11,11 @@
             <div class="col-4">
                 <h2 class="text-center">{{title}}</h2>
             </div>
-            <div class="col-2"></div>
-            <div class="col-2">
+            <div class="col-4">
                 <p class="text-right">
-                    <button class="btn btn-lg btn-danger" ref="registerBtn">{{__('common.register')}}
+                    <button class="btn btn-lg btn-danger btn-fixed-width" ref="registerBtn">{{__('common.register')}}
                     </button>
-                    <button class="btn btn-lg btn-danger" ref="editBtn">{{__('common.edit')}}</button>
+                    <button class="btn btn-lg btn-danger btn-fixed-width" ref="editBtn">{{__('common.edit')}}</button>
                 </p>
             </div>
         </div>
@@ -39,14 +38,14 @@
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <button v-on:click="search" class="btn btn-lg btn-primary btn-block p-1">
+                            <button v-on:click="search" class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
                                 {{__('common.search')}}
                             </button>
                         </div>
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <button v-on:click="clear" class="btn btn-lg btn-primary btn-block p-1">
+                            <button v-on:click="clear" class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
                                 {{__('common.clear')}}
                             </button>
                         </div>

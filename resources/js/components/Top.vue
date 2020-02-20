@@ -27,8 +27,8 @@
                         </select>
                     </div>
                     <div class="form-group row">
-                        <div class="col-9 offset-2 pr-0">
-                            <button type="submit" id="display" class="btn btn-lg btn-block btn-primary" @click.prevent="fetchByMonth">{{__('top.display')}}</button>
+                        <div class="col-9 offset-5 pr-0">
+                            <button type="submit" id="display" class="btn btn-lg btn-block btn-primary btn-fixed-width" @click.prevent="fetchByMonth">{{__('top.display')}}</button>
                         </div>
                     </div>
                 </form>

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-2">
                     <a :href="backUrl"
-                       class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
+                       class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
                 </div>
                 <div class="col-2">
                     <h6 class="text-center text-danger">* {{__('common.edit')}}</h6>
@@ -12,11 +12,10 @@
                 <div class="col-4">
                     <h2 class="text-center">{{title}}</h2>
                 </div>
-                <div class="col-1"></div>
-                <div class="col-3">
+                <div class="col-4">
                     <p class="text-right">
-                        <button type="submit" class="btn btn-lg btn-danger">{{operation}}</button>
-                        <button type="reset" class="btn btn-lg btn-danger" @click.prevent="clear">
+                        <button type="submit" class="btn btn-lg btn-danger btn-fixed-width">{{operation}}</button>
+                        <button type="reset" class="btn btn-lg btn-danger btn-fixed-width" @click.prevent="clear">
                             {{clearing}}
                         </button>
                     </p>

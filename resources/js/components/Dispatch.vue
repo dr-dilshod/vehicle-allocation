@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="form-group d-flex">
-                                <label for="dispatch_day" class="mt-2">{{__('dispatch.dispatch_day')}}</label>
+                                <label for="dispatch_day" class="mt-2">{{__('dispatch.dispatch_day')}}</label>&nbsp;&nbsp;&nbsp;
                                 <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ firstList.date }}</h5>
-                <draggable v-model="firstList.data" group="elems" class="elem-list">
+                <draggable v-model="firstList.data" group="elems" @add="noAdd" class="elem-list">
                     <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
@@ -61,7 +61,7 @@
             </div>
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ secondList.date }}</h5>
-                <draggable v-model="secondList.data" group="elems" class="elem-list">
+                <draggable v-model="secondList.data" group="elems" @add="noAdd" class="elem-list">
                     <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
@@ -94,7 +94,7 @@
                             </div>
                         </td>
                         <td style="width: 250px">
-                            <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" ghost-class="new"
+                            <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" @add="add" ghost-class="new"
                                        style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
@@ -356,6 +356,7 @@
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
                     });
+                ;
             },
             fetchDriverTable(){
                 let componentInstance = this;

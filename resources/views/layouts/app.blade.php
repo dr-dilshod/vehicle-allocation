@@ -44,7 +44,7 @@
                             @else
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-warning btn-lg">{{__('common.logout')}}</button>
+                                    <button type="submit" class="btn btn-warning btn-lg btn-fixed-width">{{__('common.logout')}}</button>
                                 </form>
                             @endguest
                         </div>
