@@ -49,9 +49,9 @@
         <div class="row">
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ firstList.date }}</h5>
-                <draggable v-model="firstList.data" group="elems" @add="noAdd" class="elem-list">
+                <draggable v-model="firstList.data" group="elems" class="elem-list">
                     <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
-                        {{ item.shipper_name }} <br>
+                        <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.stack_point }} - {{ item.down_point }} <br>
                         {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -61,9 +61,9 @@
             </div>
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ secondList.date }}</h5>
-                <draggable v-model="secondList.data" group="elems" @add="noAdd" class="elem-list">
+                <draggable v-model="secondList.data" group="elems" class="elem-list">
                     <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
-                        {{ item.shipper_name }} <br>
+                        <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.down_point }} - {{ item.stack_point }} <br>
                         {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -101,7 +101,7 @@
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
                                     </button>
-                                    {{ item.shipper_name }} <br>
+                                    <strong>{{ item.shipper_name }}</strong> <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -117,7 +117,7 @@
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
                                     </button>
-                                    {{ item.shipper_name }} <br>
+                                    <strong>{{ item.shipper_name }}</strong> <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
@@ -133,7 +133,7 @@
                                             aria-label="Close">
                                         <span aria-hidden="true" class="text-danger">&times;</span>
                                     </button>
-                                    {{ item.shipper_name }} <br>
+                                    <strong>{{ item.shipper_name }}</strong> <br>
                                     {{ item.down_date }} {{ item.down_time }} <br>
                                     {{ item.down_point }} - {{ item.stack_point }} <br>
                                     {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
