@@ -59,7 +59,7 @@
                         <label for="day">{{__('payment.payment_date')}}</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="day" v-model="filter.day" class="form-control" required>
+                        <select id="day" v-model="filter.day" class="form-control" style="width: 60px;" required>
                             <option value=""></option>
                             <option v-for="day in dayCount" :value="day">
                                 {{ day }}
