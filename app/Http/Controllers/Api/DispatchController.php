@@ -18,7 +18,6 @@ class DispatchController extends Controller
      */
     public function index(Request $request)
     {
-        \DB::enableQueryLog(); // Enable query log
         $result = [];
 
         $firstDate = $request->get('date');
@@ -107,7 +106,6 @@ class DispatchController extends Controller
             $tableDriverList[] = $driver->driver_id;
         }
         $result['tableDriverList'] = $tableDriverList;
-        $result['dispatchesSql'] = \DB::getQueryLog();
         return response()->json($result);
     }
 
@@ -174,11 +172,13 @@ class DispatchController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $dispatch = Dispatch::create($data);
-        if($dispatch){
-            $stmt = \DB::update('UPDATE items SET dispatch_status=? WHERE item_id=?',[Item::DISPATCH_STATUS_IN_DISPATCH,$dispatch->item_id]);
+        foreach($data as $item){
+            $dispatch = Dispatch::create($item);
+            if($dispatch){
+                $stmt = \DB::update('UPDATE items SET dispatch_status=? WHERE item_id=?',[Item::DISPATCH_STATUS_IN_DISPATCH,$dispatch->item_id]);
+            }
         }
-        return response()->json($dispatch, 201);
+        return response()->json($data, 201);
     }
 
     /**

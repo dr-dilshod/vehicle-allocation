@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-5">
                             <div class="form-group d-flex">
-                                <label for="dispatch_day">{{__('dispatch.dispatch_day')}}</label>
+                                <label for="dispatch_day" class="mt-2">{{__('dispatch.dispatch_day')}}</label>
                                 <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ firstList.date }}</h5>
-                <draggable v-model="firstList.data" group="elems" @add="noAdd" class="elem-list">
+                <draggable v-model="firstList.data" group="elems" class="elem-list">
                     <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
@@ -61,7 +61,7 @@
             </div>
             <div class="col-2">
                 <h5 class="text-center pt-1">{{ secondList.date }}</h5>
-                <draggable v-model="secondList.data" group="elems" @add="noAdd" class="elem-list">
+                <draggable v-model="secondList.data" group="elems" class="elem-list">
                     <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         {{ item.shipper_name }} <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
@@ -94,7 +94,7 @@
                             </div>
                         </td>
                         <td style="width: 250px">
-                            <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" @add="add" ghost-class="new"
+                            <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" ghost-class="new"
                                        style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
@@ -230,6 +230,7 @@
                 secondList: [],
                 thirdList: [],
                 dispatch_day: '',
+                registerPostData: [],
                 options: {
                     monthFormat: "yyyy/MM",
                     weekday: "yyyy/MM/dd",
@@ -248,16 +249,8 @@
                     item_id: evt.added.element.item_id,
                     driver_id: driver_id,
                 };
-                axios.post(this.fetchUrl,postData)
-                    .then(response => {
-
-                    })
-                    .catch(function (error) {
-                        componentInstance.errorDialog(error);
-                    });
-            },
-            add(evt){
-                evt.item.classList += ' new';
+                this.registerPostData.push(postData);
+                $('div[data-item_id='+postData.item_id+']').addClass('new');
             },
             addNoon: function (evt) {
                 let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
@@ -266,13 +259,8 @@
                     item_id: evt.added.element.item_id,
                     driver_id: driver_id,
                 };
-                axios.post(this.fetchUrl,postData)
-                    .then(response => {
-
-                    })
-                    .catch(function (error) {
-                        componentInstance.errorDialog(error);
-                    });
+                this.registerPostData.push(postData);
+                $('div[data-item_id='+postData.item_id+']').addClass('new');
             },
             addNextProduct: function (evt) {
                 let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
@@ -281,20 +269,23 @@
                     item_id: evt.added.element.item_id,
                     driver_id: driver_id,
                 };
-                axios.post(this.fetchUrl,postData)
+                this.registerPostData.push(postData);
+                $('div[data-item_id='+postData.item_id+']').addClass('new');
+            },
+            register(){
+                let componentInstance = this;
+                if(this.registerPostData.length > 0){
+                    axios.post(this.fetchUrl,this.registerPostData)
                     .then(response => {
-
+                        componentInstance.registerPostData = [];
+                        componentInstance.createSuccessDialog();
+                        componentInstance.display();
+                        componentInstance.clearNewClass();
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
                     });
-            },
-            noAdd(evt){
-                evt.preventDefault();
-                return false;
-            },
-            register(){
-//                alert('register');
+                }
             },
             registerDriver(){
                 let componentInstance = this;
@@ -312,13 +303,20 @@
                     });
                 $('#addDriverModal').modal('toggle');
             },
+            clearNewClass(){
+                $('.fixed-header .elem').removeClass('new');
+            },
             print(){
                 let date = this.dispatch_day;
                 window.location.href = this.pdfUrl + '?date=' + date;
             },
             display(){
                 let date = this.dispatch_day;
-                let dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+                let dateString = '';
+                if(typeof date === 'object')
+                    dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+                else
+                    dateString = date;
                 this.fetchLists(dateString);
             },
             nextDay(){
@@ -348,17 +346,16 @@
                 let componentInstance = this;
                 axios.get(this.fetchUrl+'?date='+date)
                     .then(result => {
-                        this.dispatch_day = result.data.first_list.date;
-                        this.firstList = result.data.first_list;
-                        this.secondList = result.data.second_list;
-                        this.drivers = result.data.drivers;
-                        this.thirdList = result.data.dispatches;
-                        this.tableDriverList = result.data.tableDriverList;
+                        componentInstance.dispatch_day = result.data.first_list.date;
+                        componentInstance.firstList = result.data.first_list;
+                        componentInstance.secondList = result.data.second_list;
+                        componentInstance.drivers = result.data.drivers;
+                        componentInstance.thirdList = result.data.dispatches;
+                        componentInstance.tableDriverList = result.data.tableDriverList;
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
                     });
-                ;
             },
             fetchDriverTable(){
                 let componentInstance = this;
@@ -386,9 +383,6 @@
                     return driver.driver_name.match(this.driver_search);
                 });
             }
-        },
-        watch: {
-
         }
     }
 </script>
@@ -425,12 +419,14 @@
         display: inline;
     }
     .elem {
-        background: #9fdee6;
-        border-radius: 5px;
+        background: #dae3f3;
+        border-radius: 10px;
         margin: 4px;
+        padding: 7px;
+        font-size: 12px;
     }
     .new {
-        background: #c0eebd;
+        background: #e2f0d9;
     }
     .vdp-datepicker{
         display: inline-block;
