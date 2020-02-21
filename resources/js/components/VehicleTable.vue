@@ -24,7 +24,7 @@
                     <label for="company_name">{{__('vehicle.company_name')}}</label>
                 </div>
                 <div class="form-group ml-3">
-                    <select name="company_name" id="company_name" v-model="company_name" class="form-control">
+                    <select name="company_name" id="company_name" v-model="company_name" class="form-control" style="min-width: 200px">
                         <option value=""></option>
                         <option v-for="company in companies" :value="company.company_name">
                             {{ company.company_name }}
