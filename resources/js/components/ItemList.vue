@@ -4,14 +4,14 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
                 <h2 class="text-center">{{title}}</h2>
             </div>
-            <div class="col-2">
+            <div class="col-2 text-right">
                 <a :href="registrationUrl"
-                   class="btn btn-lg btn-danger btn-block btn-fixed-width">{{__('common.register')}}</a>
+                   class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}</a>
             </div>
         </div>
         <div class="row mt-2">
