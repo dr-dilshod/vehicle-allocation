@@ -58,7 +58,7 @@
 
         <ejs-grid ref="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="270"
-                  :frozenColumns="4"  >
+                  :frozenColumns="3"  >
             <e-columns>
                 <e-column field='shipper_no' :headerText='__("shipper.shipper_no")' width="100"></e-column>
                 <e-column :headerText='__("shipper.shipper")' width="150" :template="nameTemplate" :editTemplate="nameEditTemplate"></e-column>
