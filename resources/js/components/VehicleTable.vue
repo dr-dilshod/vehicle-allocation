@@ -72,7 +72,6 @@
         props: {
             backUrl: {type: String, required: true},
             title: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
             companyUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
         },
@@ -87,6 +86,7 @@
         mounted() {
             this.tableUtil = new TableUtil(this);
             this.fetchCompanies(this.companyUrl);
+            this.fetchData();
         },
         methods: {
             actionBegin(args){
@@ -145,11 +145,11 @@
                         vehicleTable.errorDialog(error);
                     });
             },
-            fetchData(url) {
+            fetchData() {
                 let grid = this.$refs.grid.ej2Instances;
-                axios.get(url)
-                    .then(data => {
-                        this.data = data.data.data;
+                axios.get(this.resourceUrl+'?company_name='+this.company_name)
+                    .then(response => {
+                        this.data = response.data;
                         if(this.data.length > 0)
                             grid.setProperties({
                                 frozenColumns: 4
@@ -167,7 +167,7 @@
                     });
             },
             search(){
-                return this.fetchData(this.fetchUrl+'?company_name='+this.company_name)
+                this.fetchData();
             },
             clear(){
                 this.company_name = '';

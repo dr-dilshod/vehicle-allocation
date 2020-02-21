@@ -15,11 +15,16 @@ class VehicleController extends Controller
      */
     public function index(Request $request)
     {
-        $company_name = $request->query('company_name');
-        $vehicles = Vehicle::where([
-            'company_name'=>$company_name,
-            'delete_flg'=>0
-        ])->orderBy('vehicle_no')->get();
+        $company_name = $request->query('company_name') ?: '';
+        if($company_name !== '')
+            $vehicles = Vehicle::where([
+                'company_name'=>$company_name,
+                'delete_flg'=>0
+            ])->orderBy('vehicle_no')->get();
+        else
+            $vehicles = Vehicle::where([
+                'delete_flg'=>0
+            ])->orderBy('vehicle_no')->get();
         return response()->json($vehicles,200);
     }
 
@@ -36,6 +41,7 @@ class VehicleController extends Controller
             ->get();
         return response()->json($companies, 200);
     }
+
     /**
      * Store a newly created resource in storage.
      *
