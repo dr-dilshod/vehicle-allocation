@@ -47,7 +47,7 @@
                 <e-column field='company_name' :headerText='__("vehicle.company_name")' width="150"></e-column>
                 <e-column field='company_kana_name' :headerText='__("vehicle.kana_name")' width="150"></e-column>
                 <e-column field='vehicle_company_abbreviation' :headerText='__("vehicle.company_abbr")'  width="150"></e-column>
-                <e-column field='vehicle_postal_code' textAlign="Center" :headerText='__("vehicle.postal_code")'  editType= 'numericedit' width="150"></e-column>
+                <e-column field='vehicle_postal_code' textAlign="Center" :headerText='__("vehicle.postal_code")' width="150"></e-column>
                 <e-column field='vehicle_address1' :headerText='__("vehicle.address")' width="200"></e-column>
                 <e-column field='vehicle_address2' :headerText='__("vehicle.address1")' width="200"></e-column>
                 <e-column field='vehicle_phone_number' :headerText='__("vehicle.phone")' width="200"></e-column>
