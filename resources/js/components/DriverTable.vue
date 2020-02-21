@@ -31,7 +31,7 @@
                 <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
                 <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
                 <e-column field='driver_pass' :headerText= '__("driver.password")' width="200"></e-column>
-                <e-column field='driver_id' :headerText='__("driver.driver_id")' :visible="false" :isPrimaryKey="true" :allowEditing='false' width="120"></e-column>
+                <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0" ></e-column>
             </e-columns>
         </ejs-grid>
     </div>
