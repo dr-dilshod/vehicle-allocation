@@ -48,6 +48,8 @@ class Driver extends Authenticatable
         'maximum_Loading' => 'max:60',
         'vehicle_no3' => 'max:15',
         'driver_remark' => 'max:255',
+        'search_flg' => 'max:1',
+        'admin_flg' => 'max:1',
     ];
 
     /**

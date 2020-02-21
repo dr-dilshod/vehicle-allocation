@@ -33,7 +33,7 @@ class DriverController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'driver_no' => ['unique:drivers,driver_no,NULL,NULL,delete_flg,0'],
+            'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
         ]);
         $data = $request->validate(Driver::validationRules);
         $data['driver_pass'] = Hash::make($data['driver_pass']);
@@ -66,7 +66,7 @@ class DriverController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'driver_no' => Rule::unique('drivers','driver_no')->ignore($id,'driver_id'),
+            'driver_no' => Rule::unique('drivers','driver_no')->where('delete_flg', 0)->ignore($id,'driver_id')
         ]);
         $data = $request->validate(Driver::validationRules);
         $driver = Driver::findOrFail($id);
