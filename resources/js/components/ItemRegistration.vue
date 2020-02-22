@@ -3,8 +3,8 @@
         <div id="item-registration">
             <div class="row">
                 <div class="col-2">
-                    <a :href="backUrl"
-                       class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
+                    <button type="submit" @click.prevent="back"
+                       class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</button>
                 </div>
                 <div class="col-2">
                     <h6 class="text-center text-danger">* {{__('common.edit')}}</h6>
@@ -32,7 +32,7 @@
                                 <label for="stack_date">{{__('item.stack_date')}}</label>
                             </td>
                             <td width="25%">
-                                <datepicker v-model="itemData.stack_date" id="stack_date" name="stack_date" :bootstrap-styling="true"
+                                <datepicker v-model="itemData.stack_date" id="stack_date" name="stack_date" :bootstrap-styling="true" v-on:change="notify"
                                            :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
                             </td>
@@ -70,7 +70,7 @@
                                 <label for="down_date">{{__('item.down_date')}}</label>
                             </td>
                             <td>
-                                <datepicker v-model="itemData.down_date" id="down_date" name="down_date" :bootstrap-styling="true"
+                                <datepicker v-model="itemData.down_date" id="down_date" name="down_date" :bootstrap-styling="true" v-on:change="notify"
                                             :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
                             </td>
@@ -136,7 +136,7 @@
                                 <label for="stack_point">{{__('item.stack_point')}}</label>
                             </td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice"
+                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice" v-on:change="notify"
                                        v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
                             <td class="text-center">~</td>
@@ -146,7 +146,7 @@
                             </td>
                             <td colspan="3">
                                 <input id="down_point" for="down_point" type="text" placeholder=""
-                                       class="form-control" v-on:focusout="calcUnitPrice"
+                                       class="form-control" v-on:focusout="calcUnitPrice" v-on:change="notify"
                                        v-model="itemData.down_point" required/>
                             </td>
                         </tr>
@@ -164,7 +164,7 @@
                             </td>
                             <td colspan="2">
                                 <select name="empty_pl" id="empty_pl" v-model="itemData.empty_pl"
-                                        class="form-control">
+                                        class="form-control" v-on:change="notify">
                                     <option value=""></option>
                                     <option value="1">{{__('item.yes')}}</option>
                                     <option value="0">{{__('item.none')}}</option>
@@ -175,13 +175,13 @@
                             <td class="text-right"><label for="per_ton">{{__('item.per_ton')}}</label></td>
                             <td>
                                 <input id="per_ton" type="text" placeholder="" class="form-control"
-                                       v-model="per_ton"/>
+                                       v-model="per_ton" v-on:change="notify"/>
                             </td>
                             <td class="text-center">{{__('item.yen')}}</td>
                             <td><span class="text-center">x</span></td>
                             <td colspan="3">
                                 <input type="text" placeholder="" class="form-control" id="ton"
-                                       v-model="ton" value=""/>
+                                       v-model="ton" value="" v-on:change="notify"/>
                             </td>
                             <td><span class="text-right">t</span></td>
                         </tr>
@@ -204,7 +204,7 @@
                         <tr>
                             <td class="text-right"><label for="vehicle_no3">{{__('item.vehicle_no')}}</label></td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" id="vehicle_no3"
+                                <input type="text" placeholder="" class="form-control" id="vehicle_no3" v-on:change="notify"
                                        v-model="itemData.vehicle_no3"/>
                             </td>
                             <td></td>
@@ -238,7 +238,7 @@
                                 <label for="vehicle_payment">{{__('item.rental_vehicle_payment')}}</label>
                             </td>
                             <td colspan="2">
-                                <input type="text" class="form-control" id="vehicle_payment"
+                                <input type="text" class="form-control" id="vehicle_payment" v-on:change="notify"
                                        v-model="itemData.vehicle_payment"/>
                             </td>
                             <td><span class="text-right">{{__('item.yen')}}</span></td>
@@ -246,7 +246,7 @@
                         <tr>
                             <td class="text-right"><label for="item_remark">{{__('item.remarks')}}</label></td>
                             <td colspan="6">
-                                <textarea rows="3" class="form-control" id="item_remark"
+                                <textarea rows="3" class="form-control" id="item_remark" v-on:change="notify"
                                       v-model="itemData.item_remark"></textarea>
                             </td>
                         </tr>
@@ -317,6 +317,7 @@
                 per_ton: '',
                 per_vehicle: '',
                 ton: '',
+                anyFieldChanged: 0,
                 stack_time_hour: '',
                 stack_time_min: '',
                 down_time_hour: '',
@@ -342,6 +343,9 @@
         },
 
         methods: {
+            notify() {
+                this.anyFieldChanged = 1;
+            },
             fetchEditData(){
                 axios.get(this.resourceUrl + "/" + this.itemId)
                     .then(response => {
@@ -355,6 +359,7 @@
                     });
             },
             setDriverName() {
+                this.anyFieldChanged = 1;
                 for (let i = 0; i < this.drivers.length; i++) {
                     if (this.itemData.driver_id === this.drivers[i].driver_id) {
                         this.itemData.item_driver_name = this.drivers[i].driver_name;
@@ -363,6 +368,7 @@
                 }
             },
             setShipperName() {
+                this.anyFieldChanged = 1;
                 for (let i = 0; i < this.shippers.length; i++) {
                     if (this.itemData.shipper_id === this.shippers[i].shipper_id) {
                         this.itemData.shipper_name = this.shippers[i].shipper_name1 + " " + this.shippers[i].shipper_name2;
@@ -372,6 +378,7 @@
                 this.calcUnitPrice();
             },
             setVehicleName() {
+                this.anyFieldChanged = 1;
                 for (let i = 0; i < this.vehicles.length; i++) {
                     if (this.itemData.vehicle_id === this.vehicles[i].vehicle_id) {
                         this.itemData.item_vehicle = this.vehicles[i].company_name;
@@ -379,9 +386,11 @@
                 }
             },
             setWeight() {
+                this.anyFieldChanged = 1;
                 this.ton = this.itemData.weight;
             },
             perTonChange() {
+                this.anyFieldChanged = 1;
                 if(this.per_ton === '' && this.ton === '') {
                     document.getElementById('per_vehicle').disabled = false;
                 } else {
@@ -390,6 +399,7 @@
                 this.calcItemPrice();
             },
             calcItemPrice(){
+                this.anyFieldChanged = 1;
                 if(this.per_ton !== '' && this.ton !== ''){
                     this.itemData.item_price = this.per_ton * this.ton;
                 } else
@@ -398,6 +408,7 @@
                     }
             },
             calcUnitPrice() {
+                this.anyFieldChanged = 1;
                 let component = this;
                 if ((this.vehicle_model!=='') && (this.itemData.shipper_id!=='')
                 && (this.itemData.stack_point!=='') && (this.itemData.down_point!=='')) {
@@ -416,6 +427,7 @@
                     }
             },
             perVehicleChange() {
+                this.anyFieldChanged = 1;
                 if (this.per_vehicle == '') {
                     document.getElementById('per_ton').disabled = false;
                     document.getElementById('ton').disabled = false;
@@ -426,6 +438,7 @@
                 }
             },
             timeFormatter() {
+                this.anyFieldChanged = 1;
                 this.itemData.stack_time = document.getElementById('stack_time_hour').value
                     + ':' + document.getElementById('stack_time_min').value;
                 this.itemData.down_time = document.getElementById('down_time_hour').value
@@ -459,6 +472,26 @@
                     this.stack_time_min = "";
                     this.down_time_hour = "";
                     this.down_time_min = "";
+                }
+            },
+            back(){
+                if (this.itemId !== undefined && this.anyFieldChanged == 1) {
+                    this.$fire({
+                        title: '編集のキャンセル。',
+                        text: '編集中のデータを破棄して前の画面に戻りますか？',
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: this.__('common.ok'),
+                        cancelButtonText: this.__('common.cancel')
+                    }).then((result) => {
+                        if (result.value) {
+                            window.location.href = this.redirectUrl
+                        }
+                    });
+                } else {
+                    window.location.href = this.backUrl;
                 }
             },
             fetchShippers(url) {
@@ -545,6 +578,7 @@
                     '50', '51', '52', '53', '54', '55', '56', '57', '58', '59'];
             },
             setMandatory() {
+                this.anyFieldChanged = 1;
                 if(this.$refs.invoice.checked == true) {
                     this.showMandatory();
                 }
