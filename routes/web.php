@@ -38,6 +38,7 @@ Route::get('/driver/driver-table', 'DriverController@driverTable')->name('driver
 // Item
 Route::get('/item', 'ItemController@index')->name('item.index');
 Route::get('/item/getItemList', 'Api\ItemController@getItemList')->name('item.list');
+Route::get('/item/getInitializerList', 'Api\ItemController@getInitializerList')->name('item.list.initialize');
 Route::get('/item/create', 'ItemController@create')->name('item.create');
 Route::get('/item/register', 'ItemController@register')->name('item.register');
 Route::get('/item/edit', 'ItemController@edit')->name('item.edit');

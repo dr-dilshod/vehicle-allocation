@@ -131,6 +131,7 @@
             resourceUrl: {type: String, required: true},
             title: {type: String, required: true},
             itemEditUrl: {type: String, required: true},
+            initializerUrl: {type: String, required: true},
         },
         data() {
             return {
@@ -307,6 +308,7 @@
         mounted() {
             this.fetchShippers(this.shipperUrl);
             this.fetchVehicles(this.vehicleUrl);
+            this.fetchItem(this.initializerUrl);
         },
         methods: {
             actionBegin(args){

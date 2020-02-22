@@ -10,6 +10,7 @@
                    resource-url="{{route('api.item.index')}}"
                    title="{{__('item.item_list')}}"
                    item-edit-url="{{route('item.edit')}}"
+                   initializer-url="{{route('item.list.initialize')}}"
         ></item-list>
     </div>
 @endsection
