@@ -27,6 +27,12 @@ class ItemController extends Controller
         return view('item.create');
     }
 
+    public function register()
+    {
+        return view('item.register');
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
