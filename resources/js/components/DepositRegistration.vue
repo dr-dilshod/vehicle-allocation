@@ -179,7 +179,7 @@
                     day : ''
                 },
                 shippers : [],
-                months : [this.__('deposit.january'), this.__('deposit.february'),this.__('deposit.march'),this.__('deposit.april'), this.__('deposit.may'), this.__('deposit.june'), this.__('deposit.july'), this.__('deposit.august'), this.__('deposit.september'), this.__('deposit.october'), this.__('deposit.november'), this.__('deposit.december')],
+                months : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 dayCount : 0,
                 options: {
                     monthFormat: "yyyy/MM",

@@ -179,7 +179,7 @@
                     day : ''
                 },
                 shippers : [],
-                months : [this.__('payment.january'), this.__('payment.february'),this.__('payment.march'),this.__('payment.april'), this.__('payment.may'), this.__('payment.june'), this.__('payment.july'), this.__('payment.august'), this.__('payment.september'), this.__('payment.october'), this.__('payment.november'), this.__('payment.december')],
+                months : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 dayCount : 0,
                 options: {
                     monthFormat: "yyyy/MM",
