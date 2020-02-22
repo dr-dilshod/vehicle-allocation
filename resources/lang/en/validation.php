@@ -285,6 +285,7 @@ return [
         'vehicle_type'=>'vehicle type',
         'payment_amount'=>'Payment amount',
         'deposit_amount'=>'Deposit amount',
+        'driver_no'=>'Drivero No',
         ],
 
 ];

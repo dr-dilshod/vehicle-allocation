@@ -286,7 +286,7 @@ return [
         'driver_pass'=>'ドライバーのパスワード ',
         'payment_amount'=>'支払金額 ',
         'deposit_amount'=>'入金額 ',
-
+        'driver_no'=>'ドライバー番号',
     ],
 
 ];
