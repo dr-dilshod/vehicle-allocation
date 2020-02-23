@@ -8,12 +8,10 @@
             <div class="col-8">
                 <h2 class="text-center">{{ title }}</h2>
             </div>
-            <div class="col-2">
-                <p class="text-right">
-                    <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-block btn-fixed-width">
-                        {{__('common.register')}}
-                    </button>
-                </p>
+            <div class="col-2 text-right">
+                <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-fixed-width">
+                    {{__('common.register')}}
+                </button>
             </div>
         </div>
         <div class="row mt-2 mb-2">
@@ -39,11 +37,8 @@
                     </div>
                 </form>
             </div>
-            <div class="col-2">
-                <p class="text-right">
-                    <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-block btn-fixed-width">{{__('dispatch.printing')}}
-                    </button>
-                </p>
+            <div class="col-2 text-right">
+                <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-fixed-width">{{__('dispatch.printing')}}</button>
             </div>
         </div>
         <div class="row">

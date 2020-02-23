@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * Vehicle CRUD
  */
 Route::get('/vehicle', 'Api\VehicleController@index')->name('api.vehicle.index');
+Route::get('/vehicle/companies', 'Api\VehicleController@getCompanies')->name('api.vehicle.companies');
 Route::get('/vehicle/{id}', 'Api\VehicleController@show')->name('api.vehicle.show');
 Route::post('/vehicle', 'Api\VehicleController@store')->name('api.vehicle.store');
 Route::put('/vehicle/{id}', 'Api\VehicleController@update')->name('api.vehicle.update');

@@ -24,7 +24,7 @@
                     <label for="company_name">{{__('vehicle.company_name')}}</label>
                 </div>
                 <div class="form-group ml-3">
-                    <select name="company_name" id="company_name" v-model="company_name" class="form-control">
+                    <select name="company_name" id="company_name" v-model="company_name" class="form-control" style="min-width: 200px">
                         <option value=""></option>
                         <option v-for="company in companies" :value="company.company_name">
                             {{ company.company_name }}
@@ -47,7 +47,7 @@
                 <e-column field='company_name' :headerText='__("vehicle.company_name")' width="150"></e-column>
                 <e-column field='company_kana_name' :headerText='__("vehicle.kana_name")' width="150"></e-column>
                 <e-column field='vehicle_company_abbreviation' :headerText='__("vehicle.company_abbr")'  width="150"></e-column>
-                <e-column field='vehicle_postal_code' textAlign="Center" :headerText='__("vehicle.postal_code")'  editType= 'numericedit' width="150"></e-column>
+                <e-column field='vehicle_postal_code' textAlign="Center" :headerText='__("vehicle.postal_code")' width="150"></e-column>
                 <e-column field='vehicle_address1' :headerText='__("vehicle.address")' width="200"></e-column>
                 <e-column field='vehicle_address2' :headerText='__("vehicle.address1")' width="200"></e-column>
                 <e-column field='vehicle_phone_number' :headerText='__("vehicle.phone")' width="200"></e-column>
@@ -72,7 +72,6 @@
         props: {
             backUrl: {type: String, required: true},
             title: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
             companyUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
         },
@@ -87,6 +86,7 @@
         mounted() {
             this.tableUtil = new TableUtil(this);
             this.fetchCompanies(this.companyUrl);
+            this.fetchData();
         },
         methods: {
             actionBegin(args){
@@ -145,11 +145,11 @@
                         vehicleTable.errorDialog(error);
                     });
             },
-            fetchData(url) {
+            fetchData() {
                 let grid = this.$refs.grid.ej2Instances;
-                axios.get(url)
-                    .then(data => {
-                        this.data = data.data.data;
+                axios.get(this.resourceUrl+'?company_name='+this.company_name)
+                    .then(response => {
+                        this.data = response.data;
                         if(this.data.length > 0)
                             grid.setProperties({
                                 frozenColumns: 4
@@ -167,7 +167,7 @@
                     });
             },
             search(){
-                return this.fetchData(this.fetchUrl+'?company_name='+this.company_name)
+                this.fetchData();
             },
             clear(){
                 this.company_name = '';

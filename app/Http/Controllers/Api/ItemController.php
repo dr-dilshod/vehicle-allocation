@@ -11,6 +11,7 @@ use App\Item;
 use App\Shipper;
 use App\UnitPrice;
 use App\Vehicle;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /**
@@ -204,6 +205,17 @@ class ItemController extends Controller
         if (!empty($down_point))
             $itemTable -> where('down_point', 'LIKE', '%'.$down_point.'%');
 
+        return response()->json($itemTable->get());
+    }
+
+    /**
+     * Get item list for initializing the item list
+     * when landing on the item list page
+     */
+    public function getInitializerList(Request $request)
+    {
+        $itemTable = Item::select()->where('delete_flg', 0)
+            -> where('stack_date', '>=', Carbon::today());
         return response()->json($itemTable->get());
     }
 

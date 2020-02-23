@@ -6,10 +6,11 @@
                    back-url="{{route('top')}}"
                    shipper-url="{{route('item.shippers.dropdown')}}"
                    vehicle-url="{{route('item.vehicleNumbers')}}"
-                   registration-url="{{route('item.create')}}"
+                   registration-url="{{route('item.register')}}"
                    resource-url="{{route('api.item.index')}}"
                    title="{{__('item.item_list')}}"
                    item-edit-url="{{route('item.edit')}}"
+                   initializer-url="{{route('item.list.initialize')}}"
         ></item-list>
     </div>
 @endsection

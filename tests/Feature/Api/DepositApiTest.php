@@ -12,72 +12,42 @@ class DepositApiTest extends TestCase
 {
     use WithoutMiddleware;
 
-    public function testIndex()
+    private $deposit;
+    public function setUp(): void
     {
-        $user = Driver::findOrFail(1);
+        parent::setUp();
+        $this->deposit = [
+            'shipper_id'=>2,
+            'deposit_day' => "2000-01-01 01:01:01",
+            "deposit_amount" => 3000,
+            'other' => 3000,
+            'fee' => 3000,
+            'delete_flg' => 0,
+            'create_id'=>Driver::orderBy('driver_id', 'DESC')->first()->driver_id,
+            'created_at' => "2000-01-01 01:01:01",
+            'update_id'=>Driver::orderBy('driver_id', 'DESC')->first()->driver_id,
+            'updated_at' => "2000-01-01 01:01:01"
 
-        $response = $this
-            ->actingAs($user)
-            ->json('GET', route('api.deposit.index'));
+        ];
+    }
+    /**
+     * test the database schema for the result of index page
+     */
+    public function testDepositSchema()
+    {
+        $deposit = factory(\App\Deposit::class)->create($this->deposit);
+        $depositInDB = Deposit::where('shipper_id', 2)
+            ->get()->first();
+        $response = $this->json('GET', route('deposit.filter', [1]));
         $response
             ->assertStatus(200)
-            ->assertJson([])
             ->assertJsonStructure([
-                'data' => [
-                    ['deposit_id','invoice_id', 'create_id', 'update_id', 'deposit_amount', 'fee', 'deposit_remark', 'delete_flg', 'created_at', 'updated_at']
+                '*' => [
+                    ['shipper_id', 'deposit_day', 'deposit_amount', 'other',
+                        'fee', 'delete_flg', 'create_id', 'update_id', 'created_at', 'updated_at']
                 ]
             ]);
-    }
-
-    public function testCreate(){
-        $user = Driver::findOrFail(1);
-        $deposit = factory(Deposit::class)->make();
-
-        $response = $this
-            ->actingAs($user)
-            ->json('POST', route('api.deposit.store'),$deposit->toArray());
-
-        $response->assertStatus(201)
-                    ->assertJsonStructure([
-                        'deposit_id','invoice_id', 'create_id', 'update_id', 'deposit_amount', 'fee', 'deposit_remark', 'delete_flg', 'created_at', 'updated_at'
-                    ]);
-    }
-
-    public function testShow(){
-        $user = Driver::findOrFail(1);
-        $deposit = factory(Deposit::class)->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->json('GET', route('api.deposit.show', [$deposit->deposit_id]));
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'deposit_id','invoice_id', 'create_id', 'update_id', 'deposit_amount', 'fee', 'deposit_remark', 'delete_flg', 'created_at', 'updated_at'
-            ]);
-    }
-
-    public function testUpdate(){
-        $user = Driver::findOrFail(1);
-        $id = factory(Deposit::class)->create()->deposit_id;
-        $deposit = factory(Deposit::class)->make();
-
-        $response = $this
-            ->actingAs($user)
-            ->json('PUT', route('api.deposit.update',[$id]), $deposit->toArray());
-
-        $response->assertStatus(200);
-    }
-
-    public function testDelete(){
-        $user = Driver::findOrFail(1);
-        $id = factory(Deposit::class)->create()->deposit_id;
-
-        $response = $this
-            ->actingAs($user)
-            ->json('DELETE',route('api.deposit.destroy',[$id]));
-
-        $response->assertStatus(204);
+        Deposit::where('deposit_id', $depositInDB->deposit_id)->delete();
     }
 
 }
