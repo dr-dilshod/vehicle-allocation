@@ -196,13 +196,13 @@ class ItemController extends Controller
             $itemTable -> where('status', $status);
 
         if (!empty($stack_date))
-            $itemTable -> where('stack_date', $stack_date);
+            $itemTable -> whereDate('stack_date', $stack_date);
 
         if (!empty($stack_point))
-            $itemTable -> where('stack_point', $stack_point);
+            $itemTable -> where('stack_point','LIKE', '%'.$stack_point.'%');
 
         if (!empty($down_point))
-            $itemTable -> where('down_point', $down_point);
+            $itemTable -> where('down_point', 'LIKE', '%'.$down_point.'%');
 
         return response()->json($itemTable->get());
     }

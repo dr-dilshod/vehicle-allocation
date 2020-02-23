@@ -148,7 +148,7 @@
                 selected: {},
                 editSettings: { allowEditing: true, allowAdding: false, allowDeleting: false},
                 toolbar: ['Edit'],
-                dateFormat: {type:'date', format:'dd/MM/yyyy'},
+                dateFormat: {type:'date', format:'yyyy/MM/dd'},
                 options: {
                     monthFormat: "yyyy/MM",
                     weekday: "yyyy/MM/dd",
