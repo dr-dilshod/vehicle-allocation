@@ -293,6 +293,13 @@ return [
         'shipper_company_abbreviation'=>'Shipper company abbreviation',
         'shipper_kana_name1'=>'Shipper kana name 1 ',
         'shipper_kana_name2'=>'Shipper kana name 2 ',
+        'company_kana_name'=>'Company kana name',
+        'vehicle_company_abbreviation'=>'Vehicle company abbreviation',
+        'vehicle_postal_code'=>'Vehicle postal code',
+        'vehicle_address1'=>'Vehicle address 1',
+        'vehicle_address2'=>'Vehicle address 2',
+        'vehicle_phone_number'=>'Vehicle phone number',
+        'vehicle_fax_number'=>'vehicle fax number',
         ],
 
 ];
