@@ -301,6 +301,13 @@ return [
         'vehicle_address2'=>'車両アドレス2 ',
         'vehicle_phone_number'=>'車両の電話番号 ',
         'vehicle_fax_number'=>'車両ファックス番号 ',
+        'item_remark'=>'アイテム備考',
+        'vehicle_payment'=>'車両支払い',
+        'item_driver_name'=>'アイテムドライバー名',
+        'item_vehicle'=>'アイテム車両',
+        'item_completion_date'=>'アイテム完成日',
+        'down_invoice'=>'ダウン請求書',
+
     ],
 
 ];

@@ -300,6 +300,13 @@ return [
         'vehicle_address2'=>'Vehicle address 2',
         'vehicle_phone_number'=>'Vehicle phone number',
         'vehicle_fax_number'=>'vehicle fax number',
-        ],
+        'item_remark'=>'Item Remark',
+        'vehicle_payment'=>'Vehicle Payment',
+        'item_driver_name'=>'Item driver name',
+        'item_vehicle'=>'Item vehicle',
+        'item_completion_date'=>'Item completion date',
+        'down_invoice'=>'Down invoice',
+
+    ],
 
 ];
