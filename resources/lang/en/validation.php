@@ -286,7 +286,7 @@ return [
         'payment_amount'=>'Payment amount',
         'deposit_amount'=>'Deposit amount',
         'driver_no'=>'Drivero No',
-        'driver-remark'=>'Driver Remark',
+        'driver_remark'=>'Driver Remark',
         ],
 
 ];
