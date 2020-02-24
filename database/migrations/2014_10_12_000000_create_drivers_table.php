@@ -14,18 +14,18 @@ class CreateDriversTable extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->bigIncrements('driver_id');
-            $table->string('driver_no')->nullable();
-            $table->string('driver_pass')->nullable();
-            $table->string('driver_name')->nullable();
-            $table->string('driver_mobile_number')->nullable();
-            $table->string('maximum_Loading')->nullable();
+            $table->string('driver_no', 4)->nullable();
+            $table->string('driver_pass', 15)->nullable();
+            $table->string('driver_name', 60)->nullable();
+            $table->string('driver_mobile_number', 13)->nullable();
+            $table->string('maximum_Loading', 5)->nullable();
             $table->tinyInteger('search_flg')->default(0);
             $table->tinyInteger('admin_flg')->default(0);
-            $table->string('vehicle_no1')->nullable();
-            $table->string('vehicle_no2')->nullable();
-            $table->string('vehicle_no3')->nullable();
-            $table->string('vehicle_type')->nullable();
-            $table->string('driver_remark')->nullable();
+            $table->string('vehicle_no1', 3)->nullable();
+            $table->string('vehicle_no2', 4)->nullable();
+            $table->string('vehicle_no3', 10)->nullable();
+            $table->string('vehicle_type', 10)->nullable();
+            $table->string('driver_remark', 255)->nullable();
             $table->tinyInteger('delete_flg')->default(0);
             $table->bigInteger('create_id')->unsigned()->nullable();
             $table->bigInteger('update_id')->unsigned()->nullable();

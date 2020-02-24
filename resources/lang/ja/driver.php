@@ -27,6 +27,6 @@ return [
     'driver_id'=>'ドライバーID',
     'administrator'=>'管理者',
     'user'=>'ユーザー',
-    'show'=>'公演',
-    'hide'=>'隠す',
+    'show'=>'表示',
+    'hide'=>'非表示',
 ];
