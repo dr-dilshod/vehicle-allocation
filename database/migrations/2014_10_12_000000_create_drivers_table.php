@@ -23,7 +23,7 @@ class CreateDriversTable extends Migration
             $table->tinyInteger('admin_flg')->default(0);
             $table->string('vehicle_no1', 3)->nullable();
             $table->string('vehicle_no2', 4)->nullable();
-            $table->string('vehicle_no3', 10)->nullable();
+            $table->string('vehicle_no3', 4)->nullable();
             $table->string('vehicle_type', 10)->nullable();
             $table->string('driver_remark', 255)->nullable();
             $table->tinyInteger('delete_flg')->default(0);
