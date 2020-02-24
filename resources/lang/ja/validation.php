@@ -288,6 +288,9 @@ return [
         'deposit_amount'=>'入金額 ',
         'driver_no'=>'ドライバー番号 ',
         'driver_remark'=>'ドライバーの発言 ',
+        'driver_mobile_number'=>'ドライバー携帯番号',
+        'maximum_Loading'=>'最大積載量',
+        'vehicle_no3'=>'車両番号3',
     ],
 
 ];

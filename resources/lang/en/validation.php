@@ -287,6 +287,9 @@ return [
         'deposit_amount'=>'Deposit amount',
         'driver_no'=>'Drivero No',
         'driver_remark'=>'Driver Remark',
+        'driver_mobile_number'=>'Driver mobile number',
+        'maximum_Loading'=>'Maximum Loading',
+        'vehicle_no3'=>'Vehicle No3',
         ],
 
 ];
