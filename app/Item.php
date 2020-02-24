@@ -79,42 +79,26 @@ class Item extends Model
         'shipper_id' => 'bail|required|exists:shippers,shipper_id|numeric',
         'driver_id' => 'nullable|exists:drivers,driver_id|numeric',
         'vehicle_id' => 'nullable|exists:vehicles,vehicle_id|numeric',
-        'status' => 'max:1|min:0',
+        'status' => 'nullable|max:1|min:0',
         'stack_date' => 'required',
         'stack_time' => 'required',
         'down_date' => 'required',
         'down_time' => 'required',
-        'down_invoice' => 'max:1|min:0',
+        'down_invoice' => 'nullable|max:1|min:0',
         'stack_point' => 'required|string|max:60',
         'down_point' => 'required|string|max:60',
-        'weight' => 'integer|max:9999999999',
-        'empty_pl' => 'max:1|min:0',
-        'item_price' => 'integer|max:9999999999',
-        'item_driver_name' => 'string|max:60',
-        'vehicle_no3' => 'string|max:4',
-        'shipper_name' => 'string|max:60',
-        'item_vehicle' => 'string|max:60',
-        'vehicle_payment' => 'integer|max:9999999999',
+        'weight' => 'nullable|integer|max:9999999999',
+        'empty_pl' => 'nullable|max:1|min:0',
+        'item_price' => 'nullable|integer|max:9999999999',
+        'item_driver_name' => 'nullable|string|max:60',
+        'vehicle_no3' => 'nullable|string|max:4',
+        'shipper_name' => 'nullable|string|max:60',
+        'item_vehicle' => 'nullable|string|max:60',
+        'vehicle_payment' => 'nullable|integer|max:9999999999',
         'delete_flg' => 'min:0|max:1',
-        'item_remark' => 'max:255',
+        'item_remark' => 'nullable|max:255',
     ];
 
-    /**
-     * @var array
-     */
-    public static $editValidationRules = [
-        'vehicle_no' => 'required|max:4',
-        'company_name' => 'required|max:191',
-        'company_kana_name' => 'max:191',
-        'vehicle_company_abbreviation' => 'max:191',
-        'vehicle_postal_code' => 'max:191',
-        'vehicle_address1' => 'max:191',
-        'vehicle_address2' => 'max:191',
-        'offset' => 'max:1|min:0',
-        'vehicle_phone_number' => 'max:15',
-        'vehicle_fax_number' => 'max:15',
-        'delete_flg' => 'min:0|max:1',
-    ];
 
 
     /**
