@@ -291,6 +291,9 @@ return [
         'driver_mobile_number'=>'ドライバー携帯番号',
         'maximum_Loading'=>'最大積載量',
         'vehicle_no3'=>'車両番号3',
+        'shipper_company_abbreviation'=>'配送会社の略称',
+        'shipper_kana_name1'=>'ふりがな1',
+        'shipper_kana_name2'=>'ふりがな2',
     ],
 
 ];

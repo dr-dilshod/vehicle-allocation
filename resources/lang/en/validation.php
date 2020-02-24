@@ -290,6 +290,9 @@ return [
         'driver_mobile_number'=>'Driver mobile number',
         'maximum_Loading'=>'Maximum Loading',
         'vehicle_no3'=>'Vehicle No3',
+        'shipper_company_abbreviation'=>'Shipper company abbreviation',
+        'shipper_kana_name1'=>'Shipper kana name 1 ',
+        'shipper_kana_name2'=>'Shipper kana name 2 ',
         ],
 
 ];
