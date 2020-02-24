@@ -71,7 +71,7 @@
                 <e-column field='fax_number' :headerText='__("shipper.fax_number")' width="200" ></e-column>
                 <e-column field='closing_date' :headerText='__("shipper.closing_date")' type="number" min="0" step="1" editType= 'numericedit' :edit='numericParams' width="150"></e-column>
                 <e-column field='payment_date' :headerText='__("shipper.payment_date")' type='date' format= 'dd/MM/yyyy'
-                          editType = 'datepickeredit' :editTemplate="editTemplate" width="200" ></e-column>
+                          editType = 'datepickeredit' :editTemplate="editTemplate" width="200" :visible=false></e-column>
                 <e-column field='shipper_id' :headerText='__("shipper.shipper_id")' :isPrimaryKey="true" :visible=false></e-column>
             </e-columns>
         </ejs-grid>
