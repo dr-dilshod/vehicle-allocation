@@ -69,7 +69,8 @@
                 <e-column field='address2' :headerText='__("shipper.address2")' width="200" ></e-column>
                 <e-column field='phone_number' :headerText='__("shipper.phone_number")' width="200"></e-column>
                 <e-column field='fax_number' :headerText='__("shipper.fax_number")' width="200" ></e-column>
-                <e-column field='closing_date' :headerText='__("shipper.closing_date")' type="number" min="0" step="1" editType= 'numericedit' :edit='numericParams' width="150"></e-column>
+                <e-column field='closing_date' :headerText='__("shipper.closing_date")' editType='dropdownedit'
+                          :edit="closingDate" :template="closingDateTemplate" width="150"></e-column>
                 <e-column field='payment_date' :headerText='__("shipper.payment_date")' type='date' format= 'dd/MM/yyyy'
                           editType = 'datepickeredit' :editTemplate="editTemplate" width="200" ></e-column>
                 <e-column field='shipper_id' :headerText='__("shipper.shipper_id")' :isPrimaryKey="true" :visible=false></e-column>
@@ -85,6 +86,9 @@
     import Datepicker from "vuejs-datepicker";
     import { DatePickerPlugin } from "@syncfusion/ej2-vue-calendars";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
+    import { DropDownList } from "@syncfusion/ej2-dropdowns";
+    import { Query } from '@syncfusion/ej2-data';
+
 
     Vue.use( GridPlugin );
 
@@ -145,7 +149,18 @@
                         width : 100,
                         validationRules : {maxLength:[(args) => {return args['value'].length <= 60;}, this.__('shipper.at_most_60_letters')]},
                     }
-                ]
+                ],
+                closingDate : {
+                    params:   {
+                        dataSource: [
+                            {value: "0", text:""},
+                            {value: "1", text:"20 days"},
+                            {value: "2", text:"30 days"},
+                        ],
+                        fields: {text:"text",value:"value"},
+                        query: new Query(),
+                    }
+                }
             }
         },
         mounted() {
@@ -231,7 +246,17 @@
 
                 })}
             },
+            closingDateTemplate(){
+                return { template: Vue.component('closingEdit',{
+                    template : `<span>{{data.closing_date == 0 ? "" : data.closing_date == 1 ? "20 days":"30 days"}}</span>`,
+                    data() {
+                        return {
+                            data : {}
+                        }
+                    }
 
+                })}
+            },
 
             shipperNameUpdate(updatedShipper){
                 if(!updatedShipper.shipper_id){
