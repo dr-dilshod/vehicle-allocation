@@ -153,9 +153,9 @@
                 closingDate : {
                     params:   {
                         dataSource: [
-                            {value: "0", text:""},
-                            {value: "1", text:"20 days"},
-                            {value: "2", text:"30 days"},
+                            {value: "0", text: __("shipper.closing_date_combo.option1")},
+                            {value: "1", text: __("shipper.closing_date_combo.option2")},
+                            {value: "2", text: __("shipper.closing_date_combo.option3")},
                         ],
                         fields: {text:"text",value:"value"},
                         query: new Query(),
@@ -248,7 +248,10 @@
             },
             closingDateTemplate(){
                 return { template: Vue.component('closingEdit',{
-                    template : `<span>{{data.closing_date == 0 ? "" : data.closing_date == 1 ? "20 days":"30 days"}}</span>`,
+                    template : `<span> {{data.closing_date == 0 ?
+                                __("shipper.closing_date_combo.option1")
+                                : data.closing_date == 1 ? __("shipper.closing_date_combo.option2")
+                                :__("shipper.closing_date_combo.option3")}} </span>`,
                     data() {
                         return {
                             data : {}

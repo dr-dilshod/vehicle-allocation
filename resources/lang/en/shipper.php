@@ -17,4 +17,9 @@ return [
     'closing_date'=>'Closing date',
     'payment_date'=>'Payment date',
     'at_most_60_letters'=>'At most 60 letters',
+    'closing_date_combo'=>[
+        'option1' => ' ',
+        'option2' => '20 days',
+        'option3' => '30 days',
+    ],
 ];

@@ -16,4 +16,9 @@ return [
     'closing_date'=>'締日',
     'payment_date'=>'支払日',
     'at_most_60_letters'=>'最大60文字',
+    'closing_date_combo'=>[
+        'option1' => ' ',
+        'option2' => '20日',
+        'option3' => '30日',
+    ],
 ];
