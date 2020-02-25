@@ -356,10 +356,10 @@
                     });
             },
             search(){
-                if( this.stack_date === '' && this.vehicle_no3 === '' && this.status === '' && this.stack_date === '' &&
-                    this.stack_point === '' && this.down_point === '' && this.shipper_name === ''
-                )
-                    return ;
+                //if( this.stack_date === '' && this.vehicle_no3 === '' && this.status === '' && this.stack_date === '' &&
+                //    this.stack_point === '' && this.down_point === '' && this.shipper_name === ''
+                //)
+                //    return ;
                 let stack_date = this.stack_date;
                 let string_stack_date = "";
                 if(typeof stack_date === "object" && stack_date !== null)

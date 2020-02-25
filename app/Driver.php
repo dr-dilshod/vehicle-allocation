@@ -40,13 +40,13 @@ class Driver extends Authenticatable
 
     use BlameableTrait;
     const validationRules = [
-        'vehicle_type' => 'required',
+        'vehicle_type' => 'max:10',
         'driver_no' => 'required|max:4',
         'driver_name' => 'required|max:60',
-        'driver_pass' => 'required|max:60',
-        'driver_mobile_number' => 'max:60',
-        'maximum_Loading' => 'max:60',
-        'vehicle_no3' => 'max:15',
+        'driver_pass' => 'required|max:15',
+        'driver_mobile_number' => 'max:13',
+        'maximum_Loading' => 'max:5',
+        'vehicle_no3' => 'max:4',
         'driver_remark' => 'max:255',
         'search_flg' => 'max:1',
         'admin_flg' => 'max:1',

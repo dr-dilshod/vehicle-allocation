@@ -72,7 +72,7 @@
                 <e-column field='closing_date' :headerText='__("shipper.closing_date")' editType='dropdownedit'
                           :edit="closingDate" :template="closingDateTemplate" width="150"></e-column>
                 <e-column field='payment_date' :headerText='__("shipper.payment_date")' type='date' format= 'dd/MM/yyyy'
-                          editType = 'datepickeredit' :editTemplate="editTemplate" width="200" ></e-column>
+                          editType = 'datepickeredit' :editTemplate="editTemplate" width="200" :visible=false></e-column>
                 <e-column field='shipper_id' :headerText='__("shipper.shipper_id")' :isPrimaryKey="true" :visible=false></e-column>
             </e-columns>
         </ejs-grid>

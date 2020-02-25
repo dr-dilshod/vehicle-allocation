@@ -56,7 +56,8 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $item = Item::create($request->all());
+        $data = $request->validate(Item::$validationRules);
+        $item = Item::create($data);
         $this->createInvoice($item);
         return response()->json($item);
     }
@@ -105,9 +106,9 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $item = Item::findOrFail($id);
-        $item->update($request->all());
+        $data = $request->validate(Item::$validationRules);
+        $item->update($data);
         $this->createInvoice($item);
         return response()->json($item, 200);
     }
