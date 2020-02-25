@@ -7,7 +7,7 @@
  */
 return [
 
-
+    'down_data_is_higher' => '停止日はスタック日より小さくすることはできません。',
     'unloading_place' => 'Unloading place',
     'stack_date' => '積日',
     'down_date' => '降日',
@@ -33,10 +33,10 @@ return [
     'item_price' => '売上',
     'item_list' => '案件一覧',
     'item_registration' => '案件登録',
-    'required' => 'required',
+    'required' => '必須登録',
     'yen' => '円',
     'status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'=>'スタックと現在の日付が同じでない場合、選択のステータスは未完了に変更されます。',
-    'yes'=>'はい',
+    'yes'=>'あり',
     'none'=>'なし',
     'completed'=>'完了',
     'incomplete'=>'未完了',

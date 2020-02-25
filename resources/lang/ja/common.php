@@ -12,7 +12,7 @@ return  [
     'admin' => '管理者',
     'password' => 'パスワード',
     'select_input' => '--セレクト--',
-    'delete' => 'デリート',
+    'delete' => '削除',
     'username'=>'ユーザーNO',
     'exit'=>'出口',
     'exit_from_edit_mode'=>'編集モードを終了します',
