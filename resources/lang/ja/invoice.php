@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'print_billing_date' => '請求日を印刷する',
+    'print_billing_date' => '請求日印刷',
     'invoice_list' => '請求一覧',
     'billing_month' => '請求日印刷',
     'list_printing' => '一覧印刷',
@@ -28,9 +28,9 @@ return [
     '20th'=>'20日',
     '30th'=>'30日',
     'stack_date'=>'積日',
-    'print'=>'刷る',
+    'print'=>'印刷',
     'cancel'=>'キャンセル',
-    'select_the_billing_date_you_want_to_print'=>'印刷する請求日を選択します',
+    'select_the_billing_date_you_want_to_print'=>'印刷したい請求年月を選択し、印刷する請求日を選択してください。',
     'year_and_month'=>'年月',
     'selected_item_is_added_to_invoice_list'=>'選択したアイテムが請求書リストに追加されます。',
     'please_select_an_item_to_add_to_invoice_list'=>'請求書リストに追加するアイテムを選択してください。',
