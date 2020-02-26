@@ -28,7 +28,7 @@
                                    class="col-4 col-form-label ">{{__('unit_prices.shipper')}}</label>
                             <div class="col-8">
                                 <select name="shipper" id="shipperSelect" ref="shipperSelect" class="form-control">
-                                    <option value="0">{{__('common.select_input')}}</option>
+                                    <option value="0"></option>
                                     <option v-for="shipper in shippers" :value="shipper.id">
                                         {{shipper.shipper}}
                                     </option>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <button v-on:click="search" class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
+                            <button v-on:click="search(true)" class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
                                 {{__('common.search')}}
                             </button>
                         </div>
@@ -154,6 +154,7 @@
             this.fetchShipperNames(`${this.resourceUrl}/shipper-names`);
         },
         mounted() {
+            this.search();
             this.tableUtil = new TableUtil(this);
             this.$refs.grid.hideSpinner();
         },
@@ -196,9 +197,13 @@
                     })
                 };
             },
-            search() {
-                let id = this.$refs.shipperSelect.value;
-                axios.get(`${this.resourceUrl}/?shipper_id=${id}`)
+            search(withShipper = false) {
+                let query = '';
+                if (withShipper) {
+                    let id = this.$refs.shipperSelect.value;
+                    query = `?shipper_id=${id}`;
+                }
+                axios.get(`${this.resourceUrl}/${query}`)
                     .then(response => {
                         if (response.data && response.data.length > 0) {
                             this.data = response.data.map(e => {

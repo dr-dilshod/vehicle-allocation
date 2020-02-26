@@ -19,8 +19,10 @@ class UnitPriceController extends Controller
     public function index(Request $request)
     {
         $shipper_id = $request->get('shipper_id');
-        $unitPrices = UnitPrice::with('shipper')
-            ->where('shipper_id', '=', $shipper_id);
+        $unitPrices = UnitPrice::with('shipper');
+        if ($shipper_id) {
+            $unitPrices->where('shipper_id', '=', $shipper_id);
+        }
         return $unitPrices->where('delete_flg', 0)->get();
     }
 
@@ -68,8 +70,9 @@ class UnitPriceController extends Controller
     public function getDistrictShipperNames() {
         $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
             ->where('delete_flg', 0)
+            ->distinct()
             ->orderBy('shipper_name1', 'ASC')
-            ->get()->all();
+            ->get();
 
         return response()->json($shippers);
     }
