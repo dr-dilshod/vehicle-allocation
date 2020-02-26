@@ -206,6 +206,8 @@ class ItemController extends Controller
         if (!empty($down_point))
             $itemTable -> where('down_point', 'LIKE', '%'.$down_point.'%');
 
+        $itemTable->orderBy('stack_date','asc');
+
         return response()->json($itemTable->get());
     }
 
@@ -216,6 +218,7 @@ class ItemController extends Controller
     public function getInitializerList(Request $request)
     {
         $itemTable = Item::select()->where('delete_flg', 0)
+            -> orderBy('stack_date','asc')
             -> where('stack_date', '>=', Carbon::today());
         return response()->json($itemTable->get());
     }
@@ -255,6 +258,8 @@ class ItemController extends Controller
     {
         $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
             ->where('delete_flg',0)
+            ->orderBy('shipper_name1','asc')
+            ->orderBy('shipper_name2','asc')
             ->distinct()
             ->get();
         return response()->json($shippers);
@@ -283,6 +288,7 @@ class ItemController extends Controller
         $vehicles = Vehicle::distinct()
             ->select(['vehicle_id', 'vehicle_no', 'company_name'])
             ->where('delete_flg',0)
+            ->orderBy('company_name','asc')
             ->get();
         return response()->json($vehicles);
     }

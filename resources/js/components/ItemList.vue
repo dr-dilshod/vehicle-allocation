@@ -193,7 +193,7 @@
                                                     </div>
                                                     <div id="radio-group" class="text-left mt-5">
                                                         <form class="mt-3 ml-5">
-                                                            <input type="radio" v-model="stat" name="stat" id="dep_date" v-bind:value="data.stack_date">
+                                                            <input type="radio" v-model="stat" name="stat" id="dep_date" v-bind:value="data.stack_date" checked>
                                                             <label for="dep_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}} </label><br>
                                                             <div class="mt-3">
                                                             </div>
@@ -203,10 +203,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-center mt-4 mb-2">
-                                                    <button type="button" class="btn btn-modal btn-danger" @click="checkStatus(data.item_id)">
+                                                    <button type="button" class="btn btn-modal btn-danger btn-fixed-width" @click="checkStatus(data.item_id)">
                                                         {{__('common.register')}}
                                                     </button>
-                                                    <button type="button" class="btn btn-modal btn-warning ml-3" data-dismiss="modal">
+                                                    <button type="button" class="btn btn-modal btn-warning ml-3 btn-fixed-width" data-dismiss="modal">
                                                         {{__('common.cancel')}}
                                                     </button>
                                                 </div>
@@ -246,7 +246,7 @@
                             setTodayAsCompletion: function (id) {
                                 axios.get(this.resourceUrl + '/setTodayAsCompletion?id='+id)
                                     .then(response=>{
-                                        this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
+                                        //this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
                                         this.data.status = 1;
                                         this.data.item_completion_date = this.getDate();
