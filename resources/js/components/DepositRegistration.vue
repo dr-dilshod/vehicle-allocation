@@ -98,7 +98,7 @@
                 <td class="text-right">{{__('deposit.deposit_day')}}</td>
                 <td>
                     <datepicker v-model="deposit.deposit_day" :disabled="!registerMode" required
-                        :bootstrap-styling="true" :typeable="true" :format="options.weekday"
+                        :bootstrap-styling="true" :format="options.weekday"
                         :clear-button="true" :language="options.language.ja"></datepicker>
                 </td>
                 <td></td>

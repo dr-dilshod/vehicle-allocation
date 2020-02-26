@@ -33,7 +33,7 @@
                             </td>
                             <td width="25%">
                                 <datepicker v-model="itemData.stack_date" id="stack_date" name="stack_date" :bootstrap-styling="true" v-on:change="notify"
-                                           :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                           :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 required></datepicker>
                             </td>
                             <td width="5%"></td>
@@ -72,7 +72,7 @@
                             </td>
                             <td>
                                 <datepicker v-model="itemData.down_date" id="down_date" name="down_date" :bootstrap-styling="true" v-on:change="notify"
-                                            :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                             :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 required></datepicker>
                             </td>
                             <td></td>

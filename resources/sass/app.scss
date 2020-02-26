@@ -91,3 +91,6 @@
     color: #FFFFFF;
     background-color: #f1013a !important;
 }
+.form-control:disabled, .form-control[readonly] {
+    background-color: #FFFFFF;
+}

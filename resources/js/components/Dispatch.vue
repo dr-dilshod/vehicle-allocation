@@ -22,7 +22,7 @@
                             <div class="form-group d-flex">
                                 <label for="dispatch_day" class="mt-2">{{__('dispatch.dispatch_day')}}</label>&nbsp;&nbsp;&nbsp;
                                 <datepicker v-model="dispatch_day" id="dispatch_day" name="dispatch_day" :bootstrap-styling="true"
-                                            :typeable="true" :format="options.weekday" :clear-button="true" :language="options.language.ja"
+                                            :format="options.weekday" :clear-button="true" :language="options.language.ja"
                                 ></datepicker>
                             </div>
                         </div>

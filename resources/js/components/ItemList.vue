@@ -22,7 +22,7 @@
                         <td class="text-right">{{__('item.stack_date')}}</td>
                         <td>
                             <datepicker v-model="stack_date" :bootstrap-styling="true" id="stack_date" name="stack_date"
-                                        :typeable="true" :format="options.weekday" :clear-button="true"
+                                        :format="options.weekday" :clear-button="true"
                                         :language="options.language.ja">
                             </datepicker>
                         </td>
