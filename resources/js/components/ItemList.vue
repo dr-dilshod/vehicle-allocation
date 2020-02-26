@@ -11,7 +11,7 @@
             </div>
             <div class="col-2 text-right">
                 <a :href="registrationUrl"
-                   class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}</a>
+                   class="btn btn-lg btn-warning btn-fixed-width">{{__('item.new_registration')}}</a>
             </div>
         </div>
         <div class="row mt-2">
