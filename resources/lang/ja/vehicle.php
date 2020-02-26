@@ -18,6 +18,7 @@ return [
     'fax' => 'FAX番号',
     'offset' => '相殺',
     'remark' => '備考',
-
+    'yes' => '相殺',
+    'no' => 'なし'
 
 ];
