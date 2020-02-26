@@ -67,7 +67,7 @@
                           width="200"></e-column>
                 <e-column field='stack_point' :headerText="__('unit_prices.loading_port')" width="200"></e-column>
                 <e-column field='down_point' :headerText="__('unit_prices.drop_off')" width="200"></e-column>
-                <e-column field='type' :headerText="__('unit_prices.type')" width="100"></e-column>
+                <e-column field='type'  editType='dropdownedit' :edit="params.typeParams" :headerText="__('unit_prices.type')" width="100"></e-column>
                 <e-column field='price' :headerText="__('unit_prices.unit_price')" width="100"></e-column>
                 <e-column field='price_id' :headerText="__('unit_prices.unit_price_id')" width="5" :isPrimaryKey="true"
                           :visible=false></e-column>
@@ -130,6 +130,14 @@
                             allowFiltering: true,
                             dataSource: this.vehicle_types,
                             fields: {text: "vehicle_type", value: "vehicle_type"},
+                            query: new Query()
+                        }
+                    },
+                    typeParams: {
+                        params: {
+                            allowFiltering: true,
+                            dataSource: [{type: this.__('unit_prices.t')}, {type: this.__('unit_prices.unit')}],
+                            fields: {text: "type", value: "type"},
                             query: new Query()
                         }
                     }
