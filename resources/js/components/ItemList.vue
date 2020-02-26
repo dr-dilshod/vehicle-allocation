@@ -380,7 +380,6 @@
                 this.stack_point = '';
                 this.down_point = '';
                 this.shipper_name = '';
-                this.fetchItem(this.initializerUrl);
             },
         },
         provide: {
