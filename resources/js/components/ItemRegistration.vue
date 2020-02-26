@@ -608,7 +608,7 @@
                     title:  this.__('messages.info_message'),
                     text: (this.__('item.operation_is_successful')),
                     type: "success",
-                    timer: 5000
+                    timer: 10000
                 }).then(r => {
                     window.location.href = this.redirectUrl;
                 });
@@ -618,7 +618,6 @@
                     title: this.__('messages.warning'),
                     text: text,
                     type: "warning",
-                    timer: 5000
                 });
             },
         },

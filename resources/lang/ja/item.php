@@ -7,11 +7,12 @@
  */
 return [
 
-    'down_data_is_higher' => '停止日はスタック日より小さくすることはできません。',
+    'down_data_is_higher' => '積日は降地より前の日付にしてください。',
     'unloading_place' => 'Unloading place',
     'stack_date' => '積日',
     'down_date' => '降日',
     'stack_time' => '積時間',
+    'new_registration' => '新規登録',
     'down_time' => '降時間',
     'vehicle_model' => '車種',
     'shipper' => '荷主',
