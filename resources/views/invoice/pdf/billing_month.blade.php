@@ -91,8 +91,8 @@
                     <td>{{$item->down_point}}</td>
                     <td>{{number_format($item->weight)}}車</td>
                     <td>{{number_format($item->item_price)}}</td>
-                    <td>{{$item->vehicle_payment}}</td>
-                    <td>{{$item->vehicle_payment}}</td>
+                    <td>{{number_format($item->vehicle_payment)}}</td>
+                    <td>{{number_format($item->vehicle_payment)}}</td>
                     <td>{{$item->item_remark}}</td>
                 </tr>
                 @endforeach
