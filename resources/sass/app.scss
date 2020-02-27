@@ -85,9 +85,12 @@
     border-color: dimgray;
 }
 .r-primary{
-    background-color: #8faadc !important;
+    background-color: #3490dc !important;
 }
 .r-danger{
     color: #FFFFFF;
     background-color: #f1013a !important;
+}
+.vdp-datepicker .form-control:disabled, .vdp-datepicker .form-control[readonly] {
+    background-color: #FFFFFF;
 }

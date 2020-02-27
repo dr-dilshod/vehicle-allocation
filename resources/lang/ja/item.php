@@ -7,11 +7,12 @@
  */
 return [
 
-
+    'down_data_is_higher' => '積日は降地より前の日付にしてください。',
     'unloading_place' => 'Unloading place',
     'stack_date' => '積日',
     'down_date' => '降日',
     'stack_time' => '積時間',
+    'new_registration' => '新規登録',
     'down_time' => '降時間',
     'vehicle_model' => '車種',
     'shipper' => '荷主',
@@ -33,10 +34,10 @@ return [
     'item_price' => '売上',
     'item_list' => '案件一覧',
     'item_registration' => '案件登録',
-    'required' => 'required',
+    'required' => '必須登録',
     'yen' => '円',
     'status_of_selection_is_changed_to_incomplete_when_stack_and_current_dates_are_not_same'=>'スタックと現在の日付が同じでない場合、選択のステータスは未完了に変更されます。',
-    'yes'=>'はい',
+    'yes'=>'あり',
     'none'=>'なし',
     'completed'=>'完了',
     'incomplete'=>'未完了',
@@ -52,8 +53,8 @@ return [
     'what_is_your_choice1'=>'運送完了日が降日と異なります。',
     'what_is_your_choice2'=>'下記処理方法を選択し、登録ボタンをクリックして下さい。',
     'update_the_status_of_item_transportation'=>'アイテム輸送のステータスを更新する',
-    'set_the_date_of_departure_as_the_date_of_completion_of_transportation'=>'出発日を輸送の完了日として設定する',
-    'set_today_as_the_transportation_completion_date'=>'今日を輸送完了日として設定',
+    'set_the_date_of_departure_as_the_date_of_completion_of_transportation'=>'降日を運送完了日にする',
+    'set_today_as_the_transportation_completion_date'=>'本日を運送完了日にする',
     'complete'=>'コンプリート',
     'cannot_create_invoice' => '請求書を作成できません',
     'verification' => '確認',

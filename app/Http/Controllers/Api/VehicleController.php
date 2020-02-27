@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Vehicle;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 
 class VehicleController extends Controller
 {
@@ -50,7 +51,10 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate(Vehicle::$createValidationRules);
+        $request->validate([
+            'vehicle_no' => ['unique:vehicles,vehicle_no,NULL, null,delete_flg,0'],
+        ]);
+        $data = $request->validate(Vehicle::validationRules);
         $vehicle = Vehicle::create($data);
 
         return response()->json($vehicle, 201);
@@ -77,8 +81,11 @@ class VehicleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'vehicle_no' => Rule::unique('vehicles','vehicle_no')->where('delete_flg', 0)->ignore($id,'vehicle_id')
+        ]);
         $vehicle = Vehicle::findOrFail($id);
-        $data = $request->validate(Vehicle::$editValidationRules);
+        $data = $request->validate(Vehicle::validationRules);
         $vehicle->update($data);
 
         return response()->json($vehicle, 200);

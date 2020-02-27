@@ -52,7 +52,7 @@
                 <e-column field='vehicle_address2' :headerText='__("vehicle.address1")' width="200"></e-column>
                 <e-column field='vehicle_phone_number' :headerText='__("vehicle.phone")' width="200"></e-column>
                 <e-column field='vehicle_fax_number' :headerText='__("vehicle.fax")' width="200"></e-column>
-                <e-column field='offset' :headerText='__("vehicle.offset")' textAlign="Center" editType='booleanedit' width="100"></e-column>
+                <e-column field='offset' :headerText='__("vehicle.offset")' textAlign="Center" editType='booleanedit' :template='offsetTemplate' width="100"></e-column>
                 <e-column field='vehicle_remark' :headerText='__("vehicle.remark")' width="250"></e-column>
             </e-columns>
         </ejs-grid>
@@ -89,6 +89,14 @@
             this.fetchData();
         },
         methods: {
+            offsetTemplate: function () {
+                return {
+                    template: Vue.component('editOption', {
+                        template: '<label>{{(data.offset == true)? this.__("vehicle.yes"):this.__("vehicle.no")}}</label>',
+                        data() { return { data: { data: {} } }; }
+                    })
+                }
+            },
             actionBegin(args){
                 if(args.requestType == 'save'){
                     args.cancel = true;

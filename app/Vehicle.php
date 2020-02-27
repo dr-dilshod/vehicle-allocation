@@ -57,36 +57,21 @@ class Vehicle extends Model
     /**
      * @var array
      */
-    public static $createValidationRules = [
-        'vehicle_no' => 'required|unique:vehicles|max:4',
-        'company_name' => 'required|max:191',
-        'company_kana_name' => 'max:191',
-        'vehicle_company_abbreviation' => 'max:191',
-        'vehicle_postal_code' => 'max:191',
-        'vehicle_address1' => 'max:191',
-        'vehicle_address2' => 'max:191',
+    const validationRules = [
+        'vehicle_no' => 'required|max:4',
+        'company_name' => 'required|max:60',
+        'company_kana_name' => 'max:60',
+        'vehicle_company_abbreviation' => 'max:60',
+        'vehicle_postal_code' => 'max:8',
+        'vehicle_address1' => 'max:120',
+        'vehicle_address2' => 'max:120',
         'offset' => 'max:1|min:0',
-        'vehicle_phone_number' => 'max:15',
-        'vehicle_fax_number' => 'max:15',
+        'vehicle_phone_number' => 'max:13',
+        'vehicle_fax_number' => 'max:12',
+        'vehicle_remark' => 'max:255',
         'delete_flg' => 'min:0|max:1',
     ];
 
-    /**
-     * @var array
-     */
-    public static $editValidationRules = [
-        'vehicle_no' => 'required|max:4',
-        'company_name' => 'required|max:191',
-        'company_kana_name' => 'max:191',
-        'vehicle_company_abbreviation' => 'max:191',
-        'vehicle_postal_code' => 'max:191',
-        'vehicle_address1' => 'max:191',
-        'vehicle_address2' => 'max:191',
-        'offset' => 'max:1|min:0',
-        'vehicle_phone_number' => 'max:15',
-        'vehicle_fax_number' => 'max:15',
-        'delete_flg' => 'min:0|max:1',
-    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -50,7 +50,7 @@
                                 <label class="col-4 text-right">{{__('invoice.invoice_month')}}</label>
                                 <datepicker v-model="formData.invoice_month" :minimumView="'month'"
                                             :maximumView="'month'" :bootstrap-styling="true"
-                                            :typeable="true" :format="options.monthFormat" :clear-button="true"
+                                            :format="options.monthFormat" :clear-button="true"
                                             :language="options.language.ja" class="col-8"
                                 ></datepicker>
                             </div>
@@ -71,8 +71,7 @@
                             <div class="form-group row">
                                 <label class="col-4 text-right">{{__('invoice.stack_date')}}</label>
                                 <datepicker v-model="formData.stack_date" :bootstrap-styling="true"
-                                            :typeable="true" :format="options.weekday" :clear-button="true"
-                                            :language="options.language.ja" class="col-8"
+                                            :format="options.weekday" :clear-button="true" :language="options.language.ja" class="col-8"
                                 ></datepicker>
                             </div>
                         </div>
@@ -195,39 +194,35 @@
         <div class="modal" id="billingModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary">
+                    <div class="modal-header bg-blue">
                         <h5 class="modal-title">{{__('invoice.print_billing_date')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="">
+                        <div class="mb-5">
                             <p class="text-center">{{__('invoice.select_the_billing_date_you_want_to_print')}}</p>
-                            <div class="form-group text-center" style="margin: 20px calc(32.5%)">
-                                <label>{{__('invoice.year_and_month')}}</label>
+                            <div class="form-group row text-center" style="margin: 20px calc(25%)">
+                                <label class="col-4 mt-2">{{__('invoice.year_and_month')}}</label>
                                 <datepicker v-model="billing_month" :minimumView="'month'" :maximumView="'month'" :bootstrap-styling="true"
-                                            :typeable="true" :format="options.monthFormat" :clear-button="true" :language="options.language.ja"
+                                            :format="options.monthFormat" :clear-button="true" :language="options.language.ja" class="col-8"
                                 ></datepicker>
                             </div>
-                            <div class="form-group d-flex justify-content-around">
-                                <span>
-                                    <input type="radio" name="billing_day" v-model="billing_day" value="20"
-                                           id="twenty"/>
-                                    <label for="twenty">{{__('invoice.20th')}}</label>
-                                </span>
-                                <span>
-                                    <input type="radio" name="billing_day" value="30" v-model="billing_day"
-                                           id="thirty"/>
-                                    <label for="thirty">{{__('invoice.30th')}}</label>
-                                </span>
+                            <div class="form-group d-flex justify-content-center">
+                                <input type="radio" name="billing_day" v-model="billing_day" value="20"
+                                       id="twenty"/>
+                                <label for="twenty" class="ml-3">{{__('invoice.20th')}}</label>
+                                <input type="radio" name="billing_day" value="30" v-model="billing_day"
+                                       id="thirty" class="ml-3"/>
+                                <label for="thirty" class="ml-3">{{__('invoice.30th')}}</label>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-around">
-                            <button type="button" class="btn btn-success" @click="billingPrint">
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-fixed-width btn-success" @click="billingPrint">
                                 {{__('invoice.print')}}
                             </button>
-                            <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <button type="button" class="btn btn-fixed-width btn-warning ml-2" data-dismiss="modal">
                                 {{__('invoice.cancel')}}
                             </button>
                         </div>
@@ -238,7 +233,7 @@
         <div class="modal" id="aggr" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary">
+                    <div class="modal-header bg-blue">
                         <h5 class="modal-title">{{__('invoice.aggregate')}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -378,6 +373,9 @@
             this.fetchVehicles();
         },
         methods: {
+            datepickerClose(){
+                alert(this.billing_month);
+            },
             actionBegin(args) {
                 if (args.requestType == 'delete') {
                     args.cancel = true;
@@ -612,10 +610,6 @@
     }
 </script>
 <style scoped>
-    #invoice label {
-        width: 100px;
-        float: right;
-    }
     .rbtns button{
         width: 130px;
     }

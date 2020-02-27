@@ -98,7 +98,7 @@
                     <td class="text-right">{{__('payment.payment_date')}}</td>
                     <td>
                         <datepicker v-model="payment.payment_day" :disabled="!registerMode" required
-                                    :bootstrap-styling="true" :typeable="true" :format="options.weekday"
+                                    :bootstrap-styling="true"  :format="options.weekday"
                                     :clear-button="true" :language="options.language.ja"></datepicker>
                     </td>
                     <td></td>

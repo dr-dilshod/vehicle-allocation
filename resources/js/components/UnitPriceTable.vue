@@ -28,7 +28,7 @@
                                    class="col-4 col-form-label ">{{__('unit_prices.shipper')}}</label>
                             <div class="col-8">
                                 <select name="shipper" id="shipperSelect" ref="shipperSelect" class="form-control">
-                                    <option value="0">{{__('common.select_input')}}</option>
+                                    <option value="0"></option>
                                     <option v-for="shipper in shippers" :value="shipper.id">
                                         {{shipper.shipper}}
                                     </option>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <button v-on:click="search" class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
+                            <button v-on:click="search(true)" class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
                                 {{__('common.search')}}
                             </button>
                         </div>
@@ -67,7 +67,7 @@
                           width="200"></e-column>
                 <e-column field='stack_point' :headerText="__('unit_prices.loading_port')" width="200"></e-column>
                 <e-column field='down_point' :headerText="__('unit_prices.drop_off')" width="200"></e-column>
-                <e-column field='type' :headerText="__('unit_prices.type')" width="100"></e-column>
+                <e-column field='type'  editType='dropdownedit' :edit="params.typeParams" :headerText="__('unit_prices.type')" width="100"></e-column>
                 <e-column field='price' :headerText="__('unit_prices.unit_price')" width="100"></e-column>
                 <e-column field='price_id' :headerText="__('unit_prices.unit_price_id')" width="5" :isPrimaryKey="true"
                           :visible=false></e-column>
@@ -132,6 +132,14 @@
                             fields: {text: "vehicle_type", value: "vehicle_type"},
                             query: new Query()
                         }
+                    },
+                    typeParams: {
+                        params: {
+                            allowFiltering: true,
+                            dataSource: [{type: this.__('unit_prices.t')}, {type: this.__('unit_prices.unit')}],
+                            fields: {text: "type", value: "type"},
+                            query: new Query()
+                        }
                     }
                 },
                 rules: {
@@ -154,6 +162,7 @@
             this.fetchShipperNames(`${this.resourceUrl}/shipper-names`);
         },
         mounted() {
+            this.search();
             this.tableUtil = new TableUtil(this);
             this.$refs.grid.hideSpinner();
         },
@@ -196,9 +205,13 @@
                     })
                 };
             },
-            search() {
-                let id = this.$refs.shipperSelect.value;
-                axios.get(`${this.resourceUrl}/?shipper_id=${id}`)
+            search(withShipper = false) {
+                let query = '';
+                if (withShipper) {
+                    let id = this.$refs.shipperSelect.value;
+                    query = `?shipper_id=${id}`;
+                }
+                axios.get(`${this.resourceUrl}/${query}`)
                     .then(response => {
                         if (response.data && response.data.length > 0) {
                             this.data = response.data.map(e => {
