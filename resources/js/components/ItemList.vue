@@ -193,7 +193,7 @@
                                                     </div>
                                                     <div id="radio-group" class="text-left mt-5">
                                                         <form class="mt-3 ml-5">
-                                                            <input type="radio" v-model="stat" name="stat" id="dep_date" v-bind:value="data.stack_date" checked>
+                                                            <input type="radio" v-model="stat" name="stat" id="dep_date" v-bind:value="data.stack_date">
                                                             <label for="dep_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}} </label><br>
                                                             <div class="mt-3">
                                                             </div>
@@ -228,6 +228,9 @@
                             method: {
                                 type: Function
                             },
+                        },
+                        mounted() {
+                            this.stat = this.data.stack_date;
                         },
                         methods: {
                             toIncomplete: function (id,departure_date) {

@@ -421,10 +421,8 @@
                         + '&stack_point=' + this.itemData.stack_point
                         + '&down_point=' + this.itemData.down_point)
                             .then(response => {
-                                if(response.data.price !== undefined){
+                                if(response.data.price !== undefined ){
                                     component.per_ton = response.data.price;
-                                }else{
-                                    component.per_ton = '';
                                 }
                                 component.calcItemPrice();
                             });
