@@ -8,7 +8,7 @@
                    class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-4 offset-1">
-                <h2 class="text-center">{{__('deposit.deposit_registration')}}</h2>
+                <h1 class="text-center">{{__('deposit.deposit_registration')}}</h1>
             </div>
             <div class="col-5 text-right">
                 <button class="btn btn-lg btn-danger btn-fixed-width" @click = "create" :disabled="!registerMode">{{__('common.register')}}</button>
@@ -183,7 +183,7 @@
                 dayCount : 0,
                 options: {
                     monthFormat: "yyyy/MM",
-                    weekday: "dd/MM/yyyy",
+                    weekday: "yyyy/MM/dd",
                     language: {
                         en: en,
                         ja: ja
@@ -225,8 +225,11 @@
                     })
             },
             create(){
-                this.deposit.deposit_day = this.deposit.deposit_day.toISOString().slice(0,10);
-                axios.post(this.resourceUrl, this.deposit)
+                let deposit = Object.assign({},this.deposit);
+                if (this.deposit.deposit_day){
+                    deposit.deposit_day = this.deposit.deposit_day.toISOString().slice(0,10);
+                }
+                axios.post(this.resourceUrl, deposit)
                     .then(response => {
                         this.createSuccessDialog();
                         this.clear();
