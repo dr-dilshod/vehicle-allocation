@@ -422,9 +422,14 @@
                 if (this.formData.shipper_id === '') {
                     this.showWarningDialog(this.__('invoice.please_select_a_shipper'));
                 } else {
+                    let billingMonth = '';
+                    if(typeof this.billing_month === 'object'){
+                        billingMonth = this.billing_month.toISOString();
+                        billingMonth = billingMonth.substr(0,4)+'/'+billingMonth.substr(5,2);
+                    }
                     window.location.href = this.billingMonthUrl
                         + '?shipper_id=' + this.formData.shipper_id
-                        + '&billing_month=' + this.billing_month
+                        + '&billing_month=' + billingMonth
                         + '&billing_day=' + this.billing_day;
                 }
             },
