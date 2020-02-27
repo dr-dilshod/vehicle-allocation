@@ -85,7 +85,7 @@
             <tr>
                 <td class="text-right">{{__('deposit.shipper')}}</td>
                 <td>
-                    <select class="form-control" v-model="deposit.shipper_id" :disabled="!registerMode" required>
+                    <select class="form-control" v-model="deposit.shipper_id" :disabled="!registerMode" style="max-width:300px;">
                         <option v-for="shipper in shippers" :value="shipper.shipper_id">
                             {{shipper.fullname}}
                         </option>

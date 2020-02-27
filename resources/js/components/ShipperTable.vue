@@ -262,6 +262,7 @@
             },
 
             shipperNameUpdate(updatedShipper){
+                console.log(updatedShipper);
                 if(!updatedShipper.shipper_id){
                     this.updatedShipper.shipper_name1 = updatedShipper.shipper_name1;
                     this.updatedShipper.shipper_name2 = updatedShipper.shipper_name2;
@@ -291,7 +292,7 @@
             },
 
             actionBegin(args){
-                if (args.requestType === "beginEdit") {
+                if (args.requestType === "beginEdit" || args.requestType === "add") {
                     this.$eventHub.$on("nameUpdate", this.shipperNameUpdate);
                     this.$eventHub.$on("furiganaUpdate", this.shipperFuriganaUpdate);
                 }
