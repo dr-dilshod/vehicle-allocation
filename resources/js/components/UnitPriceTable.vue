@@ -106,6 +106,7 @@
                     allowAdding: false,
                     allowDeleting: false,
                     showDeleteConfirmDialog: true,
+                    newRowPosition: 'Bottom',
                 },
                 shippers: [],
                 vehicle_types: [

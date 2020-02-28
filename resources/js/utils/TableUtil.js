@@ -49,6 +49,7 @@ export class TableUtil{
                 allowEditing: true,
                 allowAdding: true,
                 showDeleteConfirmDialog: true,
+                newRowPosition: 'Bottom',
             },
         });
         this.showTitle();
