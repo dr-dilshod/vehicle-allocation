@@ -68,9 +68,9 @@
             };
         },
         methods: {
-            fetchData(){
+            fetchAll() {
                 let component = this;
-                axios.get(this.fetchUrl)
+                axios.get(`${this.fetchUrl}/all`)
                     .then(data => {
                         component.tableData = data.data;
                     })
@@ -92,7 +92,7 @@
         mounted(){
             let currentYear = new Date().getFullYear();
             this.years = [currentYear-2,currentYear-1,currentYear];
-            this.fetchData();
+            this.fetchAll();
         }
     }
 </script>
