@@ -219,4 +219,82 @@ class DispatchController extends Controller
     protected function removeItem($item){
         \DB::update('UPDATE dispatches SET delete_flg=1 WHERE item_id=?',[$item['item_id']]);
     }
+
+    public function thirdList2(Request $request)
+    {
+        $result = [];
+
+        $firstDate = $request->get('date');
+        $tableDriverList = $request->get('drivers');
+
+        $firstDate = date('Y/m/d',strtotime($firstDate));
+        $secondDate = date('Y/m/d',strtotime($firstDate." +1 day"));
+        if(date('w',strtotime($secondDate)) == 0) // if Sunday
+            $secondDate = date('Y/m/d',strtotime($secondDate." +1 day"));
+
+        $firstListItems = \DB::table('items')
+            ->select(['items.item_id','items.driver_id','items.shipper_id','items.down_date','items.down_time',
+                'items.down_point','items.shipper_name','items.stack_point','items.weight','items.empty_pl','items.item_remark'])
+            ->where(['items.down_date'=>$firstDate,'items.delete_flg'=>0,'dispatch_status'=>Item::DISPATCH_STATUS_OUT_DISPATCH])
+            ->get();
+        $secondListItems = \DB::table('items')
+            ->select(['items.item_id','items.driver_id','items.shipper_id','items.down_date','items.down_time',
+                'items.down_point','items.shipper_name','items.stack_point','items.weight','items.empty_pl','items.item_remark'])
+            ->where(['items.down_date'=>$secondDate,'items.delete_flg'=>0,'dispatch_status'=>Item::DISPATCH_STATUS_OUT_DISPATCH])
+            ->get();
+        $result['first_list'] = [
+            'date'=>$firstDate,
+            'data'=>$firstListItems
+        ];
+        $result['second_list'] = [
+            'date'=>$secondDate,
+            'data'=>$secondListItems
+        ];
+        $dispatch_drivers = [];
+        foreach ($tableDriverList as $table_driver){
+            $dispatch_drivers[] = Driver::find($table_driver);
+        }
+        $result['dispatch_drivers'] = $dispatch_drivers;
+        foreach($dispatch_drivers as $driver){
+            $morning_items = \DB::table('dispatches')
+                ->leftJoin('items','dispatches.item_id','=','items.item_id')
+                ->where([
+                    'dispatches.driver_id'=>$driver->driver_id,
+                    'dispatches.timezone'=>Dispatch::TIMEZONE_MORNING,
+                    'dispatches.delete_flg'=>0,
+                    'items.down_date'=>$firstDate,
+                    'items.delete_flg'=>0,
+                ])
+                ->get();
+            $noon_items = \DB::table('dispatches')
+                ->leftJoin('items','dispatches.item_id','=','items.item_id')
+                ->where([
+                    'dispatches.driver_id'=>$driver->driver_id,
+                    'dispatches.timezone'=>Dispatch::TIMEZONE_NOON,
+                    'dispatches.delete_flg'=>0,
+                    'items.down_date'=>$firstDate,
+                    'items.delete_flg'=>0,
+                ])
+                ->get();
+            $next_items = \DB::table('dispatches')
+                ->leftJoin('items','dispatches.item_id','=','items.item_id')
+                ->where([
+                    'dispatches.driver_id'=>$driver->driver_id,
+                    'dispatches.timezone'=>Dispatch::TIMEZONE_NEXT_PRODUCT,
+                    'dispatches.delete_flg'=>0,
+                    'items.down_date'=>$firstDate,
+                    'items.delete_flg'=>0,
+                ])
+                ->get();
+            $result['dispatches'][]=[
+                'driver_id' => $driver->driver_id,
+                'vehicle_no' => $driver->vehicle_no3,
+                'driver_name' => $driver->driver_name,
+                'morning' => $morning_items,
+                'noon' => $noon_items,
+                'nextProduct' => $next_items
+            ];
+        }
+        return response()->json($result);
+    }
 }

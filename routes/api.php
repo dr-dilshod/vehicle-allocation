@@ -107,6 +107,7 @@ Route::get('/dispatch', 'Api\DispatchController@index')->name('api.dispatch.inde
 Route::post('/dispatch', 'Api\DispatchController@store')->name('api.dispatch.store');
 Route::delete('/dispatch/{id}', 'Api\DispatchController@destroy')->name('api.dispatch.destroy');
 Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('api.dispatch.third');
+Route::post('/dispatch/third-list2', 'Api\DispatchController@thirdList2')->name('api.dispatch.third2');
 
 // Top
 Route::get('/top', 'Api\TopController@index')->name('api.top.index');
