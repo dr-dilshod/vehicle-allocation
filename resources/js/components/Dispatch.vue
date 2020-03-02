@@ -168,7 +168,7 @@
                             </div>
                             <div class="driver-list">
                                 <div class="row label-row mt-2 mr-2 ml-2 mb-0 pb-2">
-                                    <div class="col-2"><strong>{{__('dispatch.check')}}</strong></div>
+                                    <div class="col-2"></div>
                                     <div class="col-4"><strong>{{__('dispatch.car_no')}}</strong></div>
                                     <div class="col-6"><strong>{{__('dispatch.driver_name')}}</strong></div>
                                 </div>
