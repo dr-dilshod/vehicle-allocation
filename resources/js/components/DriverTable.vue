@@ -30,7 +30,7 @@
                 <e-column field='search_flg' :headerText= '__("driver.display")'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
                 <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
                 <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
-                <e-column field='driver_pass' :headerText= '__("driver.password")' width="200"></e-column>
+                <e-column field='driver_pass_temp' :headerText= '__("driver.password")' width="200"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0" ></e-column>
             </e-columns>
         </ejs-grid>
@@ -101,6 +101,7 @@
                     .then(response => {
                         this.data = response.data;
                         for (let i = 0; i <this.data.length ; i++) {
+                            this.data[i].driver_pass_temp = null;
                             if (this.data[i].search_flg==0){
                                 this.data[i].search_flg = false;
                             } else {
@@ -118,8 +119,12 @@
                 if (args.requestType == 'save') {
                     args.cancel = true;
                     if(!args.data.driver_id){
+                        args.data.driver_pass = args.data.driver_pass_temp;
                         this.insertData(args.data);
                     }else{
+                        if (args.data.driver_pass_temp != null){
+                            args.data.driver_pass = args.data.driver_pass_temp;
+                        }
                         this.editData(args.data);
                     }
                 }

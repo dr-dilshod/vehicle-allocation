@@ -333,7 +333,8 @@
                     .then(response => {
                         let data = response.data;
                         for(let i = 0; i < data.length; i++){
-                            data[i].stack_time = data[i].stack_time.slice(0,5);
+                            if (data[i].stack_time !== null)
+                                data[i].stack_time = data[i].stack_time.slice(0,5);
                         }
                         this.data = data;
                         if(this.data.length > 0)

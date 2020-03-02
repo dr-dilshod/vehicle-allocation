@@ -27,7 +27,7 @@
                     <table>
                         <tbody class="list">
                         <tr>
-                            <td class="text-right" width="15%">
+                            <td class="text-right" width="15%" valign="bottom">
                                 <span class="required"> ※</span>
                                 <label for="stack_date">{{__('item.stack_date')}}</label>&nbsp;
                             </td>
@@ -37,28 +37,27 @@
                                 required></datepicker>
                             </td>
                             <td width="5%"></td>
-                            <td class="text-right" width="15%">
-                                <span class="required">※</span>
+                            <td class="text-right" width="15%" valign="bottom">
                                 <label for="stack_time_hour">{{__('item.stack_time')}}</label>&nbsp;
                             </td>
                             <td class="stack_time_hour" width="10%">
                                 <select name="stack_time_hour" id="stack_time_hour" v-model="stack_time_hour"
-                                        v-on:input="timeFormatter" class="form-control" required>
+                                        v-on:input="timeFormatter" class="form-control">
                                     <option v-for="hour in getEnumerationHours()" :value="hour">
                                         {{ hour }}
                                     </option>
                                 </select>
                             </td>
-                            <th width="3%" class="text-center"><span>:</span></th>
+                            <th width="3%" class="text-center" valign="center"><span>:</span></th>
                             <td width="10%">
                                 <select name="stack_time_min" id="stack_time_min" v-model="stack_time_min"
-                                        v-on:input="timeFormatter" class="form-control" required>
+                                        v-on:input="timeFormatter" class="form-control">
                                     <option v-for="min in getEnumerationMins()" :value="min">
                                         {{ min }}
                                     </option>
                                 </select>
                             </td>
-                            <td width="10%" class="text-right">
+                            <td width="10%" class="text-right" valign="bottom">
                                 <label for="billing">{{__('item.invoice')}}</label></td>
                             <td width="7%" class="text-center">
                                 <input type="checkbox" name="down_invoice" id="billing" v-on:click="setMandatory"
@@ -66,7 +65,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 <span class="required"> ※</span>
                                 <label for="down_date">{{__('item.down_date')}}</label>&nbsp;
                             </td>
@@ -76,24 +75,23 @@
                                 required></datepicker>
                             </td>
                             <td></td>
-                            <td class="text-right">
-                                <span class="required"> ※</span>
+                            <td class="text-right" valign="bottom">
                                 <label for="down_time_hour">{{__('item.down_time')}}</label>&nbsp;
                             </td>
                             <td>
                                 <select name="down_time_hour" id="down_time_hour" v-model="down_time_hour"
-                                        v-on:input="timeFormatter" class="form-control" required>
+                                        v-on:input="timeFormatter" class="form-control">
                                     <option v-for="hour in getEnumerationHours()" :value="hour">
                                         {{ hour }}
                                     </option>
                                 </select>
                             </td>
-                            <th class="text-center">
+                            <th class="text-center" valign="center">
                                 <span class="">:</span>
                             </th>
                             <td>
                                 <select name="down_time_min" id="down_time_min" v-model="down_time_min"
-                                        v-on:input="timeFormatter" class="form-control" required>
+                                        v-on:input="timeFormatter" class="form-control">
                                     <option v-for="min in getEnumerationMins()" :value="min">
                                         {{ min }}
                                     </option>
@@ -101,7 +99,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 <span class="required"> ※</span>
                                 <label for="vehicle_model">{{__('item.vehicle_model')}}</label>&nbsp;
                             </td>
@@ -117,7 +115,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 <span class="required"> ※</span>
                                 <label for="shipper_id">{{__('item.shipper')}}</label>&nbsp;
                             </td>
@@ -132,7 +130,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 <span class="required"> ※</span>
                                 <label for="stack_point">{{__('item.stack_point')}}</label>&nbsp;
                             </td>
@@ -141,7 +139,7 @@
                                        v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
                             <td class="text-center"></td>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 ~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span class="required"> ※</span>
                                 <label for="down_point">{{__('item.down_point')}}</label>&nbsp;
@@ -153,15 +151,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 <label for="weight">{{__('item.number_t')}}</label>&nbsp;
                             </td>
                             <td>
                                 <input id="weight" type="text" placeholder="" class="form-control"
                                       v-on:input="setWeight" v-model="itemData.weight"/>
                             </td>
-                            <td class="text-center">t</td>
-                            <td class="text-right">
+                            <td class="text-center" valign="center">t</td>
+                            <td class="text-right" valign="bottom">
                                 <label for="empty_pl">{{__('item.empty_pl')}}</label>&nbsp;
                             </td>
                             <td colspan="2">
@@ -174,44 +172,44 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="per_ton">{{__('item.per_ton')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label for="per_ton">{{__('item.per_ton')}}</label>&nbsp;</td>
                             <td>
                                 <input id="per_ton" type="text" placeholder="" class="form-control"
                                        v-model="per_ton" v-on:change="notify"/>
                             </td>
-                            <td class="text-center">{{__('item.yen')}}</td>
+                            <td class="text-center" valign="center">{{__('item.yen')}}</td>
                             <td class="text-center"><span class="text-center">x&nbsp;&nbsp;</span></td>
                             <td colspan="3">
                                 <input type="text" placeholder="" class="form-control" id="ton"
                                        v-model="ton" value="" v-on:change="notify"/>
                             </td>
-                            <td>&nbsp;<span class="text-right">t</span></td>
+                            <td valign="center">&nbsp;<span class="text-right">t</span></td>
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="per_vehicle">{{__('item.per_vehicle')}}</label>&nbsp;</td>
+                                <label for="per_vehicle" valign="bottom">{{__('item.per_vehicle')}}</label>&nbsp;</td>
                             <td>
                                 <input type="text" placeholder="" class="form-control" id="per_vehicle"
                                        v-on:input="perVehicleChange" :disabled="isDisabled" v-model="per_vehicle"/>
                             </td>
-                            <td class="text-center">{{__('item.yen')}}&nbsp;</td>
+                            <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="item_price">{{__('item.amount_of_money')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label for="item_price">{{__('item.amount_of_money')}}</label>&nbsp;</td>
                             <td>
                                 <input type="text" placeholder="" class="form-control" id="item_price"
                                        v-model="itemData.item_price" value="" readonly/>
                             </td>
-                            <td class="text-center">{{__('item.yen')}}&nbsp;</td>
+                            <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="vehicle_no3">{{__('item.vehicle_no')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label for="vehicle_no3">{{__('item.vehicle_no')}}</label>&nbsp;</td>
                             <td>
                                 <input type="text" placeholder="" class="form-control" id="vehicle_no3" v-on:change="notify"
                                        v-model="itemData.vehicle_no3"/>
                             </td>
                             <td></td>
-                            <td class="text-right"><label for="driver_id">{{__('item.driver_name')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label for="driver_id">{{__('item.driver_name')}}</label>&nbsp;</td>
                             <td colspan="3">
                                 <select name="driver_id" id="driver_id" v-on:change="setDriverName"
                                         v-model="itemData.driver_id" class="form-control">
@@ -223,7 +221,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 <span ref= "editMandatory" class="required"> ※</span>
                                 <label for="chartered_vehicle">{{__('item.chartered_vehicle')}}</label>&nbsp;
                             </td>
@@ -237,17 +235,17 @@
                                 </select>
                             </td>
                             <td></td>
-                            <td class="text-right">
+                            <td class="text-right" valign="bottom">
                                 <label for="vehicle_payment">{{__('item.rental_vehicle_payment')}}</label>&nbsp;
                             </td>
                             <td colspan="2">
                                 <input type="text" class="form-control" id="vehicle_payment" v-on:change="notify"
                                        v-model="itemData.vehicle_payment"/>
                             </td>
-                            <td>&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
+                            <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
                         </tr>
                         <tr>
-                            <td class="text-right"><label for="item_remark">{{__('item.remarks')}}</label>&nbsp;</td>
+                            <td class="text-right"valign="top"><label for="item_remark">{{__('item.remarks')}}</label>&nbsp;</td>
                             <td colspan="6">
                                 <textarea rows="3" class="form-control" id="item_remark" v-on:change="notify"
                                       v-model="itemData.item_remark"></textarea>
@@ -603,7 +601,7 @@
             },
             showSuccessDialog() {
                 this.$fire({
-                    title:  this.__('messages.info_message'),
+                    title:  this.__('item.success_dialog_title'),
                     text: (this.__('item.operation_is_successful')),
                     type: "success",
                     timer: 10000
