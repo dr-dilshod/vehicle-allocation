@@ -26,7 +26,7 @@ return  [
     'ok'=>'オーケー',
     'add'=>'追加',
     'done'=>'やった',
-    'empty_record'=>'空のレコード',
+    'empty_record'=>'データがありません',
     'confirm_delete'=>'消去してもよろしいですか？',
     'delete_operation_alert'=>'行を選択して削除します',
     'edit_operation_alert'=>'編集する行を選択します',
