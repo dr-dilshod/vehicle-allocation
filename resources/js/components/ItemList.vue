@@ -85,7 +85,7 @@
         </div>
 
         <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
-                  ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings' :toolbar='toolbar'
+                  ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings'
                   :height="280" rowHeight=35>
             <e-columns>
                 <e-column field='item_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
@@ -148,7 +148,7 @@
                 vehicles: [],
                 selected: {},
                 editSettings: { allowEditing: true, allowAdding: false, allowDeleting: false},
-                toolbar: ['Edit'],
+                toolbar: [],
                 dateFormat: {type:'date', format:'yyyy/MM/dd'},
                 options: {
                     monthFormat: "yyyy/MM",

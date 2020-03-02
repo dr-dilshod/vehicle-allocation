@@ -475,7 +475,7 @@
                 }
             },
             back(){
-                if ((this.itemId !== undefined && this.anyFieldChanged == 1) || (this.isEntry())) {
+                if ((this.itemId !== undefined && this.anyFieldChanged == 1) || (this.isEntry() && this.itemId === undefined)) {
                     this.$fire({
                         text: '編集中のデータを破棄して前の画面に戻りますか？',
                         type: "warning",

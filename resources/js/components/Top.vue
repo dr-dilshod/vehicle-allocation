@@ -3,14 +3,14 @@
         <div class="row p-4">
             <div class="col-4">
                 <form action="#" role="form">
-                    <div class="form-group row">
-                        <label for="year" class="col-2 offset-2">{{__('top.Year')}}</label>
+                    <div class="form-group row align-items-center">
+                        <label for="year" class="col-2 offset-2 align-items-center">{{__('top.Year')}}</label>
                         <select class="form-control col-7" name="year" id="year" v-model="selectedYear">
                             <option v-for="year in years">{{year}}</option>
                         </select>
                     </div>
-                    <div class="form-group row">
-                        <label for="month" class="col-2 offset-2">{{__('top.Month')}}</label>
+                    <div class="form-group row align-items-center">
+                        <label for="month" class="col-2 offset-2 align-items-center">{{__('top.Month')}}</label>
                         <select class="form-control col-7" name="month" id="month" v-model="selectedMonth">
                             <option value="01">1</option>
                             <option value="02">2</option>
