@@ -110,4 +110,5 @@ Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('a
 
 // Top
 Route::get('/top', 'Api\TopController@index')->name('api.top.index');
+Route::get('/top/all', 'Api\TopController@getAll')->name('api.top.all');
 Route::get('/top/month', 'Api\TopController@getByMonth')->name('api.top.month');

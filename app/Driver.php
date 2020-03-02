@@ -92,7 +92,7 @@ class Driver extends Authenticatable
      */
     public function dispatches()
     {
-        return $this->hasMany('App\Dispatch', null, 'driver_id');
+        return $this->hasMany('App\Dispatch', 'driver_id', 'driver_id');
     }
 
     /**

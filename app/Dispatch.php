@@ -75,7 +75,7 @@ class Dispatch extends Model
      */
     public function item()
     {
-        return $this->belongsTo('App\Item', null, 'item_id');
+        return $this->belongsTo('App\Item', 'item_id');
     }
 
     /**
