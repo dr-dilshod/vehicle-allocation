@@ -477,13 +477,12 @@
             back(){
                 if (this.itemId !== undefined && this.anyFieldChanged == 1) {
                     this.$fire({
-                        title: '編集のキャンセル。',
                         text: '編集中のデータを破棄して前の画面に戻りますか？',
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: this.__('common.ok'),
+                        confirmButtonText: 'OK',
                         cancelButtonText: this.__('common.cancel')
                     }).then((result) => {
                         if (result.value) {
