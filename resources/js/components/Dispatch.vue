@@ -89,7 +89,7 @@
                             </div>
                         </td>
                         <td style="width: 250px">
-                            <draggable :list="elem.morning" group="elems" @change="addMorning" @add="add" ghost-class="new"
+                            <draggable :list="elem.morning" group="elems" @change="addMorning" ghost-class="new"
                                        style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
@@ -214,6 +214,7 @@
             title: {type: String, required: true},
             fetchUrl: {type: String, required: true},
             thirdListUrl: {type: String, required: true},
+            thirdList2Url: {type: String, required: true},
             pdfUrl: {type: String, required: true},
         },
         data(){
@@ -274,7 +275,7 @@
                     .then(response => {
                         componentInstance.registerPostData = [];
                         componentInstance.createSuccessDialog();
-                        componentInstance.display();
+                        componentInstance.fetchThirdList();
                         componentInstance.clearNewClass();
                     })
                     .catch(function (error) {
@@ -331,7 +332,8 @@
                 let componentInstance = this;
                 axios.delete(this.fetchUrl+'/'+id)
                     .then(response => {
-                        componentInstance.fetchLists(componentInstance.dispatch_day);
+                        $('div[data-item_id='+id+']').remove();
+                        componentInstance.fetchThirdList();
                     })
                     .catch(function(error){
                         componentInstance.errorDialog(error);
@@ -353,11 +355,13 @@
                     });
                 ;
             },
-            fetchDriverTable(){
+            fetchThirdList(){
                 let componentInstance = this;
-                axios.get(componentInstance.thirdListUrl)
-                    .then(data => {
-                        componentInstance.thirdList = data.data;
+                axios.post(componentInstance.thirdList2Url,{'drivers':this.tableDriverList,'date':this.dispatch_day})
+                    .then(result => {
+                        componentInstance.firstList = result.data.first_list;
+                        componentInstance.secondList = result.data.second_list;
+                        componentInstance.thirdList = result.data.dispatches;
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
