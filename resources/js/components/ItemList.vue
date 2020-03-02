@@ -17,16 +17,16 @@
         <div class="row mt-2">
             <form @submit.prevent="search" role="form" class="ml-2 col-12">
                 <table class="table table-sm table-borderless" width="100%">
-                    <tbody >
+                    <tbody>
                     <tr>
-                        <td class="text-right align-center" width="5%">{{__('item.stack_date')}}</td>
+                        <td class="text-right align-middle" width="5%">{{__('item.stack_date')}}</td>
                         <td class="text-left" width="20%">
                             <datepicker v-model="stack_date" :bootstrap-styling="true" id="stack_date" name="stack_date"
                                         :format="options.weekday" :clear-button="true"
                                         :language="options.language.ja">
                             </datepicker>
                         </td>
-                        <td class="text-right align-center" width="5%"><span class="c24966">{{__('item.shipper')}}</span></td>
+                        <td class="text-right align-middle" width="5%"><span class="c24966">{{__('item.shipper')}}</span></td>
                         <td width="20%">
                             <select name="selectedShipper" id="selectedShipper" v-model="shipper_name"
                                     class="form-control">
@@ -36,7 +36,7 @@
                                 </option>
                             </select>
                         </td>
-                        <td class="text-right  align-center" width="7%"><span class="c24966">{{__('item.status')}}</span></td>
+                        <td class="text-right align-middle" width="7%"><span class="c24966">{{__('item.status')}}</span></td>
                         <td width="10%">
                             <select name="status" id="status" v-model="status"
                                     class="form-control">
@@ -47,20 +47,20 @@
                         </td>
 
                     </tr>
-                    <tr>
-                        <td class="text-right align-center">{{__('item.stack_point')}}</td>
+                    <tr valign="middle">
+                        <td class="text-right align-middle">{{__('item.stack_point')}}</td>
                         <td>
                             <input type="text" class="form-control"
                                    v-model="stack_point"
                                    id="stack_point"/>
                         </td>
-                        <td class="text-right  align-center">{{__('item.down_point')}}</td>
+                        <td class="text-right align-middle">{{__('item.down_point')}}</td>
                         <td>
                             <input id="down_point" type="text" placeholder=""
                                    class="form-control"
                                    v-model="down_point"/>
                         </td>
-                        <td class="text-right align-center">{{__('item.vehicle_no')}}</td>
+                        <td class="text-right align-middle">{{__('item.vehicle_no')}}</td>
                         <td>
                             <select name="vehicleNo3" id="vehicle_no3" v-model="vehicle_no3"
                                     class="form-control">

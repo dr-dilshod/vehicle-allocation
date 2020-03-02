@@ -27,7 +27,7 @@
                     <table>
                         <tbody class="list">
                         <tr>
-                            <td class="text-right" width="15%" valign="bottom">
+                            <td class="text-right align-middle" width="15%">
                                 <span class="required"> ※</span>
                                 <label for="stack_date">{{__('item.stack_date')}}</label>&nbsp;
                             </td>
