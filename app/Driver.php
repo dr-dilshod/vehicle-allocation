@@ -43,7 +43,7 @@ class Driver extends Authenticatable
         'vehicle_type' => 'max:10',
         'driver_no' => 'required|max:4',
         'driver_name' => 'required|max:60',
-        'driver_pass' => 'required|max:15',
+        'driver_pass' => 'required|max:120',
         'driver_mobile_number' => 'max:13',
         'maximum_Loading' => 'max:5',
         'vehicle_no3' => 'max:4',
