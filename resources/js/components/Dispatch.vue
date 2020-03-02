@@ -89,7 +89,7 @@
                             </div>
                         </td>
                         <td style="width: 250px">
-                            <draggable :list="elem.morning" group="elems" @change="addMorning" handle=".none" @add="add" ghost-class="new"
+                            <draggable :list="elem.morning" group="elems" @change="addMorning" @add="add" ghost-class="new"
                                        style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
@@ -105,7 +105,7 @@
                             </draggable>
                         </td>
                         <td style="width: 250px">
-                            <draggable :list="elem.noon" group="elems" @change="addNoon" handle=".none" ghost-class="new"
+                            <draggable :list="elem.noon" group="elems" @change="addNoon" ghost-class="new"
                                        style="display: block; min-height: 50px" class="noon" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.noon" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"
@@ -121,7 +121,7 @@
                             </draggable>
                         </td>
                         <td style="width: 250px">
-                            <draggable :list="elem.nextProduct" group="elems" @change="addNextProduct" handle=".none" ghost-class="new"
+                            <draggable :list="elem.nextProduct" group="elems" @change="addNextProduct" ghost-class="new"
                                        style="display: block; min-height: 50px" class="next-product" :data-driver-id="elem.driver_id">
                                 <div class="elem" v-for="item in elem.nextProduct" :data-item_id="item.item_id">
                                     <button type="button" class="close" @click="removeElem(item.item_id)"

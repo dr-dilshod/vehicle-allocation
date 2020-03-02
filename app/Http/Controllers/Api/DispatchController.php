@@ -173,6 +173,9 @@ class DispatchController extends Controller
     {
         $data = $request->all();
         foreach($data as $item){
+            if($this->itemAlreadyExists($item)){
+                $this->removeItem($item);
+            }
             $dispatch = Dispatch::create($item);
             if($dispatch){
                 $stmt = \DB::update('UPDATE items SET dispatch_status=? WHERE item_id=?',[Item::DISPATCH_STATUS_IN_DISPATCH,$dispatch->item_id]);
@@ -197,5 +200,23 @@ class DispatchController extends Controller
             return response()->json(null, 200);
         }
         return response()->json(null,202);
+    }
+
+    /**
+     * @param $item
+     * @return mixed
+     */
+    protected function itemAlreadyExists($item){
+        return Dispatch::where([
+            'item_id' => $item['item_id'],
+            'delete_flg' => 0
+        ])->get();
+    }
+
+    /**
+     * @param $item
+     */
+    protected function removeItem($item){
+        \DB::update('UPDATE dispatches SET delete_flg=1 WHERE item_id=?',[$item['item_id']]);
     }
 }
