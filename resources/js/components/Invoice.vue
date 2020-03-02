@@ -88,7 +88,7 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                             </div>
                         </div>
-                        <div class="col-5">
+                        <div class="col-6 text-right">
                             <button type="submit" class="btn btn-fixed-width btn-primary">{{__('common.search')}}
                             </button>
                             <button type="reset" class="btn btn-fixed-width btn-primary" @click.prevent="clear">

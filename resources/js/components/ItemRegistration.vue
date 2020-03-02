@@ -440,9 +440,9 @@
             timeFormatter() {
                 this.anyFieldChanged = 1;
                 this.itemData.stack_time = document.getElementById('stack_time_hour').value
-                    + ':' + document.getElementById('stack_time_min').value;
+                    + ':' + document.getElementById('stack_time_min').value
                 this.itemData.down_time = document.getElementById('down_time_hour').value
-                    + ':' + document.getElementById('down_time_min').value;
+                    + ':' + document.getElementById('down_time_min').value
             },
             clear(){
                 if (this.itemId !== undefined) {
@@ -475,15 +475,14 @@
                 }
             },
             back(){
-                if (this.itemId !== undefined && this.anyFieldChanged == 1) {
+                if ((this.itemId !== undefined && this.anyFieldChanged == 1) || (this.isEntry())) {
                     this.$fire({
-                        title: '編集のキャンセル。',
                         text: '編集中のデータを破棄して前の画面に戻りますか？',
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: this.__('common.ok'),
+                        confirmButtonText: 'OK',
                         cancelButtonText: this.__('common.cancel')
                     }).then((result) => {
                         if (result.value) {
@@ -493,6 +492,35 @@
                 } else {
                     window.location.href = this.backUrl;
                 }
+            },
+            isEntry() {
+                if (this.itemData.item_id === '' &&
+                    this.itemData.shipper_id === '' &&
+                    this.vehicle_model === '' &&
+                    this.itemData.driver_id === '' &&
+                    this.itemData.vehicle_id === '' &&
+                    this.itemData.stack_date === '' &&
+                    this.itemData.stack_time === '' &&
+                    this.itemData.down_date === '' &&
+                    this.itemData.down_time === '' &&
+                    this.itemData.down_invoice === '' &&
+                    this.itemData.stack_point === '' &&
+                    this.itemData.down_point === '' &&
+                    this.itemData.weight === '' &&
+                    this.itemData.empty_pl === '' &&
+                    this.itemData.item_price === '' &&
+                    this.itemData.item_driver_name === '' &&
+                    this.itemData.vehicle_no3 === '' &&
+                    this.itemData.shipper_name === '' &&
+                    this.itemData.item_vehicle === '' &&
+                    this.itemData.vehicle_payment === '' &&
+                    this.itemData.item_completion_date === '' &&
+                    this.itemData.item_remark === '') {
+                    return false
+                } else {
+                    return true;
+                }
+
             },
             fetchShippers(url) {
                 axios.get(url)

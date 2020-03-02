@@ -10,7 +10,7 @@ $factory->define(Driver::class, function (Faker $faker) {
         'driver_no' => $faker->numberBetween(1000, 9999),
         'driver_pass' => Hash::make('12345'),
         'driver_name' => $faker->name,
-        'driver_mobile_number' => $faker->phoneNumber,
+        'driver_mobile_number' => '1111',
         'maximum_Loading' => $faker->numberBetween(10, 100),
         'search_flg' => $faker->numberBetween(0,1),
         'admin_flg' => $faker-> numberBetween(0,1),
