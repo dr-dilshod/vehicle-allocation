@@ -70,7 +70,7 @@
                                 </option>
                             </select>
                         </td>
-                        <td class="text-right" width="20%">
+                        <td class="text-right ml-3" width="20%">
                             <button type="submit" class="btn btn-primary btn-fixed-width">{{__('common.search')}}</button>
                         </td>
                         <td>
