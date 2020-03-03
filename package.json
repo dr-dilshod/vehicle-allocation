@@ -32,6 +32,7 @@
         "@syncfusion/ej2-vue-grids": "^17.4.50",
         "@syncfusion/ej2-vue-inputs": "^17.4.47",
         "@syncfusion/ej2-vue-popups": "^17.4.43",
+        "vue-currency-input": "^1.17.1",
         "vue-router": "^3.1.5",
         "vue-simple-alert": "^1.1.1",
         "vuedraggable": "^2.23.2",
