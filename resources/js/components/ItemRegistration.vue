@@ -240,7 +240,7 @@
                             </td>
                             <td colspan="2">
                                 <input type="text" class="form-control" id="vehicle_payment" v-on:change="notify"
-                                       v-model="itemData.vehicle_payment"/>
+                                       v-model="vehicle_p" v-currency="config" v-on:input="currencyParser"/>
                             </td>
                             <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
                         </tr>
@@ -263,10 +263,20 @@
     import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
     import {VueSimpleAlert} from "vue-simple-alert";
+    import VueCurrencyInput from 'vue-currency-input'
+    import { CurrencyDirective, parseCurrency } from 'vue-currency-input'
 
+    const pluginOptions = {
+        /* see config reference */
+        globalOptions: {currency: 'JPY'},
+    };
+    Vue.use(VueCurrencyInput, pluginOptions);
     export default {
         components: {
             Datepicker
+        },
+        directives: {
+            currency: CurrencyDirective
         },
         props: {
             backUrl: {type: String, required: true},
@@ -284,6 +294,8 @@
         },
         data() {
             return {
+                locale: 'ja',
+                currency: 'JPY',
                 itemData: {
                     item_id: '',
                     shipper_id: '',
@@ -312,6 +324,7 @@
                     update_id: '',
                     remember_token: '',
                 },
+                vehicle_p : '',
                 isDisabled: false,
                 shippers: [],
                 drivers: [],
@@ -347,6 +360,9 @@
         methods: {
             notify() {
                 this.anyFieldChanged = 1;
+            },
+            currencyParser() {
+                this.itemData.vehicle_payment = this.numberValue(this.vehicle_p);
             },
             fetchEditData(){
                 axios.get(this.resourceUrl + "/" + this.itemId)
@@ -644,6 +660,9 @@
                     type: "warning",
                 });
             },
+            numberValue(value) {
+                return parseCurrency(value, this.config)
+            },
         },
         watch: {
             per_ton: function () {
@@ -651,6 +670,14 @@
             },
             ton: function () {
                 this.perTonChange();
+            },
+        },
+        computed: {
+            config () {
+                return {
+                    locale: this.locale,
+                    currency: this.currency
+                }
             },
         },
         name : 'ItemRegistration'
