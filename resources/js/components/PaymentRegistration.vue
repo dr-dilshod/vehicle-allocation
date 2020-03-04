@@ -132,7 +132,7 @@
                     <td>{{__('payment.yen')}}</td>
                     <td> &nbsp;&nbsp;&nbsp; </td>
                     <td class="text-right">{{__('payment.outgoing_balance')}}</td>
-                    <td><money type="text" class="form-control" v-model.lazy="invoice" v-money="money" disabled /></td>
+                    <td><money type="text" class="form-control" v-model="invoice" v-bind="money" disabled /></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 </tfoot>

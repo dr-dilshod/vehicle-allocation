@@ -105,22 +105,22 @@
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.transfer')}}</td>
-                <td><input type="text" class="form-control" v-model="deposit.deposit_amount" required/></td>
+                <td><money class="form-control" v-model="deposit.deposit_amount" v-bind="money" required/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.offset')}}</td>
-                <td><input type="text" class="form-control" v-model="offset" disabled/></td>
+                <td><money class="form-control" v-model="offset" v-bind="money" disabled/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.other')}}</td>
-                <td><input type="text" class="form-control" v-model="deposit.other"/></td>
+                <td><money class="form-control" v-model="deposit.other" v-bind="money"/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.transfer_fee')}}</td>
-                <td><input type="text" class="form-control" v-model="deposit.fee"/></td>
+                <td><money class="form-control" v-model="deposit.fee" v-bind="money"/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             </tbody>
@@ -128,11 +128,11 @@
             <tfoot>
             <tr>
                 <td class="text-right">{{__('deposit.total_credit_amount')}}</td>
-                <td><input type="text" class="form-control" v-model="total" disabled/></td>
+                <td><money class="form-control" v-model="total" v-bind="money" disabled/></td>
                 <td>{{__('deposit.yen')}}</td>
                 <td> &nbsp;&nbsp;&nbsp; </td>
                 <td class="text-right">{{__('deposit.invoice_balance')}}</td>
-                <td><input type="text" class="form-control" v-model="invoice" disabled/></td>
+                <td><money class="form-control" v-model="invoice" v-bind="money" disabled/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             </tfoot>
@@ -147,10 +147,11 @@
     import Vue from "vue";
     import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
+    import {Money} from 'v-money'
 
     export default {
         components: {
-            Datepicker
+            Datepicker, Money
         },
         props : {
             backUrl : {required : true},
@@ -159,13 +160,21 @@
         },
         data(){
             return {
+                money: {
+                    decimal: '',
+                    thousands: ',',
+                    prefix: '\xA5',
+                    suffix: '',
+                    precision: 0,
+                    masked: false /* doesn't work with directive */
+                },
                 deposit : {
                     deposit_id : null,
                     shipper_id : null,
                     deposit_day : null,
-                    deposit_amount : null,
-                    other : null,
-                    fee : null,
+                    deposit_amount : 0,
+                    other : 0,
+                    fee : 0,
                 },
                 offset : null,
                 total : null,
@@ -259,9 +268,9 @@
                     deposit_id : null,
                     shipper_id : null,
                     deposit_day : null,
-                    deposit_amount : null,
-                    other : null,
-                    fee : null,
+                    deposit_amount : 0,
+                    other : 0,
+                    fee : 0,
                 };
                 this.offset = null;
                 this.total = null;
