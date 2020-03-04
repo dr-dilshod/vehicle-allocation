@@ -38,7 +38,8 @@
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <button v-on:click="search(true)" class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
+                            <button v-on:click="search(true)"
+                                    class="btn btn-lg btn-primary btn-block p-1 btn-fixed-width">
                                 {{__('common.search')}}
                             </button>
                         </div>
@@ -67,8 +68,10 @@
                           width="200"></e-column>
                 <e-column field='stack_point' :headerText="__('unit_prices.loading_port')" width="200"></e-column>
                 <e-column field='down_point' :headerText="__('unit_prices.drop_off')" width="200"></e-column>
-                <e-column field='type'  editType='dropdownedit' :edit="params.typeParams" :headerText="__('unit_prices.type')" width="100"></e-column>
-                <e-column field='price' :headerText="__('unit_prices.unit_price')" width="100"></e-column>
+                <e-column field='type' editType='dropdownedit' :edit="params.typeParams"
+                          :headerText="__('unit_prices.type')" width="100"></e-column>
+                <e-column field='price' :valueAccessor="currencyParser" :headerText="__('unit_prices.unit_price')"
+                          width="100"></e-column>
                 <e-column field='price_id' :headerText="__('unit_prices.unit_price_id')" width="5" :isPrimaryKey="true"
                           :visible=false></e-column>
                 <e-column field='shipperId' :headerText="__('unit_prices.shipper_id')" width="5"
@@ -168,20 +171,28 @@
             this.$refs.grid.hideSpinner();
         },
         methods: {
+            currencyParser(field, data, column) {
+                if (data.price != null && data.price !== '') {
+                    return new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(data.price);
+                } else {
+                    return data.price;
+                }
+            },
             shipperEditTemplate() {
                 return {
                     template: Vue.component('shipperSelectBox', {
-                      template: `<select class="form-control" name="shipper_id" @change="onChange($event)">
-                                    <option value="0"></option>
-                                    <option v-for="shipper in shippers" :value="shipper.id" :selected="Number(shipper.id) === Number(selected)">{{shipper.shipper}}</option>
-                                 </select>`,
+                        template: `<select class="form-control" name="shipper_id" @change="onChange($event)">
+                            <option value="0"></option>
+                            <option v-for="shipper in shippers" :value="shipper.id"
+                                    :selected="Number(shipper.id) === Number(selected)">{{shipper.shipper}}</option>
+                        </select>`,
                         data() {
-                          return {
-                              data: {},
-                              shippers: [],
-                              selected: 0,
-                              resourceUrl: document.getElementById('resourceUrl').value
-                          }
+                            return {
+                                data: {},
+                                shippers: [],
+                                selected: 0,
+                                resourceUrl: document.getElementById('resourceUrl').value
+                            }
                         },
                         methods: {
                             fetchShipperName(url) {
@@ -189,7 +200,10 @@
                                     .then(response => {
                                         if (response.data.length > 0) {
                                             this.shippers = response.data.map(e => {
-                                                return {shipper: e.shipper_name1 + ' ' + e.shipper_name2, id: e.shipper_id};
+                                                return {
+                                                    shipper: e.shipper_name1 + ' ' + e.shipper_name2,
+                                                    id: e.shipper_id
+                                                };
                                             });
                                             this.selected = document.getElementById('selectedShipperId').value;
                                         }
@@ -201,7 +215,7 @@
                             }
                         },
                         mounted() {
-                              this.fetchShipperName(`${this.resourceUrl}/shipper-names`);
+                            this.fetchShipperName(`${this.resourceUrl}/shipper-names`);
                         }
                     })
                 };
@@ -251,7 +265,7 @@
                         }
                     });
             },
-            rowSelected: function(args) {
+            rowSelected: function (args) {
                 document.getElementById('selectedShipperId').value = args.data.shipperId;
             },
             insertData(unitPrice) {
@@ -270,8 +284,8 @@
                     });
             },
             updateData(unitPrice) {
-                    unitPrice = unitPrice.data;
-                    unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
+                unitPrice = unitPrice.data;
+                unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
                 axios.put(this.resourceUrl + '/' + unitPrice.price_id, unitPrice)
                     .then(response => {
                         document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
@@ -290,11 +304,12 @@
                         this.deleteSuccessDialog();
                     }).catch(err => {
                     this.tableUtil.editFailure();
-                        this.errorDialog(err);
-                    });
+                    this.errorDialog(err);
+                });
             },
             actionBegin(args) {
                 if (args.requestType === 'save') {
+                    this.$refs.grid.getColumnByField('price').valueAccessor = this.currencyParser;
                     if (args.hasOwnProperty('data') && args.data.hasOwnProperty('price_id') && args.data.price_id === undefined) {
                         this.insertData(args.data);
                     } else {
@@ -305,6 +320,9 @@
                         this.deleteData(args.data[0].price_id);
                     }
                 } else if (args.requestType === 'beginEdit') {
+                    this.$refs.grid.getColumnByField('price').valueAccessor = function(field, data, column) {
+                        return data.price;
+                    };
                     this.$refs.grid.getColumnByField('car_type').edit.params.dataSource = this.vehicle_types;
                 } else if (args.requestType === 'add') {
                     this.$refs.grid.getColumnByField('car_type').edit.params.dataSource = this.vehicle_types;
@@ -312,6 +330,14 @@
                 }
             }
 
+        },
+        computed: {
+            config() {
+                return {
+                    locale: this.locale,
+                    currency: this.currency
+                }
+            },
         },
         provide: {
             grid: [Sort, Freeze, Edit, Toolbar]
