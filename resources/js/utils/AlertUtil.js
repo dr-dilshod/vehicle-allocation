@@ -5,23 +5,24 @@ module.exports = {
 
     data() {
         return {
-            errorDialogTemplate: `
+            dialogTemplate: `
                     <div class="modal-content">
                     <div class="modal-header border-radius-0 bg-blue"><h5 class="modal-title">{{title}}</h5></div>
                      <div  class="modal-body">
-                     <div  v-html="text"></div>
+                     <div class="text-center p-5"><div  v-html="text"></div></div>
                         <div class="text-center"><button class="btn btn-warning btn-fixed-width" @click="$emit('close')">OK</button></div>
                         </div>
                     </div>
             `,
-            doneDialogTemplate: `
-                    <div class="modal-content">
-                    <div class="modal-header bg-blue"><h5 class="modal-title">{{title}}</h5></div>
+            dialogConfirmTemplate: `
+                <div class="modal-content">
+                    <div class="modal-header border-radius-0 bg-blue"><h5 class="modal-title">{{title}}</h5></div>
                      <div  class="modal-body">
-                     <div class="text-center p-5">
-                        <div  v-html="text"></div>
-                     </div>
-                        <div class="text-center"><button class="btn btn-warning btn-fixed-width" @click="$emit('close')">OK</button></div>
+                     <div class="text-center p-5"><div  v-html="text"></div></div>
+                        <div class="text-center">
+                            <button class="btn btn-warning btn-fixed-width" @click="triggerOnConfirm">OK</button>
+                            <button class="btn btn-default btn-fixed-width" @click="$emit('close')">{{this.__('common.cancel')}}</button>
+                        </div>
                         </div>
                     </div>
             `,
@@ -56,7 +57,7 @@ module.exports = {
 
         updateSuccessDialog() {
             this.$modal.show({
-                template: this.doneDialogTemplate,
+                template: this.dialogTemplate,
                 props: ['title', 'text']
             }, {title: this.__('alert.done'), text: this.entityName() + this.__('alert.successfully_updated')}, {
                 height: 'auto',
@@ -66,7 +67,7 @@ module.exports = {
 
         deleteSuccessDialog() {
             this.$modal.show({
-                template: this.doneDialogTemplate,
+                template: this.dialogTemplate,
                 props: ['title', 'text']
             }, {title: this.__('alert.done'), text: this.entityName() + this.__('alert.successfully_deleted')}, {
                 height: 'auto',
@@ -76,7 +77,7 @@ module.exports = {
 
         createSuccessDialog() {
             this.$modal.show({
-                template: this.doneDialogTemplate,
+                template: this.dialogTemplate,
                 props: ['title', 'text']
             }, {title: this.__('alert.done'), text: this.entityName() + this.__('alert.successfully_created')}, {
                 height: 'auto',
@@ -101,7 +102,7 @@ module.exports = {
             });
             message += '</ol>';
             this.$modal.show({
-                template: this.errorDialogTemplate,
+                template: this.dialogTemplate,
                 props: ['title', 'text']
             }, {title: this.__('alert.message'), text: message}, {
                 height: 'auto'
@@ -110,7 +111,7 @@ module.exports = {
 
         loadErrorDialog() {
             this.$modal.show({
-                template: this.errorDialogTemplate,
+                template: this.dialogTemplate,
                 props: ['title', 'text']
             }, {title: this.__('alert.message'), text: this.__('alert.error_on_loading_data_please_try_again')}, {
                 height: 'auto'

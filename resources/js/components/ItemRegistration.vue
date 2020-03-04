@@ -4,7 +4,8 @@
             <div class="row">
                 <div class="col-2">
                     <button type="submit" @click.prevent="back"
-                       class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</button>
+                            class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}
+                    </button>
                 </div>
                 <div class="col-2">
                     <h6 class="text-center text-danger">※{{__('item.required')}}</h6>
@@ -32,9 +33,11 @@
                                 <label for="stack_date">{{__('item.stack_date')}}</label>&nbsp;
                             </td>
                             <td width="25%">
-                                <datepicker v-model="itemData.stack_date" id="stack_date" name="stack_date" :bootstrap-styling="true" v-on:change="notify"
-                                           :format="options.weekday" :clear-button="true" :language="options.language.ja"
-                                required></datepicker>
+                                <datepicker v-model="itemData.stack_date" id="stack_date" name="stack_date"
+                                            :bootstrap-styling="true" v-on:change="notify"
+                                            :format="options.weekday" :clear-button="true"
+                                            :language="options.language.ja"
+                                            required></datepicker>
                             </td>
                             <td width="5%"></td>
                             <td class="text-right" width="15%" valign="bottom">
@@ -70,9 +73,11 @@
                                 <label for="down_date">{{__('item.down_date')}}</label>&nbsp;
                             </td>
                             <td>
-                                <datepicker v-model="itemData.down_date" id="down_date" name="down_date" :bootstrap-styling="true" v-on:change="notify"
-                                             :format="options.weekday" :clear-button="true" :language="options.language.ja"
-                                required></datepicker>
+                                <datepicker v-model="itemData.down_date" id="down_date" name="down_date"
+                                            :bootstrap-styling="true" v-on:change="notify"
+                                            :format="options.weekday" :clear-button="true"
+                                            :language="options.language.ja"
+                                            required></datepicker>
                             </td>
                             <td></td>
                             <td class="text-right" valign="bottom">
@@ -104,7 +109,8 @@
                                 <label for="vehicle_model">{{__('item.vehicle_model')}}</label>&nbsp;
                             </td>
                             <td>
-                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model" @change="calcUnitPrice"
+                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
+                                        @change="calcUnitPrice"
                                         class="form-control" required>
                                     <option value=""></option>
                                     <option>{{__('item.wing')}}</option>
@@ -135,7 +141,8 @@
                                 <label for="stack_point">{{__('item.stack_point')}}</label>&nbsp;
                             </td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice" v-on:change="notify"
+                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice"
+                                       v-on:change="notify"
                                        v-model="itemData.stack_point" id="stack_point" required/>
                             </td>
                             <td class="text-center"></td>
@@ -156,7 +163,7 @@
                             </td>
                             <td>
                                 <input id="weight" type="text" placeholder="" class="form-control"
-                                      v-on:input="setWeight" v-model="itemData.weight"/>
+                                       v-on:input="setWeight" v-model="itemData.weight"/>
                             </td>
                             <td class="text-center" valign="center">t</td>
                             <td class="text-right" valign="bottom">
@@ -172,7 +179,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-right" valign="bottom"><label for="per_ton">{{__('item.per_ton')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label for="per_ton">{{__('item.per_ton')}}</label>&nbsp;
+                            </td>
                             <td>
                                 <money id="per_ton" type="text" placeholder="" class="form-control"
                                        v-model="per_ton" v-on:change="notify" v-bind="money"/>
@@ -187,7 +195,8 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="per_vehicle" valign="bottom">{{__('item.per_vehicle')}}</label>&nbsp;</td>
+                                <label for="per_vehicle" valign="bottom">{{__('item.per_vehicle')}}</label>&nbsp;
+                            </td>
                             <td>
                                 <money class="form-control" id="per_vehicle"
                                        :disabled="isDisabled" v-model="per_vehicle" v-bind="money"/>
@@ -195,7 +204,8 @@
                             <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
                         <tr>
-                            <td class="text-right" valign="bottom"><label for="item_price">{{__('item.amount_of_money')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label for="item_price">{{__('item.amount_of_money')}}</label>&nbsp;
+                            </td>
                             <td>
                                 <money type="text" placeholder="" class="form-control" id="item_price"
                                        v-model="itemData.item_price" value="" v-bind="money" readonly/>
@@ -203,13 +213,18 @@
                             <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
                         <tr>
-                            <td class="text-right" valign="bottom"><label for="vehicle_no3">{{__('item.vehicle_no')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label
+                                for="vehicle_no3">{{__('item.vehicle_no')}}</label>&nbsp;
+                            </td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" id="vehicle_no3" v-on:change="notify"
+                                <input type="text" placeholder="" class="form-control" id="vehicle_no3"
+                                       v-on:change="notify"
                                        v-model="itemData.vehicle_no3"/>
                             </td>
                             <td></td>
-                            <td class="text-right" valign="bottom"><label for="driver_id">{{__('item.driver_name')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="bottom"><label
+                                for="driver_id">{{__('item.driver_name')}}</label>&nbsp;
+                            </td>
                             <td colspan="3">
                                 <select name="driver_id" id="driver_id" v-on:change="setDriverName"
                                         v-model="itemData.driver_id" class="form-control">
@@ -222,7 +237,7 @@
                         </tr>
                         <tr>
                             <td class="text-right" valign="bottom">
-                                <span ref= "editMandatory" class="required"> ※</span>
+                                <span ref="editMandatory" class="required"> ※</span>
                                 <label for="chartered_vehicle">{{__('item.chartered_vehicle')}}</label>&nbsp;
                             </td>
                             <td>
@@ -245,10 +260,11 @@
                             <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
                         </tr>
                         <tr>
-                            <td class="text-right"valign="top"><label for="item_remark">{{__('item.remarks')}}</label>&nbsp;</td>
+                            <td class="text-right" valign="top"><label for="item_remark">{{__('item.remarks')}}</label>&nbsp;
+                            </td>
                             <td colspan="6">
                                 <textarea rows="3" class="form-control" id="item_remark" v-on:change="notify"
-                                      v-model="itemData.item_remark"></textarea>
+                                          v-model="itemData.item_remark"></textarea>
                             </td>
                         </tr>
                         </tbody>
@@ -357,7 +373,7 @@
             notify() {
                 this.anyFieldChanged = 1;
             },
-            fetchEditData(){
+            fetchEditData() {
                 axios.get(this.resourceUrl + "/" + this.itemId)
                     .then(response => {
                         this.itemData = response.data;
@@ -402,38 +418,37 @@
             },
             perTonChange() {
                 this.anyFieldChanged = 1;
-                if(this.per_ton === 0 && this.ton === '') {
+                if (this.per_ton === 0 && this.ton === '') {
                     document.getElementById('per_vehicle').disabled = false;
                 } else {
                     document.getElementById('per_vehicle').disabled = true;
                 }
                 this.calcItemPrice();
             },
-            calcItemPrice(){
+            calcItemPrice() {
                 this.anyFieldChanged = 1;
-                if(this.per_ton !== 0 && this.ton !== ''){
+                if (this.per_ton !== 0 && this.ton !== '') {
                     this.itemData.item_price = this.per_ton * this.ton;
-                } else
-                    if(this.per_vehicle !== '0'){
-                        this.itemData.item_price = this.per_vehicle;
-                    }
+                } else if (this.per_vehicle !== '0') {
+                    this.itemData.item_price = this.per_vehicle;
+                }
             },
             calcUnitPrice() {
                 this.anyFieldChanged = 1;
                 let component = this;
-                if ((this.vehicle_model!=='') && (this.itemData.shipper_id!=='')
-                && (this.itemData.stack_point!=='') && (this.itemData.down_point!=='')) {
+                if ((this.vehicle_model !== '') && (this.itemData.shipper_id !== '')
+                    && (this.itemData.stack_point !== '') && (this.itemData.down_point !== '')) {
                     axios.get(this.unitPriceUrl + '?vehicle_model=' + this.vehicle_model
                         + '&shipper_id=' + this.itemData.shipper_id
                         + '&stack_point=' + this.itemData.stack_point
                         + '&down_point=' + this.itemData.down_point)
-                            .then(response => {
-                                if(response.data.price !== undefined ){
-                                    component.per_ton = response.data.price;
-                                }
-                                component.calcItemPrice();
-                            });
-                    }
+                        .then(response => {
+                            if (response.data.price !== undefined) {
+                                component.per_ton = response.data.price;
+                            }
+                            component.calcItemPrice();
+                        });
+                }
             },
             perVehicleChange() {
                 this.anyFieldChanged = 1;
@@ -453,22 +468,24 @@
                 this.itemData.down_time = document.getElementById('down_time_hour').value
                     + ':' + document.getElementById('down_time_min').value
             },
-            clear(){
+            clear() {
                 if (this.itemId !== undefined) {
-                this.$fire({
-                        title: this.__('common.confirm_delete'),
-                        text: this.__('common.cant_be_undone'),
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: this.__('common.ok'),
-                        cancelButtonText: this.__('common.cancel')
-                    }).then((result) => {
-                        if (result.value) {
-                            this.deleteItem(this.itemData.item_id);
-                        }
-                    });
+                    this.$modal.show({
+                            template: this.dialogConfirmTemplate,
+                            props: ['title', 'text', 'triggerOnConfirm']
+                        },
+                        {
+                            title: this.__('alert.message'),
+                            text: this.__('common.cant_be_undone'),
+                            triggerOnConfirm: () => {
+                                this.$modal.hide('confirm')
+                                this.deleteItem(this.itemData.item_id);
+                            }
+                        },
+                        {
+                            height: 'auto',
+                            name: 'confirm'
+                        });
                 } else {
                     for (let i in this.itemData) {
                         this.itemData[i] = "";
@@ -483,21 +500,22 @@
                     this.down_time_min = "";
                 }
             },
-            back(){
+            back() {
                 if ((this.itemId !== undefined && this.anyFieldChanged == 1) || (this.isEntry() && this.itemId === undefined)) {
-                    this.$fire({
-                        text: '編集中のデータを破棄して前の画面に戻りますか？',
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'OK',
-                        cancelButtonText: this.__('common.cancel')
-                    }).then((result) => {
-                        if (result.value) {
-                            window.location.href = this.redirectUrl
-                        }
-                    });
+                    this.$modal.show({
+                            template: this.dialogConfirmTemplate,
+                            props: ['title', 'text', 'triggerOnConfirm']
+                        },
+                        {
+                            title: this.__('alert.message'),
+                            text: '編集中のデータを破棄して前の画面に戻りますか？',
+                            triggerOnConfirm: () => {
+                                window.location.href = this.redirectUrl;
+                            }
+                        },
+                        {
+                            height: 'auto',
+                        });
                 } else {
                     window.location.href = this.backUrl;
                 }
@@ -549,12 +567,12 @@
                         this.vehicles = response.data
                     });
             },
-            register(){
+            register() {
                 const itemReg = this;
-                if(typeof this.itemData.stack_date == "object" && this.itemData.stack_date !== '')
-                    this.itemData.stack_date = this.itemData.stack_date.toISOString().slice(0,10);
-                if(typeof this.itemData.down_date == "object" && this.itemData.down_date !== '')
-                    this.itemData.down_date = this.itemData.down_date.toISOString().slice(0,10);
+                if (typeof this.itemData.stack_date == "object" && this.itemData.stack_date !== '')
+                    this.itemData.stack_date = this.itemData.stack_date.toISOString().slice(0, 10);
+                if (typeof this.itemData.down_date == "object" && this.itemData.down_date !== '')
+                    this.itemData.down_date = this.itemData.down_date.toISOString().slice(0, 10);
                 // check whether it is update or create operation
                 if (this.itemData.stack_date <= this.itemData.down_date) {
                     if (this.itemId === undefined) {
@@ -577,7 +595,7 @@
                     this.showWarningDialog(this.__('item.down_data_is_higher'));
                 }
             },
-            updateItem(item){
+            updateItem(item) {
                 let id = item.item_id;
                 const itemRegistration = this;
                 axios.put(this.resourceUrl + '/' + id, item)
@@ -588,7 +606,7 @@
                         itemRegistration.showDialog(error.response.data);
                     });
             },
-            deleteItem(item_id){
+            deleteItem(item_id) {
                 const itemRegistration = this;
                 axios.delete(this.resourceUrl + '/' + item_id)
                     .then(function (response) {
@@ -606,13 +624,21 @@
                 $.each(errors, function (key, value) {
                     message += value[0]; //showing only the first error.
                 });
-                this.$alert(message);
+
+                this.$modal.show({
+                        template: this.dialogTemplate,
+                        props: ['title', 'text']
+                    },
+                    {title: this.__('alert.message'), text: message},
+                    {
+                        height: 'auto',
+                    });
             },
-            getEnumerationHours(){
+            getEnumerationHours() {
                 return ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
                     , '15', '16', '17', '18', '19', '20', '21', '22', '23'];
             },
-            getEnumerationMins(){
+            getEnumerationMins() {
                 return ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14'
                     , '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
                     , '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', '48', '49',
@@ -620,38 +646,45 @@
             },
             setMandatory() {
                 this.anyFieldChanged = 1;
-                if(this.$refs.invoice.checked == true) {
+                if (this.$refs.invoice.checked == true) {
                     this.showMandatory();
-                }
-                 else {
+                } else {
                     this.hideMandatory();
                 }
             },
-            hideMandatory(){
+            hideMandatory() {
                 this.$refs.editMandatory.style.visibility = "hidden";
                 this.$refs.chartered_vehicle.required = false;
             },
 
-            showMandatory(){
+            showMandatory() {
                 this.$refs.editMandatory.style.visibility = "visible";
                 this.$refs.chartered_vehicle.required = true;
             },
             showSuccessDialog() {
-                this.$fire({
-                    title:  this.__('item.success_dialog_title'),
-                    text: (this.__('item.operation_is_successful')),
-                    type: "success",
-                    timer: 10000
-                }).then(r => {
-                    window.location.href = this.redirectUrl;
-                });
+                this.$modal.show({
+                        template: this.dialogTemplate,
+                        props: ['title', 'text']
+                    },
+                    {title: this.__('alert.done'), text: this.__('item.operation_is_successful')},
+                    {
+                        height: 'auto',
+                        width: 400
+                    }, {
+                        'before-close': () => {
+                            window.location.href = this.redirectUrl;
+                        }
+                    });
             },
             showWarningDialog(text) {
-                this.$fire({
-                    title: this.__('messages.warning'),
-                    text: text,
-                    type: "warning",
-                });
+                this.$modal.show({
+                        template: this.dialogTemplate,
+                        props: ['title', 'text']
+                    },
+                    {title: this.__('alert.done'), text: text},
+                    {
+                        height: 'auto',
+                    });
             },
         },
         watch: {
@@ -665,14 +698,15 @@
                 this.perVehicleChange();
             }
         },
-        name : 'ItemRegistration'
+        name: 'ItemRegistration'
     }
 </script>
 <style>
     .required {
         color: red;
     }
-    #item-registration td{
+
+    #item-registration td {
         padding-top: 0.5rem;
     }
 </style>
