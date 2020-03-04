@@ -16,6 +16,8 @@ return [
     'error_on_loading_data_please_try_again'=>'データの読み込み中にエラーが発生しました。 もう一度やり直してください',
     'successfully_created'=>'作成しました！',
     'ok'=>'オーケー',
+    'message' => 'メッセージ',
+    'done' => '完了'
 
 
 ];

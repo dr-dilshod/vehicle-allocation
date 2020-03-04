@@ -59,6 +59,10 @@
 .bg-blue{
     background-color: $navbar-bg;
 }
+.border-radius-0 {
+    border-radius: 0;
+}
+
 .btn{
     border-color: dimgray;
 }
@@ -93,4 +97,10 @@
 }
 .vdp-datepicker .form-control:disabled, .vdp-datepicker .form-control[readonly] {
     background-color: #FFFFFF;
+}
+
+
+.dialog-content {
+    padding: 0 !important;
+    margin: 0 !important;
 }

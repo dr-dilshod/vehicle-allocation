@@ -3,7 +3,7 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+import VModal from 'vue-js-modal'
 require('./bootstrap');
 require('./utils/Translation');
 window.Vue = require('vue');
@@ -19,6 +19,7 @@ require('./utils/syncfusion-local');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
 Vue.mixin(require('./utils/TranslationMixin'));
 Vue.mixin(require('./utils/AlertUtil'));
 
