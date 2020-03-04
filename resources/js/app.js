@@ -6,6 +6,7 @@
 import VModal from 'vue-js-modal'
 require('./bootstrap');
 require('./utils/Translation');
+require('../../node_modules/v-money');
 window.Vue = require('vue');
 require('./utils/syncfusion-local');
 

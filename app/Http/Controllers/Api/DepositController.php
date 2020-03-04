@@ -24,12 +24,17 @@ class DepositController extends Controller
         $day = $request->get('day');
 
         $query = Deposit::where('shipper_id', $shipper)
-            ->where('delete_flg', 0)
-            ->whereYear('deposit_day', $year)
-            ->whereMonth('deposit_day', $month)
-            ->whereDay('deposit_day', $day)
-            ->orderBy('deposit_day', 'desc');
-
+            ->where('delete_flg', 0);
+        if (!empty($year)){
+            $query->whereYear('deposit_day', $year);
+        }
+        if (!empty($month)){
+            $query->whereMonth('deposit_day', $month);
+        }
+        if (!empty($day)){
+            $query->whereDay('deposit_day', $day);
+        }
+        $query->orderBy('deposit_day', 'desc');
         $deposits = $query->get();
         $deposit = [];
 

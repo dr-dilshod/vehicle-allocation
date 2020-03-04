@@ -46,12 +46,17 @@ class PaymentController extends Controller
         $day = $request->get('day');
 
         $query = Payment::where('shipper_id', $shipper)
-            ->where('delete_flg', 0)
-            ->whereYear('payment_day', $year)
-            ->whereMonth('payment_day', $month)
-            ->whereDay('payment_day', $day)
-            ->orderBy('payment_day', 'desc');
-
+            ->where('delete_flg', 0);
+        if (!empty($year)){
+            $query->whereYear('payment_day', $year);
+        }
+        if (!empty($month)){
+            $query->whereMonth('payment_day', $month);
+        }
+        if (!empty($day)){
+            $query->whereDay('payment_day', $day);
+        }
+        $query->orderBy('payment_day', 'desc');
         $payments = $query->get();
         $payment = [];
 

@@ -37,7 +37,7 @@
                     </div>
                     <div class="form-group ml-1">
                         <select id="year" v-model="filter.year"
-                                v-on:change="changeDays" class="form-control" required>
+                                v-on:change="changeDays" class="form-control">
                             <option value=""></option>
                             <option v-for="x in 30" :value="new Date().getFullYear() - x + 1">
                                 {{ new Date().getFullYear() - x + 1}}
@@ -48,7 +48,7 @@
                         <label for="month">{{__('payment.payment_month')}}</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control" required>
+                        <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control">
                             <option value=""></option>
                             <option v-for="(month, index) in months" :value="index+1">
                                 {{ month }}
@@ -59,7 +59,7 @@
                         <label for="day">{{__('payment.payment_date')}}</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="day" v-model="filter.day" class="form-control" style="width: 60px;" required>
+                        <select id="day" v-model="filter.day" class="form-control" style="width: 60px;" >
                             <option value=""></option>
                             <option v-for="day in dayCount" :value="day">
                                 {{ day }}
@@ -99,28 +99,28 @@
                     <td>
                         <datepicker v-model="payment.payment_day" :disabled="!registerMode" required
                                     :bootstrap-styling="true"  :format="options.weekday"
-                                    :clear-button="true" :language="options.language.ja"></datepicker>
+                                    :clear-button="registerMode" :language="options.language.ja"></datepicker>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.transfer')}}</td>
-                    <td><input type="text" class="form-control" v-model="payment.payment_amount" required/></td>
+                    <td><money class="form-control" v-model="payment.payment_amount" v-bind="money" required/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.offset')}}</td>
-                    <td><input type="text" class="form-control" v-model="offset" disabled/></td>
+                    <td><money class="form-control" v-model="offset" v-bind="money" disabled/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.other')}}</td>
-                    <td><input type="text" class="form-control" v-model="payment.other"/></td>
+                    <td><money class="form-control" v-model="payment.other" v-bind="money"/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.transfer_fee')}}</td>
-                    <td><input type="text" class="form-control" v-model="payment.fee"/></td>
+                    <td><money class="form-control" v-model="payment.fee" v-bind="money"/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 </tbody>
@@ -128,11 +128,11 @@
                 <tfoot>
                 <tr>
                     <td class="text-right">{{__('payment.total_credit_amount')}}</td>
-                    <td><input type="text" class="form-control" v-model="total" disabled/></td>
+                    <td><money class="form-control" v-model="total" v-bind="money" disabled/></td>
                     <td>{{__('payment.yen')}}</td>
                     <td> &nbsp;&nbsp;&nbsp; </td>
                     <td class="text-right">{{__('payment.outgoing_balance')}}</td>
-                    <td><input type="text" class="form-control" v-model="invoice" disabled/></td>
+                    <td><money type="text" class="form-control" v-model="invoice" v-bind="money" disabled /></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 </tfoot>
@@ -147,10 +147,11 @@
     import Vue from "vue";
     import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
+    import {Money} from 'v-money'
 
     export default {
         components: {
-            Datepicker
+            Datepicker, Money
         },
         props : {
             backUrl : {required : true},
@@ -159,13 +160,21 @@
         },
         data(){
             return {
+                money: {
+                    decimal: '',
+                    thousands: ',',
+                    prefix: '\xA5',
+                    suffix: '',
+                    precision: 0,
+                    masked: false /* doesn't work with directive */
+                },
                 payment : {
                     payment_id : null,
                     shipper_id : null,
                     payment_day : null,
-                    payment_amount : null,
-                    other : null,
-                    fee : null,
+                    payment_amount : 0,
+                    other : 0,
+                    fee : 0,
                 },
                 offset : null,
                 total : null,
@@ -259,9 +268,9 @@
                     payment_id : null,
                     shipper_id : null,
                     payment_day : null,
-                    payment_amount : null,
-                    other : null,
-                    fee : null,
+                    payment_amount : 0,
+                    other : 0,
+                    fee : 0,
                 };
                 this.offset = null;
                 this.total = null;
