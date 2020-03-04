@@ -37,7 +37,7 @@
                     </div>
                     <div class="form-group ml-1">
                         <select id="year" v-model="filter.year"
-                                v-on:change="changeDays" class="form-control" required>
+                                v-on:change="changeDays" class="form-control">
                             <option value=""></option>
                             <option v-for="x in 30" :value="new Date().getFullYear() - x + 1">
                                 {{ new Date().getFullYear() - x + 1}}
@@ -48,7 +48,7 @@
                         <label for="month">{{__('payment.payment_month')}}</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control" required>
+                        <select id="month" v-model="filter.month" v-on:change="changeDays" class="form-control">
                             <option value=""></option>
                             <option v-for="(month, index) in months" :value="index+1">
                                 {{ month }}
@@ -59,7 +59,7 @@
                         <label for="day">{{__('payment.payment_date')}}</label>
                     </div>
                     <div class="form-group ml-1">
-                        <select id="day" v-model="filter.day" class="form-control" style="width: 60px;" required>
+                        <select id="day" v-model="filter.day" class="form-control" style="width: 60px;" >
                             <option value=""></option>
                             <option v-for="day in dayCount" :value="day">
                                 {{ day }}
@@ -99,7 +99,7 @@
                     <td>
                         <datepicker v-model="payment.payment_day" :disabled="!registerMode" required
                                     :bootstrap-styling="true"  :format="options.weekday"
-                                    :clear-button="true" :language="options.language.ja"></datepicker>
+                                    :clear-button="registerMode" :language="options.language.ja"></datepicker>
                     </td>
                     <td></td>
                 </tr>
