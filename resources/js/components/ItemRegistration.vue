@@ -174,8 +174,8 @@
                         <tr>
                             <td class="text-right" valign="bottom"><label for="per_ton">{{__('item.per_ton')}}</label>&nbsp;</td>
                             <td>
-                                <input id="per_ton" type="text" placeholder="" class="form-control"
-                                       v-model="per_ton" v-on:change="notify"/>
+                                <money id="per_ton" type="text" placeholder="" class="form-control"
+                                       v-model="per_ton" v-on:change="notify" v-bind="money"/>
                             </td>
                             <td class="text-center" valign="center">{{__('item.yen')}}</td>
                             <td class="text-center"><span class="text-center">x&nbsp;&nbsp;</span></td>
@@ -189,16 +189,16 @@
                             <td class="text-right">
                                 <label for="per_vehicle" valign="bottom">{{__('item.per_vehicle')}}</label>&nbsp;</td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" id="per_vehicle"
-                                       v-on:input="perVehicleChange" :disabled="isDisabled" v-model="per_vehicle"/>
+                                <money class="form-control" id="per_vehicle"
+                                       :disabled="isDisabled" v-model="per_vehicle" v-bind="money"/>
                             </td>
                             <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td class="text-right" valign="bottom"><label for="item_price">{{__('item.amount_of_money')}}</label>&nbsp;</td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" id="item_price"
-                                       v-model="itemData.item_price" value="" readonly/>
+                                <money type="text" placeholder="" class="form-control" id="item_price"
+                                       v-model="itemData.item_price" value="" v-bind="money" readonly/>
                             </td>
                             <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
@@ -239,8 +239,8 @@
                                 <label for="vehicle_payment">{{__('item.rental_vehicle_payment')}}</label>&nbsp;
                             </td>
                             <td colspan="2">
-                                <input type="text" class="form-control" id="vehicle_payment" v-on:change="notify"
-                                       v-model="vehicle_p" v-currency="config" v-on:input="currencyParser"/>
+                                <money type="text" class="form-control" id="vehicle_payment" v-on:change="notify"
+                                       v-model="itemData.vehicle_payment" v-bind="money"/>
                             </td>
                             <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
                         </tr>
@@ -263,20 +263,13 @@
     import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
     import {VueSimpleAlert} from "vue-simple-alert";
-    import VueCurrencyInput from 'vue-currency-input'
-    import { CurrencyDirective, parseCurrency } from 'vue-currency-input'
+    import money from 'v-money'
+    import {Money} from 'v-money'
 
-    const pluginOptions = {
-        /* see config reference */
-        globalOptions: {currency: 'JPY'},
-    };
-    Vue.use(VueCurrencyInput, pluginOptions);
     export default {
         components: {
-            Datepicker
-        },
-        directives: {
-            currency: CurrencyDirective
+            Datepicker,
+            Money,
         },
         props: {
             backUrl: {type: String, required: true},
@@ -294,8 +287,12 @@
         },
         data() {
             return {
-                locale: 'ja',
-                currency: 'JPY',
+                money: {
+                    thousands: ',',
+                    prefix: '¥ ',
+                    precision: 0,
+                    masked: false
+                },
                 itemData: {
                     item_id: '',
                     shipper_id: '',
@@ -324,7 +321,6 @@
                     update_id: '',
                     remember_token: '',
                 },
-                vehicle_p : '',
                 isDisabled: false,
                 shippers: [],
                 drivers: [],
@@ -360,9 +356,6 @@
         methods: {
             notify() {
                 this.anyFieldChanged = 1;
-            },
-            currencyParser() {
-                this.itemData.vehicle_payment = this.numberValue(this.vehicle_p);
             },
             fetchEditData(){
                 axios.get(this.resourceUrl + "/" + this.itemId)
@@ -409,7 +402,7 @@
             },
             perTonChange() {
                 this.anyFieldChanged = 1;
-                if(this.per_ton === '' && this.ton === '') {
+                if(this.per_ton === 0 && this.ton === '') {
                     document.getElementById('per_vehicle').disabled = false;
                 } else {
                     document.getElementById('per_vehicle').disabled = true;
@@ -418,10 +411,10 @@
             },
             calcItemPrice(){
                 this.anyFieldChanged = 1;
-                if(this.per_ton !== '' && this.ton !== ''){
+                if(this.per_ton !== 0 && this.ton !== ''){
                     this.itemData.item_price = this.per_ton * this.ton;
                 } else
-                    if(this.per_vehicle !== ''){
+                    if(this.per_vehicle !== '0'){
                         this.itemData.item_price = this.per_vehicle;
                     }
             },
@@ -444,7 +437,7 @@
             },
             perVehicleChange() {
                 this.anyFieldChanged = 1;
-                if (this.per_vehicle == '') {
+                if (this.per_vehicle == '0') {
                     document.getElementById('per_ton').disabled = false;
                     document.getElementById('ton').disabled = false;
                 } else {
@@ -660,9 +653,6 @@
                     type: "warning",
                 });
             },
-            numberValue(value) {
-                return parseCurrency(value, this.config)
-            },
         },
         watch: {
             per_ton: function () {
@@ -671,14 +661,9 @@
             ton: function () {
                 this.perTonChange();
             },
-        },
-        computed: {
-            config () {
-                return {
-                    locale: this.locale,
-                    currency: this.currency
-                }
-            },
+            per_vehicle: function () {
+                this.perVehicleChange();
+            }
         },
         name : 'ItemRegistration'
     }

@@ -96,7 +96,7 @@
                 <e-column field='shipper_name' :allowEditing= 'false' :headerText='__("item.shipper_name")'  width="160"></e-column>
                 <e-column field='stack_point' :allowEditing= 'false' textAlign="Stack point" :headerText='__("item.stack_point")' width="150"></e-column>
                 <e-column field='down_point' :allowEditing= 'false' :headerText='__("item.down_point")' width="200"></e-column>
-                <e-column field='vehicle_payment' :allowEditing= 'false' :headerText='__("item.item_price")' width="120"></e-column>
+                <e-column field='vehicle_payment' :valueAccessor='currencyFormatter' :allowEditing= 'false' :headerText='__("item.item_price")' width="120"></e-column>
                 <e-column field='item_remark' :allowEditing= 'false' :headerText='__("item.remarks")' width="200"></e-column>
             </e-columns>
         </ejs-grid>
@@ -314,6 +314,11 @@
             this.fetchItem(this.initializerUrl);
         },
         methods: {
+            currencyFormatter: function(field, data, column) {
+                return new Intl.NumberFormat('ja-JP',
+                    { style: 'currency', currency: 'JPY' })
+                    .format(data['vehicle_payment']);
+            },
             actionBegin(args){
                 if(args.requestType === 'beginEdit'){
                     this.$refs.grid.ej2Instances.setProperties({
