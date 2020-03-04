@@ -289,7 +289,7 @@
             return {
                 money: {
                     thousands: ',',
-                    prefix: '¥ ',
+                    prefix: '¥',
                     precision: 0,
                     masked: false
                 },
@@ -517,12 +517,12 @@
                     this.itemData.down_point === '' &&
                     this.itemData.weight === '' &&
                     this.itemData.empty_pl === '' &&
-                    this.itemData.item_price === '' &&
+                    this.itemData.item_price === 0 &&
                     this.itemData.item_driver_name === '' &&
                     this.itemData.vehicle_no3 === '' &&
                     this.itemData.shipper_name === '' &&
                     this.itemData.item_vehicle === '' &&
-                    this.itemData.vehicle_payment === '' &&
+                    this.itemData.vehicle_payment === 0 &&
                     this.itemData.item_completion_date === '' &&
                     this.itemData.item_remark === '') {
                     return false
