@@ -54,7 +54,11 @@
 }
 .navbar{
     background-color: $navbar-bg;
-    border:1px solid dimgray;
+    border-bottom:5px solid #dbdbdb;
+}
+.container-fluid{
+    padding-left: 0;
+    padding-right: 0;
 }
 .bg-blue{
     background-color: $navbar-bg;
