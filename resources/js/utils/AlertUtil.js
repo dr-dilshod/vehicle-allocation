@@ -25,27 +25,7 @@ module.exports = {
                         </div>
                         </div>
                     </div>
-            `,
-            max8: {
-                maxLength: [(args) => {
-                    return args['value'].length <= 8;
-                }, this.__('alert.at_most_8_letters')]
-            },
-            max12: {
-                maxLength: [(args) => {
-                    return args['value'].length <= 12;
-                }, this.__('alert.at_most_12_letters')]
-            },
-            max60: {
-                maxLength: [(args) => {
-                    return args['value'].length <= 60;
-                }, this.__('alert.at_most_60_letters')]
-            },
-            max120: {
-                maxLength: [(args) => {
-                    return args['value'].length <= 120;
-                }, this.__('alert.at_most_120_letters')]
-            },
+            `
         };
     },
 

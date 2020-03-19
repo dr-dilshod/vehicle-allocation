@@ -23,6 +23,7 @@ require('./utils/syncfusion-local');
 Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
 Vue.mixin(require('./utils/TranslationMixin'));
 Vue.mixin(require('./utils/AlertUtil'));
+Vue.mixin(require('./utils/ValidationMixin'));
 
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);

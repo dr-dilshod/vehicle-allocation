@@ -22,15 +22,15 @@
         <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
                   :allowSorting="true" :height="300" :frozenColumns="3"  :enableHover='false' :allowSelection='true' rowHeight=35>
             <e-columns>
-                <e-column field='driver_no'  :headerText= '__("driver.no")' width="150"></e-column>
-                <e-column field='vehicle_type' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
-                <e-column field='driver_name'  :headerText= '__("driver.name")' width="150"></e-column>
-                <e-column field='driver_mobile_number' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
-                <e-column field='vehicle_no3' :headerText= '__("driver.vehicle_no")' width="150"></e-column>
-                <e-column field='maximum_Loading' :headerText= '__("driver.max_load")' width="100"></e-column>
-                <e-column field='search_flg' :headerText= '__("driver.display")'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
-                <e-column field='admin_flg' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
-                <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200"></e-column>
+                <e-column field='driver_no' :validationRules='max4' :headerText= '__("driver.no")' width="150"></e-column>
+                <e-column field='vehicle_type' :validationRules='max10' :headerText= '__("driver.type")' editType='dropdownedit' :edit='vehicleTypeParams' width="150"></e-column>
+                <e-column field='driver_name'  :validationRules='max60' :headerText= '__("driver.name")' width="150"></e-column>
+                <e-column field='driver_mobile_number' :validationRules='max13' :headerText= '__("driver.mobile_number")'  width="150"></e-column>
+                <e-column field='vehicle_no3' :validationRules='max4' :headerText= '__("driver.vehicle_no")' width="150"></e-column>
+                <e-column field='maximum_Loading' :validationRules='max5' :headerText= '__("driver.max_load")' width="100"></e-column>
+                <e-column field='search_flg' :validationRules='max1' :headerText= '__("driver.display")'   editType= 'booleanedit' defaultValue="1" :template='searchTemplate' width="150" ></e-column>
+                <e-column field='admin_flg' :validationRules='max1' :headerText= '__("driver.admin")' editType='booleanedit' :template="adminTemplate" width="150" ></e-column>
+                <e-column field='driver_remark' :validationRules='max255':headerText='__("driver.remarks")' width="200"></e-column>
                 <e-column field='driver_pass_temp' :headerText= '__("driver.password")' width="200"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0" ></e-column>
             </e-columns>
@@ -89,6 +89,15 @@
                         })
                     }
                 },
+                textTemplate(args){
+                    console.log(args);
+                    return {
+                        template: Vue.component('textTemplate', {
+                            template: '<input class="e-field e-input" type="text" v-model="data.driver_no"/>',
+                            data() { return { data: {} }}
+                        })
+                    }
+                },
                 mode: 'Batch',
             };
         },
@@ -97,15 +106,6 @@
             this.fetchData(this.resourceUrl);
         },
         methods: {
-//            databound(){
-//                let cols = this.$refs.grid.ej2Instances.columns;
-//                for (let i=0; i<this.data.length; i++){
-//                    for (let j=0; j < cols.length; j++){
-//                        this.$refs.grid.ej2Instances.editModule.editCell(i, cols[j].field);
-//                    }
-//                }
-//
-//            },
             fetchData(url) {
                 axios.get(url)
                     .then(response => {
