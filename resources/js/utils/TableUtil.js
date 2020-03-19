@@ -125,7 +125,8 @@ export class TableUtil{
     }
 
     register() {
-        console.log(this.component.data);
+        this.grid.ej2Instances.trigger('beforeBatchSave');
+        this.component.saveChanges(this.grid.ej2Instances.getBatchChanges());
     }
 
     delete(){
