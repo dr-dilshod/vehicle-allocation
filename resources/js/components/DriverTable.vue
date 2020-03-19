@@ -8,11 +8,12 @@
             <div class="col-2">
                 <h2 ref="editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <h2 class="text-center">{{title}}</h2>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <p class="text-right">
+                    <button ref="deleteBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}</button>
                     <button ref="registerBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}</button>
                     <button ref="editBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}</button>
                 </p>
@@ -88,7 +89,7 @@
                         })
                     }
                 },
-                mode: 'normal',
+                mode: 'Batch',
             };
         },
         mounted() {
@@ -96,6 +97,15 @@
             this.fetchData(this.resourceUrl);
         },
         methods: {
+//            databound(){
+//                let cols = this.$refs.grid.ej2Instances.columns;
+//                for (let i=0; i<this.data.length; i++){
+//                    for (let j=0; j < cols.length; j++){
+//                        this.$refs.grid.ej2Instances.editModule.editCell(i, cols[j].field);
+//                    }
+//                }
+//
+//            },
             fetchData(url) {
                 axios.get(url)
                     .then(response => {

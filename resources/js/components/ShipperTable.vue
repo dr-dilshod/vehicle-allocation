@@ -262,19 +262,25 @@
             },
 
             shipperNameUpdate(updatedShipper){
-                console.log(updatedShipper);
-                if(!updatedShipper.shipper_id){
-                    this.updatedShipper.shipper_name1 = updatedShipper.shipper_name1;
-                    this.updatedShipper.shipper_name2 = updatedShipper.shipper_name2;
-                    return;
+
+                let index = this.$refs.grid.selectRow();
+                if (index){
+                    this.data[index].shipper_name1 = updatedShipper.shipper_name1;
+                    this.data[index].shipper_name2 = updatedShipper.shipper_name2;
                 }
-                for (let i=0; i<this.data.length; i++){
-                    if (this.data[i].shipper_id == updatedShipper.shipper_id){
-                        this.data[i].shipper_name1 = updatedShipper.shipper_name1;
-                        this.data[i].shipper_name2 = updatedShipper.shipper_name2;
-                        this.updatedShipper = this.data[i];
-                    }
-                }
+
+//                if(!updatedShipper.shipper_id){
+//                    this.updatedShipper.shipper_name1 = updatedShipper.shipper_name1;
+//                    this.updatedShipper.shipper_name2 = updatedShipper.shipper_name2;
+//                    return;
+//                }
+//                for (let i=0; i<this.data.length; i++){
+//                    if (this.data[i].shipper_id == updatedShipper.shipper_id){
+//                        this.data[i].shipper_name1 = updatedShipper.shipper_name1;
+//                        this.data[i].shipper_name2 = updatedShipper.shipper_name2;
+//                        this.updatedShipper = this.data[i];
+//                    }
+//                }
             },
             shipperFuriganaUpdate(updatedShipper){
                 if (!updatedShipper.shipper_id){
@@ -296,22 +302,22 @@
                     this.$eventHub.$on("nameUpdate", this.shipperNameUpdate);
                     this.$eventHub.$on("furiganaUpdate", this.shipperFuriganaUpdate);
                 }
-                if(args.requestType == 'save'){
-                    args.data.shipper_name1 = this.updatedShipper.shipper_name1;
-                    args.data.shipper_name2 = this.updatedShipper.shipper_name2;
-                    args.data.shipper_kana_name1 = this.updatedShipper.shipper_kana_name1;
-                    args.data.shipper_kana_name2 = this.updatedShipper.shipper_kana_name2;
-                    if(!args.data.shipper_id){
-                        this.insertData(args.data);
-                    }else{
-                        this.editData(args.data);
-                    }
-                }
-                if(args.requestType == 'delete'){
-                    if(args.data[0].shipper_id){
-                        this.deleteData(args.data[0].shipper_id);
-                    }
-                }
+//                if(args.requestType == 'save'){
+//                    args.data.shipper_name1 = this.updatedShipper.shipper_name1;
+//                    args.data.shipper_name2 = this.updatedShipper.shipper_name2;
+//                    args.data.shipper_kana_name1 = this.updatedShipper.shipper_kana_name1;
+//                    args.data.shipper_kana_name2 = this.updatedShipper.shipper_kana_name2;
+//                    if(!args.data.shipper_id){
+//                        this.insertData(args.data);
+//                    }else{
+//                        this.editData(args.data);
+//                    }
+//                }
+//                if(args.requestType == 'delete'){
+//                    if(args.data[0].shipper_id){
+//                        this.deleteData(args.data[0].shipper_id);
+//                    }
+//                }
             },
             insertData(shipper){
                 axios.post(this.resourceUrl, shipper)
@@ -377,9 +383,6 @@
                 this.fetchCompanies();
                 this.search();
             },
-            paymentTemplate(){
-                return
-            }
         },
         provide: {
             grid: [Sort,Freeze,Edit,Toolbar]
