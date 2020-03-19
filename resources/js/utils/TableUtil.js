@@ -125,7 +125,6 @@ export class TableUtil{
     }
 
     register() {
-        this.grid.ej2Instances.trigger('beforeBatchSave');
         this.component.saveChanges(this.grid.ej2Instances.getBatchChanges());
     }
 

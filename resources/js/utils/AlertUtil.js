@@ -26,6 +26,18 @@ module.exports = {
                         </div>
                     </div>
             `,
+            saveChangesTemplate: `
+                <div class="modal-content">
+                    <div class="modal-header border-radius-0 bg-blue"><h5 class="modal-title">{{title}}</h5></div>
+                     <div  class="modal-body">
+                     <div class="text-center p-5"><div  v-html="text"></div></div>
+                        <div class="text-center">
+                            <button class="btn btn-warning btn-fixed-width" @click="triggerOnConfirm">OK</button>
+                            <button class="btn btn-default btn-fixed-width" @click="triggerDiscard">{{this.__('common.cancel')}}</button>
+                        </div>
+                        </div>
+                    </div>
+            `,
             max8: {
                 maxLength: [(args) => {
                     return args['value'].length <= 8;
@@ -54,7 +66,19 @@ module.exports = {
         operationSuccessDialog() {
             this.$alert(this.__('alert.operation_successfully_done'), null, 'success', {confirmButtonText: this.__('alert.ok')});
         },
+        confirmDialog() {
+            this.$modal.show({
+                template: this.dialogConfirmTemplate,
+                props: ['title', 'text', 'triggerOnConfirm']
+            }, {title: this.__('alert.message'), text: 'Are you sure?', triggerOnConfirm: () => {
+                    return true;
+                }}, {
+                height: 'auto',
+                width: 400
+            });
 
+            return false;
+        },
         updateSuccessDialog() {
             this.$modal.show({
                 template: this.dialogTemplate,
