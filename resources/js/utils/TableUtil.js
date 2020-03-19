@@ -131,5 +131,10 @@ export class TableUtil{
 
     delete(){
         this.grid.deleteRecord();
+        let selectedRow = this.grid.getSelectedRowIndexes()[0];
+        if (selectedRow !== undefined) {
+            this.component.data.splice(selectedRow, 1);
+        }
+        console.log(this.component.data);
     }
 }
