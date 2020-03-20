@@ -32,13 +32,18 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
-        ]);
-        $validated_driver = $request->validate(Driver::validationRules);
-        //$validated_driver['driver_pass'] = Hash::make($validated_driver['driver_pass']);
-        $driver = Driver::create($request->all());
-        return response()->json($driver, 201);
+        $drivers = $request->toArray();
+        $driver_list = [];
+        foreach ($drivers as $driver) {
+            //$driver->validate([
+            //    'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
+            //]);
+            //$data = $driver->validate(Driver::validationRules);
+            $driver['driver_pass'] = Hash::make($driver['driver_pass']);
+            $driver = Driver::create($driver);
+            //$driver_list->push($driver);
+        }
+        return response()->json($driver_list);
     }
 
     /**
