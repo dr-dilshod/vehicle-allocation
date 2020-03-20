@@ -153,14 +153,25 @@
                     title: window.__('alert.message'),
                     text: this.__('common.save_changes'),
                     triggerOnConfirm: () => {
-                        this.insertData(changedData.addedRecords);
-                        this.editData(changedData.changedRecords);
-                        this.deleteData(changedData.deletedRecords);
-                        this.showOperationSuccessDialog();
-                        this.fetchData(this.resourceUrl);
-                        this.$refs.grid.ej2Instances.refresh();
+                        let addSuccess= true;
+                        let changeSuccess= true;
+                        let deleteSuccess= true;
+                        if (changedData.addedRecords.length > 0) {
+                            addSuccess = this.insertData(changedData.addedRecords);
+                        }
+                        if (changedData.changedRecords.length > 0) {
+                            changeSuccess = this.editData(changedData.changedRecords);
+                        }
+                        if (changedData.deletedRecords.length > 0) {
+                            deleteSuccess = this.deleteData(changedData.deletedRecords);
+                        }
+                        if (addSuccess && changeSuccess && deleteSuccess) {
+                            this.showOperationSuccessDialog();
+                            this.fetchData(this.resourceUrl);
+                            this.$refs.grid.ej2Instances.refresh();
+                            this.tableUtil.endEditing();
+                        }
                         this.$modal.hide('confirmDialog');
-                        this.tableUtil.endEditing();
                     },
                     triggerDiscard: () => {
                         // discard changes e.g. refresh
@@ -227,22 +238,27 @@
             insertData(createdData) {
                 axios.post(this.insertUrl, createdData)
                     .then(response => {
+                        return true;
                     })
                     .catch(error => {
                         this.errorDialog(error);
+                        return false;
                     });
             },
             editData(updatedData) {
                 axios.post(this.updateUrl, updatedData)
                     .then(response => {
+                        return true;
                     })
                     .catch(error => {
                         this.errorDialog(error);
+                        return false;
                     });
             },
             deleteData(deletedData) {
                 axios.post(this.deleteUrl, deletedData)
                     .then(response => {
+                        return true;
                     })
                     .catch(error => {
                         this.errorDialog(error);
