@@ -33,8 +33,8 @@ Route::delete('/vehicle/{id}', 'Api\VehicleController@destroy')->name('api.vehic
 Route::get('/driver', 'Api\DriverController@index')->name('api.driver.index');
 Route::get('/driver/{id}', 'Api\DriverController@show')->name('api.driver.show');
 Route::post('/driver', 'Api\DriverController@store')->name('api.driver.store');
-Route::put('/driver/{id}', 'Api\DriverController@update')->name('api.driver.update');
-Route::delete('/driver/{id}', 'Api\DriverController@destroy')->name('api.driver.destroy');
+Route::post('/driver', 'Api\DriverController@update')->name('api.driver.update');
+Route::post('/driver', 'Api\DriverController@destroy')->name('api.driver.destroy');
 Route::get('/drivers/vehicle-numbers', 'Api\DriverController@getVehicleNumbers')->name('api.driver.vehicle-numbers');
 
 // Shipper routes

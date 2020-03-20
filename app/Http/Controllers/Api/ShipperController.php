@@ -105,39 +105,6 @@ class ShipperController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function storeInBatchMode(Request $request)
-    {
-        $shippers = $request->all();
-        foreach ($shippers as $shipper) {
-            // firstly, validate the shipper list
-            $shipper->validate(Shipper::validationRules);
-            $shipper->validate([
-                'shipper_no' => 'unique:shippers',
-            ]);
-
-            $shipper_id = $shipper->input('shipper_id');
-            if (!empty($shipper_id)) {
-                $delete_flg = $shipper->input('delete_flg');
-                $shipp = Shipper::findOrFail($shipper_id);
-                if ($delete_flg == 1) {
-                    $shipp->delete_flg=1;
-                    $shipp->save();
-                } else {
-                    $shipp->update($shipper);
-                }
-            } else {
-                $shipper = Shipper::create($shipper);
-            }
-        }
-        return response()->json($shipper, 201);
-    }
-    /**
      * Display the specified resource.
      *
      * @param  int  $id

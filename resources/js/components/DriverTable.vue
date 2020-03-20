@@ -67,6 +67,9 @@
             title: {type: String, required: true},
             fetchUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
+            insertUrl: {type: String, required: true},
+            updateUrl: {type: String, required: true},
+            deleteUrl: {type: String, required: true},
         },
         data() {
             return {
@@ -142,7 +145,7 @@
                     location.href = this.backUrl;
                 }
             },
-            saveChanges(data) {
+            saveChanges(changedData) {
                 this.$modal.show({
                     template: this.saveChangesTemplate,
                     props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
@@ -150,7 +153,9 @@
                     title: window.__('alert.message'),
                     text: this.__('common.save_changes'),
                     triggerOnConfirm: () => {
-                        //save changes here
+                        this.insertData(changedData.addedRecords);
+                        this.editData(changedData.changedRecords);
+                        this.deleteData(changedData.deletedRecords);
                         this.fetchData(this.resourceUrl);
                         this.$refs.grid.ej2Instances.refresh();
                         this.$modal.hide('confirmDialog');
@@ -218,8 +223,30 @@
                     }
                 }
             },
-            deleteData(id) {
-                axios.delete(this.resourceUrl + '/' + id)
+            insertData(createdData) {
+                axios.post(this.insertUrl, createdData)
+                    .then(response => {
+                        this.tableUtil.endEditing();
+                        this.createSuccessDialog();
+                        this.refresh();
+                    })
+                    .catch(error => {
+                        this.errorDialog(error);
+                    });
+            },
+            editData(updatedData) {
+                axios.post(this.updateUrl, updatedData)
+                    .then(response => {
+                        this.tableUtil.endEditing();
+                        this.updateSuccessDialog();
+                        this.refresh();
+                    })
+                    .catch(error => {
+                        this.errorDialog(error);
+                    });
+            },
+            deleteData(deletedData) {
+                axios.post(this.deleteUrl, deletedData)
                     .then(response => {
                         this.tableUtil.endEditing();
                         this.refresh();
@@ -230,30 +257,7 @@
                         return false;
                     });
             },
-            insertData(driver) {
-                axios.post(this.resourceUrl, driver)
-                    .then(response => {
-                        this.tableUtil.endEditing();
-                        this.createSuccessDialog();
-                        this.refresh();
-                    })
-                    .catch(error => {
-                        this.errorDialog(error);
-                    });
-            },
-            editData(driver) {
-                let id = driver.driver_id;
-                delete driver.driver_id;
-                axios.put(this.resourceUrl + '/' + id, driver)
-                    .then(response => {
-                        this.tableUtil.endEditing();
-                        this.updateSuccessDialog();
-                        this.refresh();
-                    })
-                    .catch(error => {
-                        this.errorDialog(error);
-                    });
-            },
+
             refresh() {
                 this.fetchData(this.resourceUrl);
             }
