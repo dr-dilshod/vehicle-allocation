@@ -34,4 +34,5 @@ return  [
     'no_result'=>'検索結果はありません',
     'sys_name' => '配車請求管理システム',
     'cant_be_undone' => 'これを元に戻すことはできません！',
+    'save_changes' => '変更内容を保存？'
 ];

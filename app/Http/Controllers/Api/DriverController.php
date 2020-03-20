@@ -32,14 +32,19 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
-        ]);
-        $data = $request->validate(Driver::validationRules);
-        $data['driver_pass'] = Hash::make($data['driver_pass']);
-        $driver = Driver::create($data);
-        return response()->json($driver, 201);
+        $drivers = $request->toArray();
+        $driver_list = [];
+        foreach ($drivers as $driver) {
+            //$driver->validate([
+            //    'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
+            //]);
+            $driver['driver_pass'] = Hash::make($driver['driver_pass_temp']);
+            //$driver = $driver->validate(Driver::validationRules);
 
+            $driver = Driver::create($driver);
+            //$driver_list->push($driver);
+        }
+        return response()->json($driver_list, 201);
     }
 
     /**
@@ -59,42 +64,54 @@ class DriverController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param  int  $id
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate([
-            'driver_no' => Rule::unique('drivers','driver_no')->where('delete_flg', 0)->ignore($id,'driver_id')
-        ]);
-        $data = $request->validate(Driver::validationRules);
-        $driver = Driver::findOrFail($id);
-        if(strcmp($driver['driver_pass'], $request['driver_pass']) !== 0){
-            $request['driver_pass'] = Hash::make($request['driver_pass']);
+        $drivers = $request->toArray();
+        $driver_list = [];
+        foreach ($drivers as $driver) {
+            $id = $driver['driver_id'];
+            //$driver->validate([
+            //    'driver_no' => Rule::unique('drivers', 'driver_no')
+            //        ->where('delete_flg', 0)
+            //        ->ignore($id, 'driver_id')
+            //]);
+            //$driver = $driver->validate(Driver::validationRules);
+            $db_driver = Driver::findOrFail($id);
+            if (strcmp($db_driver['driver_pass'], $driver['driver_pass']) !== 0) {
+                $driver['driver_pass'] = Hash::make($driver['driver_pass']);
+            }
+            $db_driver->update($driver);
+            //$driver_list->push($db_driver);
         }
-        $driver->update($request->all());
-        return response()->json($driver, 200);
+        return response()->json($driver_list, 200);
     }
 
-    /*
-     * Remove the specified resource from storage.
+    /**
+     * Remove the specified resources in storage.
      *
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $driver = Driver::findOrFail($id);
-        $removed_drivers = Driver::whereRaw('delete_flg <> 0 AND driver_no="'.$driver->driver_no.'"')->get();
-        foreach ($removed_drivers as $removed_driver){
-            $removed_driver->delete_flg++;
-            $removed_driver->save();
+        $drivers = $request->toArray();
+        $driver_list = [];
+        foreach ($drivers as $driver) {
+            $driver = Driver::findOrFail($driver['driver_id']);
+            $removed_drivers = Driver::whereRaw('delete_flg <> 0 AND driver_no="' . $driver->driver_no . '"')->get();
+            foreach ($removed_drivers as $removed_driver) {
+                $removed_driver->delete_flg++;
+                $removed_driver->save();
+            }
+            $driver->delete_flg++;
+            $driver->save();
+            //$driver_list->push($driver);
         }
-        $driver->delete_flg++;
-        $driver->save();
-        return response()->json(null, 204);
+        return response()->json($driver_list, 204);
     }
 
     /**
