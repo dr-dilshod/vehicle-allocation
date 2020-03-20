@@ -79,6 +79,7 @@ export class TableUtil{
         this.showTitle();
         this.enableRegistration();
         this.enableDeleting();
+        this.grid.ej2Instances.addRecord();
     }
 
     endEditing(){
