@@ -32,16 +32,16 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        $drivers = $request->all();
+        $drivers = $request->toArray();
         $driver_list = [];
         foreach ($drivers as $driver) {
-            $driver->validate([
-                'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
-            ]);
-            $data = $driver->validate(Driver::validationRules);
-            $data['driver_pass'] = Hash::make($data['driver_pass']);
-            $driver = Driver::create($data);
-            $driver_list->push($driver);
+            //$driver->validate([
+            //    'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
+            //]);
+            //$data = $driver->validate(Driver::validationRules);
+            $driver['driver_pass'] = Hash::make($driver['driver_pass']);
+            $driver = Driver::create($driver);
+            //$driver_list->push($driver);
         }
         return response()->json($driver_list, 201);
     }
@@ -63,42 +63,41 @@ class DriverController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param  int  $id
      *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {
-        $drivers = $request->all();
+        $drivers = $request->toArray();
         $driver_list = [];
         foreach ($drivers as $driver) {
             $id = $driver['driver_id'];
-            $driver->validate([
-                'driver_no' => Rule::unique('drivers', 'driver_no')
-                    ->where('delete_flg', 0)
-                    ->ignore($id, 'driver_id')
-            ]);
-            $driver = $driver->validate(Driver::validationRules);
+            //$driver->validate([
+            //    'driver_no' => Rule::unique('drivers', 'driver_no')
+            //        ->where('delete_flg', 0)
+            //        ->ignore($id, 'driver_id')
+            //]);
+            //$driver = $driver->validate(Driver::validationRules);
             $db_driver = Driver::findOrFail($id);
             if (strcmp($db_driver['driver_pass'], $driver['driver_pass']) !== 0) {
                 $driver['driver_pass'] = Hash::make($driver['driver_pass']);
             }
-            $db_driver->update($driver->all());
-            $driver_list->push($db_driver);
+            $db_driver->update($driver);
+            //$driver_list->push($db_driver);
         }
         return response()->json($driver_list, 200);
     }
 
-    /*
-     * Remove the specified resource from storage.
+    /**
+     * Remove the specified resources in storage.
      *
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        $drivers = $request->all();
+        $drivers = $request->toArray();
         $driver_list = [];
         foreach ($drivers as $driver) {
             $driver = Driver::findOrFail($driver['driver_id']);
@@ -109,7 +108,7 @@ class DriverController extends Controller
             }
             $driver->delete_flg++;
             $driver->save();
-            $driver_list->push($driver);
+            //$driver_list->push($driver);
         }
         return response()->json($driver_list, 204);
     }
