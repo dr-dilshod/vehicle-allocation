@@ -42,11 +42,11 @@ export class TableUtil{
         this.registerBtn.addEventListener("click", ()=> this.register(), false);
         this.deleteBtn.addEventListener("click", ()=> this.delete(), false);
         // Enter key listener to add new row at the bottom
-        this.grid.$el.addEventListener('keydown', (e) => {
-            if(e.keyCode == 13) {
-                this.grid.ej2Instances.addRecord();
-            }
-        });
+        //this.grid.$el.addEventListener('keydown', (e) => {
+        //    if(e.keyCode == 13) {
+        //        this.grid.ej2Instances.addRecord();
+        //    }
+        //});
         // Mouse click listener to enter cell edit mode
         this.grid.ej2Instances.element.addEventListener('mousedown', function(e) {
             var instance = this.ej2_instances[0];
