@@ -108,6 +108,17 @@ module.exports = {
                 width: 400
             });
         },
+        showOperationSuccessDialog() {
+            this.$modal.show({
+                    template: this.dialogTemplate,
+                    props: ['title', 'text']
+                },
+                {title: this.__('alert.done'), text: this.__('item.operation_is_successful')},
+                {
+                    height: 'auto',
+                    width: 400
+                });
+        },
 
         errorDialog(error) {
             let status = error.response.status;

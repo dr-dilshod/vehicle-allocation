@@ -27,7 +27,7 @@
             <e-columns>
                 <e-column field='driver_no' :headerText='__("driver.no")' width="150" defaultValue="" type="string"></e-column>
                 <e-column field='vehicle_type' :headerText='__("driver.type")' editType='dropdownedit'
-                          :edit='vehicleTypeParams' width="150"></e-column>
+                          :edit='vehicleTypeParams' width="150" type="string"></e-column>
                 <e-column field='driver_name' :headerText='__("driver.name")' width="150" defaultValue="" type="string"></e-column>
                 <e-column field='driver_mobile_number' :headerText='__("driver.mobile_number")' width="150" defaultValue="" type="string"></e-column>
                 <e-column field='vehicle_no3' :headerText='__("driver.vehicle_no")' width="150" defaultValue="" type    ="string"></e-column>
@@ -156,6 +156,7 @@
                         this.insertData(changedData.addedRecords);
                         this.editData(changedData.changedRecords);
                         this.deleteData(changedData.deletedRecords);
+                        this.showOperationSuccessDialog();
                         this.fetchData(this.resourceUrl);
                         this.$refs.grid.ej2Instances.refresh();
                         this.$modal.hide('confirmDialog');
@@ -226,9 +227,6 @@
             insertData(createdData) {
                 axios.post(this.insertUrl, createdData)
                     .then(response => {
-                        this.tableUtil.endEditing();
-                        this.createSuccessDialog();
-                        this.refresh();
                     })
                     .catch(error => {
                         this.errorDialog(error);
@@ -237,9 +235,6 @@
             editData(updatedData) {
                 axios.post(this.updateUrl, updatedData)
                     .then(response => {
-                        this.tableUtil.endEditing();
-                        this.updateSuccessDialog();
-                        this.refresh();
                     })
                     .catch(error => {
                         this.errorDialog(error);
@@ -248,16 +243,12 @@
             deleteData(deletedData) {
                 axios.post(this.deleteUrl, deletedData)
                     .then(response => {
-                        this.tableUtil.endEditing();
-                        this.refresh();
-                        this.deleteSuccessDialog();
                     })
                     .catch(error => {
                         this.errorDialog(error);
                         return false;
                     });
             },
-
             refresh() {
                 this.fetchData(this.resourceUrl);
             }
