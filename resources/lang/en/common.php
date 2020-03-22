@@ -23,6 +23,7 @@ return  [
     'update_mode'=>'Update mode',
     'delete_mode'=>'delete mode',
     'save'=>'Save',
+    'save_changes'=>'Save changes?',
     'ok'=>'OK',
     'add'=>'Add',
     'done'=>'Done',

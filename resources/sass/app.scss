@@ -15,10 +15,7 @@
 @import "~@syncfusion/ej2-icons/styles/bootstrap.css";
 @import "~@syncfusion/ej2-popups/styles/bootstrap.css";
 @import "~@syncfusion/ej2-dropdowns/styles/bootstrap.css";
-@import '~@syncfusion/ej2-base/styles/material.css'; // from ItemList.vue
-@import '~@syncfusion/ej2-buttons/styles/material.css'; // from ItemList.vue
-@import "~@syncfusion/ej2-inputs/styles/bootstrap.css"; // from UnitPrice
-@import "~@syncfusion/ej2-vue-grids/styles/material.css";
+@import "~@syncfusion/ej2-inputs/styles/bootstrap.css";
 
 .very-center {
     width: 350px;
@@ -29,25 +26,6 @@
 
 .btn, .form-control{
     border-radius: 0;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #3490dc;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
 }
 
 .exit-btn:before {
@@ -108,4 +86,8 @@
 .dialog-content {
     padding: 0 !important;
     margin: 0 !important;
+}
+
+tr[aria-selected=true].e-insertedrow{
+    background-color: #1e7e34 !important;
 }
