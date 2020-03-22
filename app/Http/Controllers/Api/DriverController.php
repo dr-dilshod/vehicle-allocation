@@ -38,13 +38,12 @@ class DriverController extends Controller
             //$driver->validate([
             //    'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
             //]);
-            $driver['driver_pass'] = Hash::make($driver['driver_pass_temp']);
-            //$driver = $driver->validate(Driver::validationRules);
-
+            //$data = $driver->validate(Driver::validationRules);
+            $driver['driver_pass'] = Hash::make($driver['driver_pass']);
             $driver = Driver::create($driver);
             //$driver_list->push($driver);
         }
-        return response()->json($driver_list, 201);
+        return response()->json($driver_list);
     }
 
     /**

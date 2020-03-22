@@ -25,19 +25,19 @@
                   :allowSorting="true" :height="300" :frozenColumns="3" :enableHover='false' :allowSelection='true'
                   rowHeight=35>
             <e-columns>
-                <e-column field='driver_no' :validationRules='max4' :headerText='__("driver.no")' width="150" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_type' :validationRules='max10' :headerText='__("driver.type")' editType='dropdownedit'
+                <e-column field='driver_no' :headerText='__("driver.no")' width="150" type="string"></e-column>
+                <e-column field='vehicle_type' :headerText='__("driver.type")' editType='dropdownedit'
                           :edit='vehicleTypeParams' width="150" type="string"></e-column>
-                <e-column field='driver_name' :validationRules='max60' :headerText='__("driver.name")' width="150" defaultValue="" type="string"></e-column>
-                <e-column field='driver_mobile_number' :validationRules='max13' :headerText='__("driver.mobile_number")' width="150" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_no3' :validationRules='max4' :headerText='__("driver.vehicle_no")' width="150" defaultValue="" type    ="string"></e-column>
-                <e-column field='maximum_Loading' :validationRules='max5' :headerText='__("driver.max_load")' width="100" defaultValue="" type="string"></e-column>
+                <e-column field='driver_name' :headerText='__("driver.name")' width="150" type="string"></e-column>
+                <e-column field='driver_mobile_number' :headerText='__("driver.mobile_number")' width="150" type="string"></e-column>
+                <e-column field='vehicle_no3' :headerText='__("driver.vehicle_no")' width="150" type="string"></e-column>
+                <e-column field='maximum_Loading' :headerText='__("driver.max_load")' width="100" type="string"></e-column>
                 <e-column field='search_flg' :headerText='__("driver.display")' editType='booleanedit'
                           :template='searchTemplate' width="150"></e-column>
                 <e-column field='admin_flg' :headerText='__("driver.admin")' editType='booleanedit'
                           :template="adminTemplate" width="150"></e-column>
-                <e-column field='driver_remark' :validationRules='max255' :headerText='__("driver.remarks")' width="200" defaultValue="" type="string"></e-column>
-                <e-column field='driver_pass_temp' :headerText='__("driver.password")' width="200" defaultValue="" type="string"></e-column>
+                <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200" type="string"></e-column>
+                <e-column field='driver_pass' :headerText='__("driver.password")' width="200" type="string"></e-column>
                 <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
             </e-columns>
         </ejs-grid>
@@ -103,7 +103,6 @@
                     }
                 },
                 textTemplate(args){
-                    console.log(args);
                     return {
                         template: Vue.component('textTemplate', {
                             template: '<input class="e-field e-input" type="text" v-model="data.driver_no"/>',
@@ -112,6 +111,9 @@
                     }
                 },
                 mode: 'Batch',
+                addSuccess: 1,
+                changeSuccess: 1,
+                deleteSuccess: 1,
             };
         },
         mounted() {
@@ -162,23 +164,24 @@
                     title: window.__('alert.message'),
                     text: this.__('common.save_changes'),
                     triggerOnConfirm: () => {
-                        let addSuccess= true;
-                        let changeSuccess= true;
-                        let deleteSuccess= true;
                         if (changedData.addedRecords.length > 0) {
-                            addSuccess = this.insertData(changedData.addedRecords);
+                            this.insertData(changedData.addedRecords);
                         }
                         if (changedData.changedRecords.length > 0) {
-                            changeSuccess = this.editData(changedData.changedRecords);
+                            this.editData(changedData.changedRecords);
                         }
                         if (changedData.deletedRecords.length > 0) {
-                            deleteSuccess = this.deleteData(changedData.deletedRecords);
+                            this.deleteData(changedData.deletedRecords);
                         }
-                        if (addSuccess && changeSuccess && deleteSuccess) {
+                        if (this.addSuccess === 1 && this.changeSuccess === 1 && this.deleteSuccess === 1) {
                             this.showOperationSuccessDialog();
                             this.fetchData(this.resourceUrl);
                             this.$refs.grid.ej2Instances.refresh();
                             this.tableUtil.endEditing();
+                        } else {
+                            this.addSuccess = 1;
+                            this.changeSuccess = 1;
+                            this.deleteSuccess = 1;
                         }
                         this.$modal.hide('confirmDialog');
                     },
@@ -202,7 +205,7 @@
                     .then(response => {
                         this.data = response.data;
                         for (let i = 0; i < this.data.length; i++) {
-                            this.data[i].driver_pass_temp = null;
+                            this.data[i].driver_pass = null;
                             if (this.data[i].search_flg == 0) {
                                 this.data[i].search_flg = false;
                             } else {
@@ -237,33 +240,42 @@
                 }
             },
             insertData(createdData) {
+                const driver_table = this;
+                // if needed, added row without data can be ignored here
+                //for (let index = 0; index < createdData.length; index++) {
+                //    if (empty(createdData[index].driver_no)) {
+                //        createdData.splice(index, 1);
+                //    }
+                //}
                 axios.post(this.insertUrl, createdData)
                     .then(response => {
-                        return true;
+                        driver_table.addSuccess = 1;
                     })
                     .catch(error => {
                         this.errorDialog(error);
-                        return false;
+                        driver_table.addSuccess = 0;
                     });
             },
             editData(updatedData) {
+                const driver_table = this;
                 axios.post(this.updateUrl, updatedData)
                     .then(response => {
-                        return true;
+                        driver_table.changeSuccess = 1;
                     })
                     .catch(error => {
                         this.errorDialog(error);
-                        return false;
+                        driver_table.changeSuccess = 0;
                     });
             },
             deleteData(deletedData) {
+                const driver_table = this;
                 axios.post(this.deleteUrl, deletedData)
                     .then(response => {
-                        return true;
+                        driver_table.deleteSuccess = 1;
                     })
                     .catch(error => {
                         this.errorDialog(error);
-                        return false;
+                        driver_table.deleteSuccess = 0;
                     });
             },
             refresh() {
@@ -271,7 +283,7 @@
             }
         },
         provide: {
-            grid: [Sort, Freeze, Edit, Toolbar]
+            grid: [Sort, Freeze, Edit]
         },
         name: 'DriverTable'
     }
