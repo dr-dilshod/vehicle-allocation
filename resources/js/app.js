@@ -9,7 +9,7 @@ require('./utils/Translation');
 require('../../node_modules/v-money');
 window.Vue = require('vue');
 require('./utils/syncfusion-local');
-
+require('./utils/sticky-table.min');
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -24,6 +24,9 @@ Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
 Vue.mixin(require('./utils/TranslationMixin'));
 Vue.mixin(require('./utils/AlertUtil'));
 Vue.mixin(require('./utils/ValidationMixin'));
+
+Vue.component('vehicle-grid',require('./components/VehicleGrid.vue').default);
+Vue.component('m-column',require('./components/MColumn.vue').default);
 
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
