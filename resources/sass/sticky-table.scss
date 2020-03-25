@@ -1,0 +1,73 @@
+.table-scroll {
+  position: relative;
+  width:100%;
+  z-index: 1;
+  margin: auto;
+  overflow: auto;
+  height: 400px;
+}
+.table-scroll table {
+  width: 100%;
+  min-width: 2000px;
+  margin: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table-scroll table td {
+  background: white;
+  vertical-align: middle;
+  padding: 10px;
+}
+.table-scroll th,
+.table-scroll thead th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  z-index:4;
+}
+.sticky-col{
+  position: -webkit-sticky;
+  position: sticky;
+  width: $sticky-column-width;
+  z-index: 2;
+}
+thead th.sticky-col,
+tfoot th.sticky-col{
+  z-index: 5;
+}
+.first-sticky-col{
+  left: 0;
+}
+.second-sticky-col {
+  left: $sticky-column-width;
+}
+.third-sticky-col {
+  left: 2 * $sticky-column-width;
+}
+.fourth-sticky-col {
+  left: 3 * $sticky-column-width;
+}
+.fifth-sticky-col {
+  left: 4 * $sticky-column-width;
+}
+.sixth-sticky-col {
+  left: 5 * $sticky-column-width;
+}
+.seventh-sticky-col {
+  left: 6 * $sticky-column-width;
+}
+.last-sticky-col {
+  border-right: 1px solid #dee2e6 !important;
+  border-right-color: #007bff !important;
+}
+.primary-key {
+  display: none;
+}

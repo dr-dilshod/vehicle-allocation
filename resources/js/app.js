@@ -27,6 +27,7 @@ Vue.mixin(require('./utils/ValidationMixin'));
 
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
+Vue.component('shipper-list',require('./components/ShipperList.vue').default);
 Vue.component('driver-table',require('./components/DriverTable.vue').default);
 Vue.component('unit-price-table',require('./components/UnitPriceTable').default);
 Vue.component('item-list',require('./components/ItemList.vue').default);

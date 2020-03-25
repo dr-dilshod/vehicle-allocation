@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="container">
-        <shipper-table
+        <shipper-list
                 resource-url="{{URL::to('/api/shippers')}}"
                 back-url="{{route('setting')}}">
 
-        </shipper-table>
+        </shipper-list>
     </div>
 @endsection
