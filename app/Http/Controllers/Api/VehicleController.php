@@ -52,12 +52,17 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'vehicle_no' => ['unique:vehicles,vehicle_no,NULL, null,delete_flg,0'],
+            '*.vehicle_no' => ['unique:vehicles,vehicle_no,NULL, null,delete_flg,0'],
         ]);
-        $data = $request->validate(Vehicle::validationRules);
-        $vehicle = Vehicle::create($data);
-
-        return response()->json($vehicle, 201);
+//        dd($request->all());
+//        exit;
+        $this->validate($request,Vehicle::validationRules);
+        $vehicles = $request->all();
+        foreach ($vehicles as $vehicle){
+            if($vehicle['offset'] == null) $vehicle['offset'] = 0;
+            Vehicle::create($vehicle);
+        }
+        return response()->json($vehicles, 201);
     }
 
     /**
@@ -79,16 +84,16 @@ class VehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate([
-            'vehicle_no' => Rule::unique('vehicles','vehicle_no')->where('delete_flg', 0)->ignore($id,'vehicle_id')
-        ]);
-        $vehicle = Vehicle::findOrFail($id);
-        $data = $request->validate(Vehicle::validationRules);
-        $vehicle->update($data);
-
-        return response()->json($vehicle, 200);
+        $this->validate($request,Vehicle::validationRules);
+        $vehicles = $request->all();
+        foreach ($vehicles as $vehicle){
+            if($vehicle['offset'] == null) $vehicle['offset'] = 0;
+            $db_vehicle = Vehicle::findOrFail($vehicle['vehicle_id']);
+            $db_vehicle->update($vehicle);
+        }
+        return response()->json(null);
     }
 
     /**
@@ -97,11 +102,14 @@ class VehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $vehicle = Vehicle::findOrFail($id);
-        $vehicle->delete_flg=1;
-        $vehicle->save();
+        $vehicles = $request->all();
+        foreach ($vehicles as $vehicle){
+            $vehicle = Vehicle::findOrFail($vehicle['vehicle_id']);
+            $vehicle->delete_flg++;
+            $vehicle->save();
+        }
         return response()->json(null, 204);
     }
 }

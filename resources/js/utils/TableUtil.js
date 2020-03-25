@@ -48,23 +48,25 @@ export class TableUtil{
         //    }
         //});
         // Mouse click listener to enter cell edit mode
-        this.grid.ej2Instances.element.addEventListener('mousedown', function(e) {
-            var instance = this.ej2_instances[0];
-            if (e.target.classList.contains("e-rowcell")) {
-                let index = parseInt(e.target.getAttribute("Index"));
-                let colindex = parseInt(e.target.getAttribute("aria-colindex"));
-                let field = instance.getColumns()[colindex].field;
-                instance.editModule.editCell(index, field);
-            }
-        });
+        // this.grid.ej2Instances.element.addEventListener('mousedown', function(e) {
+        //     var instance = this.ej2_instances[0];
+        //     if (e.target.classList.contains("e-rowcell")) {
+        //         let index = parseInt(e.target.getAttribute("Index"));
+        //         let colindex = parseInt(e.target.getAttribute("aria-colindex"));
+        //         let field = instance.getColumns()[colindex].field;
+        //         instance.editModule.editCell(index, field);
+        //     }
+        // });
+
     }
 
     beginEditing(){
+        this.endEditing();
         this.grid.setProperties({
-            toolbarClick : (args)=>{
-                if(args.item.id === 'exit')
-                    this.endEditing()
-            },
+            // toolbarClick : (args)=>{
+            //     if(args.item.id === 'exit')
+            //         this.endEditing()
+            // },
             // toolbar: ['Edit','Delete','Update','Cancel',
             //     { text: window.__('common.exit'), tooltipText: window.__('common.exit_from_edit_mode'), prefixIcon: 'exit-btn', id: 'exit' }],
             editSettings: {
@@ -73,8 +75,8 @@ export class TableUtil{
                 allowAdding: true,
                 mode : 'Batch',
                 showDeleteConfirmDialog: true,
-                newRowPosition: 'Bottom',
-            },
+                newRowPosition: 'Bottom'
+            }
         });
         this.showTitle();
         this.enableRegistration();

@@ -133,6 +133,15 @@ module.exports = {
             });
         },
 
+        generalErrorDialog(){
+            this.$modal.show({
+                template: this.dialogTemplate,
+                props: ['title', 'text']
+            }, {title: this.__('alert.message'), text: 'You have errors in entered data. Please, fix them.'}, {
+                height: 'auto'
+            });
+        },
+
         entityName() {
             switch (this.$options.name) {
                 case 'VehicleTable' :

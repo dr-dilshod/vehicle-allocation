@@ -24,8 +24,8 @@ Route::get('/vehicle', 'Api\VehicleController@index')->name('api.vehicle.index')
 Route::get('/vehicle/companies', 'Api\VehicleController@getCompanies')->name('api.vehicle.companies');
 Route::get('/vehicle/{id}', 'Api\VehicleController@show')->name('api.vehicle.show');
 Route::post('/vehicle', 'Api\VehicleController@store')->name('api.vehicle.store');
-Route::put('/vehicle/{id}', 'Api\VehicleController@update')->name('api.vehicle.update');
-Route::delete('/vehicle/{id}', 'Api\VehicleController@destroy')->name('api.vehicle.destroy');
+Route::post('/vehicle/update', 'Api\VehicleController@update')->name('api.vehicle.update');
+Route::post('/vehicle/destroy', 'Api\VehicleController@destroy')->name('api.vehicle.destroy');
 
 /*
  * Driver CRUD

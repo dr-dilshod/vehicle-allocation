@@ -32,25 +32,6 @@
     border-radius: 0;
 }
 
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #3490dc;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
 .exit-btn:before {
     content: '\eb3a';
 }
@@ -105,7 +86,12 @@
     background-color: #FFFFFF;
 }
 
+
 .dialog-content {
     padding: 0 !important;
     margin: 0 !important;
+}
+
+tr[aria-selected=true].e-insertedrow{
+    background-color: #1e7e34 !important;
 }
