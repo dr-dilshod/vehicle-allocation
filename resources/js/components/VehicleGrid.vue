@@ -44,7 +44,7 @@
 </template>
 <script>
     import MColumn from "./MColumn";
-    import Sticky from "../utils/sticky-table.min"
+    import Sticky from "../utils/sticky-table"
     export default{
         components: {MColumn},
         name: 'VehicleGrid',
