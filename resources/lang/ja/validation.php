@@ -150,6 +150,32 @@ return [
     */
 
     'attributes' => [
+        // batch update/store validation attributes
+        'addedShippers.*.shipper_no' => '荷主No',
+        'addedShippers.*.shipper_name1'=>'名 1 ',
+        'addedShippers.*.shipper_name2'=>'名 2 ',
+        'addedShippers.*.shipper_kana_name1'=>'ふりがな1 ',
+        'addedShippers.*.shipper_kana_name2'=>'ふりがな2 ',
+        'addedShippers.*.shipper_company_abbreviation'=>'配送会社の略称 ',
+        'addedShippers.*.postal_code' => '郵便番号',
+        'addedShippers.*.address1' => '住所１',
+        'addedShippers.*.address2' => '住所２',
+        'addedShippers.*.phone_number'=>'電話番号',
+        'addedShippers.*.fax_number'=>'FAX番号',
+
+        'updatedShippers.*.shipper_no' => '荷主No',
+        'updatedShippers.*.shipper_name1'=>'名 1 ',
+        'updatedShippers.*.shipper_name2'=>'名 2 ',
+        'updatedShippers.*.shipper_kana_name1'=>'ふりがな1 ',
+        'updatedShippers.*.shipper_kana_name2'=>'ふりがな2 ',
+        'updatedShippers.*.shipper_company_abbreviation'=>'配送会社の略称 ',
+        'updatedShippers.*.postal_code' => '郵便番号',
+        'updatedShippers.*.address1' => '住所１',
+        'updatedShippers.*.address2' => '住所２',
+        'updatedShippers.*.phone_number'=>'電話番号',
+        'updatedShippers.*.fax_number'=>'FAX番号',
+
+        //end batch update/store validation attributes
         'vehicle_no' => '車両番号',
         'shipper_no'=> '荷主No ',
         'shipper'=>'荷主 ',

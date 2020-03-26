@@ -91,17 +91,49 @@ class ShipperController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $request->validate(Shipper::validationRules);
-        $request->validate([
-            'shipper_no' => 'unique:shippers',
-        ]);
-        $shipper = Shipper::create($request->all());
+        $addedShippers = $request->json('addedShippers');
+        $updatedShippers = $request->json('updatedShippers');
+        $save = false;
+        $update = false;
 
-        return response()->json($shipper, 201);
+        if (count($updatedShippers) > 0) {
+            $updateRules = Shipper::updateRules;
+
+            $this->validate($request, $updateRules);
+            $updRules = [];
+            foreach ($updatedShippers as $key => $val) {
+                array_push($updRules, [
+                    'updateShippers.'.$key.'.shipper_no' => Rule::unique('shippers','shipper_no')->ignore($val['shipper_id'],'shipper_id'),
+                ]);
+            }
+            $this->validate($request, $updRules);
+            $update = true;
+        }
+
+        if (count($addedShippers) > 0) {
+            $addedRules = Shipper::validationRules;
+            $addedRules['addedShippers.*.shipper_no'] = 'required|max:4|unique:shippers';
+            $this->validate($request, $addedRules);
+            $save = true;
+        }
+
+
+        if ($save) {
+            Shipper::query()->insert($addedShippers);
+        }
+
+        if ($update) {
+            foreach ($updatedShippers as $shipper) {
+                Shipper::query()->where('shipper_id', $shipper['shipper_id'])->update($shipper);
+            }
+        }
+
+        return response()->json([], 201);
     }
 
     /**
@@ -118,38 +150,19 @@ class ShipperController extends Controller
         return $shipper;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $data = $request->validate(Shipper::validationRules);
-        $shipper = Shipper::findOrFail($id);
-        $request->validate([
-            'shipper_no' => Rule::unique('shippers','shipper_no')->ignore($id,'shipper_id'),
-        ]);
-        $shipper->update($request->all());
-        return response()->json($shipper, 200);
-    }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $shipper = Shipper::findOrFail($id);
-        $shipper->delete_flg = 1;
-        $shipper->save();
-
+        $ids = $request->json('ids');
+        Shipper::query()->whereIn('shipper_id', $ids)->update([
+           'delete_flg' => 1
+        ]);
         return response()->json(null, 204);
     }
 

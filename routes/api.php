@@ -46,8 +46,7 @@ Route::get("/shippers/fullname", 'Api\ShipperController@getFullnames')->name('ap
 Route::get("/shippers/distinct-company", 'Api\ShipperController@distinctCompanies')->name('api.shipper.distinct-company');
 Route::get('/shippers/all', 'Api\ShipperController@getShippers')->name('api.shipper.all');
 Route::get('/shippers/{id}', 'Api\ShipperController@show')->name('api.shipper.show');
-Route::put('/shippers/{id}', 'Api\ShipperController@update')->name('api.shipper.update');
-Route::delete('/shippers/{id}', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
+Route::post('/shippers/delete', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
 /*
  * Item CRUD
  */

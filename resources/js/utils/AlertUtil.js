@@ -101,6 +101,9 @@ module.exports = {
         },
 
         errorDialog(error) {
+            if (_.isNil(error)) {
+                return;
+            }
             let status = error.response.status;
             if (status === 419 || status === 401) {
                 location.reload();
