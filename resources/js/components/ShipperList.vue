@@ -68,8 +68,8 @@
         <button @click="deleteSelected" :disabled="!editMode"> Delete Selected</button>
 
         <div id="table-scroll" class="table-scroll">
-            <table class="table table-hover table-bordered ">
-                <thead thead class="thead-light">
+            <table class="table table-hover table-bordered table-custom-inputs">
+                <thead class="thead-light">
                 <tr>
                     <th scope="col" class="sticky-col first-sticky-col">Shipper No</th>
                     <th scope="col" class="sticky-col second-sticky-col">Shipper</th>

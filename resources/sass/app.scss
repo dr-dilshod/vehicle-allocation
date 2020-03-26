@@ -95,3 +95,8 @@
 tr[aria-selected=true].e-insertedrow{
     background-color: #1e7e34 !important;
 }
+
+.table-custom-inputs .form-control:disabled {
+    background: #fff;
+    border: none;
+}
