@@ -96,8 +96,8 @@ class ShipperController extends Controller
      */
     public function store(Request $request)
     {
-        $addedShippers = $request->json('addedShippers');
-        $updatedShippers = $request->json('updatedShippers');
+        $addedShippers = $request->json('added');
+        $updatedShippers = $request->json('updated');
         $save = false;
         $update = false;
 
