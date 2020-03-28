@@ -5,18 +5,18 @@
                 <a :href="backUrl" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 ref="editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
+                <h2 :hidden="!editMode" class="text-center text-danger">{{__('common.editing')}}</h2>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <h2 class="text-center">{{__('shipper.shipper_list')}}</h2>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <p class="text-right">
-                    <button ref="deleteBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}
+                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
-                    <button ref="registerBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    <button @click="saveData" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
                     </button>
-                    <button ref="editBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}</button>
+                    <button @click="deleteSelected" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}</button>
                 </p>
             </div>
         </div>
@@ -59,14 +59,7 @@
                 </form>
 
             </div>
-
         </div>
-
-        <button @click="toEditMode" :disabled="editMode"> Edit mode</button>
-        <button @click="saveData" :disabled="!editMode">Save</button>
-<!--        <button @click="addRow" :disabled="!editMode"> Add row</button>-->
-        <button @click="deleteSelected" :disabled="!editMode"> Delete Selected</button>
-
         <div id="table-scroll" class="table-scroll">
             <table class="table table-hover table-bordered table-custom-inputs">
                 <thead class="thead-light">
@@ -89,50 +82,50 @@
                 <tr v-for="(shipper, index) in data" :data-key="shipper.shipper_id" :index="index" ref="tr"
                     @click="clickRow($event, index)">
                     <td class="sticky-col first-sticky-col">
-                        <input type="text" class="form-control" v-model='shipper.shipper_no' :disabled='!editMode'/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='shipper.shipper_no' :disabled='!editMode'/>
                     </td>
                     <td class="sticky-col second-sticky-col">
-                        <input type="text" class="form-control" v-model="shipper.shipper_name1" :disabled="!editMode"/>
-                        <input type="text" class="form-control" v-model="shipper.shipper_name2" :disabled="!editMode"/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.shipper_name1" :disabled="!editMode"/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.shipper_name2" :disabled="!editMode"/>
                     </td>
                     <td class="sticky-col third-sticky-col last-sticky-col">
-                        <input type="text" class="form-control" v-model="shipper.shipper_kana_name1"
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.shipper_kana_name1"
                                :disabled="!editMode"/>
-                        <input type="text" class="form-control" v-model="shipper.shipper_kana_name2"
-                               :disabled="!editMode"/>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" v-model="shipper.shipper_company_abbreviation"
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.shipper_kana_name2"
                                :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input type="text" class="form-control" v-model="shipper.postal_code" :disabled="!editMode"/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.shipper_company_abbreviation"
+                               :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input type="text" class="form-control" v-model="shipper.address1" :disabled="!editMode"/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.postal_code" :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input type="text" class="form-control" v-model="shipper.address2" :disabled="!editMode"/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.address1" :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input type="text" class="form-control" v-model="shipper.phone_number" :disabled="!editMode"/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.address2" :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input type="text" class="form-control" v-model="shipper.fax_number" :disabled="!editMode"/>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.phone_number" :disabled="!editMode"/>
                     </td>
                     <td>
-                        <select class="form-control" v-model="shipper.closing_date" :disabled="!editMode">
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.fax_number" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="shipper.closing_date" :disabled="!editMode">
                             <option v-for="option in closingDateOptions" v-bind:value="option.value">
                                 {{ option.text }}
                             </option>
                         </select>
                     </td>
                     <td>
-                        <input type="date" :class="data.length-1 == index ? 'form-control last': 'form-control'"
+                        <input v-on:change="addRowOnChange" type="date" :class="data.length-1 == index ? 'form-control last': 'form-control'"
                                v-model="shipper.payment_date" :disabled="!editMode"/>
                     </td>
                     <td class="primary-key">
-                        <input type="text" class="form-control" v-model="shipper.shipper_id" :disabled="!editMode"/>
+                        <input  type="text" class="form-control" v-model="shipper.shipper_id" :disabled="!editMode"/>
                     </td>
                 </tr>
                 </tbody>
@@ -199,11 +192,18 @@
                     });
             },
             search() {
-                axios.post(this.resourceUrl + '/filter', this.filter)
-                    .then(response => {
-                        this.data = response.data;
-                        this.reserveData = _.cloneDeep(response.data);
-                    })
+                if (this.editMode) {
+                    this.saveData();
+                } else {
+                    axios.post(this.resourceUrl + '/filter', this.filter)
+                        .then(response => {
+                            this.data = response.data;
+                            this.reserveData = _.cloneDeep(response.data);
+                            this.data.map((el, idx) => {
+                                this.deselectRow(idx);
+                            })
+                        })
+                }
             },
             clear() {
                 this.filter = {
@@ -212,13 +212,6 @@
                 };
             },
             refresh() {
-                document.querySelectorAll('tr[data-key]').forEach(tr => {
-                    tr.childNodes.forEach(el => {
-                        if (el instanceof HTMLTableCellElement) {
-                            el.removeAttribute("style");
-                        }
-                    })
-                });
                 this.editMode = false;
                 this.clear();
                 this.fetchShipperNames();

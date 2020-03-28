@@ -3,7 +3,7 @@
  */
 module.exports = {
 
-    data(){
+    data() {
         return {
             updatedData: [],
             deletedData: [],
@@ -17,7 +17,6 @@ module.exports = {
         window.onbeforeunload = () => {
             if (this.editMode) {
                 this.checkChanges();
-                this.checkDeletes();
                 if (this.updatedData.length > 0 || this.addedData.length > 0 || this.deletedData.length > 0) {
                     return "stop eee!";
                 }
@@ -27,59 +26,11 @@ module.exports = {
         }
     },
 
-    methods : {
-        removeEvents() {
-            const inputElements = document.querySelectorAll('tr input');
-            const selectElements = document.querySelectorAll('tr select');
-            inputElements.forEach(el => {
-                if (!_.isNil(el)) {
-                    el.addEventListener('keydown', (e) => {
-                    });
-                }
-            });
-
-            selectElements.forEach(el => {
-                if (!_.isNil(el)) {
-                    el.addEventListener('keydown', (e) => {
-                    });
-                }
-            });
-        },
-        addRowEvent(remove = false) {
-            const inputElements = document.querySelectorAll('tr input');
-            const selectElements = document.querySelectorAll('tr select');
-
-            this.removeEvents();
-            inputElements.forEach(el => {
-                if (!_.isNil(el)) {
-                    if (remove) {
-                        el.addEventListener('keydown', (e) => {
-                        });
-                    } else {
-                        el.addEventListener('keydown', (e) => {
-                            if (_.isEqual(e.key, "Enter")) {
-                                this.addRow();
-                            }
-                        });
-                    }
-                }
-            });
-            selectElements.forEach(el => {
-                if (!_.isNil(el)) {
-                    if (remove) {
-                        el.addEventListener('keydown', (e) => {
-                        });
-                    } else {
-                        el.addEventListener('keydown', (e) => {
-                            if (_.isEqual(e.key, "Enter")) {
-                                this.addRow();
-                            } else if (_.isEqual(e.key, "Tab") && e.target.classList.contains("last")) {
-                                this.addRow();
-                            }
-                        });
-                    }
-                }
-            });
+    methods: {
+        addRowOnChange(event) {
+            if (event.target.parentNode.parentNode.isSameNode(document.querySelector('tbody tr:last-child'))) {
+                this.addRow();
+            }
         },
         clickRow(event, index) {
             if (!(event.target instanceof HTMLTableCellElement)) {
@@ -87,18 +38,23 @@ module.exports = {
                 return;
             }
             if (this.editMode) {
-                if (this.data[index].delete_flg === 1) {
-                    this.data[index].delete_flg = 0;
-                    this.deselectRow(index, true);
-                } else {
-                    this.data[index].delete_flg = 1;
+                this.data[index].delete_flg = 1;
+                const duplicate = this.deletedData.filter(el => _.isEqual(el, this.data[index])).length;
+                console.log(duplicate);
+                if (duplicate === 0) {
+                    const deleted = _.cloneDeep(this.data[index]);
+                    deleted.delete_flg = 1;
+                    this.deletedData.push(deleted);
                     this.selectRow(index);
+                } else {
+                    this.deletedData = this.deletedData.filter(el => !_.isEqual(el, this.data[index]));
+                    this.deselectRow(index, true);
                 }
+                this.data[index].delete_flg = 0;
             }
         },
-        deselectRow(index){
+        deselectRow(index) {
             let row = document.querySelector(`tr[index="${index}"]`);
-            console.log(row);
             if (_.isNull(row)) {
                 return;
             }
@@ -108,9 +64,15 @@ module.exports = {
                 }
             })
         },
-        selectRow(index){
+        deselectAll() {
+            this.data.forEach((el, idx) => {
+                if (!_.isNil(el)) {
+                    this.deselectRow(idx);
+                }
+            });
+        },
+        selectRow(index) {
             let row = document.querySelector(`tr[index="${index}"]`);
-            console.log(row);
             if (_.isNull(row)) {
                 return;
             }
@@ -119,13 +81,6 @@ module.exports = {
                     el.setAttribute("style", "background: #f5d2d2");
                 }
             })
-        },
-        checkDeletes() {
-            if (!this.editMode) {
-                return;
-            }
-            this.deletedData = [];
-            this.deletedData = this.data.filter(el => el.delete_flg === 1);
         },
         checkChanges() {
             if (!this.editMode) {
@@ -140,11 +95,23 @@ module.exports = {
                     return !_.every(el, _.isEmpty) && !_.isNull(el);
                 });
             }
+
+
+            if (this.deletedData.length > 0) {
+                this.reserveData = this.reserveData.filter(el => {
+                    return !this.deletedData.some(({shipper_id}) => shipper_id === el.shipper_id)
+                });
+                this.updatedData.push(...this.deletedData);
+            }
+
             this.reserveData.forEach((el, idx) => {
                 if (!_.isEqual(el, this.data[idx])) {
                     this.updatedData.push(this.data[idx]);
                 }
             });
+
+            console.log(this.updatedData);
+
         },
         saveData() {
             if (!this.editMode) {
@@ -175,17 +142,19 @@ module.exports = {
             }
         },
         deleteSelected() {
-            this.checkDeletes();
             if (this.deletedData.length > 0) {
                 this.$modal.show({
                     template: this.saveChangesTemplate,
                     props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
                 }, {
                     title: window.__('alert.message'),
-                    text: this.__('common.save_changes'),
+                    text: this.__('common.confirm_delete'),
                     triggerOnConfirm: () => {
                         this.$modal.hide('confirmDialog');
-                        this.delete(this.deletedData);
+                        this.data = this.data.filter((el) => {
+                            return !this.deletedData.some(({shipper_id}) => el.shipper_id === shipper_id)
+                        });
+                        this.deselectAll();
                     },
                     triggerDiscard: () => {
                         this.$modal.hide('confirmDialog');
@@ -199,6 +168,7 @@ module.exports = {
             }
         },
         save(added, updated, modal = false) {
+            this.refresh();
             axios.post(this.resourceUrl, {added: added, updated: updated})
                 .then(resp => {
                     this.refresh();
@@ -220,11 +190,12 @@ module.exports = {
         },
         toEditMode() {
             this.editMode = true;
-            this.addRowEvent();
+            if (this.data.length === this.reserveData.length) {
+                this.addRow();
+            }
         },
         endEditing() {
             this.editMode = false;
-            this.addRowEvent(true);
         },
         addRow() {
             this.data.push({});

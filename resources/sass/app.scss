@@ -99,4 +99,7 @@ tr[aria-selected=true].e-insertedrow{
 .table-custom-inputs .form-control:disabled {
     background: #fff;
     border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
