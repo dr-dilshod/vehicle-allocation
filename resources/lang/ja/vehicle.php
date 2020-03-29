@@ -13,7 +13,7 @@ return [
     'company_abbr' => '略称',
     'postal_code' => '郵便番号',
     'address' => '住所',
-    'address1' => '住所 2',
+    'address2' => '住所 2',
     'phone' => '電話番号',
     'fax' => 'FAX番号',
     'offset' => '相殺',
