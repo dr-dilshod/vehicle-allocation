@@ -2,7 +2,7 @@
     <div id="app">
         <div class="row mb-4">
             <div class="col-2">
-                <a :href="backUrl" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
+                <a v-on:click="back" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 :hidden="!editMode" class="text-center text-danger">{{__('common.editing')}}</h2>
@@ -12,9 +12,9 @@
             </div>
             <div class="col-5">
                 <p class="text-right">
-                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
-                    </button>
                     <button @click="saveConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    </button>
+                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
                     <button @click="deleteConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}
                     </button>
@@ -133,6 +133,13 @@
             this.fetchData(this.fetchUrl);
         },
         methods: {
+            back() {
+                if (this.isDataChanged()) {
+                    this.confirmBack();
+                } else {
+                    window.location.href = this.backUrl;
+                }
+            },
              fetchData(url) {
                 axios.get(url)
                     .then(response => {

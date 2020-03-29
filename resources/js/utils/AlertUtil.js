@@ -46,6 +46,22 @@ module.exports = {
         operationSuccessDialog() {
             this.$alert(this.__('alert.operation_successfully_done'), null, 'success', {confirmButtonText: this.__('alert.ok')});
         },
+        confirmBack() {
+            this.$modal.show({
+                    template: this.dialogConfirmTemplate,
+                    props: ['title', 'text', 'triggerOnConfirm']
+                },
+                {
+                    title: this.__('alert.message'),
+                    text: '編集中のデータを破棄して前の画面に戻りますか？',
+                    triggerOnConfirm: () => {
+                        window.location.href = this.backUrl;
+                    }
+                },
+                {
+                    height: 'auto',
+                });
+        },
         confirmDialog() {
             this.$modal.show({
                 template: this.dialogConfirmTemplate,

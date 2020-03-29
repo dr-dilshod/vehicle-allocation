@@ -58,34 +58,29 @@ class UnitPrice extends Model
     /**
      * @var array
      */
-    protected $hidden = ['delete_flg'];
-
-    /**
-     * @var array
-     */
     public static $createValidationRules = [
-        'shipper_id' => 'bail|required|exists:shippers,shipper_id|numeric',
-        'item_id' => 'nullable|exists:items,item_id|numeric',
-        'driver_id' => 'nullable|exists:drivers,driver_id|numeric',
-        'stack_point' => 'required|string|max:60',
-        'down_point' => 'required|string|max:60',
-        'car_type' => 'required|string|max:10',
-        'type' => 'bail|required|max:191',
-        'price' => 'bail|required|numeric|max:9999999999',
+        '*.shipperId' => 'bail|required|exists:shippers,shipper_id|numeric',
+        '*.item_id' => 'nullable|exists:items,item_id|numeric',
+        '*.driver_id' => 'nullable|exists:drivers,driver_id|numeric',
+        '*.stack_point' => 'required|string|max:60',
+        '*.down_point' => 'required|string|max:60',
+        '*.car_type' => 'required|string|max:10',
+        '*.type' => 'bail|required|max:191',
+        '*.price' => 'bail|required|numeric|max:9999999999',
     ];
 
     /**
      * @var array
      */
     public static $updateValidationRules = [
-        'shipper_id' => 'bail|required|exists:shippers,shipper_id|numeric',
-        'item_id' => 'nullable|exists:items,item_id|numeric',
-        'driver_id' => 'nullable|exists:drivers,driver_id|numeric',
-        'stack_point' => 'required|string|max:60',
-        'down_point' => 'required|string|max:60',
-        'car_type' => 'required|string|max:10',
-        'type' => 'bail|required|max:191',
-        'price' => 'bail|required|numeric|max:9999999999',
+        '*.shipperId' => 'bail|required|exists:shippers,shipper_id|numeric',
+        '*.item_id' => 'nullable|exists:items,item_id|numeric',
+        '*.driver_id' => 'nullable|exists:drivers,driver_id|numeric',
+        '*.stack_point' => 'required|string|max:60',
+        '*.down_point' => 'required|string|max:60',
+        '*.car_type' => 'required|string|max:10',
+        '*.type' => 'bail|required|max:191',
+        '*.price' => 'bail|required|numeric|max:9999999999',
     ];
 
     /**

@@ -48,7 +48,7 @@ class DriverController extends Controller
         $update = false;
 
         if (count($updatedDrivers) > 0) {
-            $updateRules = Driver::updateRules; // fix update rules
+            $updateRules = Driver::validationRules; // fix update rules
 
             $this->validate($request, $updateRules);
             $updRules = [];
