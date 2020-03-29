@@ -39,7 +39,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(driver, index) in data" :data-key="driver.driver_id" :index="index" ref="tr"
+                <tr v-for="(driver, index) in data" :data-key="driver.driver_id" :index="index"
                     @click="clickRow($event, index)" :hidden="driver.delete_flg == 1">
                     <td class="sticky-col first-sticky-col">
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='driver.driver_no' :disabled='!editMode'/></td>
@@ -59,7 +59,7 @@
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.maximum_Loading" :disabled="!editMode"/></td>
                     <td>
                         <div v-if="editMode">
-                            <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.search_flg" :disabled="!editMode"/>
+                            <input v-on:change="addRowOnChange" type="checkbox" v-model="driver.search_flg" :disabled="!editMode"/>
                         </div>
                         <div v-else>
                             <label v-if="driver.search_flg">{{__("driver.hide")}}</label>
@@ -68,7 +68,7 @@
                     </td>
                     <td>
                         <div v-if="editMode">
-                            <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.admin_flg" :disabled="!editMode"/>
+                            <input v-on:change="addRowOnChange" type="checkbox" v-model="driver.admin_flg" :disabled="!editMode"/>
                         </div>
                         <div v-else>
                             <label v-if="driver.search_flg">{{__("driver.administrator")}}</label>
@@ -150,6 +150,7 @@
                                 this.data[i].admin_flg = false;
                             }
                         }
+                        this.resetTable(response);
                     })
             },
             refresh() {

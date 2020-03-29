@@ -175,7 +175,7 @@
                     shipper_name2 : '',
                     shipper_kana_name1 : '',
                     shipper_kana_name2 : '',
-                    shipper_company_abbrevation : '',
+                    shipper_company_abbreviation : '',
                     postal_code : '',
                     address1 : '',
                     address2 : '',

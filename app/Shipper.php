@@ -37,7 +37,7 @@ class Shipper extends Model
 {
     use BlameableTrait;
     const validationRules = [
-        '*.shipper_no' => 'required|max:4',
+        '*.shipper_no' => 'required|max:4|unique:shippers',
         '*.shipper_name1' => 'required|max:60',
         '*.shipper_name2' => 'max:60',
         '*.shipper_kana_name1' => 'max:60',
