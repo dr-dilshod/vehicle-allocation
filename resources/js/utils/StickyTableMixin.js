@@ -6,7 +6,7 @@ module.exports = {
     data() {
         return {
             reserveData: [],
-            selectedItems : [],
+            selectedItems: [],
             editMode: false,
         }
     },
@@ -14,10 +14,9 @@ module.exports = {
     mounted() {
         window.onbeforeunload = () => {
             if (this.editMode) {
-                this.checkChanges();
-                // if (this.updatedData.length > 0 || this.addedData.length > 0 || this.deletedData.length > 0) {
-                //     return "stop eee!";
-                // }
+                if (this.isDataChanged()) {
+                    return "stop eee!";
+                }
             }
 
             return null;
@@ -40,7 +39,7 @@ module.exports = {
                 if (place > -1) {
                     this.selectedItems.splice(place, 1);
                     this.deselectRow(index);
-                }else{
+                } else {
                     this.selectedItems.push(index);
                     this.selectRow(index);
                 }
@@ -77,21 +76,18 @@ module.exports = {
             })
         },
         isDataChanged() {
-            if (this.data.length - 1 > this.reserveData.length){
-                return true;
-            }
-            for(let i=0; i<this.data.length; i++){
-                if (!_.isEqual(this.data[i], this.reserveData[i])){
-                    return true;
-                }
-            }
-            return false;
+            let copy = _.cloneDeep(this.data);
+            copy = copy.filter(el => {
+               return !_.every(el, _.isEmpty) && !_.every(el, _.isNil);
+            });
+            return JSON.stringify(copy) !== JSON.stringify(this.reserveData);
         },
 
         saveConfirmModal() {
-            if (!this.isDataChanged()){
-                alert("No changes !");
+            if (!this.isDataChanged()) {
+                this.data = _.cloneDeep(this.reserveData);
                 this.endEditing();
+                this.deselectAll();
                 return;
             }
             this.$modal.show({
@@ -144,9 +140,7 @@ module.exports = {
             axios.post(this.resourceUrl, this.data)
                 .then(resp => {
                     this.refresh();
-                    if (modal) {
-                        this.showOperationSuccessDialog();
-                    }
+                    this.showOperationSuccessDialog();
                 }).catch(err => {
                 this.errorDialog(err);
             });
@@ -163,9 +157,9 @@ module.exports = {
         addRow() {
             this.data.push({});
         },
-        resetTable(response){
+        resetTable(response) {
             this.reserveData = _.cloneDeep(response.data);
-            deselectAll();
+            this.deselectAll();
         }
     }
 
