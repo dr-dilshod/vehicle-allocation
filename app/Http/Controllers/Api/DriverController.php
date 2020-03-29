@@ -35,7 +35,9 @@ class DriverController extends Controller
     {
         $all = $request->json()->all();
         $all = array_map(function($el) {
-            if (!isset($el['driver_pass']) || is_null($el['driver_pass'])) {
+            if($el['driver_pass'] === "" || $el['driverPass'] === ""){
+              unset($el['driver_pass']);
+            } else if (!isset($el['driver_pass']) || is_null($el['driver_pass'])) {
                 $el['driver_pass'] = $el['driverPass'];
             } else {
                 $el['driver_pass'] = Hash::make($el['driver_pass']);
@@ -47,7 +49,6 @@ class DriverController extends Controller
         $addedDrivers = [];
         foreach ($all as $driver) {
             if (!isset($driver['driver_id']) || is_null($driver['driver_id'])) {
-                $driver['driver_pass'] = Hash::make($driver['driver_pass']);
                 array_push($addedDrivers, $driver);
             } else {
                 array_push($updatedDrivers, $driver);
@@ -58,11 +59,6 @@ class DriverController extends Controller
         $update = false;
 
         if (count($updatedDrivers) > 0) {
-//            $updatedDrivers = array_map(function($el) {
-//                $el['driver_pass'] = $el['driverPass'];
-//                unset($el['driverPass']);
-//                return $el;
-//            }, $updatedDrivers);
             $updateRules = Driver::validationRules; // fix update rules
             $validator = validator()->make($updatedDrivers, $updateRules);
             if ($validator->fails()) {
