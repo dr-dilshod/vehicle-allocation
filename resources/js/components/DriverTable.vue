@@ -59,9 +59,23 @@
                     <td>
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.maximum_Loading" :disabled="!editMode"/></td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.search_flg" :disabled="!editMode"/></td>
+                        <div v-if="editMode">
+                            <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.search_flg" :disabled="!editMode"/>
+                        </div>
+                        <div v-else>
+                            <label v-if="driver.search_flg">{{__("driver.hide")}}</label>
+                            <label v-else>{{__("driver.show")}}</label>
+                        </div>
+                    </td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.admin_flg" :disabled="!editMode"/></td>
+                        <div v-if="editMode">
+                            <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.admin_flg" :disabled="!editMode"/>
+                        </div>
+                        <div v-else>
+                            <label v-if="driver.search_flg">{{__("driver.administrator")}}</label>
+                            <label v-else>{{__("driver.user")}}</label>
+                        </div>
+                        </td>
                     <td>
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_remark" :disabled="!editMode"/></td>
                     <td>
@@ -105,6 +119,16 @@
                     {value: "4", text: __('driver.4t_flat')},
                     {value: "5", text: __('driver.controller')},
                  ],
+                searchTemplate: function () {
+                    return {
+                        template: Vue.component('editOption', {
+                            template: '<label>{{(data.search_flg == true)? this.__("driver.show"):this.__("driver.hide")}}</label>',
+                            data() {
+                                return {data: {data: {}}};
+                            }
+                        })
+                    }
+                },
             }
         },
         mounted() {
