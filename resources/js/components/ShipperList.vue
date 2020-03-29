@@ -2,7 +2,7 @@
     <div id="app">
         <div class="row">
             <div class="col-2">
-                <a :href="backUrl" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
+                <a  v-on:click="back" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 :hidden="!editMode" class="text-center text-danger">{{__('common.editing')}}</h2>
@@ -12,9 +12,9 @@
             </div>
             <div class="col-5">
                 <p class="text-right">
-                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
-                    </button>
                     <button @click="saveConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    </button>
+                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
                     <button @click="deleteConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}</button>
                 </p>
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div id="table-scroll" class="table-scroll">
-            <table class="table table-hover table-bordered table-custom-inputs">
+            <table class="table table-custom-inputs">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col" class="sticky-col first-sticky-col">Shipper No</th>
@@ -193,6 +193,13 @@
             this.search();
         },
         methods: {
+            back() {
+              if (this.isDataChanged()) {
+                  this.confirmBack();
+              } else {
+                  window.location.href = this.backUrl;
+              }
+            },
             fetchShipperNames() {
                 let url = this.resourceUrl + '/fullname';
                 axios.get(url)
