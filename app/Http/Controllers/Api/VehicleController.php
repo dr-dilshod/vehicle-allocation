@@ -51,18 +51,53 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            '*.vehicle_no' => ['unique:vehicles,vehicle_no,NULL, null,delete_flg,0'],
-        ]);
-//        dd($request->all());
-//        exit;
-        $this->validate($request,Vehicle::validationRules);
-        $vehicles = $request->all();
-        foreach ($vehicles as $vehicle){
-            if($vehicle['offset'] == null) $vehicle['offset'] = 0;
-            Vehicle::create($vehicle);
+        $all = $request->json()->all();
+        $updatedVehicles = [];
+        $addedVehicles = [];
+        foreach ($all as $vehicle) {
+            if (!isset($vehicle['vehicle_id']) || is_null($vehicle['vehicle_id'])) {
+                array_push($addedVehicles, $vehicle);
+            } else {
+                array_push($updatedVehicles, $vehicle);
+            }
         }
-        return response()->json($vehicles, 201);
+
+        $save = false;
+        $update = false;
+
+        if (count($updatedVehicles) > 0) {
+            $updateRules = Vehicle::updateRules;
+
+            $this->validate($request, $updateRules);
+            $updRules = [];
+            foreach ($updatedVehicles as $key => $val) {
+                array_push($updRules, [
+                    'updatedVehicles.'.$key.'.vehicle_no' => Rule::unique('vehicles','vehicle_no')->ignore($val['vehicle_id'],'vehicle_id'),
+                ]);
+            }
+            $this->validate($request, $updRules);
+            $update = true;
+        }
+
+        if (count($addedVehicles) > 0) {
+            $addedRules = vehicle::validationRules;
+            $addedRules['addedVehicles.*.vehicle_no'] = 'required|max:4|unique:vehicles';
+            $this->validate($request, $addedRules);
+            $save = true;
+        }
+
+
+        if ($save) {
+            Vehicle::query()->insert($addedVehicles);
+        }
+
+        if ($update) {
+            foreach ($updatedVehicles as $vehicle) {
+                Vehicle::query()->where('vehicle_id', $vehicle['vehicle_id'])->update($vehicle);
+            }
+        }
+
+        return response()->json([], 201);
     }
 
     /**
