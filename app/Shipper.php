@@ -37,31 +37,31 @@ class Shipper extends Model
 {
     use BlameableTrait;
     const validationRules = [
-        'addedShippers.*.shipper_no' => 'required|max:4',
-        'addedShippers.*.shipper_name1' => 'required|max:60',
-        'addedShippers.*.shipper_name2' => 'max:60',
-        'addedShippers.*.shipper_kana_name1' => 'max:60',
-        'addedShippers.*.shipper_kana_name2' => 'max:60',
-        'addedShippers.*.shipper_company_abbreviation' => 'max:60',
-        'addedShippers.*.postal_code' => 'max:8',
-        'addedShippers.*.address1' => 'max:120',
-        'addedShippers.*.address2' => 'max:120',
-        'addedShippers.*.phone_number' => 'max:12',
-        'addedShippers.*.fax_number' => 'max:12'
+        '*.shipper_no' => 'required|max:4',
+        '*.shipper_name1' => 'required|max:60',
+        '*.shipper_name2' => 'max:60',
+        '*.shipper_kana_name1' => 'max:60',
+        '*.shipper_kana_name2' => 'max:60',
+        '*.shipper_company_abbreviation' => 'max:60',
+        '*.postal_code' => 'max:8',
+        '*.address1' => 'max:120',
+        '*.address2' => 'max:120',
+        '*.phone_number' => 'max:12',
+        '*.fax_number' => 'max:12'
     ];
 
     const updateRules = [
-        'updatedShippers.*.shipper_no' => 'required|max:4',
-        'updatedShippers.*.shipper_name1' => 'required|max:60',
-        'updatedShippers.*.shipper_name2' => 'max:60',
-        'updatedShippers.*.shipper_kana_name1' => 'max:60',
-        'updatedShippers.*.shipper_kana_name2' => 'max:60',
-        'updatedShippers.*.shipper_company_abbreviation' => 'max:60',
-        'updatedShippers.*.postal_code' => 'max:8',
-        'updatedShippers.*.address1' => 'max:120',
-        'updatedShippers.*.address2' => 'max:120',
-        'updatedShippers.*.phone_number' => 'max:12',
-        'updatedShippers.*.fax_number' => 'max:12'
+        '*.shipper_no' => 'required|max:4',
+        '*.shipper_name1' => 'required|max:60',
+        '*.shipper_name2' => 'max:60',
+        '*.shipper_kana_name1' => 'max:60',
+        '*.shipper_kana_name2' => 'max:60',
+        '*.shipper_company_abbreviation' => 'max:60',
+        '*.postal_code' => 'max:8',
+        '*.address1' => 'max:120',
+        '*.address2' => 'max:120',
+        '*.phone_number' => 'max:12',
+        '*.fax_number' => 'max:12'
     ];
 
     /**

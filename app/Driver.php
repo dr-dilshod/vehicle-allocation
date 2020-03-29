@@ -40,16 +40,28 @@ class Driver extends Authenticatable
 
     use BlameableTrait;
     const validationRules = [
-        '*.vehicle_type' => 'max:10',
-        '*.driver_no' => 'required|max:4',
-        '*.driver_name' => 'required|max:60',
-        '*.driver_pass' => 'required|max:120',
-        '*.driver_mobile_number' => 'max:13',
-        '*.maximum_Loading' => 'max:5',
-        '*.vehicle_no3' => 'max:4',
-        '*.driver_remark' => 'max:255',
-        '*.search_flg' => 'max:1',
-        '*.admin_flg' => 'max:1',
+        'addedDrivers.*.vehicle_type' => 'max:10',
+        'addedDrivers.*.driver_no' => 'required|max:4',
+        'addedDrivers.*.driver_name' => 'required|max:60',
+        'addedDrivers.*.driver_pass' => 'required|max:120',
+        'addedDrivers.*.driver_mobile_number' => 'max:13',
+        'addedDrivers.*.maximum_Loading' => 'max:5',
+        'addedDrivers.*.vehicle_no3' => 'max:4',
+        'addedDrivers.*.driver_remark' => 'max:255',
+        'addedDrivers.*.search_flg' => 'max:1',
+        'addedDrivers.*.admin_flg' => 'max:1',
+    ];
+    const updateRules = [
+        'updatedDrivers.*.vehicle_type' => 'max:10',
+        'updatedDrivers.*.driver_no' => 'required|max:4',
+        'updatedDrivers.*.driver_name' => 'required|max:60',
+        'updatedDrivers.*.driver_pass' => 'required|max:120',
+        'updatedDrivers.*.driver_mobile_number' => 'max:13',
+        'updatedDrivers.*.maximum_Loading' => 'max:5',
+        'updatedDrivers.*.vehicle_no3' => 'max:4',
+        'updatedDrivers.*.driver_remark' => 'max:255',
+        'updatedDrivers.*.search_flg' => 'max:1',
+        'updatedDrivers.*.admin_flg' => 'max:1',
     ];
 
     /**
