@@ -149,6 +149,7 @@ module.exports = {
             }
         },
         endEditing() {
+            this.reserveData = _.cloneDeep(this.data);
             this.editMode = false;
         },
         addRow() {
