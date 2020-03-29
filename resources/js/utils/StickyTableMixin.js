@@ -157,7 +157,7 @@ module.exports = {
             this.editMode = false;
         },
         addRow() {
-            this.data.push(this.emptyRow);
+            this.data.push(_.cloneDeep(this.emptyRow));
         },
         resetTable(response) {
             this.reserveData = _.cloneDeep(response.data);
