@@ -5,7 +5,7 @@
                 <a :href="backUrl" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 ref="editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
+                <h2 :hidden="!editMode" class="text-center text-danger">{{__('common.editing')}}</h2>
             </div>
             <div class="col-3">
                 <h2 class="text-center">{{title}}</h2>
@@ -22,28 +22,28 @@
             </div>
         </div>
         <div id="table-scroll" class="table-scroll">
-            <table class="table table-hover table-bordered table-custom-inputs">
+            <table class="table table-custom-inputs">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col" class="sticky-col first-sticky-col">Driver No</th>
-                    <th scope="col" class="sticky-col second-sticky-col">Vehicle Type</th>
-                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">Driver Name</th>
-                    <th scope="col">Driver Mobile</th>
-                    <th scope="col">Vehicle No</th>
-                    <th scope="col">Max Load</th>
-                    <th scope="col">Search Flg</th>
-                    <th scope="col">Admin Flg</th>
-                    <th scope="col">Remarks</th>
-                    <th scope="col">Password</th>
-                    <th scope="col" class="primary-key">Driver Id</th>
+                    <th scope="col" class="sticky-col first-sticky-col">{{__("driver.no")}}</th>
+                    <th scope="col" class="sticky-col second-sticky-col" style="min-width: 40px;">{{__("driver.type")}}</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__("driver.name")}}</th>
+                    <th scope="col">{{__("driver.mobile_number")}}</th>
+                    <th scope="col">{{__("driver.vehicle_no")}}</th>
+                    <th scope="col">{{__("driver.max_load")}}</th>
+                    <th scope="col">{{__("driver.display")}}</th>
+                    <th scope="col">{{__("driver.admin")}}</th>
+                    <th scope="col">{{__("driver.remarks")}}</th>
+                    <th scope="col">{{__("driver.password")}}</th>
+                    <th scope="col" class="primary-key"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="(driver, index) in data" :data-key="driver.driver_id" :index="index" ref="tr"
-                    @click="clickRow($event, index)">
+                    @click="clickRow($event, index)" :hidden="driver.delete_flg == 1">
                     <td class="sticky-col first-sticky-col">
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='driver.driver_no' :disabled='!editMode'/></td>
-                    <td class="sticky-col second-sticky-col">
+                    <td class="sticky-col second-sticky-col" style="min-width: 40px;">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="driver.vehicle_type" :disabled="!editMode">
                             <option v-for="type in vehicleTypes" v-bind:value="type.text">
                                 {{ type.text }}
@@ -114,6 +114,19 @@
                     {value: "4", text: __('driver.4t_flat')},
                     {value: "5", text: __('driver.controller')},
                  ],
+                emptyRow : {
+                    driver_no : '',
+                    vehicle_type : null,
+                    driver_name : '',
+                    driver_mobile_number : '',
+                    vehicle_no3 : '',
+                    maximum_Loading : '',
+                    search_flg : false,
+                    admin_flg : false,
+                    driver_remark : '',
+                    driver_pass : '',
+                    driver_id : null,
+                }
             }
         },
         mounted() {
@@ -148,3 +161,15 @@
     }
 
 </script>
+<style>
+    .table-scroll{
+        min-height: 400px;
+        background-color: #fff;
+    }
+    .table td > div{
+        padding: 0.375rem 0.75rem
+    }
+    .table .thead-light th{
+        background-color: #fff;
+    }
+</style>
