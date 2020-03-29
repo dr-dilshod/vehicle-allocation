@@ -12,15 +12,6 @@ module.exports = {
     },
 
     mounted() {
-        window.onbeforeunload = () => {
-            if (this.editMode) {
-                if (this.isDataChanged()) {
-                    return "stop eee!";
-                }
-            }
-
-            return null;
-        }
         $('body').on('focus','.first-sticky-col',function () {
             $('#table-scroll').scrollLeft(0);
         })
@@ -152,6 +143,7 @@ module.exports = {
         },
         toEditMode() {
             this.editMode = true;
+            this.reserveData = _.cloneDeep(this.data);
             if (this.data.length === this.reserveData.length) {
                 this.addRow();
             }
