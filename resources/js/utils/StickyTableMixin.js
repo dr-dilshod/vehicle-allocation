@@ -63,6 +63,7 @@ module.exports = {
                     this.deselectRow(idx);
                 }
             });
+            this.selectedItems = [];
         },
         selectRow(index) {
             let row = document.querySelector(`tr[index="${index}"]`);
@@ -75,7 +76,6 @@ module.exports = {
                 }
             })
         },
-
         isDataChanged() {
             if (this.data.length - 1 > this.reserveData.length){
                 return true;
@@ -163,6 +163,10 @@ module.exports = {
         addRow() {
             this.data.push({});
         },
+        resetTable(response){
+            this.reserveData = _.cloneDeep(response.data);
+            deselectAll();
+        }
     }
 
 };

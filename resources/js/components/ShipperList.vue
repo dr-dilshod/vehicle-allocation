@@ -198,10 +198,7 @@
                     axios.post(this.resourceUrl + '/filter', this.filter)
                         .then(response => {
                             this.data = response.data;
-                            this.reserveData = _.cloneDeep(response.data);
-                            this.data.map((el, idx) => {
-                                this.deselectRow(idx);
-                            })
+                            this.resetTable(response);
                         })
                 }
             },
