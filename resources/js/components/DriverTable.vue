@@ -158,6 +158,7 @@
                                 driver_pass : null,
                                 driverPass: e.driver_pass,
                                 driver_id : e.driver_id,
+                                delete_flg : e.delete_flg,
                             };
                         });
                         for (let i = 0; i < this.data.length; i++) {
