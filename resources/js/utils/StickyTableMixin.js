@@ -5,10 +5,8 @@ module.exports = {
 
     data() {
         return {
-            updatedData: [],
-            deletedData: [],
-            addedData: [],
             reserveData: [],
+            selectedItems: [],
             editMode: false,
         }
     },
@@ -16,8 +14,7 @@ module.exports = {
     mounted() {
         window.onbeforeunload = () => {
             if (this.editMode) {
-                this.checkChanges();
-                if (this.updatedData.length > 0 || this.addedData.length > 0 || this.deletedData.length > 0) {
+                if (this.isDataChanged()) {
                     return "stop eee!";
                 }
             }
@@ -38,19 +35,14 @@ module.exports = {
                 return;
             }
             if (this.editMode) {
-                this.data[index].delete_flg = 1;
-                const duplicate = this.deletedData.filter(el => _.isEqual(el, this.data[index])).length;
-                console.log(duplicate);
-                if (duplicate === 0) {
-                    const deleted = _.cloneDeep(this.data[index]);
-                    deleted.delete_flg = 1;
-                    this.deletedData.push(deleted);
-                    this.selectRow(index);
+                const place = this.selectedItems.indexOf(index);
+                if (place > -1) {
+                    this.selectedItems.splice(place, 1);
+                    this.deselectRow(index);
                 } else {
-                    this.deletedData = this.deletedData.filter(el => !_.isEqual(el, this.data[index]));
-                    this.deselectRow(index, true);
+                    this.selectedItems.push(index);
+                    this.selectRow(index);
                 }
-                this.data[index].delete_flg = 0;
             }
         },
         deselectRow(index) {
@@ -70,6 +62,7 @@ module.exports = {
                     this.deselectRow(idx);
                 }
             });
+            this.selectedItems = [];
         },
         selectRow(index) {
             let row = document.querySelector(`tr[index="${index}"]`);
@@ -82,67 +75,45 @@ module.exports = {
                 }
             })
         },
-        checkChanges() {
-            if (!this.editMode) {
-                return;
-            }
-            this.updatedData = [];
-            this.addedData = [];
-
-            if (this.data.length > this.reserveData.length) {
-                this.addedData = this.data.slice(this.reserveData.length);
-                this.addedData = this.addedData.filter(el => {
-                    return !_.every(el, _.isEmpty) && !_.isNull(el);
-                });
-            }
-
-
-            if (this.deletedData.length > 0) {
-                this.reserveData = this.reserveData.filter(el => {
-                    return !this.deletedData.some(({shipper_id}) => shipper_id === el.shipper_id)
-                });
-                this.updatedData.push(...this.deletedData);
-            }
-
-            this.reserveData.forEach((el, idx) => {
-                if (!_.isEqual(el, this.data[idx])) {
-                    this.updatedData.push(this.data[idx]);
-                }
+        isDataChanged() {
+            let copy = this.data.filter(el => {
+               return !_.every(el, _.isEmpty) && !_.every(el, _.isNil);
             });
 
-            console.log(this.updatedData);
-
+            return !copy.every((el, idx) => {
+                return _.isEqual(el, this.reserveData[idx]);
+            }) || copy.length > this.reserveData;
         },
-        saveData() {
-            if (!this.editMode) {
+
+        saveConfirmModal() {
+            if (!this.isDataChanged()) {
+                this.data = _.cloneDeep(this.reserveData);
+                this.endEditing();
+                this.deselectAll();
                 return;
             }
-            this.checkChanges();
-            if (!_.isEmpty(this.updatedData) || !_.isEmpty(this.addedData)) {
-                this.$modal.show({
-                    template: this.saveChangesTemplate,
-                    props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
-                }, {
-                    title: window.__('alert.message'),
-                    text: this.__('common.save_changes'),
-                    triggerOnConfirm: () => {
-                        this.$modal.hide('confirmDialog');
-                        this.save(this.addedData, this.updatedData, true);
-                    },
-                    triggerDiscard: () => {
-                        this.$modal.hide('confirmDialog');
-                    }
-                }, {
-                    height: 'auto',
-                    width: 400,
-                    name: 'confirmDialog'
-                });
-            } else {
-                this.endEditing();
-            }
+            this.$modal.show({
+                template: this.saveChangesTemplate,
+                props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
+            }, {
+                title: window.__('alert.message'),
+                text: this.__('common.save_changes'),
+                triggerOnConfirm: () => {
+                    this.$modal.hide('confirmDialog');
+                    this.save();
+                },
+                triggerDiscard: () => {
+                    this.$modal.hide('confirmDialog');
+                }
+            }, {
+                height: 'auto',
+                width: 400,
+                name: 'confirmDialog'
+            });
+
         },
-        deleteSelected() {
-            if (this.deletedData.length > 0) {
+        deleteConfirmModal() {
+            if (this.selectedItems.length > 0) {
                 this.$modal.show({
                     template: this.saveChangesTemplate,
                     props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
@@ -151,8 +122,8 @@ module.exports = {
                     text: this.__('common.confirm_delete'),
                     triggerOnConfirm: () => {
                         this.$modal.hide('confirmDialog');
-                        this.data = this.data.filter((el) => {
-                            return !this.deletedData.some(({shipper_id}) => el.shipper_id === shipper_id)
+                        this.selectedItems.forEach(index => {
+                            this.data[index].delete_flg = 1;
                         });
                         this.deselectAll();
                     },
@@ -164,23 +135,11 @@ module.exports = {
                     width: 400,
                     name: 'confirmDialog'
                 });
-
             }
         },
-        save(added, updated, modal = false) {
-            this.refresh();
-            axios.post(this.resourceUrl, {added: added, updated: updated})
-                .then(resp => {
-                    this.refresh();
-                    if (modal) {
-                        this.showOperationSuccessDialog();
-                    }
-                }).catch(err => {
-                this.errorDialog(err);
-            });
-        },
-        delete(data) {
-            axios.post(this.resourceUrl + '/delete', {ids: data})
+        save() {
+            this.data.splice(this.data.length - 1);
+            axios.post(this.resourceUrl, this.data)
                 .then(resp => {
                     this.refresh();
                     this.showOperationSuccessDialog();
@@ -198,8 +157,12 @@ module.exports = {
             this.editMode = false;
         },
         addRow() {
-            this.data.push({});
+            this.data.push(_.cloneDeep(this.emptyRow));
         },
+        resetTable(response) {
+            this.reserveData = _.cloneDeep(response.data);
+            this.deselectAll();
+        }
     }
 
 };

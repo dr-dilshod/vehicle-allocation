@@ -96,8 +96,17 @@ class ShipperController extends Controller
      */
     public function store(Request $request)
     {
-        $addedShippers = $request->json('added');
-        $updatedShippers = $request->json('updated');
+        $all = $request->json()->all();
+        $updatedShippers = [];
+        $addedShippers = [];
+        foreach ($all as $shipper) {
+            if (!isset($shipper['shipper_id']) || is_null($shipper['shipper_id'])) {
+                array_push($addedShippers, $shipper);
+            } else {
+                array_push($updatedShippers, $shipper);
+            }
+        }
+
         $save = false;
         $update = false;
 

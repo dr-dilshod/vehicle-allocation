@@ -14,9 +14,9 @@
                 <p class="text-right">
                     <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
-                    <button @click="saveData" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    <button @click="saveConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
                     </button>
-                    <button @click="deleteSelected" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}</button>
+                    <button @click="deleteConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}</button>
                 </p>
             </div>
         </div>
@@ -79,8 +79,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(shipper, index) in data" :data-key="shipper.shipper_id" :index="index" ref="tr"
-                    @click="clickRow($event, index)">
+                <tr v-for="(shipper, index) in data" :data-key="shipper.shipper_id" :index="index"
+                    @click="clickRow($event, index)" :hidden="shipper.delete_flg == 1">
                     <td class="sticky-col first-sticky-col">
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='shipper.shipper_no' :disabled='!editMode'/>
                     </td>
@@ -169,6 +169,22 @@
                     {value: "1", text: __("shipper.closing_date_combo.option2")},
                     {value: "2", text: __("shipper.closing_date_combo.option3")},
                 ],
+                emptyRow : {
+                    shipper_no : '',
+                    shipper_name1 : '',
+                    shipper_name2 : '',
+                    shipper_kana_name1 : '',
+                    shipper_kana_name2 : '',
+                    shipper_company_abbrevation : '',
+                    postal_code : '',
+                    address1 : '',
+                    address2 : '',
+                    phone_number : '',
+                    fax_number : '',
+                    closing_date : null,
+                    payment_date : null,
+                    shipper_id : null,
+                }
             }
         },
         mounted() {
@@ -193,15 +209,12 @@
             },
             search() {
                 if (this.editMode) {
-                    this.saveData();
+                    this.saveConfirmModal();
                 } else {
                     axios.post(this.resourceUrl + '/filter', this.filter)
                         .then(response => {
                             this.data = response.data;
-                            this.reserveData = _.cloneDeep(response.data);
-                            this.data.map((el, idx) => {
-                                this.deselectRow(idx);
-                            })
+                            this.resetTable(response);
                         })
                 }
             },
