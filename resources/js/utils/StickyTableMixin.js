@@ -76,11 +76,13 @@ module.exports = {
             })
         },
         isDataChanged() {
-            let copy = _.cloneDeep(this.data);
-            copy = copy.filter(el => {
+            let copy = this.data.filter(el => {
                return !_.every(el, _.isEmpty) && !_.every(el, _.isNil);
             });
-            return JSON.stringify(copy) !== JSON.stringify(this.reserveData);
+
+            return !copy.every((el, idx) => {
+                return _.isEqual(el, this.reserveData[idx]);
+            }) || copy.length > this.reserveData;
         },
 
         saveConfirmModal() {
