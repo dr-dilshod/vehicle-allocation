@@ -169,6 +169,22 @@
                     {value: "1", text: __("shipper.closing_date_combo.option2")},
                     {value: "2", text: __("shipper.closing_date_combo.option3")},
                 ],
+                emptyRow : {
+                    shipper_no : '',
+                    shipper_name1 : '',
+                    shipper_name2 : '',
+                    shipper_kana_name1 : '',
+                    shipper_kana_name2 : '',
+                    shipper_company_abbrevation : '',
+                    postal_code : '',
+                    address1 : '',
+                    address2 : '',
+                    phone_number : '',
+                    fax_number : '',
+                    closing_date : null,
+                    payment_date : null,
+                    shipper_id : null,
+                }
             }
         },
         mounted() {
