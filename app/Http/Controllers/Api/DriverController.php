@@ -28,16 +28,27 @@ class DriverController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
         $all = $request->json()->all();
+        $all = array_map(function($el) {
+            if($el['driver_pass'] === "" || $el['driverPass'] === ""){
+              unset($el['driver_pass']);
+            } else if (!isset($el['driver_pass']) || is_null($el['driver_pass'])) {
+                $el['driver_pass'] = $el['driverPass'];
+            } else {
+                $el['driver_pass'] = Hash::make($el['driver_pass']);
+            }
+            unset($el['driverPass']);
+            return $el;
+        }, $all);
         $updatedDrivers = [];
         $addedDrivers = [];
         foreach ($all as $driver) {
             if (!isset($driver['driver_id']) || is_null($driver['driver_id'])) {
-                $driver['driver_pass'] = Hash::make($driver['driver_pass']);
                 array_push($addedDrivers, $driver);
             } else {
                 array_push($updatedDrivers, $driver);
@@ -49,22 +60,44 @@ class DriverController extends Controller
 
         if (count($updatedDrivers) > 0) {
             $updateRules = Driver::validationRules; // fix update rules
-
-            $this->validate($request, $updateRules);
-            $updRules = [];
-            foreach ($updatedDrivers as $key => $val) {
-                array_push($updRules, [
-                    'updateDrivers.'.$key.'.driver_no' => Rule::unique('drivers','driver_no')->ignore($val['driver_id'],'driver_id'),
-                ]);
+            $validator = validator()->make($updatedDrivers, $updateRules);
+            if ($validator->fails()) {
+                return response()->json([
+                   'message' => '指定されたデータは無効です！ エラーリスト',
+                   'errors' => $validator->errors()
+                ], 422);
             }
-            $this->validate($request, $updRules);
+            foreach ($updatedDrivers as $val) {
+                $drivers = Driver::query()->where('driver_no', '=', $val['driver_no'])->get();
+                $driversObj = $drivers->first();
+                if ($drivers->count() <= 1) {
+                    if (!is_null($driversObj) && $driversObj->driver_id != $val['driver_id']) {
+                        $message = __('validation.unique', ['attribute' => __('validation.attributes.driver_no')]);
+                        return response()->json([
+                            'message' => '指定されたデータは無効です！ エラーリスト',
+                            'errors' => [
+                                'driver_no' => [
+                                    $message
+                                ]
+                            ]
+                        ], 422);
+                    }
+                }
+
+            }
             $update = true;
         }
 
         if (count($addedDrivers) > 0) {
             $addedRules = Driver::validationRules;
-            $addedRules['addedDrivers.*.driver_no'] = 'required|max:4|unique:drivers';
-            $this->validate($request, $addedRules);
+            $addedRules['*.driver_no'] = 'required|max:4|unique:drivers,driver_no';
+            $validator = validator()->make($addedDrivers, $addedRules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => '指定されたデータは無効です！ エラーリスト',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             $save = true;
         }
 

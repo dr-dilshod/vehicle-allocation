@@ -125,6 +125,7 @@
                     admin_flg : false,
                     driver_remark : '',
                     driver_pass : '',
+                    driverPass: '',
                     driver_id : null,
                 }
             }
@@ -143,7 +144,22 @@
              fetchData(url) {
                 axios.get(url)
                     .then(response => {
-                        this.data = response.data;
+                        this.data = response.data.map(e => {
+                            return {
+                                driver_no : e.driver_no,
+                                vehicle_type : e.vehicle_type,
+                                driver_name : e.driver_name,
+                                driver_mobile_number : e.driver_mobile_number,
+                                vehicle_no3 : e.vehicle_no3,
+                                maximum_Loading : e.maximum_Loading,
+                                search_flg : e.search_flg,
+                                admin_flg : e.admin_flg,
+                                driver_remark : e.driver_remark,
+                                driver_pass : null,
+                                driverPass: e.driver_pass,
+                                driver_id : e.driver_id,
+                            };
+                        });
                         for (let i = 0; i < this.data.length; i++) {
                             this.data[i].driver_pass = null;
                             if (this.data[i].search_flg == 0) {
