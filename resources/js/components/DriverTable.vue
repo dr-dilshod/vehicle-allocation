@@ -13,54 +13,74 @@
             </div>
             <div class="col-5">
                 <p class="text-right">
-                    <button ref="deleteBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}
+                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
-                    <button ref="registerBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    <button @click="saveData" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
                     </button>
-                    <button ref="editBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}</button>
+                    <button @click="deleteSelected" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}
+                    </button>
                 </p>
             </div>
         </div>
-        <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="300" :frozenColumns="3" :enableHover='false' :allowSelection='true'
-                  rowHeight=35>
-            <e-columns>
-                <e-column field='driver_no' :headerText='__("driver.no")' width="150" type="string"></e-column>
-                <e-column field='vehicle_type' :headerText='__("driver.type")' editType='dropdownedit'
-                          :edit='vehicleTypeParams' width="150" type="string"></e-column>
-                <e-column field='driver_name' :headerText='__("driver.name")' width="150" type="string"></e-column>
-                <e-column field='driver_mobile_number' :headerText='__("driver.mobile_number")' width="150" type="string"></e-column>
-                <e-column field='vehicle_no3' :headerText='__("driver.vehicle_no")' width="150" type="string"></e-column>
-                <e-column field='maximum_Loading' :headerText='__("driver.max_load")' width="100" type="string"></e-column>
-                <e-column field='search_flg' :headerText='__("driver.display")' editType='booleanedit'
-                          :template='searchTemplate' width="150"></e-column>
-                <e-column field='admin_flg' :headerText='__("driver.admin")' editType='booleanedit'
-                          :template="adminTemplate" width="150"></e-column>
-                <e-column field='driver_remark' :headerText='__("driver.remarks")' width="200" type="string"></e-column>
-                <e-column field='driver_pass' :headerText='__("driver.password")' width="200" type="string"></e-column>
-                <e-column field='driver_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
-            </e-columns>
-        </ejs-grid>
+        <div id="table-scroll" class="table-scroll">
+            <table class="table table-hover table-bordered table-custom-inputs">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="sticky-col first-sticky-col">Driver No</th>
+                    <th scope="col" class="sticky-col second-sticky-col">Vehicle Type</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">Driver Name</th>
+                    <th scope="col">Driver Mobile</th>
+                    <th scope="col">Vehicle No</th>
+                    <th scope="col">Max Load</th>
+                    <th scope="col">Search Flg</th>
+                    <th scope="col">Admin Flg</th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Password</th>
+                    <th scope="col" class="primary-key">Driver Id</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(driver, index) in data" :data-key="driver.driver_id" :index="index" ref="tr"
+                    @click="clickRow($event, index)">
+                    <td class="sticky-col first-sticky-col">
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='driver.driver_no' :disabled='!editMode'/></td>
+                    <td class="sticky-col second-sticky-col">
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="driver.vehicle_type" :disabled="!editMode">
+                            <option v-for="type in vehicleTypes" v-bind:value="type.text">
+                                {{ type.text }}
+                            </option>
+                        </select></td>
+                    <td class="sticky-col third-sticky-col last-sticky-col">
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_name" :disabled="!editMode"/></td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_mobile_number" :disabled="!editMode"/></td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.vehicle_no3" :disabled="!editMode"/></td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.maximum_Loading" :disabled="!editMode"/></td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.search_flg" :disabled="!editMode"/></td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="checkbox" class="form-control" v-model="driver.admin_flg" :disabled="!editMode"/></td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_remark" :disabled="!editMode"/></td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_pass" :disabled="!editMode"/></td>
+                    <td class="primary-key">
+                        <input  type="text" class="form-control" v-model="driver.driver_id" :disabled="!editMode"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
 <script>
     import Vue from "vue";
-    import {createElement} from '@syncfusion/ej2-base';
-    import {DropDownList} from "@syncfusion/ej2-dropdowns";
     import {Query} from '@syncfusion/ej2-data';
-    import {GridPlugin, Sort, Freeze, Toolbar, Edit} from '@syncfusion/ej2-vue-grids';
-    import {TableUtil} from '../utils/TableUtil.js'
+    import StickTableMixin from '../utils/StickyTableMixin'
 
-    let vehicleTypes = [
-        {vehicleType: __('driver.bulk')},
-        {vehicleType: __('driver.10tw')},
-        {vehicleType: __('driver.10t_flat')},
-        {vehicleType: __('driver.4tw')},
-        {vehicleType: __('driver.4t_flat')},
-        {vehicleType: __('driver.controller')},
-    ];
-    Vue.use(GridPlugin);
     export default {
         props: {
             backUrl: {type: String, required: true},
@@ -71,63 +91,24 @@
             updateUrl: {type: String, required: true},
             deleteUrl: {type: String, required: true},
         },
+        mixins : [
+            StickTableMixin
+        ],
         data() {
             return {
                 data: [],
-                tableUtil: undefined,
-                vehicleTypeParams: {
-                    params: {
-                        dataSource: vehicleTypes,
-                        fields: {text: "vehicleType", value: "vehicleType"},
-                        query: new Query(),
-                    }
-                },
-                adminTemplate: function () {
-                    return {
-                        template: Vue.component('editOption', {
-                            template: '<label>{{(data.admin_flg == false)? this.__("driver.user"):this.__("driver.administrator")}}</label>',
-                            data() {
-                                return {data: {data: {}}};
-                            }
-                        })
-                    }
-                },
-                searchTemplate: function () {
-                    return {
-                        template: Vue.component('editOption', {
-                            template: '<label>{{(data.search_flg == true)? this.__("driver.show"):this.__("driver.hide")}}</label>',
-                            data() {
-                                return {data: {data: {}}};
-                            }
-                        })
-                    }
-                },
-                textTemplate(args){
-                    return {
-                        template: Vue.component('textTemplate', {
-                            template: '<input class="e-field e-input" type="text" v-model="data.driver_no"/>',
-                            data() { return { data: {} }}
-                        })
-                    }
-                },
-                mode: 'Batch',
-                addSuccess: 1,
-                changeSuccess: 1,
-                deleteSuccess: 1,
-            };
+                vehicleTypes: [
+                    {value: "0", text: __('driver.bulk')},
+                    {value: "1", text: __('driver.10tw')},
+                    {value: "2", text: __('driver.10t_flat')},
+                    {value: "3", text: __('driver.4tw')},
+                    {value: "4", text: __('driver.4t_flat')},
+                    {value: "5", text: __('driver.controller')},
+                 ],
+            }
         },
         mounted() {
-            this.tableUtil = new TableUtil(this);
             this.fetchData(this.resourceUrl);
-            // TODO: back button bilan kelishmayapti
-            // window.onbeforeunload =  () => {
-            //     const data = this.$refs.grid.ej2Instances.getBatchChanges();
-            //     if (!_.isEmpty(data) && (data.addedRecords.length > 0 || data.deletedRecords.length > 0 || data.changedRecords.length > 0)) {
-            //         return "";
-            //     } else {
-            //         return null;
-            //     }
-            // }
         },
         methods: {
             back() {
@@ -281,9 +262,6 @@
             refresh() {
                 this.fetchData(this.resourceUrl);
             }
-        },
-        provide: {
-            grid: [Sort, Freeze, Edit]
         },
         name: 'DriverTable'
     }
