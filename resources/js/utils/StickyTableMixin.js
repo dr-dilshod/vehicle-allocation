@@ -90,7 +90,7 @@ module.exports = {
                 template: this.saveChangesTemplate,
                 props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
             }, {
-                title: window.__('alert.message'),
+                title: window.__('common.confirm'),
                 text: this.__('common.save_changes'),
                 triggerOnConfirm: () => {
                     this.$modal.hide('confirmDialog');

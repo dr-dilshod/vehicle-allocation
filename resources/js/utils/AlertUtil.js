@@ -66,7 +66,7 @@ module.exports = {
             this.$modal.show({
                 template: this.dialogConfirmTemplate,
                 props: ['title', 'text', 'triggerOnConfirm']
-            }, {title: this.__('alert.message'), text: 'Are you sure?', triggerOnConfirm: () => {
+            }, {title: this.__('common.confirm'), text: 'Are you sure?', triggerOnConfirm: () => {
                     return true;
                 }}, {
                 height: 'auto',
