@@ -21,6 +21,9 @@ module.exports = {
 
             return null;
         }
+        $('body').on('focus','.first-sticky-col',function () {
+            $('#table-scroll').scrollLeft(0);
+        })
     },
 
     methods: {
