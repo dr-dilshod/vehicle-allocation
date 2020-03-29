@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-2">
-                <a :href="backUrl"
+                <a v-on:click="back"
                    class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
@@ -161,6 +161,13 @@
             this.fetchVehicleData();
         },
         methods: {
+            back() {
+                if (this.isDataChanged()) {
+                    this.confirmBack();
+                } else {
+                    window.location.href = this.backUrl;
+                }
+            },
             fetchVehicleData() {
                 axios.get(this.resourceUrl+'?company_name='+this.company_name)
                     .then(response => {
