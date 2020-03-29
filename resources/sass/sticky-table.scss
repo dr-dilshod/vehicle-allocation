@@ -4,7 +4,8 @@
   z-index: 1;
   margin: auto;
   overflow: auto;
-  height: 400px;
+  height: auto;
+  max-height: 400px;
 }
 .table-scroll table {
   width: 100%;
