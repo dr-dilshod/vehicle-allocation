@@ -58,31 +58,31 @@ class Vehicle extends Model
      * @var array
      */
     const validationRules = [
-        'addedVehicles.*.vehicle_no' => 'required|max:4',
-        'addedVehicles.*.company_name' => 'required|max:60',
-        'addedVehicles.*.company_kana_name' => 'max:60',
-        'addedVehicles.*.vehicle_company_abbreviation' => 'max:60',
-        'addedVehicles.*.vehicle_postal_code' => 'max:8',
-        'addedVehicles.*.vehicle_address1' => 'max:120',
-        'addedVehicles.*.vehicle_address2' => 'max:120',
-        'addedVehicles.*.offset' => '',
-        'addedVehicles.*.vehicle_phone_number' => 'max:13',
-        'addedVehicles.*.vehicle_fax_number' => 'max:12',
-        'addedVehicles.*.vehicle_remark' => 'max:255',
+        '*.vehicle_no' => 'required|max:4|unique:vehicles',
+        '*.company_name' => 'required|max:60',
+        '*.company_kana_name' => 'max:60',
+        '*.vehicle_company_abbreviation' => 'max:60',
+        '*.vehicle_postal_code' => 'max:8',
+        '*.vehicle_address1' => 'max:120',
+        '*.vehicle_address2' => 'max:120',
+        '*.offset' => '',
+        '*.vehicle_phone_number' => 'max:13',
+        '*.vehicle_fax_number' => 'max:12',
+        '*.vehicle_remark' => 'max:255',
     ];
 
     const updateRules = [
-        'updatedVehicles.*.vehicle_no' => 'required|max:4',
-        'updatedVehicles.*.company_name' => 'required|max:60',
-        'updatedVehicles.*.company_kana_name' => 'max:60',
-        'updatedVehicles.*.vehicle_company_abbreviation' => 'max:60',
-        'updatedVehicles.*.vehicle_postal_code' => 'max:8',
-        'updatedVehicles.*.vehicle_address1' => 'max:120',
-        'updatedVehicles.*.vehicle_address2' => 'max:120',
-        'updatedVehicles.*.offset' => '',
-        'updatedVehicles.*.vehicle_phone_number' => 'max:13',
-        'updatedVehicles.*.vehicle_fax_number' => 'max:12',
-        'updatedVehicles.*.vehicle_remark' => 'max:255',
+        '*.vehicle_no' => 'required|max:4',
+        '*.company_name' => 'required|max:60',
+        '*.company_kana_name' => 'max:60',
+        '*.vehicle_company_abbreviation' => 'max:60',
+        '*.vehicle_postal_code' => 'max:8',
+        '*.vehicle_address1' => 'max:120',
+        '*.vehicle_address2' => 'max:120',
+        '*.offset' => '',
+        '*.vehicle_phone_number' => 'max:13',
+        '*.vehicle_fax_number' => 'max:12',
+        '*.vehicle_remark' => 'max:255',
     ];
 
 
