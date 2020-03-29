@@ -66,23 +66,43 @@ class VehicleController extends Controller
         $update = false;
 
         if (count($updatedVehicles) > 0) {
-            $updateRules = Vehicle::updateRules;
-
-            $this->validate($request, $updateRules);
-            $updRules = [];
-            foreach ($updatedVehicles as $key => $val) {
-                array_push($updRules, [
-                    'updatedVehicles.'.$key.'.vehicle_no' => Rule::unique('vehicles','vehicle_no')->ignore($val['vehicle_id'],'vehicle_id'),
-                ]);
+            $validator = validator()->make($updatedVehicles, Vehicle::updateRules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => '指定されたデータは無効です！ エラーリスト',
+                    'errors' => $validator->errors()
+                ], 422);
             }
-            $this->validate($request, $updRules);
+            foreach ($updatedVehicles as $val) {
+                $vehicles = Vehicle::query()->where('vehicle_no', '=', $val['vehicle_no'])->get();
+                $vehicleObj = $vehicles->first();
+                if ($vehicles->count() <= 1) {
+                    if (!is_null($vehicleObj) && $vehicleObj->vehicle_id != $val['vehicle_id']) {
+                        $message = __('validation.unique', ['attribute' => __('vehicle.vehicle_no')]);
+                        return response()->json([
+                            'message' => '指定されたデータは無効です！ エラーリスト',
+                            'errors' => [
+                                'vehicle_no' => [
+                                    $message
+                                ]
+                            ]
+                        ], 422);
+                    }
+                }
+
+            }
+
             $update = true;
         }
 
         if (count($addedVehicles) > 0) {
-            $addedRules = vehicle::validationRules;
-            $addedRules['addedVehicles.*.vehicle_no'] = 'required|max:4|unique:vehicles';
-            $this->validate($request, $addedRules);
+            $validator = validator()->make($addedVehicles, Vehicle::validationRules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => '指定されたデータは無効です！ エラーリスト',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             $save = true;
         }
 
