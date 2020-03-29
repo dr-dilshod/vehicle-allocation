@@ -32,18 +32,53 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        $drivers = $request->toArray();
-        $driver_list = [];
-        foreach ($drivers as $driver) {
-            //$driver->validate([
-            //    'driver_no' => ['unique:drivers,driver_no,NULL, null,delete_flg,0'],
-            //]);
-            //$data = $driver->validate(Driver::validationRules);
-            $driver['driver_pass'] = Hash::make($driver['driver_pass']);
-            $driver = Driver::create($driver);
-            //$driver_list->push($driver);
+        $all = $request->json()->all();
+        $updatedDrivers = [];
+        $addedDrivers = [];
+        foreach ($all as $driver) {
+            if (!isset($driver['driver_id']) || is_null($driver['driver_id'])) {
+                $driver['driver_pass'] = Hash::make($driver['driver_pass']);
+                array_push($addedDrivers, $driver);
+            } else {
+                array_push($updatedDrivers, $driver);
+            }
         }
-        return response()->json($driver_list);
+
+        $save = false;
+        $update = false;
+
+        if (count($updatedDrivers) > 0) {
+            $updateRules = Driver::updateRules; // fix update rules
+
+            $this->validate($request, $updateRules);
+            $updRules = [];
+            foreach ($updatedDrivers as $key => $val) {
+                array_push($updRules, [
+                    'updateDrivers.'.$key.'.driver_no' => Rule::unique('drivers','driver_no')->ignore($val['driver_id'],'driver_id'),
+                ]);
+            }
+            $this->validate($request, $updRules);
+            $update = true;
+        }
+
+        if (count($addedDrivers) > 0) {
+            $addedRules = Driver::validationRules;
+            $addedRules['addedDrivers.*.driver_no'] = 'required|max:4|unique:drivers';
+            $this->validate($request, $addedRules);
+            $save = true;
+        }
+
+        if ($save) {
+            Driver::query()->insert($addedDrivers);
+        }
+
+        if ($update) {
+            foreach ($updatedDrivers as $driver) {
+                Driver::query()->where('driver_id', $driver['driver_id'])->update($driver);
+            }
+        }
+
+        return response()->json([], 201);
     }
 
     /**
