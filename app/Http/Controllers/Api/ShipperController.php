@@ -100,7 +100,7 @@ class ShipperController extends Controller
         $updatedShippers = [];
         $addedShippers = [];
         foreach ($all as $shipper) {
-            if (is_null($shipper['shipper_id'])) {
+            if (!isset($shipper['shipper_id']) || is_null($shipper['shipper_id'])) {
                 array_push($addedShippers, $shipper);
             } else {
                 array_push($updatedShippers, $shipper);
