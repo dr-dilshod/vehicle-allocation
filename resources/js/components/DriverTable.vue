@@ -2,8 +2,7 @@
     <div id="app">
         <div class="row mb-4">
             <div class="col-2">
-                <a @click="back"
-                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
+                <a :href="backUrl" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
                 <h2 ref="editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
@@ -15,9 +14,9 @@
                 <p class="text-right">
                     <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
-                    <button @click="saveData" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    <button @click="saveConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
                     </button>
-                    <button @click="deleteSelected" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}
+                    <button @click="deleteConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}
                     </button>
                 </p>
             </div>
@@ -92,7 +91,6 @@
 
 <script>
     import Vue from "vue";
-    import {Query} from '@syncfusion/ej2-data';
     import StickTableMixin from '../utils/StickyTableMixin'
 
     export default {
@@ -101,9 +99,6 @@
             title: {type: String, required: true},
             fetchUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
-            insertUrl: {type: String, required: true},
-            updateUrl: {type: String, required: true},
-            deleteUrl: {type: String, required: true},
         },
         mixins : [
             StickTableMixin
@@ -119,93 +114,13 @@
                     {value: "4", text: __('driver.4t_flat')},
                     {value: "5", text: __('driver.controller')},
                  ],
-                searchTemplate: function () {
-                    return {
-                        template: Vue.component('editOption', {
-                            template: '<label>{{(data.search_flg == true)? this.__("driver.show"):this.__("driver.hide")}}</label>',
-                            data() {
-                                return {data: {data: {}}};
-                            }
-                        })
-                    }
-                },
             }
         },
         mounted() {
-            this.fetchData(this.resourceUrl);
+            this.fetchData(this.fetchUrl);
         },
         methods: {
-            back() {
-                const data = this.$refs.grid.ej2Instances.getBatchChanges();
-                if (!_.isEmpty(data) && (data.addedRecords.length > 0 || data.deletedRecords.length > 0 || data.changedRecords.length > 0)) {
-                    this.$modal.show({
-                        template: this.saveChangesTemplate,
-                        props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
-                    }, {
-                        title: window.__('alert.message'),
-                        text: this.__('common.save_changes'),
-                        triggerOnConfirm: () => {
-                            //save changes here
-                            this.$modal.hide('confirmDialog');
-                            this.tableUtil.endEditing();
-                        },
-                        triggerDiscard: () => {
-                            location.href = this.backUrl;
-                        }
-                    }, {
-                        height: 'auto',
-                        width: 400,
-                        name: 'confirmDialog'
-                    });
-                } else {
-                    location.href = this.backUrl;
-                }
-            },
-            saveChanges(changedData) {
-                this.$modal.show({
-                    template: this.saveChangesTemplate,
-                    props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
-                }, {
-                    title: window.__('alert.message'),
-                    text: this.__('common.save_changes'),
-                    triggerOnConfirm: () => {
-                        if (changedData.addedRecords.length > 0) {
-                            this.insertData(changedData.addedRecords);
-                        }
-                        if (changedData.changedRecords.length > 0) {
-                            this.editData(changedData.changedRecords);
-                        }
-                        if (changedData.deletedRecords.length > 0) {
-                            this.deleteData(changedData.deletedRecords);
-                        }
-                        if (this.addSuccess === 1 && this.changeSuccess === 1 && this.deleteSuccess === 1) {
-                            this.showOperationSuccessDialog();
-                            this.fetchData(this.resourceUrl);
-                            this.$refs.grid.ej2Instances.refresh();
-                            this.tableUtil.endEditing();
-                        } else {
-                            this.addSuccess = 1;
-                            this.changeSuccess = 1;
-                            this.deleteSuccess = 1;
-                        }
-                        this.$modal.hide('confirmDialog');
-                    },
-                    triggerDiscard: () => {
-                        // discard changes e.g. refresh
-                        this.fetchData(this.resourceUrl);
-                        this.$refs.grid.ej2Instances.refresh();
-                        this.$modal.hide('confirmDialog');
-                        this.tableUtil.endEditing();
-                    }
-                }, {
-                    height: 'auto',
-                    width: 400,
-                    name: 'confirmDialog'
-                });
-
-            },
-
-            fetchData(url) {
+             fetchData(url) {
                 axios.get(url)
                     .then(response => {
                         this.data = response.data;
@@ -224,67 +139,9 @@
                         }
                     })
             },
-            actionBegin(args) {
-                if (args.requestType == 'save') {
-                    args.cancel = true;
-                    if (!args.data.driver_id) {
-                        args.data.driver_pass = args.data.driver_pass_temp;
-                        this.insertData(args.data);
-                    } else {
-                        if (args.data.driver_pass_temp != null) {
-                            args.data.driver_pass = args.data.driver_pass_temp;
-                        }
-                        this.editData(args.data);
-                    }
-                }
-                if (args.requestType == 'delete') {
-                    args.cancel = true;
-                    if (args.data[0].driver_id !== undefined) {
-                        this.deleteData(args.data[0].driver_id);
-                    }
-                }
-            },
-            insertData(createdData) {
-                const driver_table = this;
-                // if needed, added row without data can be ignored here
-                //for (let index = 0; index < createdData.length; index++) {
-                //    if (empty(createdData[index].driver_no)) {
-                //        createdData.splice(index, 1);
-                //    }
-                //}
-                axios.post(this.insertUrl, createdData)
-                    .then(response => {
-                        driver_table.addSuccess = 1;
-                    })
-                    .catch(error => {
-                        this.errorDialog(error);
-                        driver_table.addSuccess = 0;
-                    });
-            },
-            editData(updatedData) {
-                const driver_table = this;
-                axios.post(this.updateUrl, updatedData)
-                    .then(response => {
-                        driver_table.changeSuccess = 1;
-                    })
-                    .catch(error => {
-                        this.errorDialog(error);
-                        driver_table.changeSuccess = 0;
-                    });
-            },
-            deleteData(deletedData) {
-                const driver_table = this;
-                axios.post(this.deleteUrl, deletedData)
-                    .then(response => {
-                        driver_table.deleteSuccess = 1;
-                    })
-                    .catch(error => {
-                        this.errorDialog(error);
-                        driver_table.deleteSuccess = 0;
-                    });
-            },
             refresh() {
-                this.fetchData(this.resourceUrl);
+                this.editMode = false;
+                this.fetchData(this.fetchUrl);
             }
         },
         name: 'DriverTable'
