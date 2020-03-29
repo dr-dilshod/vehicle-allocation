@@ -25,9 +25,6 @@ Vue.mixin(require('./utils/TranslationMixin'));
 Vue.mixin(require('./utils/AlertUtil'));
 Vue.mixin(require('./utils/ValidationMixin'));
 
-Vue.component('vehicle-grid',require('./components/VehicleGrid.vue').default);
-Vue.component('m-column',require('./components/MColumn.vue').default);
-
 Vue.component('vehicle-table',require('./components/VehicleTable.vue').default);
 Vue.component('shipper-table',require('./components/ShipperTable.vue').default);
 Vue.component('shipper-list',require('./components/ShipperList.vue').default);

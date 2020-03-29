@@ -43,7 +43,7 @@
             </form>
         </div>
         <div id="table-scroll" class="table-scroll">
-            <table class="table table-hover table-bordered table-custom-inputs">
+            <table class="table table-custom-inputs">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col" class="sticky-col first-sticky-col">{{__('vehicle.vehicle_no')}}</th>
@@ -101,7 +101,7 @@
                         <div v-if="!editMode">{{vehicle.vehicle_fax_number}}</div>
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_fax_number" v-if="editMode"/>
                     </td>
-                    <td>
+                    <td style="min-width: 70px;">
                         <div v-if="!editMode"><span v-if="!editMode && vehicle.offset==0">{{__('vehicle.no')}}</span><span v-if="!editMode && vehicle.offset==1">{{__('vehicle.yes')}}</span></div>
                         <input v-on:change="addRowOnChange" type="checkbox" class="" v-model="vehicle.offset" v-if="editMode"/>
                     </td>
@@ -150,7 +150,7 @@
                     vehicle_address2 : '',
                     vehicle_phone_number : '',
                     vehicle_fax_number : '',
-                    offset : '',
+                    offset : false,
                     vehicle_remark : '',
                     vehicle_id : null,
                 }
@@ -158,8 +158,6 @@
         },
         mounted() {
             this.fetchCompanies();
-        },
-        created(){
             this.fetchVehicleData();
         },
         methods: {
@@ -197,10 +195,17 @@
     }
 </script>
 <style>
+    .table-scroll{
+        min-height: 400px;
+        background-color: #fff;
+    }
     .table .thead-light th{
         background-color: #fff;
     }
     .table-scroll table td{
         padding: 5px;
+    }
+    .table td > div{
+        padding: 0.375rem 0.75rem
     }
 </style>
