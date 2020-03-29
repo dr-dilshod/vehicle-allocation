@@ -196,7 +196,7 @@
                                     delete_flg: e.delete_flg
                                 };
                             });
-                            this.resetTable(response);
+                            this.reserveData = _.cloneDeep(this.data);
                         } else {
                             this.data = [];
                         }
