@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ShipperController extends Controller
 {
@@ -114,22 +115,43 @@ class ShipperController extends Controller
 
         if (count($updatedShippers) > 0) {
             $updateRules = Shipper::updateRules;
-
-            $this->validate($request, $updateRules);
-            $updRules = [];
-            foreach ($updatedShippers as $key => $val) {
-                array_push($updRules, [
-                    'updateShippers.'.$key.'.shipper_no' => Rule::unique('shippers','shipper_no')->ignore($val['shipper_id'],'shipper_id'),
-                ]);
+            $validator = validator()->make($updatedShippers, Shipper::updateRules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => '指定されたデータは無効です！ エラーリスト',
+                    'errors' => $validator->errors()
+                ], 422);
             }
-            $this->validate($request, $updRules);
+            foreach ($updatedShippers as $val) {
+                $shippers = Shipper::query()->where('shipper_no', '=', $val['shipper_no'])->get();
+                $shipperObj = $shippers->first();
+                if ($shippers->count() <= 1) {
+                    if (!is_null($shipperObj) && $shipperObj->shipper_id != $val['shipper_id']) {
+                        $message = __('validation.unique', ['attribute' => __('shipper.shipper_no')]);
+                        return response()->json([
+                            'message' => '指定されたデータは無効です！ エラーリスト',
+                            'errors' => [
+                                'shipper_no' => [
+                                    $message
+                                ]
+                            ]
+                        ], 422);
+                    }
+                }
+
+            }
+
             $update = true;
         }
 
         if (count($addedShippers) > 0) {
-            $addedRules = Shipper::validationRules;
-            $addedRules['addedShippers.*.shipper_no'] = 'required|max:4|unique:shippers';
-            $this->validate($request, $addedRules);
+            $validator = validator()->make($addedShippers, Shipper::validationRules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => '指定されたデータは無効です！ エラーリスト',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             $save = true;
         }
 
