@@ -38,15 +38,61 @@ class UnitPriceController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $data = $request->validate(UnitPrice::$createValidationRules);
-        $all = $request->all();
-        $shipper = Shipper::find($request->input('shipper_id'));
-        $all = array_merge($all, ['shipper_no' => $shipper->shipper_no]);
-        $unit_price = UnitPrice::create($all);
-        return response()->json($unit_price, 201);
+        $all = $request->json()->all();
+        $save = false;
+        $update = false;
+
+        $updated = [];
+        $added = [];
+        foreach ($all as $price) {
+            if (!isset($price['price_id']) || is_null($price['price_id'])) {
+                array_push($added, $price);
+            } else {
+                array_push($updated, $price);
+            }
+        }
+
+        if (count($updated) > 0) {
+            $this->validate($request, UnitPrice::$updateValidationRules);
+            $update = true;
+        }
+
+        if (count($added) > 0) {
+            $this->validate($request, UnitPrice::$createValidationRules);
+            $save = true;
+        }
+
+        if ($save) {
+            $added = array_map(function($el) {
+                $shipper = Shipper::find($el['shipperId']);
+                $el['shipper_no'] = $shipper->shipper_no;
+                $el['shipper_id'] = $el['shipperId'];
+                unset($el['shipperId']);
+                return $el;
+
+            }, $added);
+            UnitPrice::query()->insert($added);
+        }
+
+        if ($update) {
+            $updated = array_map(function($el) {
+                $shipper = Shipper::find($el['shipperId']);
+                $el['shipper_no'] = $shipper->shipper_no;
+                $el['shipper_id'] = $el['shipperId'];
+                unset($el['shipperId']);
+                return $el;
+
+            }, $updated);
+            foreach ($updated as $price) {
+                UnitPrice::query()->where('price_id', $price['price_id'])->update($price);
+            }
+        }
+
+        return response()->json([], 201);
     }
 
     public function update(Request $request, $id)
@@ -67,7 +113,8 @@ class UnitPriceController extends Controller
         return response()->json(null);
     }
 
-    public function getDistrictShipperNames() {
+    public function getDistrictShipperNames()
+    {
         $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
             ->where('delete_flg', 0)
             ->distinct()
