@@ -150,7 +150,7 @@
                     vehicle_address2 : '',
                     vehicle_phone_number : '',
                     vehicle_fax_number : '',
-                    offset : '',
+                    offset : false,
                     vehicle_remark : '',
                     vehicle_id : null,
                 }
@@ -202,5 +202,8 @@
     }
     .table-scroll table td{
         padding: 5px;
+    }
+    .table td > div{
+        padding: 0.375rem 0.75rem
     }
 </style>
