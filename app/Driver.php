@@ -118,6 +118,10 @@ class Driver extends Authenticatable
         ];
     }
 
+    public function getAuthIdentifier() {
+        return $this->driver_no;
+    }
+
     public function getAuthPassword()
     {
         return $this->driver_pass;
