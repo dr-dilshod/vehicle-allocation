@@ -24,6 +24,7 @@
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  z-index: 4;
 }
 /* safari and ios need the tfoot itself to be position:sticky also */
 .table-scroll tfoot,

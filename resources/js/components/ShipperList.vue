@@ -12,9 +12,9 @@
             </div>
             <div class="col-5">
                 <p class="text-right">
-                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
-                    </button>
                     <button @click="saveConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    </button>
+                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
                     <button @click="deleteConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}</button>
                 </p>
@@ -73,8 +73,8 @@
                     <th scope="col">Address2</th>
                     <th scope="col">Phone number</th>
                     <th scope="col">Fax number</th>
-                    <th scope="col">Closing date</th>
                     <th scope="col">Payment date</th>
+                    <th scope="col">Closing date</th>
                     <th scope="col" class="primary-key">Shipper Id</th>
                 </tr>
                 </thead>
@@ -114,15 +114,15 @@
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.fax_number" :disabled="!editMode"/>
                     </td>
                     <td>
+                        <datepicker v-model="shipper.payment_date" :disabled="!editMode" v-on:change="addRowOnChange"
+                                    :bootstrap-styling="true" :format="options.weekday" :language="options.language.ja" />
+                    </td>
+                    <td width="150">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="shipper.closing_date" :disabled="!editMode">
                             <option v-for="option in closingDateOptions" v-bind:value="option.value">
                                 {{ option.text }}
                             </option>
                         </select>
-                    </td>
-                    <td>
-                        <input v-on:change="addRowOnChange" type="date" :class="data.length-1 == index ? 'form-control last': 'form-control'"
-                               v-model="shipper.payment_date" :disabled="!editMode"/>
                     </td>
                     <td class="primary-key">
                         <input  type="text" class="form-control" v-model="shipper.shipper_id" :disabled="!editMode"/>
@@ -138,8 +138,10 @@
     import Vue from "vue";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
     import StickTableMixin from '../utils/StickyTableMixin'
+    import Datepicker from "vuejs-datepicker";
 
     export default {
+        components: {Datepicker},
         props: {
             backUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
@@ -175,7 +177,7 @@
                     shipper_name2 : '',
                     shipper_kana_name1 : '',
                     shipper_kana_name2 : '',
-                    shipper_company_abbrevation : '',
+                    shipper_company_abbreviation : '',
                     postal_code : '',
                     address1 : '',
                     address2 : '',
