@@ -61,21 +61,21 @@
             </div>
         </div>
         <div id="table-scroll" class="table-scroll">
-            <table class="table table-hover table-bordered table-custom-inputs">
+            <table class="table table-custom-inputs">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col" class="sticky-col first-sticky-col">Shipper No</th>
-                    <th scope="col" class="sticky-col second-sticky-col">Shipper</th>
-                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">Furigana</th>
-                    <th scope="col">Company abbr</th>
-                    <th scope="col">Postal code</th>
-                    <th scope="col">Address1</th>
-                    <th scope="col">Address2</th>
-                    <th scope="col">Phone number</th>
-                    <th scope="col">Fax number</th>
-                    <th scope="col">Payment date</th>
-                    <th scope="col">Closing date</th>
-                    <th scope="col" class="primary-key">Shipper Id</th>
+                    <th scope="col" class="sticky-col first-sticky-col">{{__('shipper.shipper_no')}}</th>
+                    <th scope="col" class="sticky-col second-sticky-col">{{__('shipper.shipper')}}</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__('shipper.furigana')}}</th>
+                    <th scope="col">{{__('shipper.abbreviation')}}</th>
+                    <th scope="col">{{__('shipper.postal_code')}}</th>
+                    <th scope="col">{{__('shipper.address1')}}</th>
+                    <th scope="col">{{__('shipper.address2')}}</th>
+                    <th scope="col">{{__('shipper.phone_number')}}</th>
+                    <th scope="col">{{__('shipper.fax_number')}}</th>
+                    <th scope="col">{{__('shipper.payment_date')}}</th>
+                    <th scope="col">{{__('shipper.closing_date')}}</th>
+                    <th scope="col" class="primary-key">{{__('shipper.shipper_id')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -195,6 +195,13 @@
             this.search();
         },
         methods: {
+            back() {
+              if (this.isDataChanged()) {
+                  this.confirmBack();
+              } else {
+                  window.location.href = this.backUrl;
+              }
+            },
             fetchShipperNames() {
                 let url = this.resourceUrl + '/fullname';
                 axios.get(url)

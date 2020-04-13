@@ -1,4 +1,4 @@
-<template>
+p<template>
     <div id="app">
         <div class="row">
             <div class="col-2">

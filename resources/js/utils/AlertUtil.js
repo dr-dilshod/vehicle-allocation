@@ -46,11 +46,27 @@ module.exports = {
         operationSuccessDialog() {
             this.$alert(this.__('alert.operation_successfully_done'), null, 'success', {confirmButtonText: this.__('alert.ok')});
         },
+        confirmBack() {
+            this.$modal.show({
+                    template: this.dialogConfirmTemplate,
+                    props: ['title', 'text', 'triggerOnConfirm']
+                },
+                {
+                    title: this.__('alert.message'),
+                    text: '編集中のデータを破棄して前の画面に戻りますか？',
+                    triggerOnConfirm: () => {
+                        window.location.href = this.backUrl;
+                    }
+                },
+                {
+                    height: 'auto',
+                });
+        },
         confirmDialog() {
             this.$modal.show({
                 template: this.dialogConfirmTemplate,
                 props: ['title', 'text', 'triggerOnConfirm']
-            }, {title: this.__('alert.message'), text: 'Are you sure?', triggerOnConfirm: () => {
+            }, {title: this.__('common.confirm'), text: 'Are you sure?', triggerOnConfirm: () => {
                     return true;
                 }}, {
                 height: 'auto',
@@ -113,7 +129,7 @@ module.exports = {
             let message = error.response.data.message;
             let errors = error.response.data.errors;
 
-            message = '<h4>' + message + '</h4>';
+            message = '<h4>' + this.__('common.error_dialog') + '</h4>';
             message += '<ol class="text-danger text-left h6">';
             $.each(errors, function (key, value) {
                 message += '<li>' + value[0] + '</li>'; //showing only the first error.

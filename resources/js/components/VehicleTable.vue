@@ -2,22 +2,22 @@
     <div>
         <div class="row">
             <div class="col-2">
-                <a :href="backUrl"
+                <a v-on:click="back"
                    class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 ref= "editTitle" class="text-center text-danger">{{__('common.editing')}}</h2>
+                <h2 :hidden="!editMode" class="text-center text-danger">{{__('common.editing')}}</h2>
             </div>
             <div class="col-3">
                 <h2 class="text-center">{{title}}</h2>
             </div>
             <div class="col-5">
                 <p class="text-right">
-                    <button ref="deleteBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}
+                    <button @click="saveConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
                     </button>
-                    <button ref="registerBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.register')}}
+                    <button @click="toEditMode" :disabled="editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}
                     </button>
-                    <button ref="editBtn" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.edit')}}</button>
+                    <button @click="deleteConfirmModal" :disabled="!editMode" class="btn btn-lg btn-danger btn-fixed-width">{{__('common.delete')}}</button>
                 </p>
             </div>
         </div>
@@ -42,34 +42,87 @@
                 </div>
             </form>
         </div>
-        <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="270" :allowScrolling="true" :frozenColumns="3">
-            <e-columns>
-                <e-column field='vehicle_no' :headerText='__("vehicle.vehicle_no")' width="100" defaultValue="" type="string"></e-column>
-                <e-column field='company_name' :headerText='__("vehicle.company_name")' width="150" defaultValue="" type="string"></e-column>
-                <e-column field='company_kana_name' :headerText='__("vehicle.kana_name")' width="150" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_company_abbreviation' :headerText='__("vehicle.company_abbr")' width="150" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_postal_code' textAlign="Center" :headerText='__("vehicle.postal_code")' width="150" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_address1' :headerText='__("vehicle.address")' width="200" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_address2' :headerText='__("vehicle.address1")' width="200" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_phone_number' :headerText='__("vehicle.phone")' width="200" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_fax_number' :headerText='__("vehicle.fax")' width="200" defaultValue="" type="string"></e-column>
-                <e-column field='offset' :headerText='__("vehicle.offset")' textAlign="Center" editType='booleanedit' :template='offsetTemplate' width="100" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_remark' :headerText='__("vehicle.remark")' width="250" defaultValue="" type="string"></e-column>
-                <e-column field='vehicle_id' :visible="false" :isPrimaryKey="true" width="0"></e-column>
-            </e-columns>
-        </ejs-grid>
-
+        <div id="table-scroll" class="table-scroll">
+            <table class="table table-custom-inputs">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="sticky-col first-sticky-col">{{__('vehicle.vehicle_no')}}</th>
+                    <th scope="col" class="sticky-col second-sticky-col">{{__('vehicle.company_name')}}</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__('vehicle.kana_name')}}</th>
+                    <th scope="col">{{__('vehicle.company_abbr')}}</th>
+                    <th scope="col">{{__('vehicle.postal_code')}}</th>
+                    <th scope="col">{{__('vehicle.address')}}</th>
+                    <th scope="col">{{__('vehicle.address2')}}</th>
+                    <th scope="col">{{__('vehicle.phone')}}</th>
+                    <th scope="col">{{__('vehicle.fax')}}</th>
+                    <th scope="col">{{__('vehicle.offset')}}</th>
+                    <th scope="col">{{__('vehicle.remark')}}</th>
+                    <th scope="col" class="primary-key">Vehicle Id</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(vehicle, index) in data" :data-key="vehicle.vehicle_id" :index="index"
+                    @click="clickRow($event, index)" :hidden="vehicle.delete_flg == 1">
+                    <td class="sticky-col first-sticky-col">
+                        <div v-if="!editMode">{{vehicle.vehicle_no}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='vehicle.vehicle_no' v-if='editMode'/>
+                    </td>
+                    <td class="sticky-col second-sticky-col">
+                        <div v-if="!editMode">{{vehicle.company_name}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.company_name" v-if="editMode"/>
+                    </td>
+                    <td class="sticky-col third-sticky-col last-sticky-col">
+                        <div v-if="!editMode">{{vehicle.company_kana_name}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.company_kana_name"
+                               v-if="editMode"/>
+                    </td>
+                    <td>
+                        <div v-if="!editMode">{{vehicle.vehicle_company_abbreviation}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_company_abbreviation"
+                               v-if="editMode"/>
+                    </td>
+                    <td>
+                        <div v-if="!editMode">{{vehicle.vehicle_postal_code}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_postal_code" v-if="editMode"/>
+                    </td>
+                    <td>
+                        <div v-if="!editMode">{{vehicle.vehicle_address1}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_address1" v-if="editMode"/>
+                    </td>
+                    <td>
+                        <div v-if="!editMode">{{vehicle.vehicle_address2}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_address2" v-if="editMode"/>
+                    </td>
+                    <td>
+                        <div v-if="!editMode">{{vehicle.vehicle_phone_number}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_phone_number" v-if="editMode"/>
+                    </td>
+                    <td>
+                        <div v-if="!editMode">{{vehicle.vehicle_fax_number}}</div>
+                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_fax_number" v-if="editMode"/>
+                    </td>
+                    <td style="min-width: 70px;">
+                        <div v-if="!editMode"><span v-if="!editMode && vehicle.offset==0">{{__('vehicle.no')}}</span><span v-if="!editMode && vehicle.offset==1">{{__('vehicle.yes')}}</span></div>
+                        <input v-on:change="addRowOnChange" type="checkbox" class="" v-model="vehicle.offset" v-if="editMode"/>
+                    </td>
+                    <td>
+                        <div v-if="!editMode">{{vehicle.vehicle_remark}}</div>
+                        <input v-on:change="addRowOnChange" type="text" :class="data.length-1 == index ? 'form-control last': 'form-control'"
+                               v-model="vehicle.vehicle_remark" v-if="editMode"/>
+                    </td>
+                    <td class="primary-key">
+                        <input type="text" class="form-control" v-model="vehicle.vehicle_id" v-if="editMode"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 <script>
     import Vue from "vue";
-    import { VueSimpleAlert } from "vue-simple-alert";
-    import { GridPlugin, Sort, Freeze, Edit } from '@syncfusion/ej2-vue-grids';
     import {TableUtil} from '../utils/TableUtil.js';
-
-    Vue.use( GridPlugin );
-    Vue.use( VueSimpleAlert );
+    import StickTableMixin from '../utils/StickyTableMixin'
 
     export default{
         props: {
@@ -78,130 +131,48 @@
             companyUrl: {type: String, required: true},
             resourceUrl: {type: String, required: true},
         },
+        mixins : [
+            StickTableMixin
+        ],
         data() {
             return {
                 data: [],
                 tableUtil : undefined,
                 company_name: '',
                 companies: [],
+                emptyRow : {
+                    vehicle_no : '',
+                    company_name : '',
+                    company_kana_name : '',
+                    vehicle_company_abbreviation : '',
+                    vehicle_postal_code : '',
+                    vehicle_address1 : '',
+                    vehicle_address2 : '',
+                    vehicle_phone_number : '',
+                    vehicle_fax_number : '',
+                    offset : false,
+                    vehicle_remark : '',
+                    vehicle_id : null,
+                }
             }
         },
         mounted() {
-            this.tableUtil = new TableUtil(this);
-            this.fetchCompanies(this.companyUrl);
-            this.fetchData();
+            this.fetchCompanies();
+            this.fetchVehicleData();
         },
         methods: {
-            offsetTemplate: function () {
-                return {
-                    template: Vue.component('editOption', {
-                        template: '<label>{{(data.offset == true)? this.__("vehicle.yes"):this.__("vehicle.no")}}</label>',
-                        data() { return { data: { data: {} } }; }
-                    })
+            back() {
+                if (this.isDataChanged()) {
+                    this.confirmBack();
+                } else {
+                    window.location.href = this.backUrl;
                 }
             },
-            actionBegin(args){
-                if(args.requestType == 'save'){
-                    args.cancel = true;
-                    args.data['offset'] = $('#gridoffset:checked').length;
-                    if(args.data.vehicle_id === undefined){
-                        this.insertVehicle(args.data);
-                    }else{
-                        this.editVehicle(args.data);
-                    }
-                }
-                if(args.requestType == 'delete'){
-                    args.cancel = true;
-                    if(args.data[0].vehicle_id !== undefined){
-                        this.deleteVehicle(args.data[0].vehicle_id);
-                    }
-                }
-            },
-            async insertVehicle(insertData){
-                const vehicleComponent = this;
-                let result = false;
-                await axios.post(this.resourceUrl,insertData)
-                    .then(function(response){
-                        result = true;
-                    })
-                    .catch(function(error){
-                        vehicleComponent.errorDialog(error);
-                    });
-                return result;
-            },
-            async deleteVehicle(deletedData){
-                const vehicleComponent = this;
-                let result = false;
-                await axios.post(this.resourceUrl+'/destroy',deletedData)
-                    .then(function(response){
-                        result = true;
-                    })
-                    .catch(function(error){
-                        vehicleComponent.errorDialog(error);
-                    });
-                return result;
-            },
-            async editVehicle(editData){
-                const vehicleComponent = this;
-                let result = false;
-                await axios.post(this.resourceUrl+'/update', editData)
-                    .then(function(response){
-                        result = true;
-                    })
-                    .catch(function(error){
-                        vehicleComponent.errorDialog(error);
-                    });
-                return result;
-            },
-            async saveChanges(changedData) {
-                this.$modal.show({
-                    template: this.saveChangesTemplate,
-                    props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
-                }, {
-                    title: window.__('alert.message'),
-                    text: this.__('common.save_changes'),
-                    triggerOnConfirm: () => {
-                        let addSuccess    = true;
-                        let changeSuccess = true;
-                        let deleteSuccess = true;
-                        if (changedData.deletedRecords.length > 0) {
-                            this.deleteVehicle(changedData.deletedRecords).then(result => deleteSuccess = result);
-                        }
-                        if (changedData.changedRecords.length > 0) {
-                            this.editVehicle(changedData.changedRecords).then(result => changeSuccess = result);
-                        }
-                        if (changedData.addedRecords.length > 0) {
-                            this.insertVehicle(changedData.addedRecords).then(result => addSuccess = result);
-                        }
-                        if (addSuccess && changeSuccess && deleteSuccess) {
-                            this.showOperationSuccessDialog();
-                            this.fetchData(this.resourceUrl);
-                            this.refresh();
-                            this.tableUtil.endEditing();
-                        }else{
-                            this.generalErrorDialog();
-                        }
-                        this.$modal.hide('confirmDialog');
-                    },
-                    triggerDiscard: () => {
-                        // discard changes e.g. refresh
-                        this.fetchData(this.resourceUrl);
-                        this.$refs.grid.ej2Instances.refresh();
-                        this.$modal.hide('confirmDialog');
-                        this.tableUtil.endEditing();
-                    }
-                }, {
-                    height: 'auto',
-                    width: 400,
-                    name: 'confirmDialog'
-                });
-
-            },
-            fetchData() {
-                let grid = this.$refs.grid.ej2Instances;
+            fetchVehicleData() {
                 axios.get(this.resourceUrl+'?company_name='+this.company_name)
                     .then(response => {
                         this.data = response.data;
+                        this.resetTable(response);
                     })
             },
             fetchCompanies() {
@@ -211,20 +182,37 @@
                     });
             },
             search(){
-                this.fetchData();
+                if (this.editMode)
+                    this.saveConfirmModal();
+                else
+                    this.fetchVehicleData();
+
             },
             clear(){
                 this.company_name = '';
-                this.search();
             },
-            refresh(){
+            refresh() {
+                this.editMode = false;
+                this.clear();
                 this.fetchCompanies();
                 this.search();
             },
         },
-        provide: {
-            grid: [Sort,Freeze,Edit]
-        },
         name: 'VehicleTable'
     }
 </script>
+<style>
+    .table-scroll{
+        min-height: 400px;
+        background-color: #fff;
+    }
+    .table .thead-light th{
+        background-color: #fff;
+    }
+    .table-scroll table td{
+        padding: 5px;
+    }
+    .table td > div{
+        padding: 0.375rem 0.75rem
+    }
+</style>

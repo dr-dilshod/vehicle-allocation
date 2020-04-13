@@ -51,18 +51,73 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            '*.vehicle_no' => ['unique:vehicles,vehicle_no,NULL, null,delete_flg,0'],
-        ]);
-//        dd($request->all());
-//        exit;
-        $this->validate($request,Vehicle::validationRules);
-        $vehicles = $request->all();
-        foreach ($vehicles as $vehicle){
-            if($vehicle['offset'] == null) $vehicle['offset'] = 0;
-            Vehicle::create($vehicle);
+        $all = $request->json()->all();
+        $updatedVehicles = [];
+        $addedVehicles = [];
+        foreach ($all as $vehicle) {
+            if (!isset($vehicle['vehicle_id']) || is_null($vehicle['vehicle_id'])) {
+                array_push($addedVehicles, $vehicle);
+            } else {
+                array_push($updatedVehicles, $vehicle);
+            }
         }
-        return response()->json($vehicles, 201);
+
+        $save = false;
+        $update = false;
+
+        if (count($updatedVehicles) > 0) {
+            $validator = validator()->make($updatedVehicles, Vehicle::updateRules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => '指定されたデータは無効です！ エラーリスト',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            foreach ($updatedVehicles as $val) {
+                $vehicles = Vehicle::query()->where('vehicle_no', '=', $val['vehicle_no'])->get();
+                $vehicleObj = $vehicles->first();
+                if ($vehicles->count() <= 1) {
+                    if (!is_null($vehicleObj) && $vehicleObj->vehicle_id != $val['vehicle_id']) {
+                        $message = __('validation.unique', ['attribute' => __('vehicle.vehicle_no')]);
+                        return response()->json([
+                            'message' => '指定されたデータは無効です！ エラーリスト',
+                            'errors' => [
+                                'vehicle_no' => [
+                                    $message
+                                ]
+                            ]
+                        ], 422);
+                    }
+                }
+
+            }
+
+            $update = true;
+        }
+
+        if (count($addedVehicles) > 0) {
+            $validator = validator()->make($addedVehicles, Vehicle::validationRules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => '指定されたデータは無効です！ エラーリスト',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            $save = true;
+        }
+
+
+        if ($save) {
+            Vehicle::query()->insert($addedVehicles);
+        }
+
+        if ($update) {
+            foreach ($updatedVehicles as $vehicle) {
+                Vehicle::query()->where('vehicle_id', $vehicle['vehicle_id'])->update($vehicle);
+            }
+        }
+
+        return response()->json([], 201);
     }
 
     /**

@@ -2,20 +2,23 @@
     <div id="app">
         <div class="row">
             <div class="col-2">
-                <a :href="backUrl"
+                <a v-on:click="back"
                    class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-2">
-                <h2 class="text-center text-danger" ref="editTitle">{{__('common.editing')}}</h2>
+                <h2 class="text-center text-danger" :hidden="!editMode">{{__('common.editing')}}</h2>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <h2 class="text-center">{{title}}</h2>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <p class="text-right">
-                    <button class="btn btn-lg btn-danger btn-fixed-width" ref="registerBtn">{{__('common.register')}}
+                    <button class="btn btn-lg btn-danger btn-fixed-width" @click="saveConfirmModal" :disabled="!editMode">{{__('common.register')}}
                     </button>
-                    <button class="btn btn-lg btn-danger btn-fixed-width" ref="editBtn">{{__('common.edit')}}</button>
+                    <button class="btn btn-lg btn-danger btn-fixed-width" @click="toEditMode" :disabled="editMode">{{__('common.edit')}}
+                    </button>
+                    <button class="btn btn-lg btn-danger btn-fixed-width" @click="deleteConfirmModal" :disabled="!editMode">{{__('common.delete')}}
+                    </button>
                 </p>
             </div>
         </div>
@@ -54,45 +57,72 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" id="resourceUrl" :value="resourceUrl">
-        <input type="hidden" id="selectedShipperId" :value="0">
-        <ejs-grid ref="grid" id="Grid" :dataSource="data" :rowSelected="rowSelected"
-                  :allowSorting="true" :editSettings="editSettings" :height="270"
-                  :actionBegin="actionBegin" :toolbar="toolbarBtns">
-            <e-columns>
-                <e-column field='car_type' :headerText="__('unit_prices.car_type')"
-                          editType='dropdownedit'
-                          :edit="params.vehicleTypesParams"
-                          width="200"></e-column>
-                <e-column field='shipper_id' :headerText="__('unit_prices.shipper')" :editTemplate='shipperEditTemplate'
-                          width="200"></e-column>
-                <e-column field='stack_point' :headerText="__('unit_prices.loading_port')" width="200"></e-column>
-                <e-column field='down_point' :headerText="__('unit_prices.drop_off')" width="200"></e-column>
-                <e-column field='type' editType='dropdownedit' :edit="params.typeParams"
-                          :headerText="__('unit_prices.type')" width="100"></e-column>
-                <e-column field='price' :valueAccessor="currencyParser" :headerText="__('unit_prices.unit_price')"
-                          width="100"></e-column>
-                <e-column field='price_id' :headerText="__('unit_prices.unit_price_id')" width="5" :isPrimaryKey="true"
-                          :visible=false></e-column>
-                <e-column field='shipperId' :headerText="__('unit_prices.shipper_id')" width="5"
-                          :visible=false></e-column>
-            </e-columns>
-        </ejs-grid>
 
+        <div id="table-scroll" class="table-scroll">
+            <table class="table table-custom-inputs" style="min-width: 100%">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="sticky-col first-sticky-col">{{__('unit_prices.car_type')}}</th>
+                    <th scope="col" class="sticky-col second-sticky-col">{{__('unit_prices.shipper')}}</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__('unit_prices.loading_port')}}</th>
+                    <th scope="col">{{__('unit_prices.drop_off')}}</th>
+                    <th scope="col">{{__('unit_prices.type')}}</th>
+                    <th scope="col">{{__('unit_prices.unit_price')}}</th>
+                    <th scope="col" class="primary-key">Shipper Id</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(unitPrice, index) in data" :data-key="unitPrice.price_id" :index="index"
+                    :hidden="unitPrice.delete_flg == 1"
+                    v-on:click="clickRow($event, index)">
+                    <td class="sticky-col first-sticky-col">
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="unitPrice.car_type" :disabled="!editMode">
+                            <option v-for="vehicleType in vehicle_types" :value="vehicleType"
+                                    :selected="unitPrice.car_type === vehicleType">{{vehicleType}}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="sticky-col second-sticky-col">
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="unitPrice.shipperId" :disabled="!editMode">
+                            <option
+                                v-for="shipper in shippers"
+                                :value="shipper.id" :selected="unitPrice.shipperId === shipper.id">{{shipper.shipper}}
+                            </option>
+                        </select>
+                    </td>
+                    <td class="sticky-col third-sticky-col last-sticky-col">
+                        <input v-on:change="addRowOnChange" type="text" v-model="unitPrice.stack_point" class="form-control" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" v-model="unitPrice.down_point" class="form-control" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" v-model="unitPrice.type" class="form-control" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <money v-on:change="addRowOnChange" type="text" class="form-control"
+                               v-model="unitPrice.price" v-bind="money" :disabled="!editMode"/>
+                    </td>
+                    <td class="primary-key">
+                        <input  type="text" class="form-control" v-model="unitPrice.price_id" :disabled="!editMode"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
 <script>
     import Vue from "vue";
-    import {Edit, Freeze, GridPlugin, Sort, Toolbar} from '@syncfusion/ej2-vue-grids';
-    import {DropDownListPlugin} from '@syncfusion/ej2-vue-dropdowns';
-    import {Query} from '@syncfusion/ej2-data';
-    import {TableUtil} from "../utils/TableUtil";
+    import {Money} from 'v-money'
+    import StickTableMixin from "../utils/StickyTableMixin";
 
-    Vue.use(GridPlugin);
-    Vue.use(DropDownListPlugin);
-    let shippers = [];
     export default {
+        components: {Money},
+        mixins : [
+            StickTableMixin
+        ],
         name: "UnitPriceTable",
         props: {
             backUrl: {type: String, required: true},
@@ -101,64 +131,32 @@
         },
         data() {
             return {
-                mode: 'normal',
-                tableUtil: null,
-                toolbarBtns: null,
-                editSettings: {
-                    allowEditing: false,
-                    allowAdding: false,
-                    allowDeleting: false,
-                    showDeleteConfirmDialog: true,
-                    newRowPosition: 'Bottom',
+                money: {
+                    thousands: ',',
+                    prefix: '¥',
+                    precision: 0,
+                    masked: false
                 },
+                mode: 'normal',
                 shippers: [],
                 vehicle_types: [
-                    {
-                        "vehicle_type": this.__('unit_prices.car_types.wing'),
-                    },
-                    {
-                        "vehicle_type": this.__('unit_prices.car_types.flat'),
-                    },
-                    {
-                        "vehicle_type": this.__('unit_prices.car_types.trailer'),
-                    },
-                    {
-                        "vehicle_type": this.__('unit_prices.car_types.bulk'),
-                    }
+                    this.__('unit_prices.car_types.wing'),
+                    this.__('unit_prices.car_types.flat'),
+                    this.__('unit_prices.car_types.trailer'),
+                    this.__('unit_prices.car_types.bulk'),
+
                 ],
                 data: [],
-                params: {
-                    vehicleTypesParams: {
-                        params: {
-                            index: -1,
-                            allowFiltering: true,
-                            dataSource: this.vehicle_types,
-                            fields: {text: "vehicle_type", value: "vehicle_type"},
-                            query: new Query()
-                        }
-                    },
-                    typeParams: {
-                        params: {
-                            allowFiltering: true,
-                            dataSource: [{type: this.__('unit_prices.t')}, {type: this.__('unit_prices.unit')}],
-                            fields: {text: "type", value: "type"},
-                            query: new Query()
-                        }
-                    }
-                },
-                rules: {
-                    car_type: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.car_type')})]},
-                    shipper_id: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.shipper')})]},
-                    stack_point: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.loading_port')})]},
-                    down_point: {required: [true, this.__('validation.required', {attribute: this.__('unit_prices.drop_off')})]},
-                    type: {
-                        required: [true, this.__('validation.required', {attribute: this.__('unit_prices.type')})],
-                        number: [true, this.__('validation.numeric', {attribute: this.__('unit_prices.type')})]
-                    },
-                    price: {
-                        required: [true, this.__('validation.required', {attribute: this.__('unit_prices.unit_price')})],
-                        number: [true, this.__('validation.numeric', {attribute: this.__('unit_prices.unit_price')})]
-                    },
+                emptyRow: {
+                    price_id: '',
+                    car_type: '',
+                    shipperId: '',
+                    shipper_id: '',
+                    stack_point: '',
+                    down_point: '',
+                    type: '',
+                    price: '',
+                    delete_flg: 0
                 }
             }
         },
@@ -167,58 +165,14 @@
         },
         mounted() {
             this.search();
-            this.tableUtil = new TableUtil(this);
-            this.$refs.grid.hideSpinner();
         },
         methods: {
-            currencyParser(field, data, column) {
-                if (data.price != null && data.price !== '') {
-                    return new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(data.price);
+            back() {
+                if (this.isDataChanged()) {
+                    this.confirmBack();
                 } else {
-                    return data.price;
+                    window.location = this.backUrl;
                 }
-            },
-            shipperEditTemplate() {
-                return {
-                    template: Vue.component('shipperSelectBox', {
-                        template: `<select class="form-control" name="shipper_id" @change="onChange($event)">
-                            <option value="0"></option>
-                            <option v-for="shipper in shippers" :value="shipper.id"
-                                    :selected="Number(shipper.id) === Number(selected)">{{shipper.shipper}}</option>
-                        </select>`,
-                        data() {
-                            return {
-                                data: {},
-                                shippers: [],
-                                selected: 0,
-                                resourceUrl: document.getElementById('resourceUrl').value
-                            }
-                        },
-                        methods: {
-                            fetchShipperName(url) {
-                                axios.get(url)
-                                    .then(response => {
-                                        if (response.data.length > 0) {
-                                            this.shippers = response.data.map(e => {
-                                                return {
-                                                    shipper: e.shipper_name1 + ' ' + e.shipper_name2,
-                                                    id: e.shipper_id
-                                                };
-                                            });
-                                            this.selected = document.getElementById('selectedShipperId').value;
-                                        }
-                                    });
-                            },
-                            onChange(event) {
-                                document.getElementById('selectedShipperId').value = event.target.value;
-                                this.selected = document.getElementById('selectedShipperId').value;
-                            }
-                        },
-                        mounted() {
-                            this.fetchShipperName(`${this.resourceUrl}/shipper-names`);
-                        }
-                    })
-                };
             },
             search(withShipper = false) {
                 let query = '';
@@ -238,10 +192,11 @@
                                     stack_point: e.stack_point,
                                     down_point: e.down_point,
                                     type: e.type,
-                                    price: e.price
+                                    price: e.price,
+                                    delete_flg: e.delete_flg
                                 };
                             });
-                            this.$refs.grid.refresh();
+                            this.reserveData = _.cloneDeep(this.data);
                         } else {
                             this.data = [];
                         }
@@ -250,10 +205,6 @@
             clear() {
                 this.$refs.shipperSelect.value = 0;
                 this.data = [];
-                this.$refs.grid.refresh();
-            },
-            register() {
-                this.$refs.grid.addRecord();
             },
             fetchShipperNames(url) {
                 axios.get(url)
@@ -265,82 +216,11 @@
                         }
                     });
             },
-            rowSelected: function (args) {
-                document.getElementById('selectedShipperId').value = args.data.shipperId;
-            },
-            insertData(unitPrice) {
-                unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
-                axios.post(this.resourceUrl, unitPrice)
-                    .then(response => {
-                        document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
-                        this.search();
-                        this.tableUtil.endEditing();
-                        this.createSuccessDialog();
-                    })
-                    .catch(error => {
-                        this.tableUtil.editFailure();
-                        document.getElementById('selectedShipperId').value = unitPrice.shipper_id;
-                        this.errorDialog(error);
-                    });
-            },
-            updateData(unitPrice) {
-                unitPrice = unitPrice.data;
-                unitPrice.shipper_id = document.getElementById('selectedShipperId').value;
-                axios.put(this.resourceUrl + '/' + unitPrice.price_id, unitPrice)
-                    .then(response => {
-                        document.querySelector('#shipperSelect [value="' + response.data.shipper_id + '"]').selected = true;
-                        this.search();
-                        this.updateSuccessDialog();
-                    })
-                    .catch(error => {
-                        this.tableUtil.editFailure();
-                        this.errorDialog(error);
-                    });
-            },
-            deleteData(id) {
-                axios.delete(this.resourceUrl + '/' + id)
-                    .then(response => {
-                        this.tableUtil.endEditing();
-                        this.deleteSuccessDialog();
-                    }).catch(err => {
-                    this.tableUtil.editFailure();
-                    this.errorDialog(err);
-                });
-            },
-            actionBegin(args) {
-                if (args.requestType === 'save') {
-                    this.$refs.grid.getColumnByField('price').valueAccessor = this.currencyParser;
-                    if (args.hasOwnProperty('data') && args.data.hasOwnProperty('price_id') && args.data.price_id === undefined) {
-                        this.insertData(args.data);
-                    } else {
-                        this.updateData(args);
-                    }
-                } else if (args.requestType === 'delete') {
-                    if (args.data[0].price_id !== undefined) {
-                        this.deleteData(args.data[0].price_id);
-                    }
-                } else if (args.requestType === 'beginEdit') {
-                    this.$refs.grid.getColumnByField('price').valueAccessor = function(field, data, column) {
-                        return data.price;
-                    };
-                    this.$refs.grid.getColumnByField('car_type').edit.params.dataSource = this.vehicle_types;
-                } else if (args.requestType === 'add') {
-                    this.$refs.grid.getColumnByField('car_type').edit.params.dataSource = this.vehicle_types;
-
-                }
+            refresh() {
+                this.editMode = false;
+                this.clear();
+                this.search();
             }
-
-        },
-        computed: {
-            config() {
-                return {
-                    locale: this.locale,
-                    currency: this.currency
-                }
-            },
-        },
-        provide: {
-            grid: [Sort, Freeze, Edit, Toolbar]
-        },
+        }
     }
 </script>

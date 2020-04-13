@@ -33,5 +33,6 @@ return  [
     'edit_operation_alert'=>'select the line to edit',
     'cancel_edit'=>'Do you want to cancel editing?',
     'no_result'=>'No result',
-    'sys_name' => 'Vehicle allocation system'
+    'sys_name' => 'Vehicle allocation system',
+    'confirm'=>'Confirm',
 ];

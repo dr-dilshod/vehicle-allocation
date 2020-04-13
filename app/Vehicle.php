@@ -58,6 +58,20 @@ class Vehicle extends Model
      * @var array
      */
     const validationRules = [
+        '*.vehicle_no' => 'required|max:4|unique:vehicles',
+        '*.company_name' => 'required|max:60',
+        '*.company_kana_name' => 'max:60',
+        '*.vehicle_company_abbreviation' => 'max:60',
+        '*.vehicle_postal_code' => 'max:8',
+        '*.vehicle_address1' => 'max:120',
+        '*.vehicle_address2' => 'max:120',
+        '*.offset' => '',
+        '*.vehicle_phone_number' => 'max:13',
+        '*.vehicle_fax_number' => 'max:12',
+        '*.vehicle_remark' => 'max:255',
+    ];
+
+    const updateRules = [
         '*.vehicle_no' => 'required|max:4',
         '*.company_name' => 'required|max:60',
         '*.company_kana_name' => 'max:60',

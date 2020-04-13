@@ -12,15 +12,9 @@ module.exports = {
     },
 
     mounted() {
-        window.onbeforeunload = () => {
-            if (this.editMode) {
-                if (this.isDataChanged()) {
-                    return "stop eee!";
-                }
-            }
-
-            return null;
-        }
+        $('body').on('focus','.first-sticky-col',function () {
+            $('#table-scroll').scrollLeft(0);
+        })
     },
 
     methods: {
@@ -96,7 +90,7 @@ module.exports = {
                 template: this.saveChangesTemplate,
                 props: ['title', 'text', 'triggerOnConfirm', 'triggerDiscard']
             }, {
-                title: window.__('alert.message'),
+                title: window.__('common.confirm'),
                 text: this.__('common.save_changes'),
                 triggerOnConfirm: () => {
                     this.$modal.hide('confirmDialog');
@@ -138,8 +132,8 @@ module.exports = {
             }
         },
         save() {
-            this.data.splice(this.data.length - 1);
-            axios.post(this.resourceUrl, this.data)
+            const data = this.data.slice(0, this.data.length-1);
+            axios.post(this.resourceUrl, data)
                 .then(resp => {
                     this.refresh();
                     this.showOperationSuccessDialog();
@@ -149,11 +143,13 @@ module.exports = {
         },
         toEditMode() {
             this.editMode = true;
+            this.reserveData = _.cloneDeep(this.data);
             if (this.data.length === this.reserveData.length) {
                 this.addRow();
             }
         },
         endEditing() {
+            this.reserveData = _.cloneDeep(this.data);
             this.editMode = false;
         },
         addRow() {
