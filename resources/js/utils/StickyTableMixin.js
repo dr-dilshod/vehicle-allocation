@@ -132,8 +132,8 @@ module.exports = {
             }
         },
         save() {
-            this.data.splice(this.data.length - 1);
-            axios.post(this.resourceUrl, this.data)
+            const data = this.data.slice(0, this.data.length-1);
+            axios.post(this.resourceUrl, data)
                 .then(resp => {
                     this.refresh();
                     this.showOperationSuccessDialog();
