@@ -129,7 +129,7 @@ module.exports = {
             let message = error.response.data.message;
             let errors = error.response.data.errors;
 
-            message = '<h4>' + message + '</h4>';
+            message = '<h4>' + this.__('common.error_dialog') + '</h4>';
             message += '<ol class="text-danger text-left h6">';
             $.each(errors, function (key, value) {
                 message += '<li>' + value[0] + '</li>'; //showing only the first error.

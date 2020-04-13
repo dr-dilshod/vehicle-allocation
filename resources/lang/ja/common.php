@@ -36,4 +36,5 @@ return  [
     'cant_be_undone' => 'これを元に戻すことはできません！',
     'save_changes' => '変更方法を保存しますか？',
     'confirm'=>'確認',
+    'error_dialog' => '入力内容に誤りがあります。'
 ];

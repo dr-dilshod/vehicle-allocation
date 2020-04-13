@@ -59,7 +59,7 @@
         </div>
 
         <div id="table-scroll" class="table-scroll">
-            <table class="table table-custom-inputs">
+            <table class="table table-custom-inputs" style="min-width: 100%">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col" class="sticky-col first-sticky-col">{{__('unit_prices.car_type')}}</th>
