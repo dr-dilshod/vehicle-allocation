@@ -351,7 +351,7 @@
                 let componentInstance = this;
                 axios.get(this.fetchUrl+'?date='+date)
                     .then(result => {
-                        componentInstance.dispatch_day = result.data.first_list.date;
+                        componentInstance.dispatch_day = result.data.date;
                         componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
                         componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list);
                         componentInstance.drivers = result.data.drivers;
@@ -367,10 +367,8 @@
                 axios.post(componentInstance.thirdList2Url,{'drivers':this.tableDriverList,'date':this.dispatch_day})
                     .then(result => {
                         componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
-                        componentInstance.secondList = result.data.second_list;
-                        componentInstance.thirdList = result.data.dispatches.map(function (current) {
-
-                        });
+                        componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list);
+                        componentInstance.thirdList = this.sanitizeMainTable(result.data.dispatches);
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);

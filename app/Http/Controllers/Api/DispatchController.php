@@ -18,11 +18,12 @@ class DispatchController extends Controller
      */
     public function index(Request $request)
     {
-        setlocale(LC_ALL, 'ja_JA');
         $result = [];
 
-        $firstDate = $request->get('date');
-        $firstDate = date('Y/m/d',strtotime($firstDate));
+        $date = $request->get('date');
+        $firstDate = date('Y/m/d',strtotime($date."+1 day"));
+        if(date('w',strtotime($firstDate)) == 0) // if Sunday
+            $firstDate = date('Y/m/d',strtotime($firstDate." +1 day"));
         $secondDate = date('Y/m/d',strtotime($firstDate." +1 day"));
         if(date('w',strtotime($secondDate)) == 0) // if Sunday
             $secondDate = date('Y/m/d',strtotime($secondDate." +1 day"));
@@ -58,7 +59,7 @@ class DispatchController extends Controller
             ->leftJoin('items','dispatches.item_id','=','items.item_id')
             ->leftJoin('drivers','dispatches.driver_id','=','drivers.driver_id')
             ->where([
-                'items.down_date'=>$firstDate,
+                'items.down_date'=>$date,
                 'items.delete_flg'=>0,
                 'dispatches.delete_flg'=>0,
                 'drivers.delete_flg'=>0
@@ -74,7 +75,7 @@ class DispatchController extends Controller
                     'dispatches.driver_id'=>$driver->driver_id,
                     'dispatches.timezone'=>Dispatch::TIMEZONE_MORNING,
                     'dispatches.delete_flg'=>0,
-                    'items.down_date'=>$firstDate,
+                    'items.down_date'=>$date,
                     'items.delete_flg'=>0,
                 ])
                 ->get();
@@ -84,7 +85,7 @@ class DispatchController extends Controller
                     'dispatches.driver_id'=>$driver->driver_id,
                     'dispatches.timezone'=>Dispatch::TIMEZONE_NOON,
                     'dispatches.delete_flg'=>0,
-                    'items.down_date'=>$firstDate,
+                    'items.down_date'=>$date,
                     'items.delete_flg'=>0,
                 ])
                 ->get();
@@ -94,7 +95,7 @@ class DispatchController extends Controller
                     'dispatches.driver_id'=>$driver->driver_id,
                     'dispatches.timezone'=>Dispatch::TIMEZONE_NEXT_PRODUCT,
                     'dispatches.delete_flg'=>0,
-                    'items.down_date'=>$firstDate,
+                    'items.down_date'=>$date,
                     'items.delete_flg'=>0,
                 ])
                 ->get();
@@ -109,6 +110,7 @@ class DispatchController extends Controller
             $tableDriverList[] = $driver->driver_id;
         }
         $result['tableDriverList'] = $tableDriverList;
+        $result['date'] = $date;
         return response()->json($result);
     }
 
@@ -227,10 +229,12 @@ class DispatchController extends Controller
     {
         $result = [];
 
-        $firstDate = $request->get('date');
+        $date = $request->get('date');
         $tableDriverList = $request->get('drivers');
 
-        $firstDate = date('Y/m/d',strtotime($firstDate));
+        $firstDate = date('Y/m/d',strtotime($date."+1 day"));
+        if(date('w',strtotime($firstDate)) == 0) // if Sunday
+            $firstDate = date('Y/m/d',strtotime($firstDate." +1 day"));
         $secondDate = date('Y/m/d',strtotime($firstDate." +1 day"));
         if(date('w',strtotime($secondDate)) == 0) // if Sunday
             $secondDate = date('Y/m/d',strtotime($secondDate." +1 day"));
@@ -267,7 +271,7 @@ class DispatchController extends Controller
                     'dispatches.driver_id'=>$driver->driver_id,
                     'dispatches.timezone'=>Dispatch::TIMEZONE_MORNING,
                     'dispatches.delete_flg'=>0,
-                    'items.down_date'=>$firstDate,
+                    'items.down_date'=>$date,
                     'items.delete_flg'=>0,
                 ])
                 ->get();
@@ -277,7 +281,7 @@ class DispatchController extends Controller
                     'dispatches.driver_id'=>$driver->driver_id,
                     'dispatches.timezone'=>Dispatch::TIMEZONE_NOON,
                     'dispatches.delete_flg'=>0,
-                    'items.down_date'=>$firstDate,
+                    'items.down_date'=>$date,
                     'items.delete_flg'=>0,
                 ])
                 ->get();
@@ -287,7 +291,7 @@ class DispatchController extends Controller
                     'dispatches.driver_id'=>$driver->driver_id,
                     'dispatches.timezone'=>Dispatch::TIMEZONE_NEXT_PRODUCT,
                     'dispatches.delete_flg'=>0,
-                    'items.down_date'=>$firstDate,
+                    'items.down_date'=>$date,
                     'items.delete_flg'=>0,
                 ])
                 ->get();
@@ -299,6 +303,7 @@ class DispatchController extends Controller
                 'noon' => $noon_items,
                 'nextProduct' => $next_items
             ];
+            $result['date'] = $date;
         }
         return response()->json($result);
     }
