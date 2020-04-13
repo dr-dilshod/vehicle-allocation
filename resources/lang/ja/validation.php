@@ -163,7 +163,7 @@ return [
         '*.address2' => '住所２',
         '*.phone_number'=>'電話番号',
         '*.fax_number'=>'FAX番号',
-        '*.vehicle_no' => '車両番号',
+        '*.vehicle_no' => '傭車No',
         '*.shipper'=>'荷主 ',
         '*.shipper_id'=>'荷主 ',
         '*.price' => '価格',
@@ -311,7 +311,7 @@ return [
         '*.down_invoice'=>'ダウン請求書',
 
         //end batch update/store validation attributes
-        'vehicle_no' => '車両番号',
+        'vehicle_no' => '傭車No',
         'shipper_no'=> '荷主No ',
         'shipper'=>'荷主 ',
         'shipper_id'=>'荷主 ',
@@ -451,7 +451,7 @@ return [
         'driver_remark'=>'ドライバーの発言 ',
         'driver_mobile_number'=>'ドライバー携帯番号 ',
         'maximum_Loading'=>'最大積載量 ',
-        'vehicle_no3'=>'車両番号3 ',
+        'vehicle_no3'=>'傭車No3 ',
         'shipper_company_abbreviation'=>'配送会社の略称 ',
         'shipper_kana_name1'=>'ふりがな1 ',
         'shipper_kana_name2'=>'ふりがな2 ',
