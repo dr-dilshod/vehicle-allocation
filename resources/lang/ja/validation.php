@@ -153,7 +153,7 @@ return [
         // batch update/store validation attributes
         '*.shipperId' => '荷主',
         '*.shipper_no' => '荷主No',
-        '*.shipper_name1'=>'名 1 ',
+        '*.shipper_name1'=>'荷主',
         '*.shipper_name2'=>'名 2 ',
         '*.shipper_kana_name1'=>'ふりがな1 ',
         '*.shipper_kana_name2'=>'ふりがな2 ',
@@ -316,7 +316,7 @@ return [
         'shipper'=>'荷主 ',
         'shipper_id'=>'荷主 ',
         'price' => '価格',
-        'shipper_name1'=>'名 1 ',
+        'shipper_name1'=>'荷主',
         'shipper_name2'=>'名 2 ',
         'shipper.abbreviation'=>'略称 ',
         'postal_code' => '郵便番号',
