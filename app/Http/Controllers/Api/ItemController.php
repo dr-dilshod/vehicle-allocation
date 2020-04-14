@@ -218,8 +218,8 @@ class ItemController extends Controller
     public function getInitializerList(Request $request)
     {
         $itemTable = Item::select()->where('delete_flg', 0)
-            -> orderBy('stack_date','asc')
-            -> where('stack_date', '>=', Carbon::today());
+            -> orderBy('stack_date','asc');
+//            -> where('stack_date', '>=', Carbon::today());
         return response()->json($itemTable->get());
     }
 
