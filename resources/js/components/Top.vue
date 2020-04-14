@@ -44,7 +44,7 @@
                     <tbody>
                     <tr v-for="item in tableData" v-if="item.amount != null">
                         <td class="text-center">{{ item.driver_name }}</td>
-                        <td class="text-center">{{ item.amount }}</td>
+                        <td class="text-center">{{ currencyFormatter(item.amount) }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -68,6 +68,11 @@
             };
         },
         methods: {
+            currencyFormatter(amount) {
+               return new Intl.NumberFormat('ja-JP',
+                    { style: 'currency', currency: 'JPY' })
+                    .format(amount);
+            },
             fetchAll() {
                 let component = this;
                 axios.get(`${this.fetchUrl}/all`)
@@ -93,6 +98,7 @@
             let currentYear = new Date().getFullYear();
             this.years = [currentYear-2,currentYear-1,currentYear];
             this.fetchAll();
+            this.currencyFormatter();
         }
     }
 </script>
