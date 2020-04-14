@@ -33,7 +33,7 @@ return  [
     'cancel_edit'=>'編集をキャンセルしますか？',
     'no_result'=>'検索結果はありません',
     'sys_name' => '配車請求管理システム',
-    'cant_be_undone' => 'これを元に戻すことはできません！',
+    'cant_be_undone' => '削除してよろしいですか？',
     'save_changes' => '変更方法を保存しますか？',
     'confirm'=>'確認',
     'error_dialog' => '入力内容に誤りがあります。'

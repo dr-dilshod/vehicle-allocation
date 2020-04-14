@@ -602,7 +602,7 @@
                 const itemRegistration = this;
                 axios.delete(this.resourceUrl + '/' + item_id)
                     .then(function (response) {
-                        itemRegistration.showSuccessDialog();
+                        itemRegistration.showDeletionSuccessDialog();
                     })
                     .catch(function (error) {
                         itemRegistration.showDialog(error.response.data);
@@ -659,6 +659,21 @@
                         props: ['title', 'text']
                     },
                     {title: this.__('alert.done'), text: this.__('item.operation_is_successful')},
+                    {
+                        height: 'auto',
+                        width: 400
+                    }, {
+                        'before-close': () => {
+                            window.location.href = this.redirectUrl;
+                        }
+                    });
+            },
+            showDeletionSuccessDialog() {
+                this.$modal.show({
+                        template: this.dialogTemplate,
+                        props: ['title', 'text']
+                    },
+                    {title: this.__('alert.done'), text: this.__('item.deletion_is_successful')},
                     {
                         height: 'auto',
                         width: 400

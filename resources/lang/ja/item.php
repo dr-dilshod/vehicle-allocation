@@ -50,6 +50,7 @@ return [
     'status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'=>'選択のステータスが完了に変更され、今日が完了日に設定されます。',
     'status_of_selection_is_changed_to_complete_and_stack_date_is_set_as_completion_date'=>'選択のステータスが完了に変更され、スタック日付が完了日付として設定されます。',
     'operation_is_successful'=>'完了しました',
+    'deletion_is_successful'=>'削除しました。',
     'what_is_your_choice1'=>'運送完了日が降日と異なります。',
     'what_is_your_choice2'=>'下記処理方法を選択し、登録ボタンをクリックして下さい。',
     'update_the_status_of_item_transportation'=>'アイテム輸送のステータスを更新する',
