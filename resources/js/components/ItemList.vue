@@ -16,7 +16,8 @@
         </div>
         <div class="row mt-2">
             <form @submit.prevent="search" role="form" class="ml-2 col-12">
-                <table class="table table-sm table-borderless" width="100%">
+                <br>
+                <table>
                     <tbody>
                     <tr>
                         <td class="text-right align-middle" width="5%">{{__('item.stack_date')}}</td>
@@ -47,9 +48,14 @@
                         </td>
 
                     </tr>
+                    <tr >
+                        <td colspan="8" style="height: 10px">
+
+                        </td>
+                    </tr>
                     <tr valign="middle">
                         <td class="text-right align-middle">{{__('item.stack_point')}}</td>
-                        <td>
+                        <td class="align-middle">
                             <input type="text" class="form-control"
                                    v-model="stack_point"
                                    id="stack_point"/>
@@ -83,7 +89,7 @@
             </table>
             </form>
         </div>
-
+        <br>
         <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings'
                   :height="280" rowHeight=35>
