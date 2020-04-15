@@ -115,7 +115,23 @@ class UnitPriceController extends Controller
 
     public function getDistrictShipperNames()
     {
-        $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
+        $shipperIDs = UnitPrice::query()->select('shipper_id')->get()->all();
+        $shipperIDs = collect($shipperIDs)->map(function ($el) {
+           return $el['shipper_id'];
+        });
+        $shippers = Shipper::query()->select(['shipper_id', 'shipper_name1', 'shipper_name2'])
+            ->whereIn('shipper_id', $shipperIDs)
+            ->where('delete_flg', 0)
+            ->distinct()
+            ->orderBy('shipper_name1', 'ASC')
+            ->get();
+
+        return response()->json($shippers);
+    }
+
+    public function getAllShipperNames()
+    {
+        $shippers = Shipper::query()->select(['shipper_id', 'shipper_name1', 'shipper_name2'])
             ->where('delete_flg', 0)
             ->distinct()
             ->orderBy('shipper_name1', 'ASC')
