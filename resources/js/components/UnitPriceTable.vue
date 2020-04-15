@@ -215,7 +215,7 @@
                                     price_id: e.price_id,
                                     car_type: e.car_type,
                                     shipperId: e.shipper_id,
-                                    shipper_id: e.shipper.shipper_name1 + ' ' + e.shipper.shipper_name2,
+                                    shipper_id: !_.isNil(e.shipper.shipper_name1) ? e.shipper.shipper_name1 : '' + ' ' + !_.isNil(e.shipper.shipper_name2) ? e.shipper.shipper_name2 : '',
                                     stack_point: e.stack_point,
                                     down_point: e.down_point,
                                     type: e.type,
