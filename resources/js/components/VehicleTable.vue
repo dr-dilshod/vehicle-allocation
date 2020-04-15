@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="vehicle">
         <div class="row">
             <div class="col-2">
                 <a v-on:click="back"
@@ -215,7 +215,7 @@
     .table-scroll table td{
         padding: 5px;
     }
-    .table td > div{
+    .vehicle .table td > div{
         padding: 0.375rem 0.75rem
     }
 </style>
