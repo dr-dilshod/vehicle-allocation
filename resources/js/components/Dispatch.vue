@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container dispatch">
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
@@ -48,7 +48,7 @@
                     翌営業日 <br>
                     {{ firstList.formatDate }}
                 </h6>
-                <draggable v-model="firstList.data" group="elems" class="elem-list">
+                <draggable v-model="firstList.data" group="elems" class="first elem-list">
                     <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
@@ -63,7 +63,7 @@
                     翌々営業日 <br>
                     {{ secondList.formatDate }}
                 </h6>
-                <draggable v-model="secondList.data" group="elems" class="elem-list">
+                <draggable v-model="secondList.data" group="elems" class="second elem-list">
                     <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
@@ -77,12 +77,12 @@
             <div class="col-8">
                 <table class="table fixed-header">
                     <thead>
-                    <tr>
-                        <th style="width: 100px" class="text-center">{{__('dispatch.car_no')}}</th>
-                        <th style="width: 150px" class="text-center">{{__('dispatch.driver_name')}}</th>
-                        <th style="width: 250px" class="text-center">{{__('dispatch.morning')}}</th>
-                        <th style="width: 250px" class="text-center">{{__('dispatch.noon')}}</th>
-                        <th style="width: 250px" class="text-center">{{__('dispatch.next_product')}}</th>
+                    <tr style="border-bottom: 1px solid #ced4da; ">
+                        <td style="width: 100px" class="text-center">{{__('dispatch.car_no')}}</td>
+                        <td style="width: 150px" class="text-center">{{__('dispatch.driver_name')}}</td>
+                        <td style="width: 250px" class="text-center">{{__('dispatch.morning')}}</td>
+                        <td style="width: 250px" class="text-center">{{__('dispatch.noon')}}</td>
+                        <td style="width: 250px" class="text-center">{{__('dispatch.next_product')}}</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -285,9 +285,6 @@
                         componentInstance.createSuccessDialog();
                         componentInstance.fetchThirdList();
                         componentInstance.clearNewClass();
-                    })
-                    .catch(function (error) {
-                        componentInstance.errorDialog(error);
                     });
                 }
             },
@@ -298,8 +295,8 @@
                     drivers: this.tableDriverList
                 };
                 axios.post(componentInstance.thirdListUrl,data)
-                    .then(data => {
-                        componentInstance.thirdList = data.data.dispatches;
+                    .then(response => {
+                        componentInstance.thirdList = response.data.dispatches;
                         return true;
                     })
                     .catch(function(error){
@@ -351,7 +348,7 @@
                 let componentInstance = this;
                 axios.get(this.fetchUrl+'?date='+date)
                     .then(result => {
-                        componentInstance.dispatch_day = result.data.first_list.date;
+                        componentInstance.dispatch_day = result.data.date;
                         componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
                         componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list);
                         componentInstance.drivers = result.data.drivers;
@@ -367,10 +364,8 @@
                 axios.post(componentInstance.thirdList2Url,{'drivers':this.tableDriverList,'date':this.dispatch_day})
                     .then(result => {
                         componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
-                        componentInstance.secondList = result.data.second_list;
-                        componentInstance.thirdList = result.data.dispatches.map(function (current) {
-
-                        });
+                        componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list);
+                        componentInstance.thirdList = this.sanitizeMainTable(result.data.dispatches);
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
@@ -380,22 +375,23 @@
                 array.data.forEach(function (elem) {
                     elem.down_time = elem.down_time.slice(0,5);
                     elem.down_date = elem.down_date.replace(/-/g,'/');
-                    console.log(elem);
                 });
                 return array;
             },
             sanitizeMainTable(array){
-                array.morning.forEach(function (elem) {
-                    elem.down_time = elem.down_time.slice(0,5);
-                    elem.down_date = elem.down_date.replace(/-/g,'/');
-                });
-                array.noon.forEach(function (elem) {
-                    elem.down_time = elem.down_time.slice(0,5);
-                    elem.down_date = elem.down_date.replace(/-/g,'/');
-                });
-                array.nextProduct.forEach(function (elem) {
-                    elem.down_time = elem.down_time.slice(0,5);
-                    elem.down_date = elem.down_date.replace(/-/g,'/');
+                array.forEach(function (driver) {
+                    driver.morning.forEach(function (elem) {
+                        elem.down_time = elem.down_time.slice(0,5);
+                        elem.down_date = elem.down_date.replace(/-/g,'/');
+                    });
+                    driver.noon.forEach(function (elem) {
+                        elem.down_time = elem.down_time.slice(0,5);
+                        elem.down_date = elem.down_date.replace(/-/g,'/');
+                    });
+                    driver.nextProduct.forEach(function (elem) {
+                        elem.down_time = elem.down_time.slice(0,5);
+                        elem.down_date = elem.down_date.replace(/-/g,'/');
+                    });
                 });
                 return array;
             },
@@ -419,7 +415,7 @@
     }
 </script>
 <style scoped>
-    .table {
+    .dispatch .table {
         background: #fff;
     }
     .fixed-header tbody {
@@ -479,7 +475,7 @@
     .label-row{
         border-bottom: 1px solid #ced4da;
     }
-    h6{
+    .dispatch h6, .fixed-header thead td{
         font-size: 0.9rem;
     }
 </style>
