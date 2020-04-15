@@ -48,7 +48,7 @@
                     翌営業日 <br>
                     {{ firstList.formatDate }}
                 </h6>
-                <draggable v-model="firstList.data" group="elems" class="elem-list">
+                <draggable v-model="firstList.data" group="elems" class="first elem-list">
                     <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
@@ -63,7 +63,7 @@
                     翌々営業日 <br>
                     {{ secondList.formatDate }}
                 </h6>
-                <draggable v-model="secondList.data" group="elems" class="elem-list">
+                <draggable v-model="secondList.data" group="elems" class="second elem-list">
                     <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
                         <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
