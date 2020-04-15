@@ -42,9 +42,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in tableData" v-if="item.amount != null">
+                    <tr v-for="item in tableData">
                         <td class="text-center">{{ item.driver_name }}</td>
-                        <td class="text-center">{{ currencyFormatter(item.amount) }}</td>
+                        <td class="text-center">{{ currencyFormatter(_.isNil(item.amount) ? 0 : item.amount) }}</td>
                     </tr>
                     </tbody>
                 </table>
