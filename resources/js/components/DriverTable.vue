@@ -138,11 +138,7 @@
         },
         methods: {
             back() {
-                if (this.isDataChanged()) {
-                    this.confirmBack();
-                } else {
-                    window.location.href = this.backUrl;
-                }
+                this.confirmBack();
             },
              fetchData(url) {
                 axios.get(url)
