@@ -126,7 +126,7 @@
                                 <label for="shipper_id">{{__('item.shipper')}}</label>&nbsp;
                             </td>
                             <td>
-                                <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
+                                <select name="shipper" id="shipper_id" v-model="itemData.shipper_id" @change="calcUnitPrice"
                                         class="form-control" v-on:change="setShipperName" required>
                                     <option value=""></option>
                                     <option v-for="shipper in shippers" :value="shipper.shipper_id">
@@ -428,15 +428,17 @@
             calcUnitPrice() {
                 this.anyFieldChanged = 1;
                 let component = this;
-                if ((this.vehicle_model !== '') && (this.itemData.shipper_id !== '')
+                if ((this.itemData.item_vehicle !== '') && (this.itemData.shipper_id !== '')
                     && (this.itemData.stack_point !== '') && (this.itemData.down_point !== '')) {
-                    axios.get(this.unitPriceUrl + '?vehicle_model=' + this.vehicle_model
+                    axios.get(this.unitPriceUrl + '?vehicle_model=' + this.itemData.item_vehicle
                         + '&shipper_id=' + this.itemData.shipper_id
                         + '&stack_point=' + this.itemData.stack_point
                         + '&down_point=' + this.itemData.down_point)
                         .then(response => {
                             if (response.data.price !== undefined) {
                                 component.per_ton = response.data.price;
+                            } else {
+                                component.per_ton = 0;
                             }
                             component.calcItemPrice();
                         });
