@@ -8,20 +8,25 @@
             <div class="col-10">
                 <div class="row">
                     <div class="col-2">
-                        <h2 class="text-center text-danger mt-1" v-if="this.mode === 'editing'">{{__('common.editing')}}</h2>
+                        <h2 class="text-center text-danger" :hidden="!editMode">{{__('common.editing')}}</h2>
                     </div>
-                    <div class="col-4"><h2 class="text-center mt-1">{{title}}</h2></div>
-                    <div class="col-6">
-                        <p class="text-right rbtns">
-                            <button class="btn btn-lg btn-danger" @click="register" :disabled="this.mode !== 'editing'">
-                                {{__('common.register')}}
+                    <div class="col-2"><h2 class="text-center mt-1">{{title}}</h2></div>
+                    <div class="col-8">
+                        <p class="text-right">
+                            <button class="btn btn-lg btn-danger btn-fixed-width" @click="saveConfirmModal"
+                                    :disabled="!editMode">{{__('common.register')}}
                             </button>
-                            <button class="btn btn-lg btn-danger" @click="edit">{{__('common.edit')}}</button>
+                            <button class="btn btn-lg btn-danger btn-fixed-width" @click="toEditMode" :disabled="editMode">
+                                {{__('common.edit')}}
+                            </button>
+                            <button class="btn btn-lg btn-danger btn-fixed-width" @click="deleteConfirmModal"
+                                    :disabled="!editMode">{{__('common.delete')}}
+                            </button>
                             <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
                                 {{__('invoice.billing_month')}}
                             </button>
                             <br>
-                            <button class="btn btn-lg btn-success mt-1" @click="listPrinting">
+                            <button class="btn btn-lg btn-success mt-1 btn-fixed-width" @click="listPrinting">
                                 {{__('invoice.list_printing')}}
                             </button>
                         </p>
@@ -89,13 +94,13 @@
                             </div>
                         </div>
                         <div class="col-6 text-right">
-                            <button type="submit" class="btn btn-fixed-width btn-primary">{{__('common.search')}}
+                            <button type="submit" class="btn btn-fixed-width btn-primary" :disabled="editMode">{{__('common.search')}}
                             </button>
-                            <button type="reset" class="btn btn-fixed-width btn-primary" @click.prevent="clear">
+                            <button type="reset" class="btn btn-fixed-width btn-primary" @click.prevent="clear" :disabled="editMode">
                                 {{__('common.clear')}}
                             </button>
                             <button type="button" @click="getAggregate" data-toggle="modal" data-target="#aggr"
-                                    class="btn btn-fixed-width btn-primary">
+                                    class="btn btn-fixed-width btn-primary" :disabled="editMode">
                                 {{__('invoice.aggregate')}}
                             </button>
                         </div>
@@ -103,43 +108,76 @@
                 </form>
             </div>
         </div>
-        <ejs-grid ref="grid" id="grid" :dataSource="data" :actionBegin="actionBegin"
-                  :allowSorting="true" :height="270" :frozenColumns="4" :rowSelected='rowSelected'>
-            <e-columns>
-                <e-column field='stack_point' :headerText='__("invoice.loading_port")' width="150"
-                          textAlign="Center"></e-column>
-                <e-column field='down_point' :headerText='__("invoice.drop_off")' width="150"
-                          textAlign="Center"></e-column>
-                <e-column field='vehicle_payment' :headerText='__("invoice.amount")' width="150"
-                          textAlign="Right"></e-column>
-                <e-column field='down_date' :headerText='__("invoice.delivery_date")' width="100"
-                          textAlign="Center"></e-column>
-                <e-column field='shipper_name' :headerText='__("invoice.shipper")' width="150"
-                          textAlign="Center"></e-column>
-                <e-column field='vehicle_no3' :headerText='__("invoice.vehicle_no")' width="150"
-                          textAlign="Center"></e-column>
-                <e-column field='weight' :headerText='__("invoice.weight")' width="150"></e-column>
-                <e-column field='item_price' :headerText='__("invoice.item_price")' textAlign="Right"
-                          editType='numericedit'
-                          width="100"></e-column>
-                <e-column field='status' :headerText='__("invoice.status")' width="100" textAlign="Center"></e-column>
-                <e-column field='item_vehicle' :headerText='__("invoice.rental_car_vehicle_no")' width="100"
-                          textAlign="Center"></e-column>
-                <e-column field='down_time' :headerText='__("invoice.delivery_time")' width="100"
-                          textAlign="Center"></e-column>
-                <e-column field='item_completion_date' :headerText='__("invoice.invoice_date")' width="150"
-                          textAlign="Center"></e-column>
-                <e-column field='item_id' :visible="false" width="0"></e-column>
-                <e-column field='shipper_id' :visible="false" width="0"></e-column>
-                <e-column field='vehicle_id' :visible="false" width="0"></e-column>
-            </e-columns>
-        </ejs-grid>
+
+        <div id="table-scroll" class="table-scroll">
+            <table class="table table-custom-inputs">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="sticky-col first-sticky-col">{{__('invoice.loading_port')}}</th>
+                    <th scope="col" class="sticky-col second-sticky-col">{{__('invoice.drop_off')}}</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__('invoice.amount')}}</th>
+                    <th scope="col">{{__('invoice.delivery_date')}}</th>
+                    <th scope="col">{{__('invoice.shipper')}}</th>
+                    <th scope="col">{{__('invoice.vehicle_no')}}</th>
+                    <th scope="col">{{__('invoice.weight')}}</th>
+                    <th scope="col">{{__('invoice.item_price')}}</th>
+                    <th scope="col">{{__('invoice.status')}}</th>
+                    <th scope="col">{{__('invoice.rental_car_vehicle_no')}}</th>
+                    <th scope="col">{{__('invoice.delivery_time')}}</th>
+                    <th scope="col">{{__('invoice.invoice_date')}}</th>
+                    <th scope="col" class="primary-key">Item Id</th>
+                    <th scope="col" class="primary-key">Shipper Id</th>
+                    <th scope="col" class="primary-key">Vehicle Id</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(invoice, index) in InvoiceData" :data-key="invoice.invoice_id" :index="index"
+                    :hidden="invoice.delete_flg == 1" v-on:click="clickRow($event, index)">
+                    <td class="sticky-col first-sticky-col">
+                        <input type="text" v-model="invoice.stack_point" class="form-control" :disabled="true"/>
+                    </td>
+                    <td class="sticky-col second-sticky-col">
+                        <input type="text" v-model="invoice.down_point" class="form-control" :disabled="true"/>
+                    </td>
+                    <td class="sticky-col third-sticky-col last-sticky-col">
+                        <money type="text" class="form-control"
+                               v-model="invoice.vehicle_payment" v-bind="money" :disabled="true"/>
+                        <input type="text" v-model="invoice.vehicle_payment" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.down_date" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.shipper_name" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.vehicle_no3" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.weight" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <money type="text" class="form-control"
+                               v-model="invoice.item_price" v-bind="money" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.status" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.item_vehicle" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.down_time" class="form-control" :disabled="true"/>
+                    </td><td>
+                        <input type="text" v-model="invoice.item_completion_date" class="form-control" :disabled="true"/>
+                    </td>
+                    <td class="primary-key">
+                        <input type="text" class="form-control" v-model="invoice.invoice_id" :disabled="true"/>
+                        <input type="text" class="form-control" v-model="invoice.item_id" :disabled="true"/>
+                        <input type="text" class="form-control" v-model="invoice.shipper_id" :disabled="true"/>
+                        <input type="text" class="form-control" v-model="invoice.vehicle_id" :disabled="true"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="row">
             <div class="col-4 offset-md-8">
                 <br>
                 <table>
                     <tr>
-
                         <td>
                         </td>
                         <td align="right">
@@ -318,7 +356,7 @@
                 billing_day: '',
                 shippers: [],
                 vehicles: [],
-                mode: 'normal',
+                mode: 'Batch',
                 sales: 0,
                 totalConsumptionTax: 0,
                 otherTotals: 0,
@@ -375,14 +413,6 @@
         methods: {
             datepickerClose(){
                 alert(this.billing_month);
-            },
-            actionBegin(args) {
-                if (args.requestType == 'delete') {
-                    args.cancel = true;
-                    if (args.data[0].item_id !== undefined) {
-                        this.deleteInvoice(args.data[0].item_id);
-                    }
-                }
             },
             rowSelected: function (args) {
                 this.invoiceData.item_id = args.data.item_id;
@@ -549,32 +579,6 @@
             refresh() {
                 this.search();
             },
-            setEditMode(editMode) {
-                if (editMode === 'normal') {
-                    this.$refs.grid.ej2Instances.setProperties({
-                        toolbar: null,
-                        editSettings: {
-                            allowDeleting: false,
-                            allowEditing: false,
-                            allowAdding: false,
-                        },
-                    });
-                }
-                if (editMode === 'editing') {
-                    let toolbarBtns = ['Delete'];
-                    this.$refs.grid.ej2Instances.setProperties({
-                        toolbar: toolbarBtns,
-                        editSettings: {
-                            allowDeleting: true,
-                            allowEditing: false,
-                            allowAdding: false,
-                            showDeleteConfirmDialog: true,
-                        },
-                    });
-                }
-                this.$refs.grid.refresh();
-                this.mode = editMode;
-            },
             showDialog(response) {
                 let message = response.message + ': ';
                 let errors = response.errors;
@@ -608,10 +612,6 @@
                 return `${year}-${month}-${day}`;
             },
         },
-        provide: {
-            grid: [Sort, Freeze, Edit, Toolbar]
-        },
-
     }
 </script>
 <style scoped>
