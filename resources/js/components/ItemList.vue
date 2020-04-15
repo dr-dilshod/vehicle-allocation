@@ -16,7 +16,8 @@
         </div>
         <div class="row mt-2">
             <form @submit.prevent="search" role="form" class="ml-2 col-12">
-                <table class="table table-sm table-borderless" width="100%">
+                <br>
+                <table width="100%">
                     <tbody>
                     <tr>
                         <td class="text-right align-middle" width="5%">{{__('item.stack_date')}}</td>
@@ -47,9 +48,14 @@
                         </td>
 
                     </tr>
+                    <tr>
+                        <td colspan="8" style="height: 10px">
+
+                        </td>
+                    </tr>
                     <tr valign="middle">
                         <td class="text-right align-middle">{{__('item.stack_point')}}</td>
-                        <td>
+                        <td class="align-middle">
                             <input type="text" class="form-control"
                                    v-model="stack_point"
                                    id="stack_point"/>
@@ -83,7 +89,7 @@
             </table>
             </form>
         </div>
-
+        <br>
         <ejs-grid :dataSource="data" :actionBegin="actionBegin" :allowSelection='true'
                   ref="grid" id="grid" :allowSorting="true" :editSettings='editSettings'
                   :height="280" rowHeight=35>
@@ -104,17 +110,14 @@
 </template>
 <script>
     import Vue from "vue";
-    import { VueSimpleAlert } from "vue-simple-alert";
     import { GridPlugin, Sort, Freeze, Toolbar, Edit } from '@syncfusion/ej2-vue-grids';
     import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
     import { DialogPlugin } from '@syncfusion/ej2-vue-popups';
-    import {TableUtil} from "../utils/TableUtil";
     import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
 
     Vue.use(ButtonPlugin);
     Vue.use( GridPlugin );
-    Vue.use( VueSimpleAlert );
     Vue.use(DialogPlugin);
 
     export default{
@@ -191,8 +194,8 @@
                                                         <p>{{__('item.what_is_your_choice1')}}</p>
                                                         <p>{{__('item.what_is_your_choice2')}}</p>
                                                     </div>
-                                                    <div id="radio-group" class="text-left mt-5">
-                                                        <form class="mt-3 ml-5">
+                                                    <div id="radio-group" class="text-left mt-4">
+                                                        <form class="mt-3 ml-4">
                                                             <input type="radio" v-model="stat" name="stat" id="dep_date" v-bind:value="data.stack_date">
                                                             <label for="dep_date"> {{__('item.set_the_date_of_departure_as_the_date_of_completion_of_transportation')}} </label><br>
                                                             <div class="mt-3">
@@ -202,7 +205,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex justify-content-center mt-4 mb-2">
+                                                <div class="d-flex justify-content-center mt-3 mb-2">
                                                     <button type="button" class="btn btn-modal btn-danger btn-fixed-width" @click="checkStatus(data.item_id)">
                                                         {{__('common.register')}}
                                                     </button>
@@ -249,7 +252,7 @@
                             setTodayAsCompletion: function (id) {
                                 axios.get(this.resourceUrl + '/setTodayAsCompletion?id='+id)
                                     .then(response=>{
-                                        //this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
+                                        this.showSuccessDialog(this.__('item.status_of_selection_is_changed_to_complete_and_today_is_set_as_completion_date'));
                                         $('#updateStatusModal').modal('hide');
                                         this.data.status = 1;
                                         this.data.item_completion_date = this.getDate();
@@ -287,12 +290,15 @@
                                 return `${year}-${month}-${day}`;
                             },
                             showSuccessDialog(text) {
-                                this.$fire({
-                                    title: this.__('messages.info_message'),
-                                    text: text,
-                                    type: "success",
-                                    timer: 5000
-                                })
+                                this.$modal.show({
+                                        template: this.dialogTemplate,
+                                        props: ['title', 'text']
+                                    },
+                                    {title: this.__('alert.done'), text: text},
+                                    {
+                                        height: 'auto',
+                                        width: 400
+                                    });
                             },
                             showDialog(response) {
                                 let message = response.message + ': ';
@@ -396,6 +402,8 @@
         },
     }
 </script>
-<style scoped>
-
+<style>
+    .modal-backdrop {
+        display: none;
+    }
 </style>

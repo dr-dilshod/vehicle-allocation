@@ -18,6 +18,7 @@ class DispatchController extends Controller
      */
     public function index(Request $request)
     {
+        setlocale(LC_ALL, 'ja_JA');
         $result = [];
 
         $firstDate = $request->get('date');
@@ -37,11 +38,13 @@ class DispatchController extends Controller
             ->where(['items.down_date'=>$secondDate,'items.delete_flg'=>0,'dispatch_status'=>Item::DISPATCH_STATUS_OUT_DISPATCH])
             ->get();
         $result['first_list'] = [
-            'date'=>$firstDate,
+            'date' => $firstDate,
+            'formatDate'=>strftime('%m/%d %a',strtotime($firstDate)),
             'data'=>$firstListItems
         ];
         $result['second_list'] = [
             'date'=>$secondDate,
+            'formatDate'=>strftime('%m/%d %a',strtotime($secondDate)),
             'data'=>$secondListItems
         ];
         $drivers = Driver::select(['driver_id','driver_name','vehicle_no3'])
@@ -243,11 +246,13 @@ class DispatchController extends Controller
             ->where(['items.down_date'=>$secondDate,'items.delete_flg'=>0,'dispatch_status'=>Item::DISPATCH_STATUS_OUT_DISPATCH])
             ->get();
         $result['first_list'] = [
-            'date'=>$firstDate,
+            'date' => $firstDate,
+            'formatDate'=>strftime('%m/%d %a',strtotime($firstDate)),
             'data'=>$firstListItems
         ];
         $result['second_list'] = [
-            'date'=>$secondDate,
+            'date' => $secondDate,
+            'formatDate'=>strftime('%m/%d %a',strtotime($secondDate)),
             'data'=>$secondListItems
         ];
         $dispatch_drivers = [];
