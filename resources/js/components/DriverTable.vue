@@ -186,14 +186,14 @@
 
 </script>
 <style>
-    .table-scroll{
+    .driver .table-scroll{
         min-height: 400px;
         background-color: #fff;
     }
     .driver .table td > div{
         padding: 0.375rem 0.75rem
     }
-    .table .thead-light th{
+    .driver .table .thead-light th{
         background-color: #fff;
     }
 </style>

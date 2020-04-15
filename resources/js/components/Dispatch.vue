@@ -418,64 +418,64 @@
     .dispatch .table {
         background: #fff;
     }
-    .fixed-header tbody {
+    .dispatch .fixed-header tbody {
         display: block;
         overflow: auto;
         height: 370px;
         width: 100%;
     }
-    .driver-list .driver-data {
+    .dispatch .driver-list .driver-data {
         display: block;
         overflow-y: auto;
         overflow-x: hidden;
         height: 150px;
         width: 100%;
     }
-    .fixed-header thead tr {
+    .dispatch .fixed-header thead tr {
         display: block;
     }
-    .table th {
+    .dispatch .table th {
         vertical-align: middle;
     }
-    .close {
+    .dispatch .close {
         display: none;
     }
-    .driver:hover .close {
+    .dispatch .driver:hover .close {
         display: inline;
     }
-    .elem:hover .close {
+    .dispatch .elem:hover .close {
         display: inline;
     }
-    .elem {
+    .dispatch .elem {
         background: #dae3f3;
         border-radius: 10px;
         margin: 4px;
         padding: 7px;
         font-size: 12px;
     }
-    .new {
+    .dispatch .new {
         background: #e2f0d9;
     }
-    .vdp-datepicker{
+    .dispatch .vdp-datepicker{
         display: inline-block;
     }
-    .elem-list {
+    .dispatch .elem-list {
         background: #fff;
         height: 440px;
         overflow-y: scroll;
     }
-    .day1, .day2{
+    .dispatch .day1, .day2{
         background-color: #fff;
         float: left;
         width: 155px;
     }
-    .day1 > div, .day2 > div{
+    .dispatch .day1 > div, .dispatch .day2 > div{
         border: 1px solid #ced4da;
     }
-    .label-row{
+    .dispatch .label-row{
         border-bottom: 1px solid #ced4da;
     }
-    .dispatch h6, .fixed-header thead td{
+    .dispatch h6, .dispatch .fixed-header thead td{
         font-size: 0.9rem;
     }
 </style>
