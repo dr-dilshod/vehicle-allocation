@@ -92,7 +92,7 @@
                         <select v-on:change="addRowOnChange" class="form-control" v-model="unitPrice.shipperId"
                                 :disabled="!editMode">
                             <option
-                                v-for="shipper in shippers"
+                                v-for="shipper in allShippers"
                                 :value="shipper.id" :selected="unitPrice.shipperId === shipper.id">{{shipper.shipper}}
                             </option>
                         </select>
@@ -106,8 +106,12 @@
                                class="form-control" :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="text" v-model="unitPrice.type" class="form-control"
-                               :disabled="!editMode"/>
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="unitPrice.type"
+                                :disabled="!editMode">
+                            <option value=""></option>
+                            <option value="t" :selected="_.isEqual(unitPrice.type, 't')">t</option>
+                            <option value="台" :selected="_.isEqual(unitPrice.type, '台')">台</option>
+                        </select>
                     </td>
                     <td>
                         <money v-on:change="addRowOnChange" type="text" class="form-control"
@@ -149,6 +153,7 @@
                 },
                 mode: 'normal',
                 shippers: [],
+                allShippers: [],
                 vehicle_types: [
                     this.__('unit_prices.car_types.wing'),
                     this.__('unit_prices.car_types.flat'),
@@ -172,28 +177,12 @@
         },
         created() {
             this.fetchShipperNames(`${this.resourceUrl}/shipper-names`);
+            this.fetchShipperNames(`${this.resourceUrl}/all-shippers`, true);
         },
         mounted() {
             this.search();
         },
-        updated() {
-            this.test();
-        },
         methods: {
-            test() {
-                const table = document.querySelector('tbody > tr');
-                if (!_.isNil(table)) {
-                    const childs = table.children;
-                    if (!_.isNil(childs)) {
-                        const cells = childs.length;
-                        let cellChildLen = 0;
-                        for (let i = 0; i < cLen; i++) {
-
-                        }
-
-                    }
-                }
-            },
             back() {
                 if (this.isDataChanged()) {
                     this.confirmBack();
@@ -233,13 +222,19 @@
                 this.$refs.shipperSelect.value = 0;
                 this.data = [];
             },
-            fetchShipperNames(url) {
+            fetchShipperNames(url, all = false) {
                 axios.get(url)
                     .then(response => {
                         if (response.data.length > 0) {
-                            this.shippers = response.data.map(e => {
-                                return {shipper: e.shipper_name1 + ' ' + e.shipper_name2, id: e.shipper_id};
-                            });
+                            if (all) {
+                                this.allShippers = response.data.map(e => {
+                                    return {shipper: (!_.isNil(e.shipper_name1) ? e.shipper_name1 :'') + ' ' + (!_.isNil(e.shipper_name2) ? e.shipper_name2 : ''), id: e.shipper_id};
+                                });
+                            } else {
+                                this.shippers = response.data.map(e => {
+                                    return {shipper: (!_.isNil(e.shipper_name1) ? e.shipper_name1 :'') + ' ' + (!_.isNil(e.shipper_name2) ? e.shipper_name2 : ''), id: e.shipper_id};
+                                });
+                            }
                         }
                     });
             },

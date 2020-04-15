@@ -45,7 +45,7 @@ Vue.component('item-registration',require('./components/ItemRegistration.vue').d
 Vue.component('invoice',require('./components/Invoice.vue').default);
 Vue.component('dispatch',require('./components/Dispatch.vue').default);
 Vue.component('top',require('./components/Top.vue').default);
-
+Vue.prototype._ = window._;
 const app = new Vue({
     el: '#app',
 });
