@@ -11,6 +11,12 @@ use App\Http\Controllers\Controller;
 
 class DispatchController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        setlocale(LC_ALL, 'ja_JA');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +25,6 @@ class DispatchController extends Controller
     public function index(Request $request)
     {
         $result = [];
-
         $date = $request->get('date');
         $firstDate = date('Y/m/d',strtotime($date."+1 day"));
         if(date('w',strtotime($firstDate)) == 0) // if Sunday
@@ -53,18 +58,7 @@ class DispatchController extends Controller
                 'delete_flg'=>0,
             ])
             ->get();
-        $dispatch_drivers = \DB::table('dispatches')
-            ->select(['dispatches.driver_id','drivers.vehicle_no3','drivers.driver_name'])
-            ->distinct()
-            ->leftJoin('items','dispatches.item_id','=','items.item_id')
-            ->leftJoin('drivers','dispatches.driver_id','=','drivers.driver_id')
-            ->where([
-                'items.down_date'=>$date,
-                'items.delete_flg'=>0,
-                'dispatches.delete_flg'=>0,
-                'drivers.delete_flg'=>0
-            ])
-            ->get();
+        $dispatch_drivers = $drivers;
         $tableDriverList = [];
         $result['drivers'] = $drivers;
         $result['dispatch_drivers'] = $dispatch_drivers;
