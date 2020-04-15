@@ -144,7 +144,6 @@ module.exports = {
         toEditMode() {
             this.editMode = true;
             this.reserveData = _.cloneDeep(this.data);
-            this.reserveData = _.cloneDeep(this.data);
             if (this.data.length === this.reserveData.length) {
                 this.addRow();
             }
