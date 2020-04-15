@@ -295,7 +295,7 @@ return [
         '*.driver_remark'=>'ドライバーの発言 ',
         '*.driver_mobile_number'=>'ドライバー携帯番号 ',
         '*.maximum_Loading'=>'最大積載量 ',
-        '*.vehicle_no3'=>'車両番号3 ',
+        '*.vehicle_no3'=>'車両番号 ',
         '*.company_kana_name'=>'会社かな名 ',
         '*.vehicle_company_abbreviation'=>'車両会社の略語 ',
         '*.vehicle_postal_code'=>'車両の郵便番号 ',

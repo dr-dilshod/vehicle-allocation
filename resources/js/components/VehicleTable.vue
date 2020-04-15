@@ -65,7 +65,7 @@
                     @click="clickRow($event, index)" :hidden="vehicle.delete_flg == 1">
                     <td class="sticky-col first-sticky-col">
                         <div v-if="!editMode">{{vehicle.vehicle_no}}</div>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='vehicle.vehicle_no' v-if='editMode'/>
+                        <the-mask mask="XXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model='vehicle.vehicle_no' v-if='editMode'/>
                     </td>
                     <td class="sticky-col second-sticky-col">
                         <div v-if="!editMode">{{vehicle.company_name}}</div>
@@ -83,7 +83,7 @@
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_postal_code}}</div>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_postal_code" v-if="editMode"/>
+                        <the-mask mask="XXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_postal_code" v-if="editMode"/>
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_address1}}</div>
@@ -95,11 +95,11 @@
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_phone_number}}</div>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_phone_number" v-if="editMode"/>
+                        <the-mask mask="XXXXXXXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_phone_number" v-if="editMode"/>
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_fax_number}}</div>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_fax_number" v-if="editMode"/>
+                        <the-mask mask="XXXXXXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_fax_number" v-if="editMode"/>
                     </td>
                     <td style="min-width: 70px;">
                         <div v-if="!editMode"><span v-if="!editMode && vehicle.offset==0">{{__('vehicle.no')}}</span><span v-if="!editMode && vehicle.offset==1">{{__('vehicle.yes')}}</span></div>
@@ -123,6 +123,9 @@
     import Vue from "vue";
     import {TableUtil} from '../utils/TableUtil.js';
     import StickTableMixin from '../utils/StickyTableMixin'
+    import VueTheMask from 'vue-the-mask'
+
+    Vue.use(VueTheMask);
 
     export default{
         props: {
