@@ -49,10 +49,10 @@
                         </select>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="submit" class="btn btn-primary btn-fixed-width">{{__('common.search')}}</button>
+                        <button type="submit" class="btn btn-primary btn-fixed-width" :disabled='editMode'>{{__('common.search')}}</button>
                     </div>
                     <div class="form-group ml-3">
-                        <button type="reset" @click="clear" class="btn btn-primary btn-fixed-width">
+                        <button type="reset" @click="clear" class="btn btn-primary btn-fixed-width" :disabled='editMode'>
                             {{__('common.clear')}}
                         </button>
                     </div>

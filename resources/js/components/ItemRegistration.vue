@@ -106,10 +106,10 @@
                         <tr>
                             <td class="text-right" valign="bottom">
                                 <span class="required"> ※</span>
-                                <label for="vehicle_model">{{__('item.vehicle_model')}}</label>&nbsp;
+                                <label for="item_vehicle">{{__('item.vehicle_model')}}</label>&nbsp;
                             </td>
                             <td>
-                                <select name="vehicle_model" id="vehicle_model" v-model="vehicle_model"
+                                <select name="item_vehicle" id="item_vehicle" v-model="itemData.item_vehicle"
                                         @change="calcUnitPrice"
                                         class="form-control" required>
                                     <option value=""></option>
@@ -126,7 +126,7 @@
                                 <label for="shipper_id">{{__('item.shipper')}}</label>&nbsp;
                             </td>
                             <td>
-                                <select name="shipper" id="shipper_id" v-model="itemData.shipper_id"
+                                <select name="shipper" id="shipper_id" v-model="itemData.shipper_id" @change="calcUnitPrice"
                                         class="form-control" v-on:change="setShipperName" required>
                                     <option value=""></option>
                                     <option v-for="shipper in shippers" :value="shipper.shipper_id">
@@ -241,7 +241,7 @@
                                 <label for="chartered_vehicle">{{__('item.chartered_vehicle')}}</label>&nbsp;
                             </td>
                             <td>
-                                <select name="chartered_vehicle" id="chartered_vehicle" v-on:change="setVehicleName"
+                                <select name="chartered_vehicle" id="chartered_vehicle"
                                         v-model="itemData.vehicle_id" class="form-control" ref="chartered_vehicle">
                                     <option value=""></option>
                                     <option v-for="vehicle in vehicles" :value="vehicle.vehicle_id">
@@ -404,14 +404,6 @@
                 }
                 this.calcUnitPrice();
             },
-            setVehicleName() {
-                this.anyFieldChanged = 1;
-                for (let i = 0; i < this.vehicles.length; i++) {
-                    if (this.itemData.vehicle_id === this.vehicles[i].vehicle_id) {
-                        this.itemData.item_vehicle = this.vehicles[i].company_name;
-                    }
-                }
-            },
             setWeight() {
                 this.anyFieldChanged = 1;
                 this.ton = this.itemData.weight;
@@ -436,15 +428,17 @@
             calcUnitPrice() {
                 this.anyFieldChanged = 1;
                 let component = this;
-                if ((this.vehicle_model !== '') && (this.itemData.shipper_id !== '')
+                if ((this.itemData.item_vehicle !== '') && (this.itemData.shipper_id !== '')
                     && (this.itemData.stack_point !== '') && (this.itemData.down_point !== '')) {
-                    axios.get(this.unitPriceUrl + '?vehicle_model=' + this.vehicle_model
+                    axios.get(this.unitPriceUrl + '?vehicle_model=' + this.itemData.item_vehicle
                         + '&shipper_id=' + this.itemData.shipper_id
                         + '&stack_point=' + this.itemData.stack_point
                         + '&down_point=' + this.itemData.down_point)
                         .then(response => {
                             if (response.data.price !== undefined) {
                                 component.per_ton = response.data.price;
+                            } else {
+                                component.per_ton = 0;
                             }
                             component.calcItemPrice();
                         });
@@ -610,7 +604,7 @@
                 const itemRegistration = this;
                 axios.delete(this.resourceUrl + '/' + item_id)
                     .then(function (response) {
-                        itemRegistration.showSuccessDialog();
+                        itemRegistration.showDeletionSuccessDialog();
                     })
                     .catch(function (error) {
                         itemRegistration.showDialog(error.response.data);
@@ -667,6 +661,21 @@
                         props: ['title', 'text']
                     },
                     {title: this.__('alert.done'), text: this.__('item.operation_is_successful')},
+                    {
+                        height: 'auto',
+                        width: 400
+                    }, {
+                        'before-close': () => {
+                            window.location.href = this.redirectUrl;
+                        }
+                    });
+            },
+            showDeletionSuccessDialog() {
+                this.$modal.show({
+                        template: this.dialogTemplate,
+                        props: ['title', 'text']
+                    },
+                    {title: this.__('alert.done'), text: this.__('item.deletion_is_successful')},
                     {
                         height: 'auto',
                         width: 400

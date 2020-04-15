@@ -42,7 +42,7 @@
                 <tr v-for="(driver, index) in data" :data-key="driver.driver_id" :index="index"
                     @click="clickRow($event, index)" :hidden="driver.delete_flg == 1">
                     <td class="sticky-col first-sticky-col">
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='driver.driver_no' :disabled='!editMode'/></td>
+                        <the-mask mask="XXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model='driver.driver_no' :disabled='!editMode'/></td>
                     <td class="sticky-col second-sticky-col" style="min-width: 40px;">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="driver.vehicle_type" :disabled="!editMode">
                             <option v-for="type in vehicleTypes" v-bind:value="type.text">
@@ -52,11 +52,11 @@
                     <td class="sticky-col third-sticky-col last-sticky-col">
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_name" :disabled="!editMode"/></td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_mobile_number" :disabled="!editMode"/></td>
+                        <the-mask mask="XXXXXXXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.driver_mobile_number" :disabled="!editMode"/></td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.vehicle_no3" :disabled="!editMode"/></td>
+                        <the-mask mask="XXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.vehicle_no3" :disabled="!editMode"/></td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.maximum_Loading" :disabled="!editMode"/></td>
+                        <the-mask mask="XXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="driver.maximum_Loading" :disabled="!editMode"/></td>
                     <td>
                         <div v-if="editMode">
                             <input v-on:change="addRowOnChange" type="checkbox" v-model="driver.search_flg" :disabled="!editMode"/>
@@ -92,6 +92,9 @@
 <script>
     import Vue from "vue";
     import StickTableMixin from '../utils/StickyTableMixin'
+    import VueTheMask from 'vue-the-mask'
+
+    Vue.use(VueTheMask);
 
     export default {
         props: {
@@ -135,11 +138,7 @@
         },
         methods: {
             back() {
-                if (this.isDataChanged()) {
-                    this.confirmBack();
-                } else {
-                    window.location.href = this.backUrl;
-                }
+                this.confirmBack();
             },
              fetchData(url) {
                 axios.get(url)
