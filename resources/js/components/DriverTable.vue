@@ -138,7 +138,11 @@
         },
         methods: {
             back() {
-                this.confirmBack();
+                if (this.editMode) {
+                    this.confirmBack();
+                } else {
+                    window.location.href = this.backUrl;
+                }
             },
              fetchData(url) {
                 axios.get(url)
