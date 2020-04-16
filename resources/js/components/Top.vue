@@ -107,12 +107,12 @@
         background: #fff;
     }
     #top .fixed-header{
-        width: 503px;
+        width: 501px;
         table-layout: fixed;
     }
     #top .fixed-header tbody{
         display: block;
-        overflow-y: auto;
+        overflow: auto;
         height: 250px;
         width: 100%;
     }
@@ -121,9 +121,9 @@
         position: relative;
     }
     #top td:nth-child(1), #top th:nth-child(1) {
-        min-width: 250px
+        width: 250px
     }
     #top td:nth-child(2), #top th:nth-child(2) {
-        min-width: 250px
+        width: 250px
     }
 </style>
