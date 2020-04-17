@@ -22,17 +22,17 @@
             </div>
         </div>
         <div id="table-scroll" class="table-scroll">
-            <table class="table table-custom-inputs">
+            <table class="table table-custom-inputs" style="min-width: 1500px;">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col" class="sticky-col first-sticky-col">{{__("driver.no")}}</th>
                     <th scope="col" class="sticky-col second-sticky-col" style="min-width: 40px;">{{__("driver.type")}}</th>
                     <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__("driver.name")}}</th>
-                    <th scope="col">{{__("driver.mobile_number")}}</th>
-                    <th scope="col">{{__("driver.vehicle_no")}}</th>
-                    <th scope="col">{{__("driver.max_load")}}</th>
-                    <th scope="col">{{__("driver.display")}}</th>
-                    <th scope="col">{{__("driver.admin")}}</th>
+                    <th scope="col" width="150">{{__("driver.mobile_number")}}</th>
+                    <th scope="col" width="100">{{__("driver.vehicle_no")}}</th>
+                    <th scope="col" width="120">{{__("driver.max_load")}}</th>
+                    <th scope="col" width="100">{{__("driver.display")}}</th>
+                    <th scope="col" width="100">{{__("driver.admin")}}</th>
                     <th scope="col">{{__("driver.remarks")}}</th>
                     <th scope="col">{{__("driver.password")}}</th>
                     <th scope="col" class="primary-key"></th>

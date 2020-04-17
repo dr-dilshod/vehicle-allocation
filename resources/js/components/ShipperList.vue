@@ -68,13 +68,13 @@
                     <th scope="col" class="sticky-col second-sticky-col">{{__('shipper.shipper')}}</th>
                     <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__('shipper.furigana')}}</th>
                     <th scope="col">{{__('shipper.abbreviation')}}</th>
-                    <th scope="col">{{__('shipper.postal_code')}}</th>
+                    <th scope="col" width="100">{{__('shipper.postal_code')}}</th>
                     <th scope="col">{{__('shipper.address1')}}</th>
                     <th scope="col">{{__('shipper.address2')}}</th>
-                    <th scope="col">{{__('shipper.phone_number')}}</th>
-                    <th scope="col">{{__('shipper.fax_number')}}</th>
-                    <th scope="col">{{__('shipper.payment_date')}}</th>
-                    <th scope="col">{{__('shipper.closing_date')}}</th>
+                    <th scope="col" width="150">{{__('shipper.phone_number')}}</th>
+                    <th scope="col" width="150">{{__('shipper.fax_number')}}</th>
+                    <th scope="col" width="150">{{__('shipper.payment_date')}}</th>
+                    <th scope="col" width="100">{{__('shipper.closing_date')}}</th>
                     <th scope="col" class="primary-key">{{__('shipper.shipper_id')}}</th>
                 </tr>
                 </thead>
@@ -82,7 +82,7 @@
                 <tr v-for="(shipper, index) in data" :data-key="shipper.shipper_id" :index="index"
                     @click="clickRow($event, index)" :hidden="shipper.delete_flg == 1">
                     <td class="sticky-col first-sticky-col">
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model='shipper.shipper_no' :disabled='!editMode'/>
+                        <the-mask mask="XXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model='shipper.shipper_no' :disabled='!editMode'/>
                     </td>
                     <td class="sticky-col second-sticky-col">
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.shipper_name1" :disabled="!editMode"/>
@@ -99,7 +99,7 @@
                                :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.postal_code" :disabled="!editMode"/>
+                        <the-mask mask="XXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.postal_code" :disabled="!editMode"/>
                     </td>
                     <td>
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.address1" :disabled="!editMode"/>
@@ -108,16 +108,16 @@
                         <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.address2" :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.phone_number" :disabled="!editMode"/>
+                        <the-mask mask="XXXXXXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.phone_number" :disabled="!editMode"/>
                     </td>
                     <td>
-                        <input v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.fax_number" :disabled="!editMode"/>
+                        <the-mask mask="XXXXXXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="shipper.fax_number" :disabled="!editMode"/>
                     </td>
                     <td>
                         <datepicker v-model="shipper.payment_date" :disabled="!editMode" v-on:change="addRowOnChange"
                                     :bootstrap-styling="true" :format="options.weekday" :language="options.language.ja" />
                     </td>
-                    <td width="150">
+                    <td>
                         <select v-on:change="addRowOnChange" class="form-control" v-model="shipper.closing_date" :disabled="!editMode">
                             <option v-for="option in closingDateOptions" v-bind:value="option.value">
                                 {{ option.text }}
@@ -139,6 +139,9 @@
     import {en, ja} from 'vuejs-datepicker/dist/locale'
     import StickTableMixin from '../utils/StickyTableMixin'
     import Datepicker from "vuejs-datepicker";
+    import VueTheMask from 'vue-the-mask'
+
+    Vue.use(VueTheMask);
 
     export default {
         components: {Datepicker},
