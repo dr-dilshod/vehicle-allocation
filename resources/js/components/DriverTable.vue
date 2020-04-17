@@ -138,7 +138,7 @@
         },
         methods: {
             back() {
-                if (this.editMode) {
+                if (this.isDataChanged()) {
                     this.confirmBack();
                 } else {
                     window.location.href = this.backUrl;
@@ -177,7 +177,7 @@
                                 this.data[i].admin_flg = false;
                             }
                         }
-                        this.resetTable(response);
+                        this.resetTable({data: this.data});
                     })
             },
             refresh() {
