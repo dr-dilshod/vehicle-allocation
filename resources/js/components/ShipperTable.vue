@@ -1,5 +1,5 @@
-p<template>
-    <div id="app">
+<template>
+    <div class="shipper">
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"

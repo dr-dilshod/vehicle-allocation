@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div class="driver">
         <div class="row mb-4">
             <div class="col-2">
                 <a v-on:click="back" class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
@@ -190,14 +190,14 @@
 
 </script>
 <style>
-    .table-scroll{
+    .driver .table-scroll{
         min-height: 400px;
         background-color: #fff;
     }
-    .table td > div{
+    .driver .table td > div{
         padding: 0.375rem 0.75rem
     }
-    .table .thead-light th{
+    .driver .table .thead-light th{
         background-color: #fff;
     }
 </style>

@@ -6,7 +6,7 @@
                    class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
-                <h2 class="text-center">{{ title }}</h2>
+                <h2 class="text-center">{{__('dispatch.dispatch_board')}}</h2>
             </div>
             <div class="col-2 text-right">
                 <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-fixed-width">
@@ -49,7 +49,11 @@
                     {{ firstList.formatDate }}
                 </h6>
                 <draggable v-model="firstList.data" group="elems" class="first elem-list">
-                    <div v-for="item in firstList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
+                    <div v-for="item in firstList.items" class="elem" :data-item_id="item.item_id">
+                        <button type="button" class="close" @click="removeElem(item.item_id)"
+                                aria-label="Close">
+                            <span aria-hidden="true" class="text-danger">&times;</span>
+                        </button>
                         <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.stack_point }} - {{ item.down_point }} <br>
@@ -64,7 +68,11 @@
                     {{ secondList.formatDate }}
                 </h6>
                 <draggable v-model="secondList.data" group="elems" class="second elem-list">
-                    <div v-for="item in secondList.data" :key="item.item_id" class="elem" :data-item_id="item.item_id">
+                    <div v-for="item in secondList.items" class="elem" :data-item_id="item.item_id">
+                        <button type="button" class="close" @click="removeElem(item.item_id)"
+                                aria-label="Close">
+                            <span aria-hidden="true" class="text-danger">&times;</span>
+                        </button>
                         <strong>{{ item.shipper_name }}</strong> <br>
                         {{ item.down_date }} {{ item.down_time }} <br>
                         {{ item.stack_point }} - {{ item.down_point }} <br>
@@ -75,86 +83,86 @@
                 </div>
             </div>
             <div class="col-8">
-                <table class="table fixed-header">
-                    <thead>
-                    <tr style="border-bottom: 1px solid #ced4da; ">
-                        <td style="width: 100px" class="text-center">{{__('dispatch.car_no')}}</td>
-                        <td style="width: 150px" class="text-center">{{__('dispatch.driver_name')}}</td>
-                        <td style="width: 250px" class="text-center">{{__('dispatch.morning')}}</td>
-                        <td style="width: 250px" class="text-center">{{__('dispatch.noon')}}</td>
-                        <td style="width: 250px" class="text-center">{{__('dispatch.next_product')}}</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(elem, idx) in thirdList" :key="elem.vehicle_no" :data-driver-id="elem.driver_id">
-                        <td style="width: 100px">{{elem.vehicle_no}}</td>
-                        <td style="width: 150px">
-                            <div class="driver">
-                                <button type="button" class="close" @click="removeRow(idx, elem)" aria-label="Close">
-                                    <span aria-hidden="true" class="text-danger">&times;</span>
-                                </button>
-                                {{elem.driver_name}}
-                            </div>
-                        </td>
-                        <td style="width: 250px">
-                            <draggable :list="elem.morning" group="elems" @change="addMorning" ghost-class="new"
-                                       style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
-                                <div class="elem" v-for="item in elem.morning" :data-item_id="item.item_id">
-                                    <button type="button" class="close" @click="removeElem(item.item_id)"
-                                            aria-label="Close">
-                                        <span aria-hidden="true" class="text-danger">&times;</span>
-                                    </button>
-                                    <strong>{{ item.shipper_name }}</strong> <br>
-                                    {{ item.down_date }} {{ item.down_time }} <br>
-                                    {{ item.stack_point }} - {{ item.down_point }} <br>
-                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
-                                    {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
-                                </div>
-                            </draggable>
-                        </td>
-                        <td style="width: 250px">
-                            <draggable :list="elem.noon" group="elems" @change="addNoon" ghost-class="new"
-                                       style="display: block; min-height: 50px" class="noon" :data-driver-id="elem.driver_id">
-                                <div class="elem" v-for="item in elem.noon" :data-item_id="item.item_id">
-                                    <button type="button" class="close" @click="removeElem(item.item_id)"
-                                            aria-label="Close">
-                                        <span aria-hidden="true" class="text-danger">&times;</span>
-                                    </button>
-                                    <strong>{{ item.shipper_name }}</strong> <br>
-                                    {{ item.down_date }} {{ item.down_time }} <br>
-                                    {{ item.stack_point }} - {{ item.down_point }} <br>
-                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
-                                    {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
-                                </div>
-                            </draggable>
-                        </td>
-                        <td style="width: 250px">
-                            <draggable :list="elem.nextProduct" group="elems" @change="addNextProduct" ghost-class="new"
-                                       style="display: block; min-height: 50px" class="next-product" :data-driver-id="elem.driver_id">
-                                <div class="elem" v-for="item in elem.nextProduct" :data-item_id="item.item_id">
-                                    <button type="button" class="close" @click="removeElem(item.item_id)"
-                                            aria-label="Close">
-                                        <span aria-hidden="true" class="text-danger">&times;</span>
-                                    </button>
-                                    <strong>{{ item.shipper_name }}</strong> <br>
-                                    {{ item.down_date }} {{ item.down_time }} <br>
-                                    {{ item.stack_point }} - {{ item.down_point }} <br>
-                                    {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
-                                    {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
-                                </div>
-                            </draggable>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <tfoot slot="footer">
-                    <tr>
-                        <td colspan="5">
-                            <button data-toggle="modal" data-target="#addDriverModal" class="btn btn-primary btn-fixed-width">{{__('dispatch.add')}}
-                            </button>
-                        </td>
-                    </tr>
-                    </tfoot>
-                </table>
+                <div style="background: #fff;">
+                    <table class="table">
+                        <tr>
+                            <td class="text-center">{{__('dispatch.car_no')}}</td>
+                            <td class="text-center">{{__('dispatch.driver_name')}}</td>
+                            <td style="width:170px" class="text-center">{{__('dispatch.morning')}}</td>
+                            <td style="width:170px" class="text-center">{{__('dispatch.noon')}}</td>
+                            <td style="width:170px" class="text-center">{{__('dispatch.next_product')}}</td>
+                        </tr>
+                    </table>
+                    <div style="height: 380px; overflow-y: scroll; margin-top: -16.5px; border: 1px solid #ced4da; border-left: none; border-right: none;">
+                        <table class="dispatch-table table" id="dispatchTable">
+                            <tbody>
+                            <tr v-for="(elem, idx) in thirdList" :key="elem.driver_id" :data-driver-id="elem.driver_id">
+                                <td class="text-center">{{elem.vehicle_no}}</td>
+                                <td class="text-center">
+                                    <div class="driver">
+                                        {{elem.driver_name}}
+                                        <button type="button" class="close" @click="removeRow(idx, elem)" aria-label="Close">
+                                            <span aria-hidden="true" class="text-danger">&times;</span>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td style="width:170px">
+                                    <draggable :list="elem.morning" group="elems" @add="add($event,1)" ghost-class="new"
+                                               style="display: block; min-height: 50px" class="morning" :data-driver-id="elem.driver_id">
+                                        <div class="elem" v-for="item in elem.morning" :key="item.item_id" :data-item_id="item.item_id">
+                                            <button type="button" class="close" @click="removeElem(item.item_id)"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true" class="text-danger">&times;</span>
+                                            </button>
+                                            <strong>{{ item.shipper_name }}</strong> <br>
+                                            {{ item.down_date }} {{ item.down_time }} <br>
+                                            {{ item.stack_point }} - {{ item.down_point }} <br>
+                                            {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
+                                            {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
+                                        </div>
+                                    </draggable>
+                                </td>
+                                <td style="width:170px">
+                                    <draggable :list="elem.noon" group="elems" @add="add($event,2)" ghost-class="new"
+                                               style="display: block; min-height: 50px" class="noon" :data-driver-id="elem.driver_id">
+                                        <div class="elem" v-for="item in elem.noon" :key="item.item_id" :data-item_id="item.item_id">
+                                            <button type="button" class="close" @click="removeElem(item.item_id)"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true" class="text-danger">&times;</span>
+                                            </button>
+                                            <strong>{{ item.shipper_name }}</strong> <br>
+                                            {{ item.down_date }} {{ item.down_time }} <br>
+                                            {{ item.stack_point }} - {{ item.down_point }} <br>
+                                            {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
+                                            {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
+                                        </div>
+                                    </draggable>
+                                </td>
+                                <td style="width:170px">
+                                    <draggable :list="elem.nextProduct" group="elems" @add="add($event,3)" ghost-class="new"
+                                               style="display: block; min-height: 50px" class="next-product" :data-driver-id="elem.driver_id">
+                                        <div class="elem" v-for="item in elem.nextProduct" :key="item.item_id" :data-item_id="item.item_id">
+                                            <button type="button" class="close" @click="removeElem(item.item_id)"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true" class="text-danger">&times;</span>
+                                            </button>
+                                            <strong>{{ item.shipper_name }}</strong> <br>
+                                            {{ item.down_date }} {{ item.down_time }} <br>
+                                            {{ item.stack_point }} - {{ item.down_point }} <br>
+                                            {{ item.weight }}t <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span> <br>
+                                            {{__('dispatch.remarks')}}: {{ item.remarks }}<br>
+                                        </div>
+                                    </draggable>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="padding: 10px">
+                        <button data-toggle="modal" data-target="#addDriverModal" class="btn btn-primary btn-fixed-width">{{__('dispatch.add')}}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="modal" id="addDriverModal" tabindex="-1" role="dialog">
@@ -172,7 +180,7 @@
                                 <label for="driverName" class="pt-2">{{__('dispatch.driver_name')}}</label>
                                 <input type="text" id="driverName" v-model="driver_search" class="form-control"
                                        style="width: calc(50%)"/>
-                                <button class="btn btn-primary">{{__('common.search')}}</button>
+                                <button class="btn btn-primary" @click="filterDrivers">{{__('common.search')}}</button>
                             </div>
                             <div class="driver-list">
                                 <div class="row label-row mt-2 mr-2 ml-2 mb-0 pb-2">
@@ -181,7 +189,7 @@
                                     <div class="col-6"><strong>{{__('dispatch.driver_name')}}</strong></div>
                                 </div>
                                 <div class="driver-data">
-                                    <label class="row m-2 label-row" v-for="driver in filteredDrivers">
+                                    <label class="row m-2 label-row" v-for="driver in filtered_drivers">
                                         <div class="col-2 text-center">
                                             <input type="checkbox" v-model="tableDriverList" :value="driver.driver_id">
                                         </div>
@@ -219,15 +227,17 @@
         },
         props: {
             backUrl: {type: String, required: true},
-            title: {type: String, required: true},
-            fetchUrl: {type: String, required: true},
+            registerUrl: {type: String, required: true},
+            firstListUrl: {type: String, required: true},
+            secondListUrl: {type: String, required: true},
             thirdListUrl: {type: String, required: true},
-            thirdList2Url: {type: String, required: true},
+            driverListUrl: {type: String, required: true},
             pdfUrl: {type: String, required: true},
         },
         data(){
             return {
                 drivers: [],
+                filtered_drivers: [],
                 driver_search: '',
                 tableDriverList: [],
                 firstList: [],
@@ -246,44 +256,26 @@
             };
         },
         methods: {
-            addMorning: function (evt) {
-                let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
+            add: function (evt, timezone) {
+                console.log(evt);
+                let driver_id = evt.to.dataset.driverId;
                 let postData = {
-                    timezone: 1,
-                    item_id: evt.added.element.item_id,
+                    timezone: timezone,
+                    item_id: evt.item.dataset.item_id,
                     driver_id: driver_id,
                 };
                 this.registerPostData.push(postData);
-                $('div[data-item_id='+postData.item_id+']').addClass('new');
-            },
-            addNoon: function (evt) {
-                let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
-                let postData = {
-                    timezone: 2,
-                    item_id: evt.added.element.item_id,
-                    driver_id: driver_id,
-                };
-                this.registerPostData.push(postData);
-                $('div[data-item_id='+postData.item_id+']').addClass('new');
-            },
-            addNextProduct: function (evt) {
-                let driver_id = $("div[data-item_id="+evt.added.element.item_id+"]").parent().data('driver-id');
-                let postData = {
-                    timezone: 3,
-                    item_id: evt.added.element.item_id,
-                    driver_id: driver_id,
-                };
-                this.registerPostData.push(postData);
-                $('div[data-item_id='+postData.item_id+']').addClass('new');
+                console.log('post data = ',this.registerPostData);
+                $('.dispatch-table div[data-item_id='+postData.item_id+']').addClass('new');
             },
             register(){
                 let componentInstance = this;
                 if(this.registerPostData.length > 0){
-                    axios.post(this.fetchUrl,this.registerPostData)
+                    axios.post(this.registerUrl,this.registerPostData)
                     .then(response => {
                         componentInstance.registerPostData = [];
                         componentInstance.createSuccessDialog();
-                        componentInstance.fetchThirdList();
+                        componentInstance.fetchLists();
                         componentInstance.clearNewClass();
                     });
                 }
@@ -291,12 +283,12 @@
             registerDriver(){
                 let componentInstance = this;
                 let data = {
-                    firstDate: this.firstList.date,
+                    date: this.firstList.date,
                     drivers: this.tableDriverList
                 };
                 axios.post(componentInstance.thirdListUrl,data)
                     .then(response => {
-                        componentInstance.thirdList = response.data.dispatches;
+                        componentInstance.thirdList = this.sanitizeMainTable(response.data);
                         return true;
                     })
                     .catch(function(error){
@@ -305,20 +297,14 @@
                 $('#addDriverModal').modal('toggle');
             },
             clearNewClass(){
-                $('.fixed-header .elem').removeClass('new');
+                $('.dispatch-table .elem').removeClass('new');
             },
             print(){
                 let date = this.dispatch_day;
                 window.location.href = this.pdfUrl + '?date=' + date;
             },
             display(){
-                let date = this.dispatch_day;
-                let dateString = '';
-                if(typeof date === 'object')
-                    dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-                else
-                    dateString = date;
-                this.fetchLists(dateString);
+                this.fetchLists();
             },
             nextDay(){
                 this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),1);
@@ -334,26 +320,35 @@
                 this.thirdList.splice(id, 1);
             },
             removeElem(id){
-                let componentInstance = this;
-                axios.delete(this.fetchUrl+'/'+id)
+                axios.delete(this.registerUrl+'/'+id)
                     .then(response => {
                         $('div[data-item_id='+id+']').remove();
-                        componentInstance.fetchThirdList();
+                        this.fetchThirdList(this.dispatch_day_string);
                     })
                     .catch(function(error){
+                        this.errorDialog(error);
+                    });
+            },
+            fetchLists(){
+                this.fetchFirstList();
+                this.fetchSecondList();
+                this.fetchThirdList();
+            },
+            fetchFirstList(){
+                let componentInstance = this;
+                axios.get(componentInstance.firstListUrl+'?date='+this.dispatch_day_string)
+                    .then(result => {
+                        componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
+                    })
+                    .catch(function (error) {
                         componentInstance.errorDialog(error);
                     });
             },
-            fetchLists(date){
+            fetchSecondList(){
                 let componentInstance = this;
-                axios.get(this.fetchUrl+'?date='+date)
+                axios.get(componentInstance.secondListUrl+'?date='+this.dispatch_day_string)
                     .then(result => {
-                        componentInstance.dispatch_day = result.data.date;
-                        componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
                         componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list);
-                        componentInstance.drivers = result.data.drivers;
-                        componentInstance.thirdList = this.sanitizeMainTable(result.data.dispatches);
-                        componentInstance.tableDriverList = result.data.tableDriverList;
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
@@ -361,19 +356,17 @@
             },
             fetchThirdList(){
                 let componentInstance = this;
-                axios.post(componentInstance.thirdList2Url,{'drivers':this.tableDriverList,'date':this.dispatch_day})
+                axios.post(componentInstance.thirdListUrl,{'drivers':this.tableDriverList,'date':this.dispatch_day_string})
                     .then(result => {
-                        componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
-                        componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list);
-                        componentInstance.thirdList = this.sanitizeMainTable(result.data.dispatches);
+                        componentInstance.thirdList = this.sanitizeMainTable(result.data);
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
                     });
             },
             sanitizeLeftLists(array){
-                array.data.forEach(function (elem) {
-                    elem.down_time = elem.down_time.slice(0,5);
+                array.items.forEach(function (elem) {
+                    elem.down_time = (elem.down_time !== null) ? elem.down_time.slice(0,5) : '';
                     elem.down_date = elem.down_date.replace(/-/g,'/');
                 });
                 return array;
@@ -381,15 +374,15 @@
             sanitizeMainTable(array){
                 array.forEach(function (driver) {
                     driver.morning.forEach(function (elem) {
-                        elem.down_time = elem.down_time.slice(0,5);
+                        elem.down_time = (elem.down_time !== null) ? elem.down_time.slice(0,5) : '';
                         elem.down_date = elem.down_date.replace(/-/g,'/');
                     });
                     driver.noon.forEach(function (elem) {
-                        elem.down_time = elem.down_time.slice(0,5);
+                        elem.down_time = (elem.down_time !== null) ? elem.down_time.slice(0,5) : '';
                         elem.down_date = elem.down_date.replace(/-/g,'/');
                     });
                     driver.nextProduct.forEach(function (elem) {
-                        elem.down_time = elem.down_time.slice(0,5);
+                        elem.down_time = (elem.down_time !== null) ? elem.down_time.slice(0,5) : '';
                         elem.down_date = elem.down_date.replace(/-/g,'/');
                     });
                 });
@@ -399,18 +392,41 @@
                 d.setDate(d.getDate()+days); // tomorrow
                 if (d.getDay() == 0) d.setDate(d.getDate()+1);
                 return d;
+            },
+            filterDrivers(){
+                this.filtered_drivers = this.drivers.filter((driver) => {
+                    return driver.driver_name.match(this.driver_search);
+                });
             }
         },
         mounted(){
             this.dispatch_day = this.getNextWorkday(new Date());
-            this.display();
+            axios.get(this.driverListUrl)
+                .then(result => {
+                    this.drivers = result.data.drivers;
+                    this.filtered_drivers = result.data.drivers;
+                    this.tableDriverList = result.data.tableDriverList;
+                    this.display();
+                })
+                .catch(function (error) {
+                    this.errorDialog(error);
+                });
         },
         computed: {
-            filteredDrivers(){
-                return this.drivers.filter((driver) => {
-                    return driver.driver_name.match(this.driver_search);
-                });
+            dispatch_day_string: function(){
+                let date = this.dispatch_day;
+                let dateString = '';
+                if(typeof date === 'object')
+                    dateString = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+                else
+                    dateString = date;
+                return dateString;
             }
+        },
+        watch: {
+            registerPostData: function(){
+                console.log('registerPostData=',this.registerPostData);
+            },
         }
     }
 </script>
@@ -418,64 +434,62 @@
     .dispatch .table {
         background: #fff;
     }
-    .fixed-header tbody {
-        display: block;
-        overflow: auto;
-        height: 370px;
-        width: 100%;
-    }
-    .driver-list .driver-data {
+    .dispatch .driver-list .driver-data {
         display: block;
         overflow-y: auto;
         overflow-x: hidden;
         height: 150px;
         width: 100%;
     }
-    .fixed-header thead tr {
-        display: block;
-    }
-    .table th {
+
+    .dispatch .table th {
         vertical-align: middle;
     }
-    .close {
+    .dispatch button.close {
+        font-size: 16px;
         display: none;
     }
-    .driver:hover .close {
+    .dispatch-table .driver:hover .close {
         display: inline;
     }
-    .elem:hover .close {
+    .dispatch-table .elem:hover .close {
         display: inline;
     }
-    .elem {
+    .dispatch .elem {
         background: #dae3f3;
         border-radius: 10px;
         margin: 4px;
         padding: 7px;
-        font-size: 12px;
+        font-size: 11px;
+        width: 128px;
     }
-    .new {
+    .dispatch .elem.new {
         background: #e2f0d9;
     }
-    .vdp-datepicker{
+    .dispatch .vdp-datepicker{
         display: inline-block;
     }
-    .elem-list {
+    .dispatch .elem-list {
         background: #fff;
         height: 440px;
         overflow-y: scroll;
     }
-    .day1, .day2{
+    .dispatch .day1, .day2{
         background-color: #fff;
         float: left;
         width: 155px;
     }
-    .day1 > div, .day2 > div{
+    .dispatch .day1 > div, .dispatch .day2 > div{
         border: 1px solid #ced4da;
     }
-    .label-row{
+    .dispatch .label-row{
         border-bottom: 1px solid #ced4da;
     }
-    .dispatch h6, .fixed-header thead td{
+    .dispatch h6{
         font-size: 0.9rem;
+    }
+    .dispatch .dispatch-table{
+        height: 440px;
+        font-size: 12pt;
     }
 </style>

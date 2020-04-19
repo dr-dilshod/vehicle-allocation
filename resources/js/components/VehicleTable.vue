@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="vehicle">
         <div class="row">
             <div class="col-2">
                 <a v-on:click="back"
@@ -204,18 +204,18 @@
         name: 'VehicleTable'
     }
 </script>
-<style>
-    .table-scroll{
+<style scoped>
+    .vehicle .table-scroll{
         min-height: 400px;
         background-color: #fff;
     }
-    .table .thead-light th{
+    .vehicle .table .thead-light th{
         background-color: #fff;
     }
-    .table-scroll table td{
+    .vehicle .table-scroll table td{
         padding: 5px;
     }
-    .table td > div{
+    .vehicle .table td > div{
         padding: 0.375rem 0.75rem
     }
 </style>

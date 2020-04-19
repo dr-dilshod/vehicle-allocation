@@ -103,27 +103,27 @@
     }
 </script>
 <style scoped>
-    .table {
+    #top .table {
         background: #fff;
     }
-    .fixed-header{
-        width: 503px;
+    #top .fixed-header{
+        width: 501px;
         table-layout: fixed;
     }
-    .fixed-header tbody{
+    #top .fixed-header tbody{
         display: block;
-        overflow-y: auto;
+        overflow: auto;
         height: 250px;
         width: 100%;
     }
-    .fixed-header thead tr{
+    #top .fixed-header thead tr{
         display: block;
         position: relative;
     }
-    td:nth-child(1), th:nth-child(1) {
-        min-width: 250px
+    #top td:nth-child(1), #top th:nth-child(1) {
+        width: 250px
     }
-    td:nth-child(2), th:nth-child(2) {
-        min-width: 250px
+    #top td:nth-child(2), #top th:nth-child(2) {
+        width: 250px
     }
 </style>
