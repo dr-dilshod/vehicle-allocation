@@ -175,7 +175,7 @@
                 axios.get(this.resourceUrl+'?company_name='+this.company_name)
                     .then(response => {
                         this.data = response.data;
-                        this.resetTable(response);
+                        this.resetTable({data: this.data});
                     })
             },
             fetchCompanies() {
