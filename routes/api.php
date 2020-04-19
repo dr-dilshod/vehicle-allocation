@@ -20,33 +20,33 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 /*
  * Vehicle CRUD
  */
-Route::get('/vehicle', 'Api\VehicleController@index')->name('api.vehicle.index');
-Route::get('/vehicle/companies', 'Api\VehicleController@getCompanies')->name('api.vehicle.companies');
-Route::get('/vehicle/{id}', 'Api\VehicleController@show')->name('api.vehicle.show');
-Route::post('/vehicle', 'Api\VehicleController@store')->name('api.vehicle.store');
-Route::post('/vehicle/update', 'Api\VehicleController@update')->name('api.vehicle.update');
-Route::post('/vehicle/destroy', 'Api\VehicleController@destroy')->name('api.vehicle.destroy');
+Route::get('/vehicle', 'Api\VehicleController@index')->name('api.vehicle.index')->middleware('admin');
+Route::get('/vehicle/companies', 'Api\VehicleController@getCompanies')->name('api.vehicle.companies')->middleware('admin');
+Route::get('/vehicle/{id}', 'Api\VehicleController@show')->name('api.vehicle.show')->middleware('admin');
+Route::post('/vehicle', 'Api\VehicleController@store')->name('api.vehicle.store')->middleware('admin');
+Route::post('/vehicle/update', 'Api\VehicleController@update')->name('api.vehicle.update')->middleware('admin');
+Route::post('/vehicle/destroy', 'Api\VehicleController@destroy')->name('api.vehicle.destroy')->middleware('admin');
 
 /*
  * Driver CRUD
  */
-Route::get('/driver', 'Api\DriverController@index')->name('api.driver.index');
-Route::get('/driver/{id}', 'Api\DriverController@show')->name('api.driver.show');
-Route::post('/driver/store', 'Api\DriverController@store')->name('api.driver.store');
-Route::post('/driver/update', 'Api\DriverController@update')->name('api.driver.update');
-Route::post('/driver/destroy', 'Api\DriverController@destroy')->name('api.driver.destroy');
-Route::get('/drivers/vehicle-numbers', 'Api\DriverController@getVehicleNumbers')->name('api.driver.vehicle-numbers');
+Route::get('/driver', 'Api\DriverController@index')->name('api.driver.index')->middleware('admin');
+Route::get('/driver/{id}', 'Api\DriverController@show')->name('api.driver.show')->middleware('admin');
+Route::post('/driver/store', 'Api\DriverController@store')->name('api.driver.store')->middleware('admin');
+Route::post('/driver/update', 'Api\DriverController@update')->name('api.driver.update')->middleware('admin');
+Route::post('/driver/destroy', 'Api\DriverController@destroy')->name('api.driver.destroy')->middleware('admin');
+Route::get('/drivers/vehicle-numbers', 'Api\DriverController@getVehicleNumbers')->name('api.driver.vehicle-numbers')->middleware('admin');
 
 // Shipper routes
-Route::get('/shippers', 'Api\ShipperController@index')->name('api.shipper.index');
-Route::post('/shippers/filter', 'Api\ShipperController@filter')->name('api.shipper.filter');
-Route::post('/shippers', 'Api\ShipperController@store')->name('api.shipper.store');
-Route::get("/shippers/distinct-name", 'Api\ShipperController@distinctNames')->name('api.shipper.distinct-name');
-Route::get("/shippers/fullname", 'Api\ShipperController@getFullnames')->name('api.shipper.fullname');
-Route::get("/shippers/distinct-company", 'Api\ShipperController@distinctCompanies')->name('api.shipper.distinct-company');
-Route::get('/shippers/all', 'Api\ShipperController@getShippers')->name('api.shipper.all');
-Route::get('/shippers/{id}', 'Api\ShipperController@show')->name('api.shipper.show');
-Route::post('/shippers/delete', 'Api\ShipperController@destroy')->name('api.shipper.destroy');
+Route::get('/shippers', 'Api\ShipperController@index')->name('api.shipper.index')->middleware('admin');
+Route::post('/shippers/filter', 'Api\ShipperController@filter')->name('api.shipper.filter')->middleware('admin');
+Route::post('/shippers', 'Api\ShipperController@store')->name('api.shipper.store')->middleware('admin');
+Route::get("/shippers/distinct-name", 'Api\ShipperController@distinctNames')->name('api.shipper.distinct-name')->middleware('admin');
+Route::get("/shippers/fullname", 'Api\ShipperController@getFullnames')->name('api.shipper.fullname')->middleware('admin');
+Route::get("/shippers/distinct-company", 'Api\ShipperController@distinctCompanies')->name('api.shipper.distinct-company')->middleware('admin');
+Route::get('/shippers/all', 'Api\ShipperController@getShippers')->name('api.shipper.all')->middleware('admin');
+Route::get('/shippers/{id}', 'Api\ShipperController@show')->name('api.shipper.show')->middleware('admin');
+Route::post('/shippers/delete', 'Api\ShipperController@destroy')->name('api.shipper.destroy')->middleware('admin');
 /*
  * Item CRUD
  */
@@ -63,14 +63,14 @@ Route::delete('/item/{id}', 'Api\ItemController@destroy')->name('api.item.destro
 /**
  * Unit prices CrUD
  */
-Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names');
-Route::get('/unit-prices/all-shippers', 'Api\UnitPriceController@getAllShipperNames')->name('api.unit-prices.all-shippers');
-Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.vehicle-types');
-Route::get('/unit-prices', 'Api\UnitPriceController@index')->name('api.unit-prices.index');
-Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show');
-Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store');
-Route::put('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update');
-Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy');
+Route::get('/unit-prices/shipper-names', 'Api\UnitPriceController@getDistrictShipperNames')->name('api.unit-prices.shipper-names')->middleware('admin');
+Route::get('/unit-prices/all-shippers', 'Api\UnitPriceController@getAllShipperNames')->name('api.unit-prices.all-shippers')->middleware('admin');
+Route::get('/unit-prices/vehicle-types', 'Api\UnitPriceController@getVehicleTypes')->name('api.unit-prices.vehicle-types')->middleware('admin');
+Route::get('/unit-prices', 'Api\UnitPriceController@index')->name('api.unit-prices.index')->middleware('admin');
+Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.unit-prices.show')->middleware('admin');
+Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store')->middleware('admin');
+Route::put('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update')->middleware('admin');
+Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy')->middleware('admin');
 
 /**
  * Deposit APIs
@@ -103,14 +103,14 @@ Route::post('/invoice', 'Api\InvoiceController@store')->name('api.invoice.store'
 
 
 // Dispatch
-Route::get('/dispatch/first-list', 'Api\DispatchController@firstList')->name('api.dispatch.first');
-Route::get('/dispatch/second-list', 'Api\DispatchController@secondList')->name('api.dispatch.second');
-Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('api.dispatch.third');
-Route::get('/dispatch/driver-list', 'Api\DispatchController@driverList')->name('api.dispatch.drivers');
-Route::post('/dispatch', 'Api\DispatchController@store')->name('api.dispatch.store');
-Route::delete('/dispatch/{id}', 'Api\DispatchController@destroy')->name('api.dispatch.destroy');
+Route::get('/dispatch/first-list', 'Api\DispatchController@firstList')->name('api.dispatch.first')->middleware('admin');
+Route::get('/dispatch/second-list', 'Api\DispatchController@secondList')->name('api.dispatch.second')->middleware('admin');
+Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('api.dispatch.third')->middleware('admin');
+Route::get('/dispatch/driver-list', 'Api\DispatchController@driverList')->name('api.dispatch.drivers')->middleware('admin');
+Route::post('/dispatch', 'Api\DispatchController@store')->name('api.dispatch.store')->middleware('admin');
+Route::delete('/dispatch/{id}', 'Api\DispatchController@destroy')->name('api.dispatch.destroy')->middleware('admin');
 
 // Top
 Route::get('/top', 'Api\TopController@index')->name('api.top.index');
-Route::get('/top/all', 'Api\TopController@getAll')->name('api.top.all');
-Route::get('/top/month', 'Api\TopController@getByMonth')->name('api.top.month');
+Route::get('/top/all', 'Api\TopController@getAll')->name('api.top.all')->middleware('admin');
+Route::get('/top/month', 'Api\TopController@getByMonth')->name('api.top.month')->middleware('admin');
