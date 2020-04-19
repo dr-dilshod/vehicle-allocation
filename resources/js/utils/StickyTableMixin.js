@@ -117,7 +117,13 @@ module.exports = {
                     triggerOnConfirm: () => {
                         this.$modal.hide('confirmDialog');
                         this.selectedItems.forEach(index => {
-                            this.data[index].delete_flg = 1;
+                            if (this.data[index].delete_flg == undefined) {
+                                if (this.data.length-1 != index) {
+                                    this.data.splice(index, 1);
+                                }
+                            } else {
+                                this.data[index].delete_flg = 1;
+                            }
                         });
                         this.deselectAll();
                     },
