@@ -2,11 +2,12 @@
 
 @section('content')
     <dispatch
-            fetch-url="{{ route('api.dispatch.index') }}"
+            register-url="{{ route('api.dispatch.store') }}"
             back-url="{{route('top')}}"
+            first-list-url="{{ route('api.dispatch.first') }}"
+            second-list-url="{{ route('api.dispatch.second') }}"
             third-list-url="{{ route('api.dispatch.third') }}"
-            third-list2-url="{{ route('api.dispatch.third2') }}"
+            driver-list-url="{{ route('api.dispatch.drivers') }}"
             pdf-url="{{ route('dispatch.pdf') }}"
-            title="{{__('dispatch.dispatch_board')}}"
     ></dispatch>
 @endsection

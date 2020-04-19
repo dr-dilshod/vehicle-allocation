@@ -120,7 +120,11 @@ module.exports = {
             if (_.isNil(error)) {
                 return;
             }
-            let status = error.response.status;
+            let status = (error.response !== undefined) ? error.response.status: undefined;
+            if(status === undefined) {
+                console.log(error);
+                return;
+            }
             if (status === 419 || status === 401) {
                 location.reload();
                 return;
