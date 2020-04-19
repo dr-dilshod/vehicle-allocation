@@ -65,7 +65,7 @@
                     @click="clickRow($event, index)" :hidden="vehicle.delete_flg == 1">
                     <td class="sticky-col first-sticky-col">
                         <div v-if="!editMode">{{vehicle.vehicle_no}}</div>
-                        <the-mask mask="XXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model='vehicle.vehicle_no' v-if='editMode'/>
+                        <the-mask mask="XXXX" :masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model='vehicle.vehicle_no' v-if='editMode'/>
                     </td>
                     <td class="sticky-col second-sticky-col">
                         <div v-if="!editMode">{{vehicle.company_name}}</div>
@@ -83,7 +83,7 @@
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_postal_code}}</div>
-                        <the-mask mask="XXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_postal_code" v-if="editMode"/>
+                        <the-mask mask="XXXXXXXX" :masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_postal_code" v-if="editMode"/>
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_address1}}</div>
@@ -95,11 +95,11 @@
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_phone_number}}</div>
-                        <the-mask mask="XXXXXXXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_phone_number" v-if="editMode"/>
+                        <the-mask mask="XXXXXXXXXXXXX" :masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_phone_number" v-if="editMode"/>
                     </td>
                     <td>
                         <div v-if="!editMode">{{vehicle.vehicle_fax_number}}</div>
-                        <the-mask mask="XXXXXXXXXXXX" masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_fax_number" v-if="editMode"/>
+                        <the-mask mask="XXXXXXXXXXXX" :masked="true" v-on:change="addRowOnChange" type="text" class="form-control" v-model="vehicle.vehicle_fax_number" v-if="editMode"/>
                     </td>
                     <td style="min-width: 70px;">
                         <div v-if="!editMode"><span v-if="!editMode && vehicle.offset==0">{{__('vehicle.no')}}</span><span v-if="!editMode && vehicle.offset==1">{{__('vehicle.yes')}}</span></div>
@@ -174,7 +174,22 @@
             fetchVehicleData() {
                 axios.get(this.resourceUrl+'?company_name='+this.company_name)
                     .then(response => {
-                        this.data = response.data;
+                        this.data = response.data.map(el => {
+                            return {
+                                vehicle_no : el.vehicle_no,
+                                company_name : el.company_name,
+                                company_kana_name : el.company_kana_name,
+                                vehicle_company_abbreviation : el.vehicle_company_abbreviation,
+                                vehicle_postal_code : el.vehicle_postal_code,
+                                vehicle_address1 : el.vehicle_address1,
+                                vehicle_address2 : el.vehicle_address2,
+                                vehicle_phone_number : el.vehicle_phone_number,
+                                vehicle_fax_number : el.vehicle_fax_number,
+                                offset : el.offset === 0 ? false : true,
+                                vehicle_remark : el.vehicle_remark,
+                                vehicle_id : el.vehicle_id,
+                            };
+                        });
                         this.resetTable({data: this.data});
                     })
             },
