@@ -50,11 +50,11 @@
                     <th scope="col" class="sticky-col second-sticky-col">{{__('vehicle.company_name')}}</th>
                     <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__('vehicle.kana_name')}}</th>
                     <th scope="col">{{__('vehicle.company_abbr')}}</th>
-                    <th scope="col">{{__('vehicle.postal_code')}}</th>
+                    <th scope="col" width="100">{{__('vehicle.postal_code')}}</th>
                     <th scope="col">{{__('vehicle.address')}}</th>
                     <th scope="col">{{__('vehicle.address2')}}</th>
-                    <th scope="col">{{__('vehicle.phone')}}</th>
-                    <th scope="col">{{__('vehicle.fax')}}</th>
+                    <th scope="col" width="150">{{__('vehicle.phone')}}</th>
+                    <th scope="col" width="150">{{__('vehicle.fax')}}</th>
                     <th scope="col">{{__('vehicle.offset')}}</th>
                     <th scope="col">{{__('vehicle.remark')}}</th>
                     <th scope="col" class="primary-key">Vehicle Id</th>
