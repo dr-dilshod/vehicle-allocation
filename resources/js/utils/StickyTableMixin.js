@@ -116,13 +116,15 @@ module.exports = {
                     text: this.__('common.confirm_delete'),
                     triggerOnConfirm: () => {
                         this.$modal.hide('confirmDialog');
-                        this.selectedItems.forEach(index => {
-                            if (this.data[index].delete_flg == undefined) {
-                                if (this.data.length-1 != index) {
-                                    this.data.splice(index, 1);
+                        let countRemove = 0;
+                        this.selectedItems.sort().forEach(index => {
+                            if (this.data[index-countRemove].delete_flg == undefined) {
+                                if (this.data.length-1 != index-countRemove) {
+                                    this.data.splice(index-countRemove, 1);
+                                    countRemove++;
                                 }
                             } else {
-                                this.data[index].delete_flg = 1;
+                                this.data[index-countRemove].delete_flg = 1;
                             }
                         });
                         this.deselectAll();
