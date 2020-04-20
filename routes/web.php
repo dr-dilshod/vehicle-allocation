@@ -78,5 +78,5 @@ Route::get('/payment/search', 'Api\PaymentController@search')->name('payment.sea
 Route::get('/payment/getShippers', 'Api\PaymentController@getShippers')->name('payment.shippers')->middleware('admin');
 
 // Dispatch list
-Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index');
-Route::get('/dispatch/print', 'DispatchController@printPdf')->name('dispatch.pdf');
+Route::get('/dispatch', 'DispatchController@index')->name('dispatch.index')->middleware('admin');
+Route::get('/dispatch/print', 'DispatchController@printPdf')->name('dispatch.pdf')->middleware('admin');
