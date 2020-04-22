@@ -107,7 +107,10 @@ class DispatchController extends Controller
 
     public function firstList(Request $request){
         $result = [];
-        $firstDate = $request->get('date');
+        $date = $request->get('date');
+        $firstDate = date('Y/m/d',strtotime($date." +1 day"));
+        if(date('w',strtotime($firstDate)) == 0) // if Sunday
+            $firstDate = date('Y/m/d',strtotime($firstDate." +1 day"));
         $firstListItems = \DB::table('items')
             ->select(['items.item_id','items.driver_id','items.shipper_id','items.down_date','items.down_time',
                 'items.down_point','items.shipper_name','items.stack_point','items.weight','items.empty_pl','items.item_remark'])

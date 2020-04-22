@@ -48,8 +48,8 @@
                     翌営業日 <br>
                     {{ firstList.formatDate }}
                 </h6>
-                <draggable v-model="firstList.data" group="elems" class="first elem-list">
-                    <div v-for="item in firstList.items" class="elem" :data-item_id="item.item_id">
+                <draggable :list="firstList.data" group="elems" class="first elem-list">
+                    <div v-for="item in firstList.items" class="elem" :key="item.item_id" :data-item_id="item.item_id" :data-source="item.source">
                         <button type="button" class="close" @click="removeElem(item.item_id)"
                                 aria-label="Close">
                             <span aria-hidden="true" class="text-danger">&times;</span>
@@ -67,8 +67,8 @@
                     翌々営業日 <br>
                     {{ secondList.formatDate }}
                 </h6>
-                <draggable v-model="secondList.data" group="elems" class="second elem-list">
-                    <div v-for="item in secondList.items" class="elem" :data-item_id="item.item_id">
+                <draggable :list="secondList.data" group="elems" class="second elem-list">
+                    <div v-for="item in secondList.items" class="elem" :key="item.item_id" :data-item_id="item.item_id" :data-source="item.source">
                         <button type="button" class="close" @click="removeElem(item.item_id)"
                                 aria-label="Close">
                             <span aria-hidden="true" class="text-danger">&times;</span>
@@ -257,7 +257,7 @@
         },
         methods: {
             add: function (evt, timezone) {
-                console.log(evt);
+//                console.log(evt);
                 let driver_id = evt.to.dataset.driverId;
                 let postData = {
                     timezone: timezone,
@@ -265,7 +265,6 @@
                     driver_id: driver_id,
                 };
                 this.registerPostData.push(postData);
-                console.log('post data = ',this.registerPostData);
                 $('.dispatch-table div[data-item_id='+postData.item_id+']').addClass('new');
             },
             register(){
@@ -319,36 +318,39 @@
                 if (index !== -1) this.tableDriverList.splice(index, 1);
                 this.thirdList.splice(id, 1);
             },
-            removeElem(id){
-                axios.delete(this.registerUrl+'/'+id)
-                    .then(response => {
-                        $('div[data-item_id='+id+']').remove();
-                        this.fetchThirdList(this.dispatch_day_string);
-                    })
-                    .catch(function(error){
-                        this.errorDialog(error);
-                    });
+            removeElem(item_id){
+                console.log('first',this.firstList.items);
+                console.log('second',this.secondList.items);
+                let div = $('.dispatch-table div[data-item_id='+item_id+']');
+                div.removeClass('new');
+                let source = div.data('source');
+                alert(source);
+                $('div.'+source).append(div);
+                $('.dispatch-table div[data-item_id='+item_id+']').remove();
             },
             fetchLists(){
-                this.fetchFirstList();
-                this.fetchSecondList();
+                let component = this;
+                this.fetchFirstList().then(function () {
+                    component.fetchSecondList(component.firstList.date);
+                });
                 this.fetchThirdList();
             },
-            fetchFirstList(){
+            async fetchFirstList(){
                 let componentInstance = this;
-                axios.get(componentInstance.firstListUrl+'?date='+this.dispatch_day_string)
+                await axios.get(componentInstance.firstListUrl+'?date='+this.dispatch_day_string)
                     .then(result => {
-                        componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list);
+                        componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list,'first');
                     })
                     .catch(function (error) {
+//                        console.log(error);
                         componentInstance.errorDialog(error);
                     });
             },
-            fetchSecondList(){
+            fetchSecondList(date){
                 let componentInstance = this;
-                axios.get(componentInstance.secondListUrl+'?date='+this.dispatch_day_string)
+                axios.get(componentInstance.secondListUrl+'?date='+date)
                     .then(result => {
-                        componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list);
+                        componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list,'second');
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
@@ -364,10 +366,11 @@
                         componentInstance.errorDialog(error);
                     });
             },
-            sanitizeLeftLists(array){
+            sanitizeLeftLists(array,source){
                 array.items.forEach(function (elem) {
                     elem.down_time = (elem.down_time !== null) ? elem.down_time.slice(0,5) : '';
                     elem.down_date = elem.down_date.replace(/-/g,'/');
+                    elem.source = source;
                 });
                 return array;
             },
