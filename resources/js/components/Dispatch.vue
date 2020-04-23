@@ -2,7 +2,7 @@
     <div class="container dispatch">
         <div class="row">
             <div class="col-2">
-                <a :href="backUrl"
+                <a v-on:click="back"
                    class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-8">
@@ -244,7 +244,11 @@
                 secondList: [],
                 thirdList: [],
                 dispatch_day: '',
-                registerPostData: [],
+                registerPostData: {
+                    added: [],
+                    removed: []
+                },
+                change: false,
                 options: {
                     monthFormat: "yyyy/MM",
                     weekday: "yyyy/MM/dd",
@@ -256,26 +260,38 @@
             };
         },
         methods: {
+            back() {
+                if (this.change) {
+                    this.confirm('back');
+                } else {
+                    window.location.href = this.backUrl;
+                }
+            },
             add: function (evt, timezone) {
-//                console.log(evt);
+                this.change = true;
                 let driver_id = evt.to.dataset.driverId;
                 let postData = {
                     timezone: timezone,
                     item_id: evt.item.dataset.item_id,
                     driver_id: driver_id,
                 };
-                this.registerPostData.push(postData);
+                this.registerPostData.added.push(postData);
                 $('.dispatch-table div[data-item_id='+postData.item_id+']').addClass('new');
             },
             register(){
                 let componentInstance = this;
-                if(this.registerPostData.length > 0){
+                if(this.registerPostData.added.length > 0 || this.registerPostData.removed.length > 0 ){
                     axios.post(this.registerUrl,this.registerPostData)
                     .then(response => {
                         componentInstance.registerPostData = [];
                         componentInstance.createSuccessDialog();
                         componentInstance.fetchLists();
                         componentInstance.clearNewClass();
+                        componentInstance.change = false;
+                        this.registerPostData = {
+                            added: [],
+                            removed: []
+                        };
                     });
                 }
             },
@@ -299,19 +315,82 @@
                 $('.dispatch-table .elem').removeClass('new');
             },
             print(){
-                let date = this.dispatch_day;
-                window.location.href = this.pdfUrl + '?date=' + date;
+                if (this.change) {
+                    this.confirm('print');
+                } else {
+                    let date = this.dispatch_day_string;
+                    window.location.href = this.pdfUrl + '?date=' + date;
+                }
+
+            },
+            confirm(button) {
+                let component = this;
+                this.$modal.show({
+                    template: `
+                        <div class="modal-content">
+                            <div class="modal-header border-radius-0 bg-blue"><h5 class="modal-title">{{title}}</h5></div>
+                            <div class="modal-body">
+                                <div class="text-center p-5"><div v-html="text"></div></div>
+                                <div class="text-center">
+                                    <button class="btn btn-warning btn-fixed-width" @click="handle(button)">OK</button>
+                                    <button class="btn btn-default btn-fixed-width" @click="$emit('close')">{{this.__('common.cancel')}}</button>
+                                </div>
+                            </div>
+                        </div>
+                      `,
+                    props: ['title','text','handle','button']
+                }, {
+                    button: button,
+                    title: this.__('alert.message'),
+                    text: '編集中のデータを破棄して前の画面に戻りますか？',
+                    handle: function(button){
+                        component.change = false;
+                        if(button === 'back'){
+                            window.location.href = component.backUrl;
+                        }
+                        if(button === 'display'){
+                            component.fetchLists();
+                        }
+                        if(button === 'print'){
+                            let date = component.dispatch_day_string;
+                            window.location.href = this.pdfUrl + '?date=' + date;
+                        }
+                        if(button === 'nextDay'){
+                            component.dispatch_day = component.getNextWorkday(new Date(component.dispatch_day), 1);
+                            component.display();
+                        }
+                        if(button === 'nextTwoDay'){
+                            component.dispatch_day = component.getNextWorkday(new Date(component.dispatch_day), 2);
+                            component.display();
+                        }
+                        this.$emit('close');
+                    }
+                }, {
+                    height: 'auto'
+                });
             },
             display(){
-                this.fetchLists();
+                if (this.change) {
+                    this.confirm('display');
+                } else {
+                    this.fetchLists();
+                }
             },
             nextDay(){
-                this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),1);
-                this.display();
+                if (this.change) {
+                    this.confirm('nextDay');
+                } else {
+                    this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day), 1);
+                    this.display();
+                }
             },
             twoDaysLater(){
-                this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day),2);
-                this.display();
+                if (this.change) {
+                    this.confirm('nextTwoDay');
+                } else {
+                    this.dispatch_day = this.getNextWorkday(new Date(this.dispatch_day), 2);
+                    this.display();
+                }
             },
             removeRow(id, elem){
                 let index = this.tableDriverList.indexOf(elem.driver_id);
@@ -319,14 +398,30 @@
                 this.thirdList.splice(id, 1);
             },
             removeElem(item_id){
-                console.log('first',this.firstList.items);
-                console.log('second',this.secondList.items);
                 let div = $('.dispatch-table div[data-item_id='+item_id+']');
                 div.removeClass('new');
                 let source = div.data('source');
-                alert(source);
                 $('div.'+source).append(div);
                 $('.dispatch-table div[data-item_id='+item_id+']').remove();
+                this.thirdList.forEach(function (driver) {
+                    driver.morning.forEach(function(item, index, arr){
+                        if (item.item_id == item_id) {
+                            arr.splice(index,1);
+                        }
+                    });
+                    driver.noon.forEach(function(item, index, arr){
+                        if (item.item_id == item_id) {
+                            arr.splice(index,1);
+                        }
+                    });
+                    driver.nextProduct.forEach(function(item, index, arr){
+                        if (item.item_id == item_id) {
+                            arr.splice(index,1);
+                        }
+                    });
+                });
+                this.registerPostData.removed.push(item_id);
+                this.change = true;
             },
             fetchLists(){
                 let component = this;
@@ -337,9 +432,9 @@
             },
             async fetchFirstList(){
                 let componentInstance = this;
-                await axios.get(componentInstance.firstListUrl+'?date='+this.dispatch_day_string)
+                await axios.get(this.firstListUrl+'?date='+this.dispatch_day_string)
                     .then(result => {
-                        componentInstance.firstList = this.sanitizeLeftLists(result.data.first_list,'first');
+                        this.firstList = _.cloneDeep(this.sanitizeLeftLists(result.data.first_list,'first'));
                     })
                     .catch(function (error) {
 //                        console.log(error);
@@ -348,9 +443,9 @@
             },
             fetchSecondList(date){
                 let componentInstance = this;
-                axios.get(componentInstance.secondListUrl+'?date='+date)
+                axios.get(this.secondListUrl+'?date='+date)
                     .then(result => {
-                        componentInstance.secondList = this.sanitizeLeftLists(result.data.second_list,'second');
+                        this.secondList = _.cloneDeep(this.sanitizeLeftLists(result.data.second_list,'second'));
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
@@ -358,9 +453,9 @@
             },
             fetchThirdList(){
                 let componentInstance = this;
-                axios.post(componentInstance.thirdListUrl,{'drivers':this.tableDriverList,'date':this.dispatch_day_string})
+                axios.post(this.thirdListUrl,{'drivers':this.tableDriverList,'date':this.dispatch_day_string})
                     .then(result => {
-                        componentInstance.thirdList = this.sanitizeMainTable(result.data);
+                        this.thirdList = _.cloneDeep(this.sanitizeMainTable(result.data));
                     })
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
@@ -404,6 +499,7 @@
         },
         mounted(){
             this.dispatch_day = this.getNextWorkday(new Date());
+            let component = this;
             axios.get(this.driverListUrl)
                 .then(result => {
                     this.drivers = result.data.drivers;
@@ -412,7 +508,7 @@
                     this.display();
                 })
                 .catch(function (error) {
-                    this.errorDialog(error);
+                    component.errorDialog(error);
                 });
         },
         computed: {

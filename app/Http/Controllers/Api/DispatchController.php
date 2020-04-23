@@ -219,7 +219,9 @@ class DispatchController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        foreach($data as $item){
+        $added = $data['added'];
+        $removed = $data['removed'];
+        foreach($added as $item){
             if($this->itemAlreadyExists($item)){
                 $this->removeItem($item);
             }
@@ -227,6 +229,9 @@ class DispatchController extends Controller
             if($dispatch){
                 $stmt = \DB::update('UPDATE items SET dispatch_status=? WHERE item_id=?',[Item::DISPATCH_STATUS_IN_DISPATCH,$dispatch->item_id]);
             }
+        }
+        foreach ($removed as $item){
+            $this->removeItem(['item_id'=>$item]);
         }
         return response()->json($data, 201);
     }
