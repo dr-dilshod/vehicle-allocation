@@ -6,7 +6,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Driver;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 class DriverController extends Controller
 {
