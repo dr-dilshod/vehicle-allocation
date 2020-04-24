@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-<h1 align="center" style="font-family: ipaexg, sans-serif">{{$params['date']}}の毎日のディスパッチ出力</h1>
+<h1 align="center" style="font-family: ipaexg, sans-serif">{{$params['date']}} 配車板</h1>
 <div style="margin: 0 auto; width: 960px">
     <br>
     <table border="1">
