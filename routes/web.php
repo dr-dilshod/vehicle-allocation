@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +13,8 @@
 |
 */
 
+
+
 Route::get('/', 'TopController@index')->name('home');
 
 Auth::routes([
@@ -20,7 +24,7 @@ Auth::routes([
 ]);
 
 Route::get('/top', 'TopController@index')->name('top');
-Route::get('/setting', 'SettingController@index')->name('setting');
+Route::get('/setting', 'SettingController@index')->middleware('admin')->name('setting');
 
 // Vehicle
 Route::get('/vehicle', 'VehicleController@index')->name('vehicle');
