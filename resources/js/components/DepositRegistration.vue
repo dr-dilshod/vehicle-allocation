@@ -105,22 +105,22 @@
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.transfer')}}</td>
-                <td><money class="form-control" v-model="deposit.deposit_amount" v-bind="money" required/></td>
+                <td><money class="form-control" v-model="deposit.deposit_amount" v-bind="money" :disabled="!registerMode && !editable" required/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.offset')}}</td>
-                <td><money class="form-control" v-model="offset" v-bind="money" disabled/></td>
+                <td><money class="form-control" v-model="deposit.offset" v-bind="money" :disabled="!registerMode && !editable"/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.other')}}</td>
-                <td><money class="form-control" v-model="deposit.other" v-bind="money"/></td>
+                <td><money class="form-control" v-model="deposit.other" v-bind="money" :disabled="!registerMode && !editable"/></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             <tr>
                 <td class="text-right">{{__('deposit.transfer_fee')}}</td>
-                <td><money class="form-control" v-model="deposit.fee" v-bind="money"/></td>
+                <td><money class="form-control" v-model="deposit.fee" v-bind="money" :disabled="!registerMode && !editable" /></td>
                 <td>{{__('deposit.yen')}}</td>
             </tr>
             </tbody>
@@ -173,10 +173,10 @@
                     shipper_id : null,
                     deposit_day : null,
                     deposit_amount : 0,
+                    offset : 0,
                     other : 0,
                     fee : 0,
                 },
-                offset : null,
                 total : null,
                 invoice : null,
                 editable : false,
@@ -223,7 +223,6 @@
                 axios.post(this.resourceUrl+'/filter',this.filter)
                     .then(response => {
                         this.deposit = response.data.deposit;
-                        this.offset = response.data.offset;
                         this.total = response.data.total;
                         this.invoice = response.data.invoice;
                         this.editable = response.data.unique;
@@ -269,10 +268,10 @@
                     shipper_id : null,
                     deposit_day : null,
                     deposit_amount : 0,
+                    offset : 0,
                     other : 0,
                     fee : 0,
                 };
-                this.offset = null;
                 this.total = null;
                 this.invoice = null;
                 this.editable = false;

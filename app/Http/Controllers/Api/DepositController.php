@@ -43,6 +43,7 @@ class DepositController extends Controller
                 $deposits[0]->deposit_amount += $deposits[$i]->deposit_amount;
                 $deposits[0]->other += $deposits[$i]->other;
                 $deposits[0]->fee += $deposits[$i]->fee;
+                $deposits[0]->offset += $deposits[$i]->offset;
             }
             $deposits[0]->deposit_day = date('Y-m-d', strtotime($deposits[0]->deposit_day));
             $deposit = $deposits[0];
@@ -72,7 +73,6 @@ class DepositController extends Controller
             'deposit' => $deposit,
             'total' => $total,
             'invoice' => $billing - $total,
-            'offset' => $billingAll - $totalAll,
         ];
     }
 
@@ -92,6 +92,9 @@ class DepositController extends Controller
         }
         if (empty($data['fee'])){
             $data['fee'] = 0;
+        }
+        if (empty($data['offset'])){
+            $data['offset'] = 0;
         }
         $deposit = Deposit::create($data);
         return response()->json($deposit, 201);

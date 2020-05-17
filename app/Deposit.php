@@ -49,7 +49,7 @@ class Deposit extends Model
     /**
      * @var array
      */
-    protected $fillable = ['shipper_id', 'deposit_day', 'deposit_amount', 'other', 'fee', 'delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at'];
+    protected $fillable = ['shipper_id', 'deposit_day', 'deposit_amount', 'other', 'fee', 'offset','delete_flg', 'create_id', 'created_at', 'update_id', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
