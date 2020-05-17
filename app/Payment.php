@@ -44,7 +44,7 @@ class Payment extends Model
     /**
      * @var array
      */
-    protected $fillable = [ 'shipper_id','payment_day','payment_amount','other','fee', 'delete_flg', 'create_id', 'update_id', 'created_at', 'updated_at'];
+    protected $fillable = [ 'shipper_id','payment_day','payment_amount','other','fee', 'offset','delete_flg', 'create_id', 'update_id', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

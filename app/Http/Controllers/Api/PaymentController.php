@@ -65,6 +65,7 @@ class PaymentController extends Controller
                 $payments[0]->payment_amount += $payments[$i]->payment_amount;
                 $payments[0]->other += $payments[$i]->other;
                 $payments[0]->fee += $payments[$i]->fee;
+                $payments[0]->offset += $payments[$i]->offset;
             }
             $payments[0]->payment_day = date('Y-m-d', strtotime($payments[0]->payment_day));
             $payment = $payments[0];
@@ -94,7 +95,6 @@ class PaymentController extends Controller
             'payment' => $payment,
             'total' => $total,
             'invoice' => $invoice - $total,
-            'offset' => $billingAll - $totalAll,
         ];
     }
 
@@ -107,6 +107,9 @@ class PaymentController extends Controller
         }
         if (empty($data['fee'])){
             $data['fee'] = 0;
+        }
+        if (empty($data['offset'])){
+            $data['offset'] = 0;
         }
         $payment = Payment::create($data);
         $invoice = Invoice::where('shipper_id', $payment->shipper_id)->first();

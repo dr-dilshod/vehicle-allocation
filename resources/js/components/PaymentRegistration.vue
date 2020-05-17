@@ -105,22 +105,22 @@
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.transfer')}}</td>
-                    <td><money class="form-control" v-model="payment.payment_amount" v-bind="money" required/></td>
+                    <td><money class="form-control" v-model="payment.payment_amount" v-bind="money" :disabled="!registerMode && !editable" required/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.offset')}}</td>
-                    <td><money class="form-control" v-model="offset" v-bind="money" disabled/></td>
+                    <td><money class="form-control" v-model="payment.offset" v-bind="money" :disabled="!registerMode && !editable"/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.other')}}</td>
-                    <td><money class="form-control" v-model="payment.other" v-bind="money"/></td>
+                    <td><money class="form-control" v-model="payment.other" v-bind="money" :disabled="!registerMode && !editable"/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 <tr>
                     <td class="text-right">{{__('payment.transfer_fee')}}</td>
-                    <td><money class="form-control" v-model="payment.fee" v-bind="money"/></td>
+                    <td><money class="form-control" v-model="payment.fee" v-bind="money" :disabled="!registerMode && !editable"/></td>
                     <td>{{__('payment.yen')}}</td>
                 </tr>
                 </tbody>
@@ -173,10 +173,10 @@
                     shipper_id : null,
                     payment_day : null,
                     payment_amount : 0,
+                    offset : 0,
                     other : 0,
                     fee : 0,
                 },
-                offset : null,
                 total : null,
                 invoice : null,
                 editable : false,
@@ -223,7 +223,6 @@
                 axios.post(this.resourceUrl+'/filter',this.filter)
                     .then(response => {
                         this.payment = response.data.payment;
-                        this.offset = response.data.offset;
                         this.total = response.data.total;
                         this.invoice = response.data.invoice;
                         this.editable = response.data.unique;
@@ -269,10 +268,10 @@
                     shipper_id : null,
                     payment_day : null,
                     payment_amount : 0,
+                    offset : 0,
                     other : 0,
                     fee : 0,
                 };
-                this.offset = null;
                 this.total = null;
                 this.invoice = null;
                 this.editable = false;
