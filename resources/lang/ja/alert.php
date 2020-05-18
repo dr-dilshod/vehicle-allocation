@@ -17,6 +17,7 @@ return [
     'successfully_created'=>'作成しました！',
     'ok'=>'オーケー',
     'message' => 'メッセージ',
+    'something_is_wrong_with_entered_data'=> '入力されたデータにエラーがあります。修正してください。',
     'done' => '完了'
 
 

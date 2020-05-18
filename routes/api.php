@@ -72,6 +72,8 @@ Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store')->middleware('admin');
 Route::put('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update')->middleware('admin');
 Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy')->middleware('admin');
+Route::post('/unit-prices/register', 'Api\UnitPriceController@register')->name('api.unit-prices.register')->middleware('admin');
+
 
 /**
  * Deposit APIs

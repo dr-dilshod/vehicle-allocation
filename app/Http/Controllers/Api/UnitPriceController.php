@@ -150,4 +150,15 @@ class UnitPriceController extends Controller
         return response()->json($vehicleTypes);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * register single unit price
+     */
+    public function register(Request $request)
+    {
+        //$data = $request->validate(UnitPrice::$validationRules);
+        $price = UnitPrice::create($request->all());
+        return response()->json($price);
+    }
 }
