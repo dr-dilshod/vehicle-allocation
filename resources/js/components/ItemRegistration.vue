@@ -113,10 +113,11 @@
                                         @change="calcUnitPrice"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option>{{__('item.wing')}}</option>
-                                    <option>{{__('item.flat')}}</option>
-                                    <option>{{__('item.trailer')}}</option>
-                                    <option>{{__('item.bulk')}}</option>
+                                    <option>ウイング</option>
+                                    <option>大平</option>
+                                    <option>4平</option>
+                                    <option>バルク</option>
+                                    <option>ユニック</option>
                                 </select>
                             </td>
                         </tr>
