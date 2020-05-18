@@ -69,7 +69,8 @@ class Item extends Model
     protected $fillable = ['shipper_id', 'driver_id', 'create_id', 'update_id', 'vehicle_id', 'status',
         'stack_date', 'stack_time', 'down_date', 'down_time', 'down_invoice', 'stack_point', 'down_point',
         'weight', 'empty_pl', 'item_price', 'item_driver_name', 'vehicle_no3', 'shipper_name', 'item_vehicle',
-        'vehicle_payment', 'item_completion_date', 'item_remark', 'delete_flg', 'created_at', 'updated_at', 'remember_token'];
+        'vehicle_payment', 'item_completion_date', 'highway_cost', 'pay_highway_cost', 'item_remark',
+        'delete_flg', 'created_at', 'updated_at', 'remember_token'];
 
 
     /**
@@ -95,6 +96,8 @@ class Item extends Model
         'shipper_name' => 'nullable|string|max:60',
         'item_vehicle' => 'nullable|string|max:60',
         'vehicle_payment' => 'nullable|integer|max:9999999999',
+        'highway_cost' => 'nullable|integer|max:9999999999',
+        'pay_highway_cost' => 'nullable|integer|max:9999999999',
         'delete_flg' => 'min:0|max:1',
         'item_remark' => 'nullable|max:255',
     ];

@@ -236,6 +236,15 @@
                             <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
                         <tr>
+                            <td class="text-right" valign="bottom"><label for="highway_cost">高速代</label>&nbsp;
+                            </td>
+                            <td>
+                                <money type="text" placeholder="" class="form-control" id="highway_cost"
+                                       v-model="itemData.highway_cost" value="" v-bind="money"/>
+                            </td>
+                            <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
+                        </tr>
+                        <tr>
                             <td class="text-right" valign="bottom"><label for="item_price">{{__('item.amount_of_money')}}</label>&nbsp;
                             </td>
                             <td>
@@ -282,12 +291,22 @@
                                 </select>
                             </td>
                             <td></td>
+
+                        </tr>
+                        <tr>
                             <td class="text-right" valign="bottom">
                                 <label for="vehicle_payment">{{__('item.rental_vehicle_payment')}}</label>&nbsp;
                             </td>
-                            <td colspan="3">
+                            <td>
                                 <money type="text" class="form-control" id="vehicle_payment" v-on:change="notify"
-                                   v-model="itemData.vehicle_payment" v-bind="money"/>
+                                       v-model="itemData.vehicle_payment" v-bind="money"/>
+                            </td>
+                            <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
+                            <td class="text-right" valign="bottom"><label for="pay_highway_cost">支払高速代</label>&nbsp;
+                            </td>
+                            <td colspan="3">
+                                <money type="text" placeholder="" class="form-control" id="pay_highway_cost"
+                                       v-model="itemData.pay_highway_cost" value="" v-bind="money"/>
                             </td>
                             <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
                         </tr>
