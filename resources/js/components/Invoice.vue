@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-2">
                 <a :href="backUrl"
-                   class="btn btn-lg btn-warning btn-block">{{__('common.back')}}</a>
+                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
             <div class="col-10">
                 <div class="row">
@@ -22,7 +22,7 @@
                             <button class="btn btn-lg btn-danger btn-fixed-width" @click="deleteConfirmModal"
                                     :disabled="!editMode">{{__('common.delete')}}
                             </button>
-                            <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#billingModal">
+                            <button class="btn btn-lg btn-success btn-fixed-width" data-toggle="modal" data-target="#billingModal">
                                 {{__('invoice.billing_month')}}
                             </button>
                             <br>
@@ -113,18 +113,19 @@
             <table class="table table-custom-inputs">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col" class="sticky-col first-sticky-col">{{__('invoice.loading_port')}}</th>
-                    <th scope="col" class="sticky-col second-sticky-col">{{__('invoice.drop_off')}}</th>
-                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">{{__('invoice.amount')}}</th>
-                    <th scope="col">{{__('invoice.delivery_date')}}</th>
-                    <th scope="col">{{__('invoice.shipper')}}</th>
-                    <th scope="col">{{__('invoice.vehicle_no')}}</th>
-                    <th scope="col">{{__('invoice.weight')}}</th>
-                    <th scope="col">{{__('invoice.item_price')}}</th>
-                    <th scope="col">{{__('invoice.status')}}</th>
-                    <th scope="col">{{__('invoice.rental_car_vehicle_no')}}</th>
-                    <th scope="col">{{__('invoice.delivery_time')}}</th>
-                    <th scope="col">{{__('invoice.invoice_date')}}</th>
+                    <th scope="col" class="sticky-col first-sticky-col">荷主</th>
+                    <th scope="col" class="sticky-col second-sticky-col">積日</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">車輌No</th>
+                    <th scope="col">積地</th>
+                    <th scope="col">降地</th>
+                    <th scope="col">t数</th>
+                    <th scope="col">単価</th>
+                    <th scope="col">金額</th>
+                    <th scope="col">高速代</th>
+                    <th scope="col">庸車先社名</th>
+                    <th scope="col">庸車先車輌No</th>
+                    <th scope="col">庸車先支払金額</th>
+                    <th scope="col">支払高速代</th>
                     <th scope="col" class="primary-key">Item Id</th>
                     <th scope="col" class="primary-key">Shipper Id</th>
                     <th scope="col" class="primary-key">Vehicle Id</th>
@@ -134,34 +135,75 @@
                 <tr v-for="(invoice, index) in InvoiceData" :data-key="invoice.invoice_id" :index="index"
                     :hidden="invoice.delete_flg == 1" v-on:click="clickRow($event, index)">
                     <td class="sticky-col first-sticky-col">
-                        <input type="text" v-model="invoice.stack_point" class="form-control" :disabled="true"/>
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.shipper_name"
+                                :disabled="!editMode">
+                            <option v-for="shipper in shippers" :value="shipper"
+                                    :selected="invoiceData.shipper_name === shipper">{{shipper}}
+                            </option>
+                        </select>
                     </td>
                     <td class="sticky-col second-sticky-col">
-                        <input type="text" v-model="invoice.down_point" class="form-control" :disabled="true"/>
+                        <datepicker v-on:change="addRowOnChange" v-model="invoice.stack_date" :bootstrap-styling="true"
+                                    :format="options.weekday" :clear-button="false"
+                                    :language="options.language.ja"
+                                    class="form-control" :disabled="!editMode"
+                        ></datepicker>
                     </td>
                     <td class="sticky-col third-sticky-col last-sticky-col">
-                        <money type="text" class="form-control"
-                               v-model="invoice.vehicle_payment" v-bind="money" :disabled="true"/>
-                        <input type="text" v-model="invoice.vehicle_payment" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.down_date" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.shipper_name" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.vehicle_no3" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.weight" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <money type="text" class="form-control"
-                               v-model="invoice.item_price" v-bind="money" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.status" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.item_vehicle" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.down_time" class="form-control" :disabled="true"/>
-                    </td><td>
-                        <input type="text" v-model="invoice.item_completion_date" class="form-control" :disabled="true"/>
+                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no"
+                               class="form-control" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.stack_point"
+                                :disabled="!editMode">
+                            <option v-for="stack_point in stack_points" :value="stack_point"
+                                    :selected="invoice.stack_point === stack_point">{{stack_point}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.down_point"
+                                :disabled="!editMode">
+                            <option v-for="down_point in down_points" :value="down_point"
+                                    :selected="invoice.down_point === down_point">{{down_point}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.t_number"
+                               class="form-control" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <money v-on:change="addRowOnChange" type="text" class="form-control"
+                               v-model="invoice.unit_price" v-bind="money" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <money v-on:change="addRowOnChange" type="text" class="form-control"
+                               v-model="invoice.total_price" v-bind="money" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <money v-on:change="addRowOnChange" type="text" class="form-control"
+                               v-model="invoice.high_speed_fee" v-bind="money" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.vehicle_company_name"
+                                :disabled="!editMode">
+                            <option v-for="vehicle in vehicles" :value="vehicle.company_name"
+                                    :selected="invoice.vehicle_company_name === vehicle.company_name">{{vehicle.company_name}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no3"
+                               class="form-control" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.per_vehicle"
+                               class="form-control" :disabled="!editMode"/>
+                    </td>
+                    <td>
+                        <money v-on:change="addRowOnChange" type="text" class="form-control"
+                               v-model="invoice.high_speed_payment" v-bind="money" :disabled="!editMode"/>
                     </td>
                     <td class="primary-key">
                         <input type="text" class="form-control" v-model="invoice.invoice_id" :disabled="true"/>
@@ -317,17 +359,18 @@
 </template>
 <script>
     import {VueSimpleAlert} from "vue-simple-alert";
-    import {GridPlugin, Sort, Freeze, Toolbar, Edit} from '@syncfusion/ej2-vue-grids';
-    import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
+    import StickTableMixin from '../utils/StickyTableMixin'
+    import VueTheMask from 'vue-the-mask'
+    import Vue from "vue";
+    import Datepicker from "vuejs-datepicker";
 
-    Vue.use(GridPlugin);
-    Vue.use(VueSimpleAlert);
     Vue.use(Datepicker);
+    Vue.use(VueSimpleAlert);
+    Vue.use(VueTheMask);
 
     export default {
         props: {
-            invoiceUrl: {type: String, required: true},
             aggrUrl: {type: String, required: true},
             backUrl: {type: String, required: true},
             shippersUrl: {type: String, required: true},
@@ -338,13 +381,17 @@
             depositUrl: {type: String, required: true},
             billingMonthUrl: {type: String, required: true},
             billingListUrl: {type: String, required: true},
+            stack_points: {type: String, required: true},
+            down_points: {type: String, required: true},
         },
+        mixins : [
+            StickTableMixin
+        ],
         components: {
             Datepicker
         },
         data() {
             return {
-                data: [],
                 formData: {
                     stack_date: '',
                     vehicle_id: '',
@@ -355,8 +402,9 @@
                 billing_month: '',
                 billing_day: '',
                 shippers: [],
+                stack_points: [],
+                down_points: [],
                 vehicles: [],
-                mode: 'Batch',
                 sales: 0,
                 totalConsumptionTax: 0,
                 otherTotals: 0,
@@ -382,13 +430,23 @@
                     item_data: [],
                 },
                 invoiceData: {
+                    invoice_id: '',
                     item_id: '',
                     shipper_id: '',
                     vehicle_id: '',
-                    billing_recording_date: '',
-                    billing_deadline_date: '',
-                    payment_record_date: '',
-                    invoice_remark: '',
+                    shipper_name: '',
+                    stack_date: '',
+                    vehicle_no: '',
+                    stack_point: '',
+                    down_point: '',
+                    t_number: '',
+                    unit_price: '',
+                    total_price: '',
+                    high_speed_fee: '',
+                    vehicle_company_name: '',
+                    vehicle_no3: '',
+                    per_vehicle: '',
+                    high_speed_payment: '',
                 },
                 billingListData: {},
                 paymentList: [],
@@ -403,12 +461,31 @@
                     totalLastMonth: 0,
                     totalThisMonth: 0,
                     total: 0
+                },
+                emptyRow : {
+                    invoice_id: null,
+                    item_id: null,
+                    shipper_id: null,
+                    vehicle_id: null,
+                    stack_point: '',
+                    down_point: '',
+                    vehicle_payment: '',
+                    down_date: null,
+                    shipper_name: '',
+                    vehicle_no3: '',
+                    weight: '',
+                    item_price: '',
+                    status: '',
+                    item_vehicle: null,
+                    down_time: '',
+                    item_completion_date: null,
                 }
             }
         },
         created() {
             this.fetchShippers();
             this.fetchVehicles();
+            this.fetchInvoiceData(this.resourceUrl);
         },
         methods: {
             datepickerClose(){
@@ -420,33 +497,6 @@
                 this.invoiceData.vehicle_id = args.data.vehicle_id;
                 this.invoiceData.billing_recording_date = this.getDate();
                 this.invoiceData.billing_deadline_date = args.data.item_completion_date;
-            },
-            register() {
-                const invoiceTable = this;
-                if (this.invoiceData.item_id !== '') {
-                    axios.post(this.resourceUrl, this.invoiceData)
-                        .then(function (response) {
-                            invoiceTable.showSuccessDialog(this.__('invoice.selected_item_is_added_to_invoice_list'))
-                        })
-                        .catch(function (error) {
-                            invoiceTable.showDialog(error.response.data);
-                        });
-                } else {
-                    invoiceTable.showWarningDialog(this.__('invoice.please_select_an_item_to_add_to_invoice_list'));
-                }
-            },
-            deleteInvoice(item_id) {
-                const invoiceTable = this;
-                axios.delete(this.resourceUrl + '/' + item_id)
-                    .then(function (response) {
-                        invoiceTable.tableUtil.endEditing();
-                        invoiceTable.showWarningDialog(this.__('invoice.selected_item_is_removed_from_invoice_list'))
-                    })
-                    .catch(function (error) {
-                        invoiceTable.showDialog(error.response.data);
-                        return false;
-                    });
-                return true;
             },
             billingPrint() {
                 if (this.formData.shipper_id === '') {
@@ -487,17 +537,14 @@
                         this.vehicles = vehicles.data
                     });
             },
-            edit() {
-                this.setEditMode('editing');
-                this.$refs.grid.refresh();
+            back() {
+                if (this.isDataChanged()) {
+                    this.confirmBack();
+                } else {
+                    window.location.href = this.backUrl;
+                }
+            },
 
-            },
-            fetchData(url) {
-                axios.get(url)
-                    .then(response => {
-                        this.data = response.data;
-                    })
-            },
             fetchPaymentList(url) {
                 axios.get(url)
                     .then(response => {
@@ -522,16 +569,36 @@
                 }
                 return '';
             },
-            search() {
+            fetchInvoiceData(url) {
                 let stack_date = this.getNormalDate(this.formData.stack_date);
                 let invoice_month = this.getNormalDate(this.formData.invoice_month, true);
-                this.data = this.fetchData(this.invoiceUrl
-                    + '?stack_date=' + stack_date
+                axios.get(url + '?stack_date=' + stack_date
                     + '&vehicle_id=' + this.formData.vehicle_id
                     + '&invoice_day=' + this.formData.invoice_day
                     + '&invoice_month=' + invoice_month
-                    + '&shipper_id=' + this.formData.shipper_id);
-
+                    + '&shipper_id=' + this.formData.shipper_id)
+                        .then(response => {
+                            this.invoiceData = response.data.map(el => {
+                                return {
+                                    invoice_id : el.invoice_id,
+                                    item_id: el.item_id,
+                                    shipper_id: el.shipper_id,
+                                    vehicle_id: el.vehicle_id,
+                                    stack_point: el.stack_point,
+                                    down_point: el.down_point,
+                                    vehicle_payment: el.vehicle_payment,
+                                    down_date: el.down_date,
+                                    shipper_name: el.shipper_name,
+                                    vehicle_no3: el.vehicle_no3,
+                                    weight: el.weight,
+                                    item_price: el.item_price,
+                                    status: el.status,
+                                    item_vehicle: el.item_vehicle,
+                                    down_time: el.down_time,
+                                };
+                            });
+                            this.resetTable({data: this.invoiceData});
+                    });
                 this.fetchPaymentList(this.paymentUrl
                     + '?shipper_id='
                     + this.formData.shipper_id);
@@ -575,33 +642,6 @@
                 this.formData.invoice_month = '';
                 this.formData.vehicle_id = '';
                 this.formData.shipper_id = '';
-            },
-            refresh() {
-                this.search();
-            },
-            showDialog(response) {
-                let message = response.message + ': ';
-                let errors = response.errors;
-                $.each(errors, function (key, value) {
-                    message += value[0]; //showing only the first error.
-                });
-                this.$alert(message);
-            },
-            showSuccessDialog(text) {
-                this.$fire({
-                    title: this.__('messages.info_message'),
-                    text: text,
-                    type: "success",
-                    timer: 5000
-                });
-            },
-            showWarningDialog(text) {
-                this.$fire({
-                    title: this.__('messages.warning'),
-                    text: text,
-                    type: "warning",
-                    timer: 5000
-                });
             },
             getDate() {
                 const toTwoDigits = num => num < 10 ? '0' + num : num;

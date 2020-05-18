@@ -2,8 +2,7 @@
 
 @section('content')
     <div class="container">
-        <invoice invoice-url="{{route('invoice.list')}}"
-                 aggr-url="{{route('api.invoice.aggregate')}}"
+        <invoice aggr-url="{{route('api.invoice.aggregate')}}"
                  back-url="{{route('top')}}"
                  shippers-url="{{route('shipper.list')}}"
                  vehicles-url="{{route('vehicle.list')}}"
@@ -13,6 +12,8 @@
                  deposit-url="{{route('deposit.list')}}"
                  billing-month-url="{{route('billing.month')}}"
                  billing-list-url="{{route('billing.list')}}"
+                 stack_points="{{route('api.invoice.stackpoints')}}"
+                 down_points="{{route('api.invoice.downpoints')}}"
         ></invoice>
     </div>
 @endsection

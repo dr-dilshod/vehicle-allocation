@@ -20,9 +20,11 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        $shipper = $request->get('shipper');
-        $matters = Item::where('item_completion_date','>',Carbon::today())->get();
-        return response()->json($matters);
+        $invoices = DB::table('invoices')
+            ->join('items', 'invoices.item_id', '=', 'items.item_id')
+            ->get();
+        // $matters = Item::where('item_completion_date','>',Carbon::today())->get();
+        return response()->json($invoices);
     }
 
     /**
@@ -32,8 +34,36 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $invoice = Invoice::create($request->all());
-        return response()->json($invoice);
+        $all = $request->json()->all();
+        $save = false;
+        $update = false;
+
+        $updatedInvoices = [];
+        $addedInvoices = [];
+        foreach ($all as $invoice) {
+            if (!isset($invoice['invoice_id']) || is_null($invoice['invoice_id'])) {
+                // add validation rules here later
+                $item = Item::create($invoice);
+                $item_id = $item->item_id;
+                Invoice::firstOrCreate(['item_id'=>$item_id,
+                    'shipper_id'=>$invoice['shipper_id'],
+                    'vehicle_id'=>$invoice['vehicle_id'],
+                    'billing_recording_date'=>date('Y-m-d')]);
+            } else {
+                array_push($updatedInvoices, $invoice);
+            }
+        }
+
+        if (count($updatedInvoices) > 0) {
+            $this->validate($request, Item::$updateValidationRules);
+            $update = true;
+        }
+        if ($update) {
+            foreach ($updatedInvoices as $invoice) {
+                Item::query()->where('item_id', $invoice['item_id'])->update($invoice);
+            }
+        }
+        return response()->json([], 201);
     }
 
     /**
