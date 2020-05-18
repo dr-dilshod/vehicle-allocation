@@ -7,10 +7,12 @@ use App\Invoice;
 use App\Item;
 use App\Shipper;
 use App\Payment;
+use App\UnitPrice;
 use App\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -173,6 +175,34 @@ class InvoiceController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     * @return the list of stack points for the dropdown list
+     */
+    public function stackPoints()
+    {
+        $stack_points = UnitPrice::query()->select(['price_id', 'stack_point'])
+            ->where('delete_flg', 0)
+            ->distinct()
+            ->orderBy('stack_point', 'ASC')
+            ->get();
+        return response()->json($stack_points);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @return the list of down points for the dropdown list
+     */
+    public function downPoints()
+    {
+        $down_points = UnitPrice::query()->select(['price_id', 'down_point'])
+            ->where('delete_flg', 0)
+            ->distinct()
+            ->orderBy('down_point', 'ASC')
+            ->get();
+        return response()->json($down_points);
+    }
+
+    /**
      * returns the list of shippers for the dropdown list
      *
      * @param Request $request
@@ -192,11 +222,16 @@ class InvoiceController extends Controller
      */
     public function getVehicleList()
     {
-        $vehicleIDs = Item::query()->select('vehicle_id')->distinct()->get(function($e) {
+        $vehicleIDs = Item::query()
+            ->select('vehicle_id')
+            ->distinct()->get(function($e) {
             return $e->vehicle_id;
         });
 
-        $vehicles = Vehicle::query()->select(['vehicle_id', 'vehicle_no'])->whereIn('vehicle_id', $vehicleIDs)->get();
+        $vehicles = Vehicle::query()
+            ->select(['vehicle_id', 'vehicle_no', 'company_name'])
+            ->whereIn('vehicle_id', $vehicleIDs)
+            ->get();
         return response()->json($vehicles);
     }
 

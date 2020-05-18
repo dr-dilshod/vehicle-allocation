@@ -12,8 +12,8 @@
                  deposit-url="{{route('deposit.list')}}"
                  billing-month-url="{{route('billing.month')}}"
                  billing-list-url="{{route('billing.list')}}"
-                 stack_points="{{route('api.invoice.stackpoints')}}"
-                 down_points="{{route('api.invoice.downpoints')}}"
+                 stack-points-url="{{route('api.invoice.stackpoints')}}"
+                 down-points-url="{{route('api.invoice.downpoints')}}"
         ></invoice>
     </div>
 @endsection

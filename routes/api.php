@@ -98,11 +98,11 @@ Route::delete('/payments/{id}', 'Api\PaymentController@destroy')->name('api.paym
 /**
  * Invoice APIs
  */
+Route::get('/invoice/stack-points', 'Api\InvoiceController@stackPoints')->name('api.invoice.stackpoints')->middleware('admin');
+Route::get('/invoice/down-points', 'Api\InvoiceController@downPoints')->name('api.invoice.downpoints')->middleware('admin');
 Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index')->middleware('admin');
 Route::delete('/invoice/{id}', 'Api\InvoiceController@destroy')->name('api.invoice.destroy')->middleware('admin');
 Route::post('/invoice', 'Api\InvoiceController@store')->name('api.invoice.store')->middleware('admin');
-Route::get('/invoice/stack-points', 'Api\DispatchController@stackPoints')->name('api.invoice.stackpoints')->middleware('admin');
-Route::get('/invoice/down-points', 'Api\DispatchController@downPoints')->name('api.invoice.downpoints')->middleware('admin');
 
 
 // Dispatch

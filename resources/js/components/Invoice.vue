@@ -132,13 +132,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(invoice, index) in InvoiceData" :data-key="invoice.invoice_id" :index="index"
-                    :hidden="invoice.delete_flg == 1" v-on:click="clickRow($event, index)">
-                    <td class="sticky-col first-sticky-col">
+                <tr v-for="(invoice, index) in invoiceData" :data-key="invoice.invoice_id" :index="index"
+                    :hidden="invoice.delete_flg === 1" v-on:click="clickRow($event, index)">
+                    <td class="sticky-col first-sticky-col" width="200">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.shipper_name"
-                                :disabled="!editMode">
-                            <option v-for="shipper in shippers" :value="shipper"
-                                    :selected="invoiceData.shipper_name === shipper">{{shipper}}
+                                :disabled="!editMode" width="200">
+                            <option v-for="shipper in shippers" :value="shipper.shipper_name1"
+                                    :selected="invoice.shipper_name === shipper.shipper_name1">{{shipper.shipper_name1}}
                             </option>
                         </select>
                     </td>
@@ -150,54 +150,54 @@
                         ></datepicker>
                     </td>
                     <td class="sticky-col third-sticky-col last-sticky-col">
-                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no"
+                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no3"
                                class="form-control" :disabled="!editMode"/>
                     </td>
-                    <td>
+                    <td width="200">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.stack_point"
-                                :disabled="!editMode">
-                            <option v-for="stack_point in stack_points" :value="stack_point"
-                                    :selected="invoice.stack_point === stack_point">{{stack_point}}
+                                :disabled="!editMode" width="200">
+                            <option v-for="sp in stack_points" :value="sp.stack_point"
+                                    :selected="invoice.stack_point === sp.stack_point">{{sp.stack_point}}
                             </option>
                         </select>
                     </td>
-                    <td>
+                    <td width="200">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.down_point"
-                                :disabled="!editMode">
-                            <option v-for="down_point in down_points" :value="down_point"
-                                    :selected="invoice.down_point === down_point">{{down_point}}
+                                :disabled="!editMode" width="200">
+                            <option v-for="dp in down_points" :value="dp.down_point"
+                                    :selected="invoice.down_point === dp.down_point">{{dp.down_point}}
                             </option>
                         </select>
                     </td>
-                    <td>
-                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.t_number"
+                    <td width="100">
+                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.weight"
                                class="form-control" :disabled="!editMode"/>
                     </td>
                     <td>
                         <money v-on:change="addRowOnChange" type="text" class="form-control"
-                               v-model="invoice.unit_price" v-bind="money" :disabled="!editMode"/>
+                               v-model="invoice.item_price" v-bind="money" :disabled="!editMode"/>
                     </td>
                     <td>
                         <money v-on:change="addRowOnChange" type="text" class="form-control"
-                               v-model="invoice.total_price" v-bind="money" :disabled="!editMode"/>
+                               v-model="invoice.vehicle_payment" v-bind="money" :disabled="!editMode"/>
                     </td>
                     <td>
                         <money v-on:change="addRowOnChange" type="text" class="form-control"
                                v-model="invoice.high_speed_fee" v-bind="money" :disabled="!editMode"/>
                     </td>
-                    <td>
+                    <td width="200">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.vehicle_company_name"
-                                :disabled="!editMode">
-                            <option v-for="vehicle in vehicles" :value="vehicle.company_name"
-                                    :selected="invoice.vehicle_company_name === vehicle.company_name">{{vehicle.company_name}}
+                                :disabled="!editMode" width="200">
+                            <option v-for="v in vehicles" :value="v.company_name"
+                                    :selected="invoice.vehicle_company_name === v.company_name">{{v.company_name}}
                             </option>
                         </select>
                     </td>
-                    <td>
+                    <td width="120">
                         <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no3"
                                class="form-control" :disabled="!editMode"/>
                     </td>
-                    <td>
+                    <td width="200">
                         <input v-on:change="addRowOnChange" type="text" v-model="invoice.per_vehicle"
                                class="form-control" :disabled="!editMode"/>
                     </td>
@@ -321,7 +321,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-custom-inputs">
                                 <thead>
                                 <tr>
                                     <th>{{__('invoice.previous_month_sales')}}</th>
@@ -364,6 +364,7 @@
     import VueTheMask from 'vue-the-mask'
     import Vue from "vue";
     import Datepicker from "vuejs-datepicker";
+    import {Money} from 'v-money'
 
     Vue.use(Datepicker);
     Vue.use(VueSimpleAlert);
@@ -381,14 +382,15 @@
             depositUrl: {type: String, required: true},
             billingMonthUrl: {type: String, required: true},
             billingListUrl: {type: String, required: true},
-            stack_points: {type: String, required: true},
-            down_points: {type: String, required: true},
+            stackPointsUrl: {type: String, required: true},
+            downPointsUrl: {type: String, required: true},
         },
         mixins : [
             StickTableMixin
         ],
         components: {
-            Datepicker
+            Datepicker,
+            Money
         },
         data() {
             return {
@@ -439,9 +441,9 @@
                     vehicle_no: '',
                     stack_point: '',
                     down_point: '',
-                    t_number: '',
-                    unit_price: '',
-                    total_price: '',
+                    weight: '',
+                    item_price: '',
+                    vehicle_payment: '',
                     high_speed_fee: '',
                     vehicle_company_name: '',
                     vehicle_no3: '',
@@ -482,8 +484,10 @@
                 }
             }
         },
-        created() {
+        mounted() {
             this.fetchShippers();
+            this.fetchStackPoints();
+            this.fetchDownPoints();
             this.fetchVehicles();
             this.fetchInvoiceData(this.resourceUrl);
         },
@@ -531,6 +535,19 @@
                         this.shippers = shippers.data
                     });
             },
+            fetchStackPoints() {
+                axios.get(this.stackPointsUrl)
+                    .then(stack => {
+                        this.stack_points = stack.data
+                    });
+            },
+            fetchDownPoints() {
+                axios.get(this.downPointsUrl)
+                    .then(down => {
+                        this.down_points = down.data
+                    });
+            },
+
             fetchVehicles() {
                 axios.get(this.vehiclesUrl)
                     .then(vehicles => {
@@ -569,7 +586,7 @@
                 }
                 return '';
             },
-            fetchInvoiceData(url) {
+            search(url) {
                 let stack_date = this.getNormalDate(this.formData.stack_date);
                 let invoice_month = this.getNormalDate(this.formData.invoice_month, true);
                 axios.get(url + '?stack_date=' + stack_date
@@ -598,6 +615,19 @@
                                 };
                             });
                             this.resetTable({data: this.invoiceData});
+                    });
+                this.fetchPaymentList(this.paymentUrl
+                    + '?shipper_id='
+                    + this.formData.shipper_id);
+                if (this.paymentList.length > 0) {
+                    this.calculateTotals();
+                }
+            },
+            fetchInvoiceData(url) {
+                axios.get(url)
+                    .then(response => {
+                        this.invoiceData = response.data;
+                        //this.resetTable({data: this.invoiceData});
                     });
                 this.fetchPaymentList(this.paymentUrl
                     + '?shipper_id='
