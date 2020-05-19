@@ -103,6 +103,7 @@ Route::delete('/payments/{id}', 'Api\PaymentController@destroy')->name('api.paym
 Route::get('/invoice/stack-points', 'Api\InvoiceController@stackPoints')->name('api.invoice.stackpoints')->middleware('admin');
 Route::get('/invoice/down-points', 'Api\InvoiceController@downPoints')->name('api.invoice.downpoints')->middleware('admin');
 Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index')->middleware('admin');
+Route::get('/invoice/filter', 'Api\InvoiceController@getInvoiceList')->name('api.invoice.filter')->middleware('admin');
 Route::delete('/invoice/{id}', 'Api\InvoiceController@destroy')->name('api.invoice.destroy')->middleware('admin');
 Route::post('/invoice', 'Api\InvoiceController@store')->name('api.invoice.store')->middleware('admin');
 

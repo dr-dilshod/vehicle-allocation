@@ -132,17 +132,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(invoice, index) in invoiceData" :data-key="invoice.invoice_id" :index="index"
+                <tr v-for="(invoice, index) in data" :data-key="invoice.invoice_id" :index="index"
                     :hidden="invoice.delete_flg === 1" v-on:click="clickRow($event, index)">
                     <td class="sticky-col first-sticky-col" width="200">
-                        <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.shipper_name"
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.shipper_id"
                                 :disabled="!editMode" width="200">
-                            <option v-for="shipper in shippers" :value="shipper.shipper_name1"
-                                    :selected="invoice.shipper_name === shipper.shipper_name1">{{shipper.shipper_name1}}
+                            <option v-for="shipper in shippers" :value="shipper.shipper_id"
+                                    :selected="invoice.shipper_id === shipper.shipper_id" >{{shipper.shipper_name1}}
                             </option>
                         </select>
                     </td>
-                    <td class="sticky-col second-sticky-col">
+                    <td class="sticky-col second-sticky-col" style="position: unset">
                         <datepicker v-on:change="addRowOnChange" v-model="invoice.stack_date" :bootstrap-styling="true"
                                     :format="options.weekday" :clear-button="false"
                                     :language="options.language.ja"
@@ -183,7 +183,7 @@
                     </td>
                     <td>
                         <money v-on:change="addRowOnChange" type="text" class="form-control"
-                               v-model="invoice.high_speed_fee" v-bind="money" :disabled="!editMode"/>
+                               v-model="invoice.highway_cost" v-bind="money" :disabled="!editMode"/>
                     </td>
                     <td width="200">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.vehicle_company_name"
@@ -203,7 +203,7 @@
                     </td>
                     <td>
                         <money v-on:change="addRowOnChange" type="text" class="form-control"
-                               v-model="invoice.high_speed_payment" v-bind="money" :disabled="!editMode"/>
+                               v-model="invoice.pay_highway_cost" v-bind="money" :disabled="!editMode"/>
                     </td>
                     <td class="primary-key">
                         <input type="text" class="form-control" v-model="invoice.invoice_id" :disabled="true"/>
@@ -401,6 +401,12 @@
                     invoice_month: '',
                     shipper_id: '',
                 },
+                money: {
+                    thousands: ',',
+                    prefix: '¥',
+                    precision: 0,
+                    masked: false
+                },
                 billing_month: '',
                 billing_day: '',
                 shippers: [],
@@ -431,25 +437,7 @@
                     invoice_amount: 0,
                     item_data: [],
                 },
-                invoiceData: {
-                    invoice_id: '',
-                    item_id: '',
-                    shipper_id: '',
-                    vehicle_id: '',
-                    shipper_name: '',
-                    stack_date: '',
-                    vehicle_no: '',
-                    stack_point: '',
-                    down_point: '',
-                    weight: '',
-                    item_price: '',
-                    vehicle_payment: '',
-                    high_speed_fee: '',
-                    vehicle_company_name: '',
-                    vehicle_no3: '',
-                    per_vehicle: '',
-                    high_speed_payment: '',
-                },
+                data: [],
                 billingListData: {},
                 paymentList: [],
                 depositList: [],
@@ -469,18 +457,19 @@
                     item_id: null,
                     shipper_id: null,
                     vehicle_id: null,
+                    shipper_name: '',
+                    stack_date: null,
+                    vehicle_no: '',
                     stack_point: '',
                     down_point: '',
-                    vehicle_payment: '',
-                    down_date: null,
-                    shipper_name: '',
-                    vehicle_no3: '',
                     weight: '',
-                    item_price: '',
-                    status: '',
-                    item_vehicle: null,
-                    down_time: '',
-                    item_completion_date: null,
+                    item_price: 0,
+                    vehicle_payment: 0,
+                    highway_cost: 0,
+                    vehicle_company_name: '',
+                    vehicle_no3: '',
+                    per_vehicle: 0,
+                    pay_highway_cost: 0,
                 }
             }
         },
@@ -586,16 +575,16 @@
                 }
                 return '';
             },
-            search(url) {
+            search() {
                 let stack_date = this.getNormalDate(this.formData.stack_date);
                 let invoice_month = this.getNormalDate(this.formData.invoice_month, true);
-                axios.get(url + '?stack_date=' + stack_date
+                axios.get(this.resourceUrl + '/filter' + '?stack_date=' + stack_date
                     + '&vehicle_id=' + this.formData.vehicle_id
                     + '&invoice_day=' + this.formData.invoice_day
                     + '&invoice_month=' + invoice_month
                     + '&shipper_id=' + this.formData.shipper_id)
                         .then(response => {
-                            this.invoiceData = response.data.map(el => {
+                            this.data = response.data.map(el => {
                                 return {
                                     invoice_id : el.invoice_id,
                                     item_id: el.item_id,
@@ -612,9 +601,11 @@
                                     status: el.status,
                                     item_vehicle: el.item_vehicle,
                                     down_time: el.down_time,
+                                    highway_cost: el.highway_cost,
+                                    pay_highway_cost: el.pay_highway_cost
                                 };
                             });
-                            this.resetTable({data: this.invoiceData});
+                            this.resetTable({data: this.data});
                     });
                 this.fetchPaymentList(this.paymentUrl
                     + '?shipper_id='
@@ -626,8 +617,28 @@
             fetchInvoiceData(url) {
                 axios.get(url)
                     .then(response => {
-                        this.invoiceData = response.data;
-                        //this.resetTable({data: this.invoiceData});
+                        this.data = response.data.map(el => {
+                            return {
+                                invoice_id : el.invoice_id,
+                                item_id: el.item_id,
+                                shipper_id: el.shipper_id,
+                                vehicle_id: el.vehicle_id,
+                                stack_point: el.stack_point,
+                                down_point: el.down_point,
+                                vehicle_payment: el.vehicle_payment ?? 0,
+                                down_date: el.down_date,
+                                shipper_name: el.shipper_name,
+                                vehicle_no3: el.vehicle_no3,
+                                weight: el.weight,
+                                item_price: el.item_price ?? 0,
+                                status: el.status,
+                                item_vehicle: el.item_vehicle,
+                                down_time: el.down_time,
+                                highway_cost: el.highway_cost ?? 0,
+                                pay_highway_cost: el.pay_highway_cost ?? 0
+                            };
+                        });
+                        this.resetTable({data: this.data});
                     });
                 this.fetchPaymentList(this.paymentUrl
                     + '?shipper_id='
@@ -681,6 +692,11 @@
                 let day = toTwoDigits(today.getDate());
                 return `${year}-${month}-${day}`;
             },
+            refresh() {
+                this.editMode = false;
+                this.clear();
+                this.fetchInvoiceData(this.resourceUrl);
+            }
         },
     }
 </script>

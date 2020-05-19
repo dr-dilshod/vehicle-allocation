@@ -25,7 +25,7 @@ class CreateItemsTable extends Migration
             $table->tinyInteger('status')->default(0);
             $table->date('stack_date');
             $table->time('stack_time')->nullable();
-            $table->date('down_date');
+            $table->date('down_date')->nullable();
             $table->time('down_time')->nullable();
             $table->tinyInteger('down_invoice')->default(0)->nullable();
             $table->string('stack_point', 60)->default(null);
