@@ -173,7 +173,7 @@
                             <td>
                                 <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice"
                                        v-on:change="notify"
-                                       v-model="unitPriceData.stack_point" id="stack_point_price" required/>
+                                       v-model="unitPriceData.stack_point" id="stack_point_price"/>
                             </td>
                             <td class="text-center"></td>
                             <td class="text-right" valign="bottom">
@@ -182,7 +182,7 @@
                             <td colspan="3">
                                 <input id="down_point_price" for="down_point" type="text" placeholder=""
                                        class="form-control" v-on:focusout="calcUnitPrice" v-on:change="notify"
-                                       v-model="unitPriceData.down_point" required/>
+                                       v-model="unitPriceData.down_point"/>
                             </td>
                             <td width="10%" class="text-right" valign="bottom" colspan="2">
                                 <button type="reset" class="btn btn-lg btn-danger" style="height: 38px; width: 110px;text-align: center"
