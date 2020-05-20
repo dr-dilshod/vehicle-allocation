@@ -542,7 +542,6 @@
                     axios.post(this.unitPrice, this.unitPriceData)
                         .then(response => {
                             this.createSuccessDialog();
-                            this.clear();
                         }).catch(error => {
                         this.errorDialog(error);
                     });
