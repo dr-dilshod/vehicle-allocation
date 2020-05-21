@@ -142,26 +142,27 @@
                             </option>
                         </select>
                     </td>
-                    <td class="sticky-col second-sticky-col" style="position: unset">
-                        <datepicker v-on:change="addRowOnChange" v-model="invoice.stack_date" :bootstrap-styling="true"
-                                    :format="options.weekday" :clear-button="false"
-                                    :language="options.language.ja"
-                                    class="form-control" :disabled="!editMode"
-                        ></datepicker>
-                    </td>
-                    <td class="sticky-col third-sticky-col last-sticky-col">
-                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no3"
-                               class="form-control" :disabled="!editMode"/>
-                    </td>
-                    <td width="200">
+                    <td class="sticky-col dp second-sticky-col">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.stack_point"
                                 :disabled="!editMode" width="200">
                             <option v-for="sp in stack_points" :value="sp.stack_point"
                                     :selected="invoice.stack_point === sp.stack_point">{{sp.stack_point}}
                             </option>
                         </select>
+
+                    </td>
+                    <td class="sticky-col third-sticky-col last-sticky-col">
+                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no3"
+                               class="form-control" :disabled="!editMode"/>
                     </td>
                     <td width="200">
+                        <datepicker v-on:change="addRowOnChange" v-model="invoice.stack_date" :value="new Date(invoice.stack_date)" :bootstrap-styling="true"
+                                    :format="options.weekday" :clear-button="false"
+                                    :language="options.language.ja"
+                                    class="form-control" :disabled="!editMode"
+                        ></datepicker>
+                    </td>
+                    <td width="200" class="date">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.down_point"
                                 :disabled="!editMode" width="200">
                             <option v-for="dp in down_points" :value="dp.down_point"
@@ -458,7 +459,7 @@
                     shipper_id: null,
                     vehicle_id: null,
                     shipper_name: '',
-                    stack_date: null,
+                    stack_date: new Date(),
                     vehicle_no: '',
                     stack_point: '',
                     down_point: '',
@@ -479,8 +480,13 @@
             this.fetchDownPoints();
             this.fetchVehicles();
             this.fetchInvoiceData(this.resourceUrl);
+            console.log(this.$refs);
         },
         methods: {
+            changePositionAttr(e) {
+                console.log(e);
+
+            },
             datepickerClose(){
                 alert(this.billing_month);
             },
@@ -592,6 +598,7 @@
                                     vehicle_id: el.vehicle_id,
                                     stack_point: el.stack_point,
                                     down_point: el.down_point,
+                                    stack_date: el.stack_date,
                                     vehicle_payment: el.vehicle_payment,
                                     down_date: el.down_date,
                                     shipper_name: el.shipper_name,
@@ -628,6 +635,7 @@
                                 vehicle_payment: el.vehicle_payment ?? 0,
                                 down_date: el.down_date,
                                 shipper_name: el.shipper_name,
+                                stack_date: el.stack_date,
                                 vehicle_no3: el.vehicle_no3,
                                 weight: el.weight,
                                 item_price: el.item_price ?? 0,
@@ -706,5 +714,6 @@
     }
     .vdp-datepicker{
         padding: 0;
+        border: none;
     }
 </style>
