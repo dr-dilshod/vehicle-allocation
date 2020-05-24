@@ -158,10 +158,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <div style="padding: 10px">
-                        <button data-toggle="modal" data-target="#addDriverModal" class="btn btn-primary btn-fixed-width">{{__('dispatch.add')}}
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -211,19 +207,71 @@
                 </div>
             </div>
         </div>
-
+        <dl class="badger-accordion js-badger-accordion">
+            <dt class="badger-accordion__header">
+                <button class="badger-accordion__trigger js-badger-accordion-header">
+                    <div class="badger-accordion__trigger-title">
+                        European Badgers - Meles meles
+                    </div>
+                    <div class="badger-accordion__trigger-icon">
+                    </div>
+                </button>
+            </dt>
+            <dd class="badger-accordion__panel js-badger-accordion-panel">
+                <div class="badger-accordion__panel-inner text-module js-badger-accordion-panel-inner">
+                    <p>Badgers are short-legged omnivores in the family Mustelidae, which also includes otters, polecats, weasels and wolverines. They belong to the caniform suborder of carnivoran mammals.</p>
+                    <p>Badgers are thought to have got their name because of the white mark – or badge – on their head, although there are other theories.</p>
+                    <p>Another old name for badgers is ‘brock’, meaning grey. You can often see the word brock in street names. Brock is also the name of a character in the Pokemon TV series!</p>
+                    <p>Badgers are fast – they can run up to 30km per hour (nearly 20 mph) for short periods.</p>
+                </div>
+            </dd>
+            <dt class="badger-accordion__header">
+                <button class="badger-accordion__trigger js-badger-accordion-header">
+                    <div class="badger-accordion__trigger-title">
+                        Honey Badger - Mellivora capensis
+                    </div>
+                    <div class="badger-accordion__trigger-icon">
+                    </div>
+                </button>
+            </dt>
+            <dd class="badger-accordion__panel js-badger-accordion-panel">
+                <div class="badger-accordion__panel-inner text-module js-badger-accordion-panel-inner">
+                    <p>Honey badgers can reach 2.4 feet in length and weigh between 19 and 26 pounds. They have bushy tail that is usually 12 inches long.</p>
+                    <p>Honey badger has incredible thick skin that cannot be pierced with arrows, spears or even machete. Skin is also very loose, which is useful in the case of attack. When predator grabs a badger, animal rotates in its skin and turns toward predator's face to fight back (attacking its eyes).</p>
+                    <p>Honey badger has very sharp teeth. They can easily break tortoise shell.</p>
+                </div>
+            </dd>
+            <dt class="badger-accordion__header">
+                <button class="badger-accordion__trigger js-badger-accordion-header">
+                    <div class="badger-accordion__trigger-title">
+                        Hog Badger - Arctonyx collaris
+                    </div>
+                    <div class="badger-accordion__trigger-icon">
+                    </div>
+                </button>
+            </dt>
+            <dd class="badger-accordion__panel js-badger-accordion-panel">
+                <div class="badger-accordion__panel-inner text-module js-badger-accordion-panel-inner">
+                    <p>Although badgers are a solitary animal the young Hog Badger tends to be quite playful and social.  I would be careful playing with any animal that has extremely large claws.  Remember folks, it is all fun and games until someone loses an eye.</p>
+                    <p>Hog Badgers are omnivores and they feed on a variety of things from honey and fruit to insects and small mammals. </p>
+                    <p>A young / baby of a hog badger is called a 'kit'. The females are called 'sow' and males 'boar'. A hog badger group is called a 'cete, colony, set or company'.</p>
+                </div>
+            </dd>
+        </dl>
     </div>
+
 </template>
 <script>
     import draggable from 'vuedraggable'
     import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
+    import BadgerAccordion from "badger-accordion";
 
     export default{
         name: 'Dispatch',
         components: {
             draggable,
-            Datepicker
+            Datepicker,
         },
         props: {
             backUrl: {type: String, required: true},
@@ -510,6 +558,9 @@
                 .catch(function (error) {
                     component.errorDialog(error);
                 });
+            new BadgerAccordion(".js-badger-accordion", {
+                openMultiplePanels: true
+            });
         },
         computed: {
             dispatch_day_string: function(){
