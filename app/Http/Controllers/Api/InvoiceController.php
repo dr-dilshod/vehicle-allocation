@@ -38,7 +38,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $all = $request->json()->all();
+        $all = $request->toArray();
         $save = false;
         $update = false;
 
@@ -48,6 +48,8 @@ class InvoiceController extends Controller
             if (!isset($invoice['invoice_id']) || is_null($invoice['invoice_id'])) {
                 // add validation rules here later
                 $invoice['stack_date'] = date('Y-m-d', strtotime($invoice['stack_date']));
+                $invoice['down_date'] = date('Y-m-d', strtotime($invoice['down_date']));
+                $invoice['down_invoice'] = 1;
                 $invoice = collect($invoice)->filter(function ($val, $key) {
                     return !is_null($val);
                 })->toArray();
@@ -69,19 +71,18 @@ class InvoiceController extends Controller
             }
         }
 
-        if (count($updatedInvoices) > 0) {
-            $this->validate($request, Item::$updateRules);
-            $update = true;
-        }
-        if ($update) {
+        //if (count($updatedInvoices) > 0) {
+        //    $this->validate($request, Item::$updateRules);
+        //    $update = true;
+        //}
+        //if ($update) {
             foreach ($updatedInvoices as $invoice) {
-                Item::query()->where('item_id', $invoice['item_id'])->update(collect($invoice)->only(['shipper_id', 'driver_id', 'create_id', 'update_id', 'vehicle_id', 'status',
-                    'stack_date', 'stack_time', 'down_date', 'down_time', 'down_invoice', 'stack_point', 'down_point',
-                    'weight', 'empty_pl', 'item_price', 'item_driver_name', 'vehicle_no3', 'shipper_name', 'item_vehicle',
-                    'vehicle_payment', 'item_completion_date', 'highway_cost', 'pay_highway_cost', 'item_remark',
-                    'delete_flg', 'created_at', 'updated_at', 'remember_token'])->toArray());
+                //$json = json_decode($invoice , true);
+                //unset($json["key"]);
+                unset($invoice['invoice_id']);
+                Item::query()->where('item_id', $invoice['item_id'])->update($invoice);
             }
-        }
+        //}
         return response()->json([], 201);
     }
 

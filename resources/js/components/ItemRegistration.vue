@@ -130,7 +130,8 @@
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id" @change="calcUnitPrice"
                                         class="form-control" v-on:change="setShipperName" required>
                                     <option value=""></option>
-                                    <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                    <option v-for="shipper in shippers" :value="shipper.shipper_id"
+                                            :selected="itemData.shipper_name === shipper.shipper_name1 + ' ' + shipper.shipper_name2">
                                         {{ shipper.shipper_name1 + " " + shipper.shipper_name2}}
                                     </option>
                                 </select>
@@ -452,6 +453,7 @@
                         this.down_time_hour = down_time[0];
                         this.down_time_min = down_time[1];
                     });
+                //this.fetchShippers(this.shipperUrl);
             },
             setDriverName() {
                 this.anyFieldChanged = 1;

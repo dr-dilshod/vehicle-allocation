@@ -243,7 +243,7 @@ class ItemController extends Controller
      */
     public function getItemShippers(Request $request)
     {
-        $itemsShipper = Item::select(['shipper_name', 'shipper_no'])
+        $itemsShipper = Item::select(['shipper_name'])
             ->where('delete_flg',"=", 0)
             ->orderBy('shipper_name','asc')
             ->distinct()

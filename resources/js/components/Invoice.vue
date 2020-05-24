@@ -112,19 +112,20 @@
             <table class="table table-custom-inputs">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col" class="sticky-col first-sticky-col">荷主</th>
-                    <th scope="col" class="sticky-col second-sticky-col">積日</th>
-                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col">車輌No</th>
-                    <th scope="col">積地</th>
-                    <th scope="col">降地</th>
-                    <th scope="col">t数</th>
-                    <th scope="col">単価</th>
-                    <th scope="col">金額</th>
-                    <th scope="col">高速代</th>
-                    <th scope="col">庸車先社名</th>
-                    <th scope="col">庸車先車輌No</th>
-                    <th scope="col">庸車先支払金額</th>
-                    <th scope="col">支払高速代</th>
+                    <th scope="col" class="sticky-col first-sticky-col" style="text-align: center;">荷主</th>
+                    <th scope="col" class="sticky-col second-sticky-col" style="text-align: center;">積地</th>
+                    <th scope="col" class="sticky-col third-sticky-col last-sticky-col" style="text-align: center;">車輌No</th>
+                    <th scope="col" style="text-align: center;">積日</th>
+                    <th scope="col" style="text-align: center;">降日</th>
+                    <th scope="col" style="text-align: center;">降地</th>
+                    <th scope="col" style="text-align: center;">t数</th>
+                    <th scope="col" style="text-align: center;">単価</th>
+                    <th scope="col" style="text-align: center;">金額</th>
+                    <th scope="col" style="text-align: center;">高速代</th>
+                    <th scope="col" style="text-align: center;">庸車先社名</th>
+                    <th scope="col" style="text-align: center;">庸車先車輌No</th>
+                    <th scope="col" style="text-align: center;">庸車先支払金額</th>
+                    <th scope="col" style="text-align: center;">支払高速代</th>
                     <th scope="col" class="primary-key">Item Id</th>
                     <th scope="col" class="primary-key">Shipper Id</th>
                     <th scope="col" class="primary-key">Vehicle Id</th>
@@ -151,11 +152,22 @@
 
                     </td>
                     <td class="sticky-col third-sticky-col last-sticky-col">
-                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.vehicle_no3"
-                               class="form-control" :disabled="!editMode"/>
+                        <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.vehicle_no3"
+                                :disabled="!editMode" width="200" v-on:focusout="setVehicleCompany">
+                            <option v-for="v in vehicles" :value="v.vehicle_no"
+                                    :selected="invoice.vehicle_no3 === v.vehicle_no">{{invoice.vehicle_no3}}
+                            </option>
+                        </select>
                     </td>
-                    <td width="200">
+                    <td width="160">
                         <datepicker v-on:change="addRowOnChange" v-model="invoice.stack_date" :value="new Date(invoice.stack_date)" :bootstrap-styling="true"
+                                    :format="options.weekday" :clear-button="false"
+                                    :language="options.language.ja"
+                                    class="form-control" :disabled="!editMode"
+                        ></datepicker>
+                    </td>
+                    <td width="160">
+                        <datepicker v-on:change="addRowOnChange" v-model="invoice.down_date" :value="new Date(invoice.down_date)" :bootstrap-styling="true"
                                     :format="options.weekday" :clear-button="false"
                                     :language="options.language.ja"
                                     class="form-control" :disabled="!editMode"
@@ -187,7 +199,7 @@
                     </td>
                     <td width="200">
                         <select v-on:change="addRowOnChange" class="form-control" v-model="invoice.vehicle_company_name"
-                                :disabled="!editMode" width="200">
+                                :disabled="!editMode" width="200" v-on:focusout="setVehicleNo">
                             <option v-for="v in vehicles" :value="v.company_name"
                                     :selected="invoice.vehicle_company_name === v.company_name">{{v.company_name}}
                             </option>
@@ -198,10 +210,10 @@
                                class="form-control" :disabled="!editMode"/>
                     </td>
                     <td width="200">
-                        <input v-on:change="addRowOnChange" type="text" v-model="invoice.per_vehicle"
-                               class="form-control" :disabled="!editMode"/>
+                        <money v-on:change="addRowOnChange" type="text" class="form-control"
+                               v-model="invoice.vehicle_payment" v-bind="money" :disabled="!editMode"/>
                     </td>
-                    <td>
+                    <td width="100">
                         <money v-on:change="addRowOnChange" type="text" class="form-control"
                                v-model="invoice.pay_highway_cost" v-bind="money" :disabled="!editMode"/>
                     </td>
@@ -481,6 +493,20 @@
             console.log(this.$refs);
         },
         methods: {
+            setVehicleCompany() {
+                for (let i = 0; i < this.vehicles.length; i++) {
+                    if (this.data.vehicle_no3 === this.vehicles[i].vehicle_no) {
+                        this.data.vehicle_company_name = this.vehicles[i].company_name;
+                    }
+                }
+            },
+            setVehicleNo() {
+                for (let i = 0; i < this.vehicles.length; i++) {
+                    if (this.data.vehicle_company_name === this.vehicles[i].company_name) {
+                        this.data.vehicle_no3 = this.vehicles[i].vehicle_no;
+                    }
+                }
+            },
             changePositionAttr(e) {
                 console.log(e);
 
