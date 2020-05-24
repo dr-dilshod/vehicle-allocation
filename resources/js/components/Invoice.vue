@@ -490,7 +490,7 @@
             this.fetchDownPoints();
             this.fetchVehicles();
             this.fetchInvoiceData(this.resourceUrl);
-            console.log(this.$refs);
+            this.setVehicleCompany();
         },
         methods: {
             setVehicleCompany() {
@@ -506,20 +506,6 @@
                         this.data.vehicle_no3 = this.vehicles[i].vehicle_no;
                     }
                 }
-            },
-            changePositionAttr(e) {
-                console.log(e);
-
-            },
-            datepickerClose(){
-                alert(this.billing_month);
-            },
-            rowSelected: function (args) {
-                this.invoiceData.item_id = args.data.item_id;
-                this.invoiceData.shipper_id = args.data.shipper_id;
-                this.invoiceData.vehicle_id = args.data.vehicle_id;
-                this.invoiceData.billing_recording_date = this.getDate();
-                this.invoiceData.billing_deadline_date = args.data.item_completion_date;
             },
             billingPrint() {
                 if (this.formData.shipper_id === '') {

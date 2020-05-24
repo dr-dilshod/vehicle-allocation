@@ -43,7 +43,6 @@ class InvoiceController extends Controller
         $update = false;
 
         $updatedInvoices = [];
-        $addedInvoices = [];
         foreach ($all as $invoice) {
             if (!isset($invoice['invoice_id']) || is_null($invoice['invoice_id'])) {
                 // add validation rules here later
@@ -77,8 +76,6 @@ class InvoiceController extends Controller
         //}
         //if ($update) {
             foreach ($updatedInvoices as $invoice) {
-                //$json = json_decode($invoice , true);
-                //unset($json["key"]);
                 unset($invoice['invoice_id']);
                 Item::query()->where('item_id', $invoice['item_id'])->update($invoice);
             }
