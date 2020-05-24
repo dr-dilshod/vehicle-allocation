@@ -108,8 +108,7 @@
                 </form>
             </div>
         </div>
-
-        <div id="table-scroll" class="table-scroll">
+        <div id="table-scroll" class="table-scroll table-scroll2">
             <table class="table table-custom-inputs">
                 <thead class="thead-light">
                 <tr>
@@ -355,7 +354,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 <script>
@@ -691,6 +689,7 @@
                 this.formData.invoice_month = '';
                 this.formData.vehicle_id = '';
                 this.formData.shipper_id = '';
+                this.fetchInvoiceData(this.resourceUrl);
             },
             getDate() {
                 const toTwoDigits = num => num < 10 ? '0' + num : num;
@@ -706,6 +705,7 @@
                 this.fetchInvoiceData(this.resourceUrl);
             }
         },
+        name: 'Invoice',
     }
 </script>
 <style scoped>

@@ -221,7 +221,7 @@
 </script>
 <style scoped>
     .vehicle .table-scroll{
-        min-height: 400px;
+        min-height: 500px;
         background-color: #fff;
     }
     .vehicle .table .thead-light th{
