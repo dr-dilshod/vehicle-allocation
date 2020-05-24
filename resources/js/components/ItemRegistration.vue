@@ -505,8 +505,6 @@
                         .then(response => {
                             if (response.data.price !== undefined) {
                                 component.per_ton = response.data.price;
-                            } else {
-                                component.per_ton = 0;
                             }
                             component.calcItemPrice();
                         });
@@ -542,6 +540,8 @@
                     axios.post(this.unitPrice, this.unitPriceData)
                         .then(response => {
                             this.createSuccessDialog();
+                            this.fetchDownPoints();
+                            this.fetchStackPoints();
                         }).catch(error => {
                         this.errorDialog(error);
                     });
@@ -587,6 +587,9 @@
                     for (let i in this.itemData) {
                         this.itemData[i] = "";
                     }
+                    for (let i in this.unitPriceData) {
+                        this.unitPriceData[i] = "";
+                    }
                     this.vehicle_model = "";
                     this.per_ton = "";
                     this.per_vehicle = "";
@@ -595,6 +598,9 @@
                     this.stack_time_min = "";
                     this.down_time_hour = "";
                     this.down_time_min = "";
+                    document.getElementById('per_ton').disabled = false;
+                    document.getElementById('ton').disabled = false;
+                    document.getElementById('per_vehicle').disabled = false;
                 }
             },
             back() {
@@ -607,7 +613,7 @@
                             title: this.__('alert.message'),
                             text: '編集中のデータを破棄して前の画面に戻りますか？',
                             triggerOnConfirm: () => {
-                                window.location.href = this.redirectUrl;
+                                window.location.href = this.backUrl;
                             }
                         },
                         {

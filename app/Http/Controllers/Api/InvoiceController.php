@@ -199,7 +199,7 @@ class InvoiceController extends Controller
      */
     public function stackPoints()
     {
-        $stack_points = UnitPrice::query()->select(['price_id', 'stack_point'])
+        $stack_points = UnitPrice::query()->select('stack_point')
             ->where('delete_flg', 0)
             ->distinct()
             ->orderBy('stack_point', 'ASC')
@@ -213,7 +213,7 @@ class InvoiceController extends Controller
      */
     public function downPoints()
     {
-        $down_points = UnitPrice::query()->select(['price_id', 'down_point'])
+        $down_points = UnitPrice::query()->select('down_point')
             ->where('delete_flg', 0)
             ->distinct()
             ->orderBy('down_point', 'ASC')
