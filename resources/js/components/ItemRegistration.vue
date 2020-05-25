@@ -113,10 +113,11 @@
                                         @change="calcUnitPrice"
                                         class="form-control" required>
                                     <option value=""></option>
-                                    <option>{{__('item.wing')}}</option>
-                                    <option>{{__('item.flat')}}</option>
-                                    <option>{{__('item.trailer')}}</option>
-                                    <option>{{__('item.bulk')}}</option>
+                                    <option>ウイング</option>
+                                    <option>大平</option>
+                                    <option>4平</option>
+                                    <option>バルク</option>
+                                    <option>ユニック</option>
                                 </select>
                             </td>
                         </tr>
@@ -129,7 +130,8 @@
                                 <select name="shipper" id="shipper_id" v-model="itemData.shipper_id" @change="calcUnitPrice"
                                         class="form-control" v-on:change="setShipperName" required>
                                     <option value=""></option>
-                                    <option v-for="shipper in shippers" :value="shipper.shipper_id">
+                                    <option v-for="shipper in shippers" :value="shipper.shipper_id"
+                                            :selected="itemData.shipper_name === shipper.shipper_name1 + ' ' + shipper.shipper_name2">
                                         {{ shipper.shipper_name1 + " " + shipper.shipper_name2}}
                                     </option>
                                 </select>
@@ -141,9 +143,13 @@
                                 <label for="stack_point">{{__('item.stack_point')}}</label>&nbsp;
                             </td>
                             <td>
-                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice"
-                                       v-on:change="notify"
-                                       v-model="itemData.stack_point" id="stack_point" required/>
+                                <select name="shipper" id="stack_point" v-model="itemData.stack_point" @change="calcUnitPrice"
+                                        class="form-control" v-on:change="notify" required>
+                                    <option value=""></option>
+                                    <option v-for="s in stack_points" :value="s.stack_point"
+                                            :selected="itemData.stack_point === s.stack_point">{{s.stack_point}}
+                                    </option>
+                                </select>
                             </td>
                             <td class="text-center"></td>
                             <td class="text-right" valign="bottom">
@@ -152,9 +158,36 @@
                                 <label for="down_point">{{__('item.down_point')}}</label>&nbsp;
                             </td>
                             <td colspan="3">
-                                <input id="down_point" for="down_point" type="text" placeholder=""
+                                <select name="shipper" id="down_point" v-model="itemData.down_point" v-on:focusout="calcUnitPrice"
+                                        class="form-control" v-on:change="notify" required>
+                                    <option value=""></option>
+                                    <option v-for="s in down_points" :value="s.down_point"
+                                            :selected="itemData.down_point === s.down_point">{{s.down_point}}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" valign="bottom">
+                                <label for="stack_point">{{__('item.stack_point')}}</label>&nbsp;
+                            </td>
+                            <td>
+                                <input type="text" placeholder="" class="form-control" v-on:focusout="calcUnitPrice"
+                                       v-on:change="notify"
+                                       v-model="unitPriceData.stack_point" id="stack_point_price"/>
+                            </td>
+                            <td class="text-center"></td>
+                            <td class="text-right" valign="bottom">
+                                <label for="down_point">{{__('item.down_point')}}</label>&nbsp;
+                            </td>
+                            <td colspan="3">
+                                <input id="down_point_price" for="down_point" type="text" placeholder=""
                                        class="form-control" v-on:focusout="calcUnitPrice" v-on:change="notify"
-                                       v-model="itemData.down_point" required/>
+                                       v-model="unitPriceData.down_point"/>
+                            </td>
+                            <td width="10%" class="text-right" valign="bottom" colspan="2">
+                                <button type="reset" class="btn btn-lg btn-danger" style="height: 38px; width: 110px;text-align: center"
+                                        @click.prevent="registerUnitPrice">単価登録</button>
                             </td>
                         </tr>
                         <tr>
@@ -169,7 +202,7 @@
                             <td class="text-right" valign="bottom">
                                 <label for="empty_pl">{{__('item.empty_pl')}}</label>&nbsp;
                             </td>
-                            <td colspan="2">
+                            <td colspan="3">
                                 <select name="empty_pl" id="empty_pl" v-model="itemData.empty_pl"
                                         class="form-control" v-on:change="notify">
                                     <option value=""></option>
@@ -200,6 +233,15 @@
                             <td>
                                 <money class="form-control" id="per_vehicle"
                                        :disabled="isDisabled" v-model="per_vehicle" v-bind="money"/>
+                            </td>
+                            <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right" valign="bottom"><label for="highway_cost">高速代</label>&nbsp;
+                            </td>
+                            <td>
+                                <money type="text" placeholder="" class="form-control" id="highway_cost"
+                                       v-model="itemData.highway_cost" value="" v-bind="money"/>
                             </td>
                             <td class="text-center" valign="center">{{__('item.yen')}}&nbsp;</td>
                         </tr>
@@ -250,12 +292,22 @@
                                 </select>
                             </td>
                             <td></td>
+
+                        </tr>
+                        <tr>
                             <td class="text-right" valign="bottom">
                                 <label for="vehicle_payment">{{__('item.rental_vehicle_payment')}}</label>&nbsp;
                             </td>
-                            <td colspan="2">
+                            <td>
                                 <money type="text" class="form-control" id="vehicle_payment" v-on:change="notify"
                                        v-model="itemData.vehicle_payment" v-bind="money"/>
+                            </td>
+                            <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
+                            <td class="text-right" valign="bottom"><label for="pay_highway_cost">支払高速代</label>&nbsp;
+                            </td>
+                            <td colspan="3">
+                                <money type="text" placeholder="" class="form-control" id="pay_highway_cost"
+                                       v-model="itemData.pay_highway_cost" value="" v-bind="money"/>
                             </td>
                             <td valign="center">&nbsp;<span class="text-right">{{__('item.yen')}}</span></td>
                         </tr>
@@ -264,7 +316,7 @@
                             </td>
                             <td colspan="6">
                                 <textarea rows="3" class="form-control" id="item_remark" v-on:change="notify"
-                                          v-model="itemData.item_remark"></textarea>
+                                    v-model="itemData.item_remark"></textarea>
                             </td>
                         </tr>
                         </tbody>
@@ -300,6 +352,9 @@
             clearing: {type: String, required: true},
             itemId: {type: String},
             mode: {type: String},
+            stackPointsUrl: {type: String, required: true},
+            downPointsUrl: {type: String, required: true},
+            unitPrice: {type: String, required: true},
         },
         data() {
             return {
@@ -337,10 +392,22 @@
                     update_id: '',
                     remember_token: '',
                 },
+                unitPriceData: {
+                    car_type: '',
+                    shipper_id: '',
+                    stack_point: '',
+                    down_point: '',
+                    type: '',
+                    price: 0,
+                    delete_flg: 0,
+                    shipper_no: '',
+                },
                 isDisabled: false,
                 shippers: [],
                 drivers: [],
                 vehicles: [],
+                stack_points: [],
+                down_points: [],
                 per_ton: '',
                 per_vehicle: '',
                 ton: '',
@@ -365,6 +432,8 @@
             this.fetchDrivers(this.driverUrl);
             this.fetchVehicles(this.vehicleUrl);
             this.hideMandatory();
+            this.fetchStackPoints();
+            this.fetchDownPoints();
             if (this.itemId !== undefined)
                 this.fetchEditData();
         },
@@ -384,6 +453,7 @@
                         this.down_time_hour = down_time[0];
                         this.down_time_min = down_time[1];
                     });
+                //this.fetchShippers(this.shipperUrl);
             },
             setDriverName() {
                 this.anyFieldChanged = 1;
@@ -437,12 +507,47 @@
                         .then(response => {
                             if (response.data.price !== undefined) {
                                 component.per_ton = response.data.price;
-                            } else {
-                                component.per_ton = 0;
                             }
                             component.calcItemPrice();
                         });
                 }
+            },
+            registerUnitPrice() {
+                /**if (this.unitPriceData.stack_point === ''
+                    || this.unitPriceData.down_point === ''
+                    || this.itemData.item_vehicle === ''
+                    || this.itemData.shipper_id === null
+                    || this.unitPriceData.car_type === ''
+                    || this.per_ton === 0) {
+                    this.generalErrorDialog();
+                } else {**/
+                    this.unitPriceData.car_type = this.itemData.item_vehicle;
+                    this.unitPriceData.shipper_id = this.itemData.shipper_id;
+                    if (this.per_ton !== 0) {
+                        this.unitPriceData.price = this.per_ton;
+                            this.unitPriceData.type = 't';
+                    } else
+                    if (this.per_vehicle !== 0) {
+                        this.unitPriceData.price = this.per_vehicle;
+                            this.unitPriceData.type = '台'
+                    }
+                    this.unitPriceData.delete_flg = 0;
+                    for (let i = 0; i < this.shippers.length; i++) {
+                        if (this.itemData.shipper_id === this.shippers[i].shipper_id) {
+                            this.unitPriceData.shipper_id = this.itemData.shipper_id;
+                            this.unitPriceData.shipper_no = this.shippers[i].shipper_no;
+                            break;
+                        }
+                    }
+                    axios.post(this.unitPrice, this.unitPriceData)
+                        .then(response => {
+                            this.createSuccessDialog();
+                            this.fetchDownPoints();
+                            this.fetchStackPoints();
+                        }).catch(error => {
+                        this.errorDialog(error);
+                    });
+                //}
             },
             perVehicleChange() {
                 this.anyFieldChanged = 1;
@@ -484,6 +589,9 @@
                     for (let i in this.itemData) {
                         this.itemData[i] = "";
                     }
+                    for (let i in this.unitPriceData) {
+                        this.unitPriceData[i] = "";
+                    }
                     this.vehicle_model = "";
                     this.per_ton = "";
                     this.per_vehicle = "";
@@ -492,6 +600,9 @@
                     this.stack_time_min = "";
                     this.down_time_hour = "";
                     this.down_time_min = "";
+                    document.getElementById('per_ton').disabled = false;
+                    document.getElementById('ton').disabled = false;
+                    document.getElementById('per_vehicle').disabled = false;
                 }
             },
             back() {
@@ -504,7 +615,7 @@
                             title: this.__('alert.message'),
                             text: '編集中のデータを破棄して前の画面に戻りますか？',
                             triggerOnConfirm: () => {
-                                window.location.href = this.redirectUrl;
+                                window.location.href = this.backUrl;
                             }
                         },
                         {
@@ -611,6 +722,18 @@
                         return false;
                     });
                 return true;
+            },
+            fetchStackPoints() {
+                axios.get(this.stackPointsUrl)
+                    .then(stack => {
+                        this.stack_points = stack.data
+                    });
+            },
+            fetchDownPoints() {
+                axios.get(this.downPointsUrl)
+                    .then(down => {
+                        this.down_points = down.data
+                    });
             },
             showDialog(response) {
                 let message = response.message + ': ';

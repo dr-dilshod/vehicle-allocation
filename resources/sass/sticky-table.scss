@@ -6,6 +6,7 @@
   overflow: auto;
   height: auto;
   max-height: 400px;
+  min-height: 500px;
 }
 .table-scroll table {
   width: 100%;
@@ -13,6 +14,9 @@
   margin: auto;
   border-collapse: separate;
   border-spacing: 0;
+}
+.table .thead-light th{
+    background-color: #fff;
 }
 .table-scroll table td {
   background: white;
@@ -23,6 +27,7 @@
 .table-scroll thead th {
   position: -webkit-sticky;
   position: sticky;
+  background-color: #fff;
   top: 0;
   z-index: 4;
 }

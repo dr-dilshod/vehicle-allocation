@@ -32,6 +32,7 @@
         "@syncfusion/ej2-vue-grids": "^17.4.55",
         "@syncfusion/ej2-vue-inputs": "^17.4.55",
         "@syncfusion/ej2-vue-popups": "^17.4.51",
+        "badger-accordion": "^1.2.4",
         "v-money": "^0.8.1",
         "vue-currency-input": "^1.18.2",
         "vue-js-modal": "^1.3.33",

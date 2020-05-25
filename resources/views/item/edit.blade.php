@@ -13,6 +13,9 @@
                            operation="{{__('item.update')}}"
                            clearing="{{__('common.delete')}}"
                            item-id="{{$item_id}}"
+                           stack-points-url="{{route('api.invoice.stackpoints')}}"
+                           down-points-url="{{route('api.invoice.downpoints')}}"
+                           unit-price="{{route('api.unit-prices.register')}}"
         ></item-registration>
     </div>
 @endsection

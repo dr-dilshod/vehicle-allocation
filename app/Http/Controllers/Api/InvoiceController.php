@@ -7,33 +7,80 @@ use App\Invoice;
 use App\Item;
 use App\Shipper;
 use App\Payment;
+use App\UnitPrice;
 use App\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
-        $shipper = $request->get('shipper');
-        $matters = Item::where('item_completion_date','>',Carbon::today())->get();
-        return response()->json($matters);
+        $invoices = DB::table('invoices')
+            ->join('items', 'invoices.item_id', '=', 'items.item_id')
+            ->get();
+        // $matters = Item::where('item_completion_date','>',Carbon::today())->get();
+        return response()->json($invoices);
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $invoice = Invoice::create($request->all());
-        return response()->json($invoice);
+        $all = $request->toArray();
+        $save = false;
+        $update = false;
+
+        $updatedInvoices = [];
+        foreach ($all as $invoice) {
+            if (!isset($invoice['invoice_id']) || is_null($invoice['invoice_id'])) {
+                // add validation rules here later
+                $invoice['stack_date'] = date('Y-m-d', strtotime($invoice['stack_date']));
+                $invoice['down_date'] = date('Y-m-d', strtotime($invoice['down_date']));
+                $invoice['down_invoice'] = 1;
+                $invoice = collect($invoice)->filter(function ($val, $key) {
+                    return !is_null($val);
+                })->toArray();
+                $item = Item::create($invoice);
+                $item_id = $item->item_id;
+                if (Carbon::now()->day < 20) {
+                    $deadline = Carbon::now()->setDay(20)->format('Y-m-d');
+                } else {
+                    $deadline = Carbon::now()->endOfMonth()->format('Y-m-d');
+                }
+                $vehicle = Vehicle::query()->where(['vehicle_no' => $invoice['vehicle_no3']])->first();
+                Invoice::firstOrCreate(['item_id'=>$item_id,
+                    'shipper_id'=>$invoice['shipper_id'],
+                    'vehicle_id'=>$vehicle->vehicle_id,
+                    'billing_recording_date'=>date('Y-m-d'),
+                    'billing_deadline_date' => $deadline]);
+            } else {
+                array_push($updatedInvoices, $invoice);
+            }
+        }
+
+        //if (count($updatedInvoices) > 0) {
+        //    $this->validate($request, Item::$updateRules);
+        //    $update = true;
+        //}
+        //if ($update) {
+            foreach ($updatedInvoices as $invoice) {
+                unset($invoice['invoice_id']);
+                Item::query()->where('item_id', $invoice['item_id'])->update($invoice);
+            }
+        //}
+        return response()->json([], 201);
     }
 
     /**
@@ -81,11 +128,11 @@ class InvoiceController extends Controller
      */
     public function getInvoiceList(Request $request)
     {
-        $stack_date = $request->query('stack_date') ?: '';
-        $vehicle_id = $request->query('vehicle_id') ?: '';
-        $invoice_day = $request->query('invoice_day') ?: '';
-        $invoice_month = $request->query('invoice_month') ?: '';
-        $shipper_id = $request->query('shipper_id') ?: '';
+        $stack_date = $request->input('stack_date') ?: '';
+        $vehicle_id = $request->input('vehicle_id') ?: '';
+        $invoice_day = $request->input('invoice_day') ?: '';
+        $invoice_month = $request->input('invoice_month') ?: '';
+        $shipper_id = $request->input('shipper_id') ?: '';
         $matchThese = ['delete_flg' => 0];
         if (!empty($vehicle_id)) {
             $vehicle = Vehicle::query()->where('vehicle_id', '=', $vehicle_id)->first();
@@ -110,10 +157,12 @@ class InvoiceController extends Controller
                 return $e->item_id;
             });
 
-        $invoiceTable = Item::query()->whereIn('item_id', $invoices)
-            ->where('stack_date', '=', $stack_date)
-            ->where('down_date', '>=', date("Y-m-d"))
-            ->get();
+        $invoiceTable = Item::query()->whereIn('item_id', $invoices);
+        if (!empty($stack_date)) {
+            $invoiceTable = $invoiceTable->where('stack_date', '=', $stack_date)
+                ->where('down_date', '>=', date("Y-m-d"));
+        }
+        $invoiceTable = $invoiceTable->get();
         return response()->json($invoiceTable);
     }
     /**
@@ -143,6 +192,34 @@ class InvoiceController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     * @return the list of stack points for the dropdown list
+     */
+    public function stackPoints()
+    {
+        $stack_points = UnitPrice::query()->select('stack_point')
+            ->where('delete_flg', 0)
+            ->distinct()
+            ->orderBy('stack_point', 'ASC')
+            ->get();
+        return response()->json($stack_points);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @return the list of down points for the dropdown list
+     */
+    public function downPoints()
+    {
+        $down_points = UnitPrice::query()->select('down_point')
+            ->where('delete_flg', 0)
+            ->distinct()
+            ->orderBy('down_point', 'ASC')
+            ->get();
+        return response()->json($down_points);
+    }
+
+    /**
      * returns the list of shippers for the dropdown list
      *
      * @param Request $request
@@ -162,11 +239,16 @@ class InvoiceController extends Controller
      */
     public function getVehicleList()
     {
-        $vehicleIDs = Item::query()->select('vehicle_id')->distinct()->get(function($e) {
+        $vehicleIDs = Item::query()
+            ->select('vehicle_id')
+            ->distinct()->get(function($e) {
             return $e->vehicle_id;
         });
 
-        $vehicles = Vehicle::query()->select(['vehicle_id', 'vehicle_no'])->whereIn('vehicle_id', $vehicleIDs)->get();
+        $vehicles = Vehicle::query()
+            ->select(['vehicle_id', 'vehicle_no', 'company_name'])
+            ->whereIn('vehicle_id', $vehicleIDs)
+            ->get();
         return response()->json($vehicles);
     }
 

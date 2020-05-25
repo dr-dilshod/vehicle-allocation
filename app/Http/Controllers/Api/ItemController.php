@@ -256,7 +256,7 @@ class ItemController extends Controller
      */
     public function getShippers(Request $request)
     {
-        $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2'])
+        $shippers = Shipper::select(['shipper_id', 'shipper_name1', 'shipper_name2', 'shipper_no'])
             ->where('delete_flg',0)
             ->orderBy('shipper_name1','asc')
             ->orderBy('shipper_name2','asc')

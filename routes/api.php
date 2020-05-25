@@ -72,6 +72,8 @@ Route::get('/unit-prices/show/{id}', 'Api\UnitPriceController@show')->name('api.
 Route::post('/unit-prices', 'Api\UnitPriceController@store')->name('api.unit-prices.store')->middleware('admin');
 Route::put('/unit-prices/{id}', 'Api\UnitPriceController@update')->name('api.unit-prices.update')->middleware('admin');
 Route::delete('/unit-prices/{id}', 'Api\UnitPriceController@destroy')->name('api.unit-prices.destroy')->middleware('admin');
+Route::post('/unit-prices/register', 'Api\UnitPriceController@register')->name('api.unit-prices.register')->middleware('admin');
+
 
 /**
  * Deposit APIs
@@ -98,7 +100,10 @@ Route::delete('/payments/{id}', 'Api\PaymentController@destroy')->name('api.paym
 /**
  * Invoice APIs
  */
+Route::get('/invoice/stack-points', 'Api\InvoiceController@stackPoints')->name('api.invoice.stackpoints')->middleware('admin');
+Route::get('/invoice/down-points', 'Api\InvoiceController@downPoints')->name('api.invoice.downpoints')->middleware('admin');
 Route::get('/invoice', 'Api\InvoiceController@index')->name('api.invoice.index')->middleware('admin');
+Route::get('/invoice/filter', 'Api\InvoiceController@getInvoiceList')->name('api.invoice.filter')->middleware('admin');
 Route::delete('/invoice/{id}', 'Api\InvoiceController@destroy')->name('api.invoice.destroy')->middleware('admin');
 Route::post('/invoice', 'Api\InvoiceController@store')->name('api.invoice.store')->middleware('admin');
 

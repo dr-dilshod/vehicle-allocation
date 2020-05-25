@@ -25,7 +25,7 @@ class CreateItemsTable extends Migration
             $table->tinyInteger('status')->default(0);
             $table->date('stack_date');
             $table->time('stack_time')->nullable();
-            $table->date('down_date');
+            $table->date('down_date')->nullable();
             $table->time('down_time')->nullable();
             $table->tinyInteger('down_invoice')->default(0)->nullable();
             $table->string('stack_point', 60)->default(null);
@@ -39,6 +39,8 @@ class CreateItemsTable extends Migration
             $table->string('item_vehicle', 60)->nullable();
             $table->integer('vehicle_payment')->nullable();
             $table->date('item_completion_date')->nullable();
+            $table->integer('highway_cost')->nullable();
+            $table->integer('pay_highway_cost')->nullable();
             $table->string('item_remark', 255)->nullable();
             $table->tinyInteger('delete_flg')->default(0);
             $table->unsignedBigInteger('create_id')->unsigned()->nullable();

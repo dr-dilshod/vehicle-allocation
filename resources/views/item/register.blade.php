@@ -12,6 +12,9 @@
                            title="{{__('item.item_registration')}}"
                            operation="{{__('common.register')}}"
                            clearing="{{__('common.clear')}}"
+                           stack-points-url="{{route('api.invoice.stackpoints')}}"
+                           down-points-url="{{route('api.invoice.downpoints')}}"
+                           unit-price="{{route('api.unit-prices.register')}}"
         ></item-registration>
     </div>
 @endsection

@@ -160,7 +160,7 @@ module.exports = {
             this.$modal.show({
                 template: this.dialogTemplate,
                 props: ['title', 'text']
-            }, {title: this.__('alert.message'), text: 'You have errors in entered data. Please, fix them.'}, {
+            }, {title: this.__('alert.message'), text: this.__('alert.something_is_wrong_with_entered_data')}, {
                 height: 'auto'
             });
         },
