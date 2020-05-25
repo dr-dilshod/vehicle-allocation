@@ -110,6 +110,7 @@ Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('a
 Route::get('/dispatch/driver-list', 'Api\DispatchController@driverList')->name('api.dispatch.drivers')->middleware('admin');
 Route::post('/dispatch', 'Api\DispatchController@store')->name('api.dispatch.store')->middleware('admin');
 Route::delete('/dispatch/{id}', 'Api\DispatchController@destroy')->name('api.dispatch.destroy')->middleware('admin');
+Route::post('/dispatch/the-list', 'Api\DispatchController@theList')->name('api.dispatch.list')->middleware('admin');
 
 // Top
 Route::get('/top', 'Api\TopController@index')->name('api.top.index');

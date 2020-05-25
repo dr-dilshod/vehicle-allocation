@@ -6,7 +6,7 @@
             back-url="{{route('top')}}"
             first-list-url="{{ route('api.dispatch.first') }}"
             second-list-url="{{ route('api.dispatch.second') }}"
-            third-list-url="{{ route('api.dispatch.third') }}"
+            third-list-url="{{ route('api.dispatch.list') }}"
             driver-list-url="{{ route('api.dispatch.drivers') }}"
             pdf-url="{{ route('dispatch.pdf') }}"
     ></dispatch>

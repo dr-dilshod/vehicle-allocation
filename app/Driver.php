@@ -52,6 +52,15 @@ class Driver extends Authenticatable
         '*.admin_flg' => 'max:1',
     ];
 
+    const vehicleTypes = [
+        'ウィング',
+        '大平',
+        '４平',
+        'トレーラー',
+        'バルク',
+        'ユニック',
+    ];
+
     /**
      * The primary key for the model.
      *

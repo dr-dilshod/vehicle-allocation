@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Dispatch;
 use App\Driver;
 use App\Item;
+use App\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -350,6 +351,66 @@ class DispatchController extends Controller
                 'nextProduct' => $next_items
             ];
             $result['date'] = $date;
+        }
+        return response()->json($result);
+    }
+
+    public function theList(Request $request){
+        $result = [];
+
+        $date = $request->get('date');
+        $tableDriverList = $request->get('drivers');
+
+        foreach (Driver::vehicleTypes as $type){
+            $drivers = Driver::where([
+                'vehicle_type'=>$type,
+                'search_flg'=>Driver::SEARCH_FLAG_WORKING,
+                'delete_flg'=>0
+            ])
+            ->whereIn('driver_id',$tableDriverList)
+            ->get();
+            $items = [];
+            foreach ($drivers as $driver){
+                $morning_items = \DB::table('dispatches')
+                    ->leftJoin('items','dispatches.item_id','=','items.item_id')
+                    ->where([
+                        'dispatches.driver_id'=>$driver->driver_id,
+                        'dispatches.timezone'=>Dispatch::TIMEZONE_MORNING,
+                        'dispatches.delete_flg'=>0,
+                        'items.delete_flg'=>0,
+                    ])->whereRaw('items.down_date >= "'. $date . '"')
+                    ->get();
+                $noon_items = \DB::table('dispatches')
+                    ->leftJoin('items','dispatches.item_id','=','items.item_id')
+                    ->where([
+                        'dispatches.driver_id'=>$driver->driver_id,
+                        'dispatches.timezone'=>Dispatch::TIMEZONE_NOON,
+                        'dispatches.delete_flg'=>0,
+                        'items.delete_flg'=>0,
+                    ])->whereRaw('items.down_date >= "'. $date . '"')
+                    ->get();
+                $next_items = \DB::table('dispatches')
+                    ->leftJoin('items','dispatches.item_id','=','items.item_id')
+                    ->where([
+                        'dispatches.driver_id'=>$driver->driver_id,
+                        'dispatches.timezone'=>Dispatch::TIMEZONE_NEXT_PRODUCT,
+                        'dispatches.delete_flg'=>0,
+                        'items.delete_flg'=>0,
+                    ])->whereRaw('items.down_date >= "'. $date . '"')
+                    ->get();
+                $items[]=[
+                    'driver_id' => $driver->driver_id,
+                    'vehicle_no' => $driver->vehicle_no3,
+                    'driver_name' => $driver->driver_name,
+                    'morning' => $morning_items,
+                    'noon' => $noon_items,
+                    'nextProduct' => $next_items
+                ];
+            }
+            $result[] = [
+                'type' => $type,
+                'items' => $items
+            ];
         }
         return response()->json($result);
     }
