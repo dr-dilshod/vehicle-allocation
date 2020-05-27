@@ -1,60 +1,52 @@
 <template>
     <div class="container-fluid dispatch" style="padding-left: 15px; padding-right: 15px">
-        <div class="row">
-            <div class="col-3">
-                <div class="row">
-                    <div class="col-6">
-                        <a v-on:click="back"
-                           class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
-                    </div>
-                    <div class="col-6">
-                        <h2 class="text-center">{{__('dispatch.dispatch_board')}}</h2>
-                    </div>
-                </div>
+        <div class="d-flex">
+            <div style="width: 20rem;">
+                <a v-on:click="back"
+                   class="btn btn-lg btn-warning btn-block btn-fixed-width">{{__('common.back')}}</a>
             </div>
-            <div class="col-9">
-                <div class="row">
-                    <div class="col-9">
-                        <form action="#" @submit.prevent="display">
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group d-flex">
-                                        <label for="dispatch_day" class="mt-2">{{__('dispatch.dispatch_day')}}</label>&nbsp;&nbsp;&nbsp;
-                                        <datepicker v-model="dispatch_day" id="dispatch_day" :bootstrap-styling="true"
-                                                    :format="options.weekday" :clear-button="true"
-                                                    :language="options.language.ja"
-                                        ></datepicker>
-                                    </div>
-                                </div>
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary btn-fixed-width" id="display"
-                                                @click.prevent="display">{{__('dispatch.display')}}
-                                        </button>
-                                        <button type="button" class="btn btn-primary btn-fixed-width" id="nextDay"
-                                                @click.prevent="nextDay">{{__('dispatch.next_day')}}
-                                        </button>
-                                        <button type="button" class="btn btn-primary btn-fixed-width" id="twoDaysLater"
-                                                @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
-                                        </button>
-                                    </div>
-                                </div>
+            <div style="width: 20rem;">
+                <h2 class="text-center">{{__('dispatch.dispatch_board')}}</h2>
+            </div>
+            <div style="width: 90rem;">
+                <form action="#" @submit.prevent="display">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="form-group d-flex">
+                                <label for="dispatch_day" class="mt-2">{{__('dispatch.dispatch_day')}}</label>&nbsp;&nbsp;&nbsp;
+                                <datepicker v-model="dispatch_day" id="dispatch_day" :bootstrap-styling="true"
+                                            :format="options.weekday" :clear-button="true"
+                                            :language="options.language.ja"
+                                ></datepicker>
                             </div>
-                        </form>
+                        </div>
+                        <div class="col-7">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="display"
+                                        @click.prevent="display">{{__('dispatch.display')}}
+                                </button>
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="nextDay"
+                                        @click.prevent="nextDay">{{__('dispatch.next_day')}}
+                                </button>
+                                <button type="button" class="btn btn-primary btn-fixed-width" id="twoDaysLater"
+                                        @click.prevent="twoDaysLater">{{__('dispatch.two_days_later')}}
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-3 text-right">
-                        <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-fixed-width">
-                            {{__('dispatch.printing')}}
-                        </button>
-                        <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-fixed-width">
-                            {{__('common.register')}}
-                        </button>
-                    </div>
-                </div>
+                </form>
+            </div>
+            <div style="width: 40rem; text-align: right">
+                <button id="printBtn" @click="print" class="btn btn-lg btn-success btn-fixed-width">
+                    {{__('dispatch.printing')}}
+                </button>
+                <button id="registerBtn" @click="register" class="btn btn-lg btn-danger btn-fixed-width">
+                    {{__('common.register')}}
+                </button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3">
+        <div class="d-flex">
+            <div style="width: 15%">
                 <div class="day1">
                     <h6 class="text-center pt-1">
                         翌営業日 <br>
@@ -73,6 +65,8 @@
                         </div>
                     </draggable>
                 </div>
+            </div>
+            <div style="width: 15%">
                 <div class="day2">
                     <h6 class="text-center pt-1">
                         翌々営業日 <br>
@@ -92,7 +86,7 @@
                     </draggable>
                 </div>
             </div>
-            <div class="col-9">
+            <div style="width: 70%">
                 <table class="table" style="margin-bottom: 0; border: 1px solid #ced4da">
                     <tr>
                         <td style="width: 12%" class="text-center">{{__('dispatch.car_no')}}</td>
@@ -298,8 +292,6 @@
                     added: [],
                     removed: []
                 },
-                collapse: "collapse",
-                heading: "heading",
                 change: false,
                 options: {
                     monthFormat: "yyyy/MM",
@@ -566,8 +558,6 @@
                 .catch(function (error) {
                     component.errorDialog(error);
                 });
-            this.$refs.myAccordion.open(0);
-//            console.log(this.$refs.myAccordion);
         },
         computed: {
             dispatch_day_string: function () {
