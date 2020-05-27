@@ -97,5 +97,12 @@
     border: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
+    //appearance: none;
+}
+
+.badger-accordion__header .js-badger-accordion-header .badger-accordion-toggle .badger-accordion-title,
+.badger-accordion__header .js-badger-accordion-header .badger-accordion-toggle .badger-toggle-indicator {
+    background: lightskyblue;
+    padding: 5px;
+    font-size: 12pt;
 }

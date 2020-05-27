@@ -103,104 +103,104 @@
                     </tr>
                 </table>
                 <div style="background: #fff;">
-                    <div class="accordion" id="shoueiAccordion">
-                        <div class="card" v-for="(entity,cc) in thirdList" :key="entity.type">
-                            <div class="card-header" :id="heading+[cc]" style="background: #61aeed; padding: 0.3rem">
-                            <span data-toggle="collapse" :data-target="collapse+[cc]" aria-expanded="true"
-                                  :aria-controls="collapse+[cc]">
+                    <badger-accordion ref="myAccordion">
+                        <badger-accordion-item v-for="(entity, cc) in thirdList" :key="entity.type">
+                            <template slot="header" style="background: lightskyblue; padding: 5px">
                                 {{ entity.type }}
-                            </span>
-                            </div>
-                            <div :id="collapse+[cc]" :data-cc="[cc]" class="collapse show" :aria-labelledby="heading+[cc]"
-                                 data-parent="#shoueiAccordion">
-                                <div class="card-body">
-                                    <div style="max-height: 380px; overflow-y: scroll; border: 1px solid #ced4da; border-left: none; border-right: none;">
-                                        <table class="dispatch-table table">
-                                            <tbody>
-                                            <tr v-for="(elem, idx) in entity.items" :data-driver-id="elem.driver_id">
-                                                <td style="width: 12%" class="text-center">{{elem.vehicle_no}}</td>
-                                                <td style="width: 13%" class="text-center">
-                                                    <div class="driver d-flex">
-                                                        <div class="name" style="width: 90%">
+                            </template>
+                            <template slot="content">
+                                <div style="max-height: 380px; overflow-y: scroll; border: 1px solid #ced4da; border-left: none; border-right: none;">
+                                    <table class="dispatch-table table">
+                                        <tbody>
+                                        <tr v-for="(elem, idx) in entity.items" :data-driver-id="elem.driver_id">
+                                            <td style="width: 12%" class="text-center">{{elem.vehicle_no}}</td>
+                                            <td style="width: 13%" class="text-center">
+                                                <div class="driver d-flex">
+                                                    <div class="name" style="width: 90%">
                                                         {{elem.driver_name}}
+                                                    </div>
+                                                    <button type="button" class="close" style="width: 10%"
+                                                            @click="removeRow(idx, elem)" aria-label="Close">
+                                                        <span aria-hidden="true" class="text-danger">&times;</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td style="width: 25%" >
+                                                <draggable :list="elem.morning" group="elems" @add="add($event,1)"
+                                                           ghost-class="new"
+                                                           style="display: block; min-height: 50px" class="morning"
+                                                           :data-driver-id="elem.driver_id">
+                                                    <div class="elem d-flex" v-for="item in elem.morning"
+                                                         :key="item.item_id" :data-item_id="item.item_id">
+                                                        <div class="">
+                                                            <strong>{{ item.shipper_name }}</strong>
+                                                            {{ item.down_date }} <br>
+                                                            {{ item.stack_point }} - {{ item.down_point }} <br>
+                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                                            {{ item.remarks }}
                                                         </div>
-                                                        <button type="button" class="close" style="width: 10%"
-                                                                @click="removeRow(idx, elem)" aria-label="Close">
-                                                            <span aria-hidden="true" class="text-danger">&times;</span>
+                                                        <button type="button" class="close"
+                                                                @click="removeElem(item.item_id)"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true"
+                                                                  class="text-danger">&times;</span>
                                                         </button>
                                                     </div>
-                                                </td>
-                                                <td style="width: 25%" >
-                                                    <draggable :list="elem.morning" group="elems" @add="add($event,1)"
-                                                               ghost-class="new"
-                                                               style="display: block; min-height: 50px" class="morning"
-                                                               :data-driver-id="elem.driver_id">
-                                                        <div class="elem" v-for="item in elem.morning"
-                                                             :key="item.item_id" :data-item_id="item.item_id">
-                                                            <button type="button" class="close"
-                                                                    @click="removeElem(item.item_id)"
-                                                                    aria-label="Close">
-                                                            <span aria-hidden="true"
-                                                                  class="text-danger">&times;</span>
-                                                            </button>
+                                                </draggable>
+                                            </td>
+                                            <td style="width: 25%" >
+                                                <draggable :list="elem.noon" group="elems" @add="add($event,2)"
+                                                           ghost-class="new"
+                                                           style="display: block; min-height: 50px" class="noon"
+                                                           :data-driver-id="elem.driver_id">
+                                                    <div class="elem" v-for="item in elem.noon" :key="item.item_id"
+                                                         :data-item_id="item.item_id">
+                                                        <div class="">
                                                             <strong>{{ item.shipper_name }}</strong>
                                                             {{ item.down_date }} <br>
                                                             {{ item.stack_point }} - {{ item.down_point }} <br>
                                                             <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
                                                             {{ item.remarks }}
                                                         </div>
-                                                    </draggable>
-                                                </td>
-                                                <td style="width: 25%" >
-                                                    <draggable :list="elem.noon" group="elems" @add="add($event,2)"
-                                                               ghost-class="new"
-                                                               style="display: block; min-height: 50px" class="noon"
-                                                               :data-driver-id="elem.driver_id">
-                                                        <div class="elem" v-for="item in elem.noon" :key="item.item_id"
-                                                             :data-item_id="item.item_id">
-                                                            <button type="button" class="close"
-                                                                    @click="removeElem(item.item_id)"
-                                                                    aria-label="Close">
+                                                        <button type="button" class="close"
+                                                                @click="removeElem(item.item_id)"
+                                                                aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
-                                                            </button>
+                                                        </button>
+                                                    </div>
+                                                </draggable>
+                                            </td>
+                                            <td style="width: 25%" >
+                                                <draggable :list="elem.nextProduct" group="elems"
+                                                           @add="add($event,3)" ghost-class="new"
+                                                           style="display: block; min-height: 50px"
+                                                           class="next-product" :data-driver-id="elem.driver_id">
+                                                    <div class="elem" v-for="item in elem.nextProduct"
+                                                         :key="item.item_id" :data-item_id="item.item_id">
+                                                        <div class="">
                                                             <strong>{{ item.shipper_name }}</strong>
                                                             {{ item.down_date }} <br>
                                                             {{ item.stack_point }} - {{ item.down_point }} <br>
                                                             <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
                                                             {{ item.remarks }}
                                                         </div>
-                                                    </draggable>
-                                                </td>
-                                                <td style="width: 25%" >
-                                                    <draggable :list="elem.nextProduct" group="elems"
-                                                               @add="add($event,3)" ghost-class="new"
-                                                               style="display: block; min-height: 50px"
-                                                               class="next-product" :data-driver-id="elem.driver_id">
-                                                        <div class="elem" v-for="item in elem.nextProduct"
-                                                             :key="item.item_id" :data-item_id="item.item_id">
-                                                            <button type="button" class="close"
-                                                                    @click="removeElem(item.item_id)"
-                                                                    aria-label="Close">
+                                                        <button type="button" class="close"
+                                                                @click="removeElem(item.item_id)"
+                                                                aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
-                                                            </button>
-                                                            <strong>{{ item.shipper_name }}</strong>
-                                                            {{ item.down_date }} <br>
-                                                            {{ item.stack_point }} - {{ item.down_point }} <br>
-                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
-                                                            {{ item.remarks }}
-                                                        </div>
-                                                    </draggable>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                        </button>
+                                                    </div>
+                                                </draggable>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            </template>
+                        </badger-accordion-item>
+                    </badger-accordion>
                     <div style="padding: 10px">
                         <button data-toggle="modal" data-target="#addDriverModal"
                                 class="btn btn-primary btn-fixed-width">{{__('dispatch.add')}}
@@ -265,12 +265,15 @@
     import draggable from 'vuedraggable'
     import Datepicker from "vuejs-datepicker";
     import {en, ja} from 'vuejs-datepicker/dist/locale'
+    import {BadgerAccordion, BadgerAccordionItem} from 'vue-badger-accordion'
 
     export default{
         name: 'Dispatch',
         components: {
             draggable,
-            Datepicker
+            Datepicker,
+            BadgerAccordion,
+            BadgerAccordionItem
         },
         props: {
             backUrl: {type: String, required: true},
@@ -563,6 +566,8 @@
                 .catch(function (error) {
                     component.errorDialog(error);
                 });
+            this.$refs.myAccordion.open(0);
+//            console.log(this.$refs.myAccordion);
         },
         computed: {
             dispatch_day_string: function () {
@@ -654,5 +659,9 @@
 
     .dispatch .dispatch-table {
         font-size: 12pt;
+    }
+    .dispatch .elem .close{
+        width: 0.5rem;
+        text-align: right;
     }
 </style>

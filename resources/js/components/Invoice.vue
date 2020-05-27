@@ -642,18 +642,18 @@
                                 vehicle_id: el.vehicle_id,
                                 stack_point: el.stack_point,
                                 down_point: el.down_point,
-                                vehicle_payment: el.vehicle_payment ?? 0,
+                                vehicle_payment: el.vehicle_payment ? el.vehicle_payment : 0,
                                 down_date: el.down_date,
                                 shipper_name: el.shipper_name,
                                 stack_date: el.stack_date,
                                 vehicle_no3: el.vehicle_no3,
                                 weight: el.weight,
-                                item_price: el.item_price ?? 0,
+                                item_price: el.item_price ? el.item_price : 0,
                                 status: el.status,
                                 item_vehicle: el.item_vehicle,
                                 down_time: el.down_time,
-                                highway_cost: el.highway_cost ?? 0,
-                                pay_highway_cost: el.pay_highway_cost ?? 0
+                                highway_cost: el.highway_cost ? el.highway_cost : 0,
+                                pay_highway_cost: el.pay_highway_cost ? el.pay_highway_cost : 0
                             };
                         });
                         this.resetTable({data: this.data});
