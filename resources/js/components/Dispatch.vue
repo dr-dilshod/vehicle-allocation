@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="d-flex">
-            <div style="width: 15%">
+            <div style="width: 15%; box-sizing: border-box">
                 <div class="day1">
                     <h6 class="text-center pt-1">
                         翌営業日 <br>
@@ -66,7 +66,7 @@
                     </draggable>
                 </div>
             </div>
-            <div style="width: 15%">
+            <div style="width: 15%; box-sizing: border-box">
                 <div class="day2">
                     <h6 class="text-center pt-1">
                         翌々営業日 <br>
@@ -86,7 +86,7 @@
                     </draggable>
                 </div>
             </div>
-            <div style="width: 70%">
+            <div style="width: 70%; box-sizing: border-box">
                 <table class="table" style="margin-bottom: 0; border: 1px solid #ced4da">
                     <tr>
                         <td style="width: 12%" class="text-center">{{__('dispatch.car_no')}}</td>
@@ -96,8 +96,8 @@
                         <td style="width: 25%" class="text-center">{{__('dispatch.next_product')}}</td>
                     </tr>
                 </table>
-                <div style="background: #fff;">
-                    <badger-accordion ref="myAccordion">
+                <div style="background: #fff; border: 1px solid #ced4da;">
+                    <badger-accordion ref="myAccordion" :options="badgerOptions">
                         <badger-accordion-item v-for="(entity, cc) in thirdList" :key="entity.type">
                             <template slot="header" style="background: lightskyblue; padding: 5px">
                                 {{ entity.type }}
@@ -124,21 +124,19 @@
                                                            ghost-class="new"
                                                            style="display: block; min-height: 50px" class="morning"
                                                            :data-driver-id="elem.driver_id">
-                                                    <div class="elem d-flex" v-for="item in elem.morning"
+                                                    <div class="elem" v-for="item in elem.morning"
                                                          :key="item.item_id" :data-item_id="item.item_id">
-                                                        <div class="">
-                                                            <strong>{{ item.shipper_name }}</strong>
-                                                            {{ item.down_date }} <br>
-                                                            {{ item.stack_point }} - {{ item.down_point }} <br>
-                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
-                                                            {{ item.remarks }}
-                                                        </div>
                                                         <button type="button" class="close"
                                                                 @click="removeElem(item.item_id)"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
                                                         </button>
+                                                        <strong>{{ item.shipper_name }}</strong>
+                                                        {{ item.down_date }} <br>
+                                                        {{ item.stack_point }} - {{ item.down_point }} <br>
+                                                        <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                                        {{ item.remarks }}
                                                     </div>
                                                 </draggable>
                                             </td>
@@ -149,19 +147,17 @@
                                                            :data-driver-id="elem.driver_id">
                                                     <div class="elem" v-for="item in elem.noon" :key="item.item_id"
                                                          :data-item_id="item.item_id">
-                                                        <div class="">
-                                                            <strong>{{ item.shipper_name }}</strong>
-                                                            {{ item.down_date }} <br>
-                                                            {{ item.stack_point }} - {{ item.down_point }} <br>
-                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
-                                                            {{ item.remarks }}
-                                                        </div>
                                                         <button type="button" class="close"
                                                                 @click="removeElem(item.item_id)"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
                                                         </button>
+                                                        <strong>{{ item.shipper_name }}</strong>
+                                                        {{ item.down_date }} <br>
+                                                        {{ item.stack_point }} - {{ item.down_point }} <br>
+                                                        <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                                        {{ item.remarks }}
                                                     </div>
                                                 </draggable>
                                             </td>
@@ -172,19 +168,17 @@
                                                            class="next-product" :data-driver-id="elem.driver_id">
                                                     <div class="elem" v-for="item in elem.nextProduct"
                                                          :key="item.item_id" :data-item_id="item.item_id">
-                                                        <div class="">
-                                                            <strong>{{ item.shipper_name }}</strong>
-                                                            {{ item.down_date }} <br>
-                                                            {{ item.stack_point }} - {{ item.down_point }} <br>
-                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
-                                                            {{ item.remarks }}
-                                                        </div>
                                                         <button type="button" class="close"
                                                                 @click="removeElem(item.item_id)"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
                                                         </button>
+                                                        <strong>{{ item.shipper_name }}</strong>
+                                                        {{ item.down_date }} <br>
+                                                        {{ item.stack_point }} - {{ item.down_point }} <br>
+                                                        <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                                        {{ item.remarks }}
                                                     </div>
                                                 </draggable>
                                             </td>
@@ -195,61 +189,6 @@
                             </template>
                         </badger-accordion-item>
                     </badger-accordion>
-                    <div style="padding: 10px">
-                        <button data-toggle="modal" data-target="#addDriverModal"
-                                class="btn btn-primary btn-fixed-width">{{__('dispatch.add')}}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal" id="addDriverModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-blue">
-                        <h5 class="modal-title">{{__('dispatch.add_driver')}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="">
-                            <div class="form-group text-center d-flex justify-content-around">
-                                <label for="driverName" class="pt-2">{{__('dispatch.driver_name')}}</label>
-                                <input type="text" id="driverName" v-model="driver_search" class="form-control"
-                                       style="width: calc(50%)"/>
-                                <button class="btn btn-primary" @click="filterDrivers">{{__('common.search')}}</button>
-                            </div>
-                            <div class="driver-list">
-                                <div class="row label-row mt-2 mr-2 ml-2 mb-0 pb-2">
-                                    <div class="col-2"></div>
-                                    <div class="col-4"><strong>{{__('dispatch.car_no')}}</strong></div>
-                                    <div class="col-6"><strong>{{__('dispatch.driver_name')}}</strong></div>
-                                </div>
-                                <div class="driver-data">
-                                    <label class="row m-2 label-row" v-for="driver in filtered_drivers">
-                                        <div class="col-2 text-center">
-                                            <input type="checkbox" v-model="tableDriverList" :value="driver.driver_id">
-                                        </div>
-                                        <div class="col-4">
-                                            {{ driver.vehicle_no3 }}
-                                        </div>
-                                        <div class="col-6">
-                                            {{ driver.driver_name }}
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center mt-2">
-                            <button type="button" class="btn btn-modal btn-danger btn-fixed-width"
-                                    @click="registerDriver">{{__('common.register')}}
-                            </button>
-                            <button type="button" class="btn btn-modal btn-warning ml-3 btn-fixed-width"
-                                    data-dismiss="modal">{{__('dispatch.cancel')}}
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -301,6 +240,10 @@
                         ja: ja
                     },
                 },
+                badgerOptions: {
+                    openHeadersOnLoad: [0],
+                },
+                timeout: 0,
             };
         },
         methods: {
@@ -501,7 +444,6 @@
                 axios.post(this.thirdListUrl, {'drivers': this.tableDriverList, 'date': this.dispatch_day_string})
                     .then(result => {
                         this.thirdList = _.cloneDeep(this.sanitizeMainTable(result.data));
-//                        this.thirdList = result.data;
                     })
                     .catch(error => {
                         componentInstance.errorDialog(error);
@@ -558,6 +500,17 @@
                 .catch(function (error) {
                     component.errorDialog(error);
                 });
+
+//            $(".elem").on('mouseover', 'a', function (e) {
+//                var el = $(e.target),
+//                input = el.data('input');
+//                if (timeout) clearTimeout(timeout);
+//                timeout = setTimeout(getSomeDetail(input), 3000);
+//
+//            }).on('mouseleave', function () {
+//                clearTimeout(timeout);
+//                removeDetails();
+//            });
         },
         computed: {
             dispatch_day_string: function () {
@@ -628,11 +581,15 @@
     .dispatch .day1, .day2 {
         background-color: #fff;
         float: left;
-        width: 12rem;
+        width: 14rem;
     }
 
-    .dispatch .day1 > div, .dispatch .day2 > div {
+    .dispatch .day1, .dispatch .day2 {
         border: 1px solid #ced4da;
+    }
+
+    .dispatch .day1 > div, .dispatch .day2 > div{
+        border-top: 1px solid #ced4da;
     }
 
     .dispatch .label-row {
