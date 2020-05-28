@@ -284,11 +284,7 @@
             },
             registerDriver(){
                 let componentInstance = this;
-                let data = {
-                    date: this.firstList.date,
-                    drivers: this.tableDriverList
-                };
-                axios.post(componentInstance.thirdListUrl, data)
+                axios.get(componentInstance.thirdListUrl+'?date='+this.firstList.date)
                     .then(response => {
 //                        componentInstance.thirdList = this.sanitizeMainTable(response.data);
                         componentInstance.thirdList = response.data;
@@ -297,7 +293,6 @@
                     .catch(function (error) {
                         componentInstance.errorDialog(error);
                     });
-                $('#addDriverModal').modal('toggle');
             },
             clearNewClass(){
                 $('.dispatch-table .elem').removeClass('new');
@@ -441,7 +436,7 @@
             },
             fetchThirdList(){
                 let componentInstance = this;
-                axios.post(this.thirdListUrl, {'drivers': this.tableDriverList, 'date': this.dispatch_day_string})
+                axios.get(this.thirdListUrl+'?date='+ this.dispatch_day_string)
                     .then(result => {
                         this.thirdList = _.cloneDeep(this.sanitizeMainTable(result.data));
                     })
@@ -500,17 +495,6 @@
                 .catch(function (error) {
                     component.errorDialog(error);
                 });
-
-//            $(".elem").on('mouseover', 'a', function (e) {
-//                var el = $(e.target),
-//                input = el.data('input');
-//                if (timeout) clearTimeout(timeout);
-//                timeout = setTimeout(getSomeDetail(input), 3000);
-//
-//            }).on('mouseleave', function () {
-//                clearTimeout(timeout);
-//                removeDetails();
-//            });
         },
         computed: {
             dispatch_day_string: function () {

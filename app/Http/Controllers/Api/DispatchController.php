@@ -359,7 +359,6 @@ class DispatchController extends Controller
         $result = [];
 
         $date = $request->get('date');
-        $tableDriverList = $request->get('drivers');
 
         foreach (Driver::vehicleTypes as $type){
             $drivers = Driver::where([
@@ -367,7 +366,6 @@ class DispatchController extends Controller
                 'search_flg'=>Driver::SEARCH_FLAG_WORKING,
                 'delete_flg'=>0
             ])
-            ->whereIn('driver_id',$tableDriverList)
             ->get();
             $items = [];
             foreach ($drivers as $driver){
