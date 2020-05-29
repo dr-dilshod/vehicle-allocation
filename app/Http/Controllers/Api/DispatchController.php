@@ -232,16 +232,13 @@ class DispatchController extends Controller
         $added = $data['added'];
         $removed = $data['removed'];
         foreach($added as $item){
-            if($this->itemAlreadyExists($item)){
-                $this->removeItem($item);
-            }
             $dispatch = Dispatch::create($item);
             if($dispatch){
                 $stmt = \DB::update('UPDATE items SET dispatch_status=? WHERE item_id=?',[Item::DISPATCH_STATUS_IN_DISPATCH,$dispatch->item_id]);
             }
         }
         foreach ($removed as $item){
-            $this->removeItem(['item_id'=>$item]);
+            $this->removeItem($item['item_id'],$item['driver_id'],$item['timezone']);
         }
         return response()->json($data, 201);
     }
@@ -278,8 +275,8 @@ class DispatchController extends Controller
     /**
      * @param $item
      */
-    protected function removeItem($item){
-        \DB::update('UPDATE dispatches SET delete_flg=1 WHERE item_id=?',[$item['item_id']]);
+    protected function removeItem($item_id,$driver_id,$timezone){
+        \DB::update('UPDATE dispatches SET delete_flg=1 WHERE item_id=? AND driver_id=? AND timezone=?',[$item_id,$driver_id,$timezone]);
     }
 
     public function thirdList2(Request $request)

@@ -55,16 +55,11 @@
                     <draggable :list="firstList.data" group="elems" class="first elem-list">
                         <div v-for="item in firstList.items" class="elem" :key="item.item_id"
                              :data-item_id="item.item_id" :data-source="item.source">
-                            <button type="button" class="close"
-                                    @click="removeElem(item.item_id)"
-                                    aria-label="Close">
-                                                            <span aria-hidden="true"
-                                                                  class="text-danger">&times;</span>
-                            </button>
                             <strong>{{ item.shipper_name }}</strong>
-                            {{ item.down_date }} <br>
+                            {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                             {{ item.stack_point }} - {{ item.down_point }} <br>
                             <div class="hide">
+                                {{ item.weight }}t &nbsp;&nbsp;&nbsp;&nbsp;
                                 <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
                                 {{ item.item_remark }}
                             </div>
@@ -81,16 +76,11 @@
                     <draggable :list="secondList.data" group="elems" class="second elem-list">
                         <div v-for="item in secondList.items" class="elem" :key="item.item_id"
                              :data-item_id="item.item_id" :data-source="item.source">
-                            <button type="button" class="close"
-                                    @click="removeElem(item.item_id)"
-                                    aria-label="Close">
-                                                            <span aria-hidden="true"
-                                                                  class="text-danger">&times;</span>
-                            </button>
                             <strong>{{ item.shipper_name }}</strong>
-                            {{ item.down_date }} <br>
+                            {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                             {{ item.stack_point }} - {{ item.down_point }} <br>
                             <div class="hide">
+                                {{ item.weight }}t &nbsp;&nbsp;&nbsp;&nbsp;
                                 <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
                                 {{ item.item_remark }}
                             </div>
@@ -127,7 +117,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td style="width: 25%" >
+                                            <td style="width: 25%" :data-timezone="1">
                                                 <draggable :list="elem.morning" group="elems" @add="add($event,1)"
                                                            ghost-class="new"
                                                            style="display: block; min-height: 50px" class="morning"
@@ -135,7 +125,7 @@
                                                     <div class="elem" v-for="item in elem.morning"
                                                          :key="item.item_id" :data-item_id="item.item_id">
                                                         <button type="button" class="close"
-                                                                @click="removeElem(item.item_id)"
+                                                                @click="removeElem($event,item.item_id, elem.driver_id, 1)"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
@@ -151,7 +141,7 @@
                                                     </div>
                                                 </draggable>
                                             </td>
-                                            <td style="width: 25%" >
+                                            <td style="width: 25%" :data-timezone="2">
                                                 <draggable :list="elem.noon" group="elems" @add="add($event,2)"
                                                            ghost-class="new"
                                                            style="display: block; min-height: 50px" class="noon"
@@ -159,7 +149,7 @@
                                                     <div class="elem" v-for="item in elem.noon" :key="item.item_id"
                                                          :data-item_id="item.item_id">
                                                         <button type="button" class="close"
-                                                                @click="removeElem(item.item_id)"
+                                                                @click="removeElem($event,item.item_id, elem.driver_id, 2)"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
@@ -175,7 +165,7 @@
                                                     </div>
                                                 </draggable>
                                             </td>
-                                            <td style="width: 25%" >
+                                            <td style="width: 25%"  :data-timezone="3">
                                                 <draggable :list="elem.nextProduct" group="elems"
                                                            @add="add($event,3)" ghost-class="new"
                                                            style="display: block; min-height: 50px"
@@ -183,7 +173,7 @@
                                                     <div class="elem" v-for="item in elem.nextProduct"
                                                          :key="item.item_id" :data-item_id="item.item_id">
                                                         <button type="button" class="close"
-                                                                @click="removeElem(item.item_id)"
+                                                                @click="removeElem($event,item.item_id, elem.driver_id, 3)"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true"
                                                                   class="text-danger">&times;</span>
@@ -284,7 +274,7 @@
                     driver_id: driver_id,
                 };
                 this.registerPostData.added.push(postData);
-                $('.dispatch-table div[data-item_id=' + postData.item_id + ']').addClass('new');
+                $('.dispatch-table td[data-timezone='+timezone+'] div[data-driver-id=' + postData.driver_id + '] div[data-item_id=' + postData.item_id + ']').addClass('new');
             },
             register(){
                 let componentInstance = this;
@@ -396,30 +386,15 @@
                     this.display();
                 }
             },
-            removeElem(item_id){
-                let div = $('.dispatch-table div[data-item_id=' + item_id + ']');
-                div.removeClass('new');
-                let source = div.data('source');
-                $('div.' + source).append(div);
-                $('.dispatch-table div[data-item_id=' + item_id + ']').remove();
-                this.thirdList.forEach(function (driver) {
-                    driver.morning.forEach(function (item, index, arr) {
-                        if (item.item_id == item_id) {
-                            arr.splice(index, 1);
-                        }
+            removeElem(event,item_id, driver_id, timezone){
+                console.log(event);
+                let element = $(event.target).parent().parent();
+                element.remove();
+                this.registerPostData.removed.push({
+                        item_id: item_id,
+                        driver_id: driver_id,
+                        timezone: timezone,
                     });
-                    driver.noon.forEach(function (item, index, arr) {
-                        if (item.item_id == item_id) {
-                            arr.splice(index, 1);
-                        }
-                    });
-                    driver.nextProduct.forEach(function (item, index, arr) {
-                        if (item.item_id == item_id) {
-                            arr.splice(index, 1);
-                        }
-                    });
-                });
-                this.registerPostData.removed.push(item_id);
                 this.change = true;
             },
             fetchLists(){
@@ -454,7 +429,12 @@
                 let componentInstance = this;
                 axios.get(this.thirdListUrl+'?date='+ this.dispatch_day_string)
                     .then(result => {
-                        this.thirdList = _.cloneDeep(this.sanitizeMainTable(result.data));
+                        new Promise(function (resolve, reject) {
+                            componentInstance.thirdList = null;
+                            resolve(result.data);
+                        }).then(function(data){
+                            componentInstance.thirdList = _.cloneDeep(componentInstance.sanitizeMainTable(data));
+                        });
                     })
                     .catch(error => {
                         componentInstance.errorDialog(error);
@@ -513,13 +493,13 @@
                 });
             $('body').on('mouseover','.mainTable .elem',function (e) {
                 let el = $(e.target);
-                this.timeout = setTimeout(function () {
+                this.timeout = window.setTimeout(function () {
                     el.find('div.hide').each(function () {
                        $(this).removeClass('hide');
                     })
                 }, 3000);
             }).on('mouseleave','.mainTable .elem', function (e) {
-                clearTimeout(this.timeout);
+                if(this.timeout) window.clearTimeout(this.timeout);
                 let el = $(e.target);
                 el.find('div').each(function () {
                     $(this).addClass('hide');
