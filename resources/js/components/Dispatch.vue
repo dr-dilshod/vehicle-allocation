@@ -144,6 +144,7 @@
                                                         {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                                                         {{ item.stack_point }} - {{ item.down_point }} <br>
                                                         <div class="hide">
+                                                            {{ item.weight }}t &nbsp;&nbsp;&nbsp;&nbsp;
                                                             <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
                                                             {{ item.item_remark }}
                                                         </div>
@@ -167,6 +168,7 @@
                                                         {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                                                         {{ item.stack_point }} - {{ item.down_point }} <br>
                                                         <div class="hide">
+                                                            {{ item.weight }}t &nbsp;&nbsp;&nbsp;&nbsp;
                                                             <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
                                                             {{ item.item_remark }}
                                                         </div>
@@ -190,6 +192,7 @@
                                                         {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                                                         {{ item.stack_point }} - {{ item.down_point }} <br>
                                                         <div class="hide">
+                                                            {{ item.weight }}t &nbsp;&nbsp;&nbsp;&nbsp;
                                                             <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
                                                             {{ item.item_remark }}
                                                         </div>
@@ -508,16 +511,15 @@
                 .catch(function (error) {
                     component.errorDialog(error);
                 });
-            let component = this;
             $('body').on('mouseover','.mainTable .elem',function (e) {
                 let el = $(e.target);
-                component.timeout = setTimeout(function () {
+                this.timeout = setTimeout(function () {
                     el.find('div.hide').each(function () {
                        $(this).removeClass('hide');
                     })
                 }, 3000);
             }).on('mouseleave','.mainTable .elem', function (e) {
-                clearTimeout(component.timeout);
+                clearTimeout(this.timeout);
                 let el = $(e.target);
                 el.find('div').each(function () {
                     $(this).addClass('hide');
