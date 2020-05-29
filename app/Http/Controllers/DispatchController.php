@@ -23,7 +23,8 @@ class DispatchController extends Controller
             ->where([
                 'dispatches.delete_flg'=>0,
                 'items.delete_flg'=>0,
-            ])->whereRaw('items.down_date >= "'. $date . '"')
+            ])
+            ->orderBy('drivers.vehicle_type')
             ->orderBy('drivers.vehicle_no3')
             ->get();
         $pdf = \PDF::loadView('dispatch.pdf.print', [

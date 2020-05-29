@@ -101,7 +101,20 @@
 
 .badger-accordion__header .js-badger-accordion-header .badger-accordion-toggle .badger-accordion-title,
 .badger-accordion__header .js-badger-accordion-header .badger-accordion-toggle .badger-toggle-indicator {
-    background: lightskyblue;
-    padding: 5px;
+    background: #afd1fa;
+    height: 2rem;
     font-size: 12pt;
+}
+.component-badger-accordion, .badger-accordion__panel {
+    margin: 0;
+}
+.badger-accordion__header .js-badger-accordion-header .badger-accordion-toggle{
+    padding: 0 0 2px 0;
+    border: 1px solid #ced4da;
+}
+.badger-accordion__header .js-badger-accordion-header .badger-accordion-toggle .badger-accordion-title {
+    padding: 5px 0 0 5px;
+}
+.badger-accordion__header .js-badger-accordion-header .badger-accordion-toggle .badger-toggle-indicator {
+    padding-right: 5px;
 }

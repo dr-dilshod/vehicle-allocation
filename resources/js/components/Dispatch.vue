@@ -55,13 +55,19 @@
                     <draggable :list="firstList.data" group="elems" class="first elem-list">
                         <div v-for="item in firstList.items" class="elem" :key="item.item_id"
                              :data-item_id="item.item_id" :data-source="item.source">
-                            <button type="button" class="close" @click="removeElem(item.item_id)"
+                            <button type="button" class="close"
+                                    @click="removeElem(item.item_id)"
                                     aria-label="Close">
-                                <span aria-hidden="true" class="text-danger">&times;</span>
+                                                            <span aria-hidden="true"
+                                                                  class="text-danger">&times;</span>
                             </button>
                             <strong>{{ item.shipper_name }}</strong>
-                            {{ item.down_date }} {{ item.down_time }} <br>
-                            {{ item.stack_point }} - {{ item.down_point }}
+                            {{ item.down_date }} <br>
+                            {{ item.stack_point }} - {{ item.down_point }} <br>
+                            <div class="hide">
+                                <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                {{ item.item_remark }}
+                            </div>
                         </div>
                     </draggable>
                 </div>
@@ -75,13 +81,19 @@
                     <draggable :list="secondList.data" group="elems" class="second elem-list">
                         <div v-for="item in secondList.items" class="elem" :key="item.item_id"
                              :data-item_id="item.item_id" :data-source="item.source">
-                            <button type="button" class="close" @click="removeElem(item.item_id)"
+                            <button type="button" class="close"
+                                    @click="removeElem(item.item_id)"
                                     aria-label="Close">
-                                <span aria-hidden="true" class="text-danger">&times;</span>
+                                                            <span aria-hidden="true"
+                                                                  class="text-danger">&times;</span>
                             </button>
                             <strong>{{ item.shipper_name }}</strong>
-                            {{ item.down_date }} {{ item.down_time }} <br>
-                            {{ item.stack_point }} - {{ item.down_point }}
+                            {{ item.down_date }} <br>
+                            {{ item.stack_point }} - {{ item.down_point }} <br>
+                            <div class="hide">
+                                <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                {{ item.item_remark }}
+                            </div>
                         </div>
                     </draggable>
                 </div>
@@ -96,8 +108,8 @@
                         <td style="width: 25%" class="text-center">{{__('dispatch.next_product')}}</td>
                     </tr>
                 </table>
-                <div style="background: #fff; border: 1px solid #ced4da;">
-                    <badger-accordion ref="myAccordion" :options="badgerOptions">
+                <div style="background: #fff; border: 1px solid #ced4da;" class="mainTable">
+                    <badger-accordion ref="myAccordion" :options="badgerOptions" :icons="icons">
                         <badger-accordion-item v-for="(entity, cc) in thirdList" :key="entity.type">
                             <template slot="header" style="background: lightskyblue; padding: 5px">
                                 {{ entity.type }}
@@ -113,10 +125,6 @@
                                                     <div class="name" style="width: 90%">
                                                         {{elem.driver_name}}
                                                     </div>
-                                                    <button type="button" class="close" style="width: 10%"
-                                                            @click="removeRow(idx, elem)" aria-label="Close">
-                                                        <span aria-hidden="true" class="text-danger">&times;</span>
-                                                    </button>
                                                 </div>
                                             </td>
                                             <td style="width: 25%" >
@@ -133,10 +141,12 @@
                                                                   class="text-danger">&times;</span>
                                                         </button>
                                                         <strong>{{ item.shipper_name }}</strong>
-                                                        {{ item.down_date }} <br>
+                                                        {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                                                         {{ item.stack_point }} - {{ item.down_point }} <br>
-                                                        <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
-                                                        {{ item.remarks }}
+                                                        <div class="hide">
+                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                                            {{ item.item_remark }}
+                                                        </div>
                                                     </div>
                                                 </draggable>
                                             </td>
@@ -154,10 +164,12 @@
                                                                   class="text-danger">&times;</span>
                                                         </button>
                                                         <strong>{{ item.shipper_name }}</strong>
-                                                        {{ item.down_date }} <br>
+                                                        {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                                                         {{ item.stack_point }} - {{ item.down_point }} <br>
-                                                        <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
-                                                        {{ item.remarks }}
+                                                        <div class="hide">
+                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                                            {{ item.item_remark }}
+                                                        </div>
                                                     </div>
                                                 </draggable>
                                             </td>
@@ -175,10 +187,12 @@
                                                                   class="text-danger">&times;</span>
                                                         </button>
                                                         <strong>{{ item.shipper_name }}</strong>
-                                                        {{ item.down_date }} <br>
+                                                        {{ item.down_date }} <br> <div class="hide">{{item.down_time}}</div>
                                                         {{ item.stack_point }} - {{ item.down_point }} <br>
-                                                        <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
-                                                        {{ item.remarks }}
+                                                        <div class="hide">
+                                                            <span v-if="item.empty_pl != 1">{{__('dispatch.pl_available')}}</span>
+                                                            {{ item.item_remark }}
+                                                        </div>
                                                     </div>
                                                 </draggable>
                                             </td>
@@ -239,6 +253,10 @@
                         en: en,
                         ja: ja
                     },
+                },
+                icons: {
+                    opened: '<img src="./images/arrow_up16.png">',
+                    closed: '<img src="./images/arrow_down16.png">'
                 },
                 badgerOptions: {
                     openHeadersOnLoad: [0],
@@ -375,11 +393,6 @@
                     this.display();
                 }
             },
-            removeRow(id, elem){
-                let index = this.tableDriverList.indexOf(elem.driver_id);
-                if (index !== -1) this.tableDriverList.splice(index, 1);
-                this.thirdList.splice(id, 1);
-            },
             removeElem(item_id){
                 let div = $('.dispatch-table div[data-item_id=' + item_id + ']');
                 div.removeClass('new');
@@ -495,6 +508,21 @@
                 .catch(function (error) {
                     component.errorDialog(error);
                 });
+            let component = this;
+            $('body').on('mouseover','.mainTable .elem',function (e) {
+                let el = $(e.target);
+                component.timeout = setTimeout(function () {
+                    el.find('div.hide').each(function () {
+                       $(this).removeClass('hide');
+                    })
+                }, 3000);
+            }).on('mouseleave','.mainTable .elem', function (e) {
+                clearTimeout(component.timeout);
+                let el = $(e.target);
+                el.find('div').each(function () {
+                    $(this).addClass('hide');
+                });
+            });
         },
         computed: {
             dispatch_day_string: function () {
@@ -591,8 +619,14 @@
     .dispatch .dispatch-table {
         font-size: 12pt;
     }
+    .dispatch .table th, .dispatch .table td{
+        border-top: 0;
+    }
     .dispatch .elem .close{
         width: 0.5rem;
         text-align: right;
+    }
+    .dispatch .hide{
+        display: none;
     }
 </style>

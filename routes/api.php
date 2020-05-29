@@ -111,7 +111,7 @@ Route::post('/invoice', 'Api\InvoiceController@store')->name('api.invoice.store'
 // Dispatch
 Route::get('/dispatch/first-list', 'Api\DispatchController@firstList')->name('api.dispatch.first')->middleware('admin');
 Route::get('/dispatch/second-list', 'Api\DispatchController@secondList')->name('api.dispatch.second')->middleware('admin');
-Route::post('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('api.dispatch.third')->middleware('admin');
+Route::get('/dispatch/third-list', 'Api\DispatchController@thirdList')->name('api.dispatch.third')->middleware('admin');
 Route::get('/dispatch/driver-list', 'Api\DispatchController@driverList')->name('api.dispatch.drivers')->middleware('admin');
 Route::post('/dispatch', 'Api\DispatchController@store')->name('api.dispatch.store')->middleware('admin');
 Route::delete('/dispatch/{id}', 'Api\DispatchController@destroy')->name('api.dispatch.destroy')->middleware('admin');
