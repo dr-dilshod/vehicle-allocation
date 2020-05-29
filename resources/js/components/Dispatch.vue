@@ -387,7 +387,6 @@
                 }
             },
             removeElem(event,item_id, driver_id, timezone){
-                console.log(event);
                 let element = $(event.target).parent().parent();
                 element.remove();
                 this.registerPostData.removed.push({
