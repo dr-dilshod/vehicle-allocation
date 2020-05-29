@@ -9,7 +9,5 @@
             third-list-url="{{ route('api.dispatch.list') }}"
             driver-list-url="{{ route('api.dispatch.drivers') }}"
             pdf-url="{{ route('dispatch.pdf') }}"
-            open-img="{{ "<img src='".url('storage/images/arrow_up16.png')."'>"}}"
-            close-img="{{ "<img src='".url('storage/images/arrow_down16.png')."'>"}}"
     ></dispatch>
 @endsection
